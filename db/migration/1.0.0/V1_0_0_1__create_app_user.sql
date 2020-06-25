@@ -1,14 +1,10 @@
--- -----------------------------------------------------
--- For admin_cvs user
--- -----------------------------------------------------
-GRANT ALL ON *.* to 'admin_cvs'@'%' IDENTIFIED BY 'pwforcvsadmin';
-GRANT ALL ON *.* to 'admin_cvs'@'localhost' IDENTIFIED BY 'pwforcvsadmin';
+create database db_cvs;
 
 -- -----------------------------------------------------
--- For app_cvs user
+-- create user
 -- -----------------------------------------------------
+GRANT ALL ON *.* to 'admin_cvs'@'%' IDENTIFIED BY 'pwforcvsadmin';
 GRANT SELECT, INSERT, UPDATE, DELETE, EXECUTE ON *.* to 'app_cvs'@'%' IDENTIFIED BY 'pwforcvsapp';
-GRANT SELECT, INSERT, UPDATE, DELETE, EXECUTE ON *.* to 'app_cvs'@'localhost' IDENTIFIED BY 'pwforcvsapp';
 
 FLUSH PRIVILEGES;
 

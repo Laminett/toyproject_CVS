@@ -4,3 +4,7 @@ out
 build
 .gradle
 .idea
+.settings/
+.vscode/
+bin/
+docker/mariadb/data/
