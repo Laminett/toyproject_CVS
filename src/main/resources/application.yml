@@ -1,9 +1,9 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/db_cvs?serverTimezone=UTC&characterEncoding=UTF-8
-    username: admin_cvs
-    password: pwforcvsadmin
+    url: jdbc:mysql://192.168.0.95:3306/db_cvs?serverTimezone=UTC&characterEncoding=UTF-8
+    username: app_cvs
+    password: pwforcvsapp
 
   jpa:
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
