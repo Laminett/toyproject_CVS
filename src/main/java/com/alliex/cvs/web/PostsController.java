@@ -15,7 +15,9 @@ public class PostsController {
     private final PostsService postsService;
 
     @GetMapping("/posts")
-    public String getPosts() {
+    public String getPosts(Model model) {
+        model.addAttribute("posts", postsService.findAllDesc());
+
         return "posts";
     }
 
