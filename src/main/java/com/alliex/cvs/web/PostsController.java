@@ -14,6 +14,11 @@ public class PostsController {
 
     private final PostsService postsService;
 
+    @GetMapping("/posts")
+    public String getPosts() {
+        return "posts";
+    }
+
     @GetMapping("/posts/save")
     public String postsSave() {
         return "posts-save";
