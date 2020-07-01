@@ -1,5 +1,6 @@
 package com.alliex.cvs.service;
 
+import com.alliex.cvs.config.security.LoginUser;
 import com.alliex.cvs.config.security.util.AuthoritiesUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
@@ -22,12 +23,15 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         com.alliex.cvs.domain.user.User user = userService.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("not found username. username: " + username));
 
+        LoginUser loginUser = new LoginUser();
+        loginUser.setUsername(username);
+
 
 //		ArrayList<GrantedAuthority> authorities = new ArrayList<>();
 //		authorities.add(new SimpleGrantedAuthority(user.getRole().getValue()));
 //		추후에는 엔티티 안에 권한 필드를 넣어서 권한 정보를 전달하도록 한다. 예를 들어 getAuthorities를 하면 권한 필드의 내용을 리스트로 반환하는 등에 로직을 추가한다.
 
-        return new User(user.getUsername(), user.getPassword(), AuthoritiesUtils.createAuthorities(user));
+        return new User(user.getUsername(), user.getPassword(), AuthoritiesUtils.createAuthorities(loginUser));
     }
 
 }

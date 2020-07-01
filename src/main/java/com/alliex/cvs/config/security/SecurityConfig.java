@@ -1,5 +1,6 @@
 package com.alliex.cvs.config.security;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -22,9 +23,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	private PasswordEncoder passwordEncoder;
 	private AuthenticationProvider authenticationProvider;
 	
-	public SecurityConfig(UserDetailsService userDetailsService,
-                          PasswordEncoder passwordEncoder,
-                          AuthenticationProvider authenticationProvider) {
+	public SecurityConfig(@Qualifier("userDetailsServiceImpl") UserDetailsService userDetailsService,
+						  PasswordEncoder passwordEncoder,
+						  AuthenticationProvider authenticationProvider) {
 		this.userDetailsService = userDetailsService;
 		this.passwordEncoder = passwordEncoder;
 		this.authenticationProvider = authenticationProvider;

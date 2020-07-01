@@ -10,8 +10,7 @@ import java.util.List;
 
 public final class AuthoritiesUtils {
 
-    private static final List<GrantedAuthority> ADMIN_ROLES = AuthorityUtils.createAuthorityList("ROLE_ADMIN",
-            "ROLE_USER");
+    private static final List<GrantedAuthority> ADMIN_ROLES = AuthorityUtils.createAuthorityList("ROLE_ADMIN", "ROLE_USER");
     private static final List<GrantedAuthority> USER_ROLES = AuthorityUtils.createAuthorityList("ROLE_USER");
 
     public static Collection<? extends GrantedAuthority> createAuthorities(LoginUser loginUser) {
@@ -19,6 +18,8 @@ public final class AuthoritiesUtils {
         if (username.startsWith("admin")) {
             return ADMIN_ROLES;
         }
+
         return USER_ROLES;
     }
+
 }
