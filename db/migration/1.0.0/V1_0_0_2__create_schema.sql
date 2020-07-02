@@ -13,11 +13,13 @@ CREATE TABLE posts
 CREATE TABLE user
 (
     id            bigint AUTO_INCREMENT PRIMARY KEY,
-    email         varchar(255) NOT NULL,
-    name          varchar(255) NOT NULL,
-    picture       varchar(255) NULL,
+    username      varchar(255) NOT NULL,
+    password      varchar(255) NOT NULL,
     role          varchar(255) NOT NULL,
+    email         varchar(255) NOT NULL,
     created_date  datetime     NULL,
     modified_date datetime     NULL
 );
+
+
 
