@@ -25,12 +25,17 @@ public class IndexController {
     @GetMapping("/login/form")
     public String loginPage(String error) {
         if (error != null && error.equals("e")) {
-            System.out.println("인증실패");
-        } else {
-            System.out.println("로그인 페이지로 이동");
+            System.out.println("login failure.");
         }
 
         return "login";
+    }
+
+    @GetMapping("/logout-success")
+    public String logoutSuccess() {
+        System.out.println("logout success.");
+
+        return "redirect:/";
     }
 
 }

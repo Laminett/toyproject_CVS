@@ -10,16 +10,15 @@ import java.io.IOException;
 
 public class CustomAuthenticationEntryPoint extends LoginUrlAuthenticationEntryPoint {
 
-	public CustomAuthenticationEntryPoint(String loginFormUrl) {
-		super(loginFormUrl);
-	}
+    public CustomAuthenticationEntryPoint(String loginFormUrl) {
+        super(loginFormUrl);
+    }
 
-	@Override
-	public void commence(HttpServletRequest request, HttpServletResponse response,
+    @Override
+    public void commence(HttpServletRequest request, HttpServletResponse response,
                          AuthenticationException authException) throws IOException, ServletException {
-		System.out.println("CustomAuthenticationEntryPoint.commence ::::");
-		response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-		super.commence(request, response, authException);
-	}
-	
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        super.commence(request, response, authException);
+    }
+
 }

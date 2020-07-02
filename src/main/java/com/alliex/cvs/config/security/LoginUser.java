@@ -6,7 +6,6 @@ import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.Id;
 import java.util.Collection;
 
 @Getter
@@ -16,7 +15,6 @@ public class LoginUser implements UserDetails {
 
     private static final long serialVersionUID = -4608347932140057654L;
 
-    @Id
     private Long id;
     private String username;
     private String password;
