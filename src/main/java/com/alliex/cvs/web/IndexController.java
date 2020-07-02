@@ -31,7 +31,7 @@ public class IndexController {
         return "login";
     }
 
-    @GetMapping("/logout-success")
+    @GetMapping("/logout/success")
     public String logoutSuccess() {
         System.out.println("logout success.");
 
