@@ -23,20 +23,20 @@ public class PointService {
     @Transactional(readOnly = true)
     public PointResponse findByUserId(Long userId) {
         Point entity = pointRepository.findByUserId(userId)
-                .orElseThrow(() -> new IllegalArgumentException("not found point data. user id : " + userId));
+                .orElseThrow(() -> new IllegalArgumentException("Not found point data. user id : " + userId));
         return new PointResponse(entity);
     }
 
     @Transactional
-    public Long updatePointPlus(Long userId, int addPoint) {
+    public Long updatePointPlus(Long userId, int point) {
         Point pointEntity = pointRepository.findByUserId(userId)
-                .orElseThrow(() -> new IllegalArgumentException("not found point data. user id : " + userId));
+                .orElseThrow(() -> new IllegalArgumentException("Not found point data. user id : " + userId));
 
         int originPoint = pointEntity.getPoint();
-        int resultPoint = originPoint + addPoint;
+        int resultPoint = originPoint + point;
         // 충전한도는 정해지는 대로 변경
         if(resultPoint > 500) {
-            throw new PointLimitExcessException("The point is too much to charge. point : " + addPoint);
+            throw new PointLimitExcessException("The point is too much to charge. point : " + point);
         }
 
         pointEntity.setPoint(resultPoint);
@@ -46,14 +46,14 @@ public class PointService {
     }
 
     @Transactional
-    public Long updatePointMinus(Long userId, int removePoint) {
+    public Long updatePointMinus(Long userId, int point) {
         Point pointEntity = pointRepository.findByUserId(userId)
-                .orElseThrow(() -> new IllegalArgumentException("not found point data. user id : " + userId));
+                .orElseThrow(() -> new IllegalArgumentException("Not found point data. user id : " + userId));
 
         int originPoint = pointEntity.getPoint();
-        int resultPoint = originPoint - removePoint;
+        int resultPoint = originPoint - point;
         if(resultPoint < 0) {
-            throw new PointLimitExcessException("The point is not enough to pay");
+            throw new PointLimitExcessException("The point is not enough to pay. point : " + point);
         }
 
         pointEntity.setPoint(resultPoint);

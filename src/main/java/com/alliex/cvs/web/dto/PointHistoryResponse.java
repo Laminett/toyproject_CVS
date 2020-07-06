@@ -15,7 +15,7 @@ public class PointHistoryResponse {
 
     private Long userId;
 
-    private int point;
+    private Integer point;
 
     private String registrant;
 

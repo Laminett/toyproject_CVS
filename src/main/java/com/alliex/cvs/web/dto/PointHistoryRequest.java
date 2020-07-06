@@ -16,7 +16,7 @@ public class PointHistoryRequest {
     private String registrant;
 
     @Builder
-    public PointHistoryRequest(Long userId, int point, String registrant) {
+    public PointHistoryRequest(Long userId, Integer point, String registrant) {
         this.userId = userId;
         this.point = point;
         this.registrant = registrant;

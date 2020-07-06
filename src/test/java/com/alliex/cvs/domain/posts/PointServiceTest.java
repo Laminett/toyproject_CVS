@@ -83,15 +83,4 @@ public class PointServiceTest {
         assertThat(result).isEqualTo(userId);
     }
 
-
-    @Test
-    public void selectPointHistory() {
-        /* 왜 데이터가 하나일때는 리스트로 못 가져 오는거지? */
-        long userId = 1L;
-        List<PointHistoryResponse> pointHistoryResponseList = pointHistoryService.findByUserId(userId);
-        PointHistoryResponse pointHistoryResponse = pointHistoryResponseList.get(0);
-        System.out.println("확인 : " + pointHistoryResponse.getUserId());
-        System.out.println("확인 : " + pointHistoryResponse.getPoint());
-    }
-
 }

@@ -21,13 +21,13 @@ public class PointHistory extends BaseTimeEntity {
     private Long userId;
 
     @Column(nullable = false)
-    private int point;
+    private Integer point;
 
     @Column(nullable = false)
     private String registrant;
 
     @Builder
-    public PointHistory(Long userId, int point, String registrant) {
+    public PointHistory(Long userId, Integer point, String registrant) {
         this.userId = userId;
         this.point = point;
         this.registrant = registrant;
