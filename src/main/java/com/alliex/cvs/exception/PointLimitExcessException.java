@@ -7,7 +7,7 @@ public class PointLimitExcessException extends RuntimeException{
     }
 
     public PointLimitExcessException(Throwable cause) {
-        super("Point Limit Excess. ", cause);
+        super("Point Limit Excess.", cause);
     }
 
     public PointLimitExcessException(String message, Throwable cause) {

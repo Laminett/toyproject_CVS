@@ -24,7 +24,6 @@ public class PointService {
     public PointResponse findByUserId(Long userId) {
         Point entity = pointRepository.findByUserId(userId)
                 .orElseThrow(() -> new IllegalArgumentException("not found point data. user id : " + userId));
-
         return new PointResponse(entity);
     }
 
@@ -35,7 +34,8 @@ public class PointService {
 
         int originPoint = pointEntity.getPoint();
         int resultPoint = originPoint + addPoint;
-        if(resultPoint > 500) { // 충전한도는 정해지는 대로 변경
+        // 충전한도는 정해지는 대로 변경
+        if(resultPoint > 500) {
             throw new PointLimitExcessException("The point is too much to charge. point : " + addPoint);
         }
 
