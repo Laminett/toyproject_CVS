@@ -9,22 +9,22 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class PointHistoryRequest {
 
-    private Long id;
+    private Long userId;
 
-    private Double point;
+    private int point;
 
     private String registrant;
 
     @Builder
-    public PointHistoryRequest(Long id, Double point, String registrant) {
-        this.id = id;
+    public PointHistoryRequest(Long userId, int point, String registrant) {
+        this.userId = userId;
         this.point = point;
         this.registrant = registrant;
     }
 
     public PointHistory toEntity() {
         return PointHistory.builder()
-                .id(id)
+                .userId(userId)
                 .point(point)
                 .registrant(registrant)
                 .build();

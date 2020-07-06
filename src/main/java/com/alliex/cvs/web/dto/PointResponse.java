@@ -11,11 +11,15 @@ public class PointResponse {
 
     private Long id;
 
-    private Double point;
+    private Long userId;
+
+    private int point;
 
     @Builder
     public PointResponse(Point entity) {
         this.id = entity.getId();
+        this.userId = entity.getUserId();
         this.point = entity.getPoint();
     }
+
 }

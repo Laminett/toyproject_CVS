@@ -34,57 +34,64 @@ public class PointServiceTest {
 
     @Test
     public void insertPointHistory() {
-
-        long id = 4L;
-        double point = 130.00;
+        long userId = 2L;
+        int point = 110;
         String registrant = "tester";
 
         pointHistoryRepository.save(PointHistory.builder()
-                .id(id)
+                .userId(userId)
                 .point(point)
                 .registrant(registrant)
                 .build());
 
-        PointHistoryResponse pointHistoryResponse = pointHistoryService.findById(id);
-
-        assertThat(pointHistoryResponse.getId()).isEqualTo(id);
+        List<PointHistoryResponse> pointHistoryResponseList = pointHistoryService.findByUserId(userId);
+        PointHistoryResponse pointHistoryResponse = pointHistoryResponseList.get(0);
+        assertThat(pointHistoryResponse.getUserId()).isEqualTo(userId);
         assertThat(pointHistoryResponse.getPoint()).isEqualTo(point);
-        assertThat(pointHistoryResponse.getRegistrant()).isEqualTo(registrant);
     }
 
     @Test
     public void insertPoint() {
-
-        long id = 4L;
-        double point = 130.00;
+        long userId = 2L;
+        int point = 120;
 
         pointRepository.save(Point.builder()
-                .id(id)
-                .point(point)
-                .build());
+            .userId(userId)
+            .point(point)
+            .build());
 
-        PointResponse pointResponse = pointService.findById(id);
-        assertThat(pointResponse.getId()).isEqualTo(id);
+        PointResponse pointResponse = pointService.findByUserId(userId);
+        assertThat(pointResponse.getUserId()).isEqualTo(userId);
         assertThat(pointResponse.getPoint()).isEqualTo(point);
     }
 
     @Test
     public void updatePointPlus() {
-        long id = 1L;
-        double temp_point = 30.00;
+        long userId = 1L;
+        int temp_point = 30;
 
-        long result =  pointService.updatePointPlus(id, temp_point);
-
-        assertThat(result).isEqualTo(id);
+        long result =  pointService.updatePointPlus(userId, temp_point);
+        assertThat(result).isEqualTo(userId);
     }
 
     @Test
     public void updatePointMinus() {
-        long id = 1L;
-        double temp_point = 30.00;
+        long userId = 1L;
+        int temp_point = 30;
 
-        long result = pointService.updatePointMinus(id, temp_point);
-
-        assertThat(result).isEqualTo(id);
+        long result = pointService.updatePointMinus(userId, temp_point);
+        assertThat(result).isEqualTo(userId);
     }
+
+
+    @Test
+    public void selectPointHistory() {
+        /* 왜 데이터가 하나일때는 리스트로 못 가져 오는거지? */
+        long userId = 1L;
+        List<PointHistoryResponse> pointHistoryResponseList = pointHistoryService.findByUserId(userId);
+        PointHistoryResponse pointHistoryResponse = pointHistoryResponseList.get(0);
+        System.out.println("확인 : " + pointHistoryResponse.getUserId());
+        System.out.println("확인 : " + pointHistoryResponse.getPoint());
+    }
+
 }

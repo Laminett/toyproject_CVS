@@ -17,50 +17,49 @@ public class PointService {
 
     @Transactional
     public Long save(PointRequest pointRequest) {
-        return pointRepository.save(pointRequest.toEntity()).getId();
+        return pointRepository.save(pointRequest.toEntity()).getUserId();
     }
 
     @Transactional(readOnly = true)
-    public PointResponse findById(Long id) {
-        Point entity = pointRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("not found point. id: " + id));
+    public PointResponse findByUserId(Long userId) {
+        Point entity = pointRepository.findByUserId(userId)
+                .orElseThrow(() -> new IllegalArgumentException("not found point data. user id : " + userId));
 
         return new PointResponse(entity);
     }
 
     @Transactional
-    public Long updatePointPlus(Long id, Double _point){
+    public Long updatePointPlus(Long userId, int addPoint) {
+        Point pointEntity = pointRepository.findByUserId(userId)
+                .orElseThrow(() -> new IllegalArgumentException("not found point data. user id : " + userId));
 
-        Double originPoint = findById(id).getPoint();
-        Double resultPoint = originPoint + _point;
+        int originPoint = pointEntity.getPoint();
+        int resultPoint = originPoint + addPoint;
         if(resultPoint > 500) { // 충전한도는 정해지는 대로 변경
-            throw new PointLimitExcessException("The point is too much to charge. point : " + _point);
+            throw new PointLimitExcessException("The point is too much to charge. point : " + addPoint);
         }
 
-        Point point = pointRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("not found point. id: " + id));
+        pointEntity.setPoint(resultPoint);
+        pointEntity.update(pointEntity.getPoint());
 
-        point.setPoint(resultPoint);
-        point.update(point.getPoint());
-
-        return id;
+        return userId;
     }
 
     @Transactional
-    public Long updatePointMinus(Long id, Double _point) {
-        Double originPoint = findById(id).getPoint();
-        Double resultPoint = originPoint - _point;
+    public Long updatePointMinus(Long userId, int removePoint) {
+        Point pointEntity = pointRepository.findByUserId(userId)
+                .orElseThrow(() -> new IllegalArgumentException("not found point data. user id : " + userId));
+
+        int originPoint = pointEntity.getPoint();
+        int resultPoint = originPoint - removePoint;
         if(resultPoint < 0) {
             throw new PointLimitExcessException("The point is not enough to pay");
         }
 
-        Point point = pointRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("not found point. id: " + id));
+        pointEntity.setPoint(resultPoint);
+        pointEntity.update(pointEntity.getPoint());
 
-        point.setPoint(resultPoint);
-        point.update(point.getPoint());
-
-        return id;
+        return userId;
     }
 
 }

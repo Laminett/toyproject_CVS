@@ -9,19 +9,19 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class PointRequest {
 
-    private Long id;
+    private Long userId;
 
-    private Double point;
+    private int point;
 
     @Builder
-    public PointRequest(Long id, Double point) {
-        this.id=id;
+    public PointRequest(Long userId, int point) {
+        this.userId=userId;
         this.point = point;
     }
 
     public Point toEntity() {
         return Point.builder()
-                .id(id)
+                .userId(userId)
                 .point(point)
                 .build();
     }

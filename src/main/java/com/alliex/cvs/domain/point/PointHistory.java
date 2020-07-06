@@ -6,9 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Table;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Getter
 @NoArgsConstructor
@@ -16,17 +14,21 @@ import javax.persistence.Id;
 public class PointHistory extends BaseTimeEntity {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
-    private Double point;
+    private Long userId;
+
+    @Column(nullable = false)
+    private int point;
 
     @Column(nullable = false)
     private String registrant;
 
     @Builder
-    public PointHistory(Long id, Double point, String registrant) {
-        this.id = id;
+    public PointHistory(Long userId, int point, String registrant) {
+        this.userId = userId;
         this.point = point;
         this.registrant = registrant;
     }

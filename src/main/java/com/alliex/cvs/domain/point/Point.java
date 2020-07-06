@@ -15,18 +15,23 @@ import javax.persistence.*;
 public class Point extends BaseTimeEntity {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
-    private Double point;
+    private Long userId;
+
+    @Column(nullable = false)
+    private int point;
 
     @Builder
-    public Point(Long id, Double point) {
-        this.id = id;
+    public Point(Long userId, int point) {
+        this.userId = userId;
         this.point = point;
     }
 
-    public void update(Double point) {
+    public void update(int point) {
         this.point = point;
     }
+
 }
