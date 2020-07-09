@@ -24,7 +24,7 @@ public class ProductController {
     @GetMapping("/product")
     public String getProduct(Model model, Pageable pageable){
 
-        //paging default size = 20
+        // paging default size = 20
         Page<Product> ptest = productRepository.findAll(pageable);
 
         List<Integer> pages = new ArrayList<>();
@@ -35,6 +35,7 @@ public class ProductController {
         //총 페이지 list에 담아서 전달
         model.addAttribute("page",pages);
         model.addAttribute("Product", productService.findAll(pageable));
+        
         return "product";
     }
 

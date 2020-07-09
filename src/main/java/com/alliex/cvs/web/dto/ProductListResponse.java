@@ -6,29 +6,38 @@ import java.time.LocalDateTime;
 
 @Getter
 public class ProductListResponse {
+
     private String id;
+
     private String categoryid;
+
     private String barcode;
+
     private String name;
-    private String price;
-    private String useyn;
-    private String created_id;
-    private LocalDateTime created_date;
-    private String modified_id;
-    private LocalDateTime modified_date;
+
+    private Integer point;
+
+    private Boolean isEnabled;
+
+    private String createdId;
+
+    private LocalDateTime createdDate;
+
+    private String modifiedId;
+
+    private LocalDateTime modifiedDate;
 
     public ProductListResponse(Product entity){
-        this.id=entity.getId();
-        this.categoryid=entity.getCategoryid();
-        this.barcode=entity.getBarcode();
-        this.name=entity.getName();
-        this.price=entity.getPrice();
-        this.useyn=entity.getUseyn();
-        this.created_id=entity.getCreated_id();
-        this.created_date=entity.getCreatedDate();
-        this.modified_id=entity.getModified_id();
-        this.modified_date=entity.getModifiedDate();
+        this.id = entity.getId();
+        this.categoryid = entity.getCategoryId();
+        this.barcode = entity.getBarcode();
+        this.name = entity.getName();
+        this.point = entity.getPoint();
+        this.isEnabled = entity.getIsEnabled();
+        this.createdId = entity.getCreatedId();
+        this.createdDate = entity.getCreatedDate();
+        this.modifiedId = entity.getModifiedId();
+        this.modifiedDate = entity.getModifiedDate();
     }
-
 
 }

@@ -16,8 +16,9 @@ public class ProductService {
     private final ProductRepository productRepository;
 
     @Transactional(readOnly = true)
-    public List<ProductListResponse> findAll(Pageable pageable){
+    public List<ProductListResponse> findAll(Pageable pageable) {
         return productRepository.findAll(pageable).stream()
                 .map(ProductListResponse::new).collect(Collectors.toList());
     }
+
 }

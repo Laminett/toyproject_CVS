@@ -21,10 +21,10 @@ public class ProductApiController {
     private ProductService productService;
 
     @PostMapping("/product")
-    public List<ProductListResponse> getProductList(Model model, Pageable pageable, @RequestParam Map<String, Object> param){
-        int page= Integer.parseInt(param.get("page").toString());
-        return productService.findAll(PageRequest.of(page-1,20));
-    }
+    public List<ProductListResponse> getProductList(Model model, Pageable pageable, @RequestParam Map<String, Object> param) {
+        int page = Integer.parseInt(param.get("page").toString());
 
+        return productService.findAll(PageRequest.of(page - 1, 20));
+    }
 
 }

@@ -16,7 +16,7 @@ public class Product extends BaseTimeEntity {
     private String id;
 
     @Column(nullable = false)
-    private String categoryid;
+    private String categoryId;
 
     @Column(nullable = false)
     private String barcode;
@@ -25,24 +25,25 @@ public class Product extends BaseTimeEntity {
     private String name;
 
     @Column(nullable = false)
-    private String price;
+    private Integer point;
 
     @Column(nullable = false)
-    private String useyn;
+    private Boolean isEnabled;
 
-    private String created_id;
+    private String createdId;
 
-    private String modified_id;
-
+    private String modifiedId;
 
     @Builder
-    public Product(String categoryid, String barcode, String name, String price, String useyn, String created_id, String modified_id){
-        this.categoryid=categoryid;
-        this.barcode=barcode;
-        this.name=name;
-        this.price=price;
-        this.useyn=useyn;
-        this.created_id=created_id;
-        this.modified_id=modified_id;
+    public Product(String id, String categoryId, String barcode, String name, Integer point, Boolean isEnabled, String createdId, String modifiedId){
+        this.id = id;
+        this.categoryId = categoryId;
+        this.barcode = barcode;
+        this.name = name;
+        this.point = point;
+        this.isEnabled = isEnabled;
+        this.createdId = createdId;
+        this.modifiedId = modifiedId;
     }
+
 }
