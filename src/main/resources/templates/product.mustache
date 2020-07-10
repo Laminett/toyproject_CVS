@@ -24,17 +24,22 @@
                                 </thead>
                                 <tbody>
                                 {{#Product}}
-                                <tr>
-                                    <td>{{id}}</td>
-                                    <td>{{categoryid}}</td>
-                                    <td>{{name}}</td>
-                                    <td class="text-primary">{{price}}</td>
-                                    <td>{{useyn}}</td>
-                                    <td>{{created_id}}</td>
-                                    <td>{{created_date}}</td>
-                                    <td>{{modified_id}}</td>
-                                    <td>{{modified_date}}</td>
-                                </tr>
+                                    <tr>
+                                        <td>{{id}}</td>
+                                        <td>{{categoryId}}</td>
+                                        <td>{{name}}</td>
+                                        <td class="text-primary">{{point}}</td>
+                                        <td>{{isEnabled}}</td>
+                                        <td>{{createdId}}</td>
+                                        <td>{{createdDate}}</td>
+                                        <td>{{modifiedId}}</td>
+                                        <td>{{modifiedDate}}</td>
+                                    </tr>
+                                {{/Product}}
+                                {{^Product}}
+                                    <tr>
+                                        <td>조회 결과가 없습니다.</td>
+                                    </tr>
                                 {{/Product}}
                                 </tbody>
                             </table>
@@ -43,48 +48,18 @@
                 </div>
                 <div>
                     <nav aria-label="Page navigation example">
-                    <ul class="pagination justify-content-center">
-                        {{#page}}
-                            <li class="page-item">
-                              <a class="page-link" href =javascript:pagetest({{{.}}})>{{{.}}}</a>
-                            </li>
-                        {{/page}}
-                    </ul>
+                        <ul class="pagination justify-content-center">
+                            {{#page}}
+                                <li class="page-item">
+                                    <a class="page-link" id="paging">{{{.}}}</a>
+                                </li>
+                            {{/page}}
+                        </ul>
                     </nav>
                 </div>
             </div>
         </div>
     </div>
 </div>
-<script>
-
-    function pagetest(pg){
-        $.ajax({
-            type: 'POST',
-            url: '/api/v1/product',
-            dataType: 'JSON',
-            // contentType:'application/json; charset=utf-8',
-            data: { page : pg }
-        }).done(function(data) {
-            $('tbody').empty();
-            data.forEach(function (element) {
-                $('tbody').append(" <tr> "
-                        + "<td>" + element.id + "</td>  "
-                        + "<td>" + element.categoryid + "</td> "
-                        + "<td>" + element.name + "</td>"
-                        + "<td class='text-primary'>" + element.price + "</td>"
-                        + "<td>" + element.useyn + "</td>"
-                        + "<td>" + element.created_id + "</td>"
-                        + "<td>" + element.created_date + "</td>"
-                        + "<td>" + element.modified_id + "</td>"
-                        + "<td>" + element.modified_date + "</td>"
-                        + "</tr>");
-            });
-
-        }).fail(function (error) {
-            alert(JSON.stringify(error));
-        });
-    }
-
-</script>
+<script type="text/javascript" src="/js/product.js"></script>
 {{>layout/footer}}

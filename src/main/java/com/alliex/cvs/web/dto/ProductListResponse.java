@@ -9,7 +9,7 @@ public class ProductListResponse {
 
     private String id;
 
-    private String categoryid;
+    private String categoryId;
 
     private String barcode;
 
@@ -21,15 +21,15 @@ public class ProductListResponse {
 
     private String createdId;
 
-    private LocalDateTime createdDate;
-
     private String modifiedId;
+
+    private LocalDateTime createdDate;
 
     private LocalDateTime modifiedDate;
 
-    public ProductListResponse(Product entity){
+    public ProductListResponse(Product entity) {
         this.id = entity.getId();
-        this.categoryid = entity.getCategoryId();
+        this.categoryId = entity.getCategoryId();
         this.barcode = entity.getBarcode();
         this.name = entity.getName();
         this.point = entity.getPoint();
