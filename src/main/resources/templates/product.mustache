@@ -1,0 +1,65 @@
+{{>layout/header}}
+<div class="content" id="context">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header card-header-primary">
+                        <h4 class="card-title ">Product Table</h4>
+                        <p class="card-category"> Here is a subtitle for this table</p>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive" id="result1">
+                            <table class="table" id="templ1">
+                                <thead class=" text-primary">
+                                <th>ID</th>
+                                <th>CATEGORY</th>
+                                <th>NAME</th>
+                                <th>PRICE</th>
+                                <th>USEYN</th>
+                                <th>CREATED_ID</th>
+                                <th>CREATED_DATE</th>
+                                <th>MODIFIED_ID</th>
+                                <th>MODIFIED_DATE</th>
+                                </thead>
+                                <tbody>
+                                {{#Product}}
+                                    <tr>
+                                        <td>{{id}}</td>
+                                        <td>{{categoryId}}</td>
+                                        <td>{{name}}</td>
+                                        <td class="text-primary">{{point}}</td>
+                                        <td>{{isEnabled}}</td>
+                                        <td>{{createdId}}</td>
+                                        <td>{{createdDate}}</td>
+                                        <td>{{modifiedId}}</td>
+                                        <td>{{modifiedDate}}</td>
+                                    </tr>
+                                {{/Product}}
+                                {{^Product}}
+                                    <tr>
+                                        <td>조회 결과가 없습니다.</td>
+                                    </tr>
+                                {{/Product}}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination justify-content-center">
+                            {{#page}}
+                                <li class="page-item">
+                                    <a class="page-link" id="paging">{{{.}}}</a>
+                                </li>
+                            {{/page}}
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="/js/product.js"></script>
+{{>layout/footer}}
