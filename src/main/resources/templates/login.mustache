@@ -1,29 +1,86 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
+    <title>CVS</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"/>
+    <meta name="description" content="loginPgae"/>
     <meta name="author" content="">
-    <title>Please sign in</title>
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
-    <link href="https://getbootstrap.com/docs/4.0/examples/signin/signin.css" rel="stylesheet" crossorigin="anonymous"/>
+    <link rel="icon" type="image/png" href="img/alliex_fav.png"/>
+
+    <!--     Fonts and icons     -->
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
+
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="/material-dashboard/css/material-dashboard.css">
 </head>
 <body>
 <div class="container">
-    <form class="form-signin" method="post" action="/login">
-        <h2 class="form-signin-heading">Please sign in</h2>
-        <p>
-            <label for="username" class="sr-only">Username</label>
-            <input type="text" id="username" name="username" class="form-control" placeholder="Username" required autofocus>
-        </p>
-        <p>
-            <label for="password" class="sr-only">Password</label>
-            <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
-        </p>
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-    </form>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="row">
+                <div class="card-header">
+                    <h3 class="card-title">Alliex Convenience Store</h3>
+                </div>
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Language</button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" href="javascript:changeLanguage('Vietnamese')">Vietnamese</a>
+                        <a class="dropdown-item" href="javascript:changeLanguage('English')">English</a>
+                        <a class="dropdown-item" href="javascript:changeLanguage('Korean')">Korean</a>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <form class="form-signin" method="post" action="/login">
+                    <div class="form-group bmd-form-group">
+                        <input type="text" id="username" name="username" class="form-control" placeholder="ID" required autofocus>
+                    </div>
+                    <div class="form-group bmd-form-group">
+                        <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
+                    </div>
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input class="form-check-input" type="checkbox" value="">{{#messages}}save.id{{/messages}}
+                            <span class="form-check-sign">
+                                <span class="check"></span>
+                            </span>
+                        </label>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">{{#messages}}sign.in{{/messages}}</button>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
+<script src="/material-dashboard/js/core/jquery.min.js" type="text/javascript"></script>
+<script src="/material-dashboard/js/core/popper.min.js" type="text/javascript"></script>
+<script src="/material-dashboard/js/core/bootstrap-material-design.min.js" type="text/javascript"></script>
+
+<!-- Plugin for the momentJs  -->
+<script src="/material-dashboard/js/plugins/moment.min.js"></script>
+<!--  Plugin for Sweet Alert -->
+<script src="/material-dashboard/js/plugins/sweetalert2.js"></script>
+<!-- Forms Validations Plugin -->
+<script src="/material-dashboard/js/plugins/jquery.validate.min.js"></script>
+<!-- Plugin for the Wizard, full documentation here: https://github.com/VinceG/twitter-bootstrap-wizard -->
+<script src="/material-dashboard/js/plugins/jquery.bootstrap-wizard.js"></script>
+<!--	Plugin for Select, full documentation here: http://silviomoreto.github.io/bootstrap-select -->
+<script src="/material-dashboard/js/plugins/bootstrap-selectpicker.js"></script>
+<!--  DataTables.net Plugin, full documentation here: https://datatables.net/  -->
+<script src="/material-dashboard/js/plugins/jquery.dataTables.min.js"></script>
+<!-- Vector Map plugin, full documentation here: http://jvectormap.com/documentation/ -->
+<script src="/material-dashboard/js/plugins/jquery-jvectormap.js"></script>
+<!-- Include a polyfill for ES6 Promises (optional) for IE11, UC Browser and Android browser support SweetAlert -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/core-js/2.4.1/core.js"></script>
+<!-- Library for adding dinamically elements -->
+<script src="/material-dashboard/js/plugins/arrive.min.js"></script>
+<!-- Place this tag in your head or just before your close body tag. -->
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+<!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
+<script src="/material-dashboard/js/material-dashboard.js?v=2.1.2" type="text/javascript"></script>
 </body>
 </html>
 

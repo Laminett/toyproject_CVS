@@ -76,7 +76,7 @@
 <div>
     <nav class="navbar navbar-expand-lg bg-primary">
         <div class="collapse navbar-collapse justify-content-start">
-            <a class="navbar-brand" href="http://localhost:8080" target="_blank"><img src="img/alliex_ico.png"></a>
+            <a class="navbar-brand" href="http://localhost:8080" target="_self"><img src="img/alliex_ico.png"></a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-bar navbar-kebab"></span>
                 <span class="navbar-toggler-bar navbar-kebab"></span>
@@ -88,24 +88,24 @@
                         <a class="nav-link" href="#">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Transaction</a>
+                        <a class="nav-link" href="#">{{#messages}}menu.transaction{{/messages}}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">직원관리</a>
+                        <a class="nav-link" href="#">{{#messages}}menu.employee{{/messages}}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/product">상품관리</a>
+                        <a class="nav-link" href="/product">{{#messages}}menu.product{{/messages}}</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/posts">POSTS</a>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">시스템관리</a>
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{#messages}}menu.system{{/messages}}</a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            <a class="dropdown-item" href="#">관리자관리</a>
-                            <a class="dropdown-item" href="#">메뉴관리</a>
-                            <a class="dropdown-item" href="#">공통코드관리</a>
-                            <a class="dropdown-item" href="#">로그인로그</a>
+                            <a class="dropdown-item" href="#">{{#messages}}menu.admin{{/messages}}</a>
+                            <a class="dropdown-item" href="#">{{#messages}}menu.menu{{/messages}}</a>
+                            <a class="dropdown-item" href="#">{{#messages}}menu.code{{/messages}}</a>
+                            <a class="dropdown-item" href="#">{{#messages}}menu.login.log{{/messages}}</a>
                         </div>
                     </li>
                 </ul>
@@ -132,7 +132,7 @@
                         <a class="dropdown-item" href="#">Profile</a>
                         <a class="dropdown-item" href="#">Settings</a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Log out</a>
+                        <a class="dropdown-item" href="/logout">Log out</a>
                     </div>
                 </li>
             </ul>
