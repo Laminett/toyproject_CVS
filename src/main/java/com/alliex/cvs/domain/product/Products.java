@@ -4,16 +4,18 @@ import com.alliex.cvs.domain.BaseTimeEntity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.web.servlet.view.InternalResourceViewResolver;
+
 import javax.persistence.*;
 
 @Getter
 @NoArgsConstructor
 @Entity
-public class Product extends BaseTimeEntity {
+public class Products extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
+    private Long id;
 
     @Column(nullable = false)
     private String categoryId;
@@ -35,7 +37,7 @@ public class Product extends BaseTimeEntity {
     private String modifiedId;
 
     @Builder
-    public Product(String id, String categoryId, String barcode, String name, Integer point, Boolean isEnabled, String createdId, String modifiedId){
+    public Products(Long id, String categoryId, String barcode, String name, Integer point, Boolean isEnabled, String createdId, String modifiedId){
         this.id = id;
         this.categoryId = categoryId;
         this.barcode = barcode;
@@ -46,4 +48,12 @@ public class Product extends BaseTimeEntity {
         this.modifiedId = modifiedId;
     }
 
+    public void update(Long id, String categoryId, String name, Integer point, boolean isEnabled, String modifiedId) {
+        this.id = id;
+        this.categoryId = categoryId;
+        this.name=name;
+        this.point=point;
+        this.isEnabled=isEnabled;
+        this.modifiedId=modifiedId;
+    }
 }

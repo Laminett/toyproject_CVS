@@ -1,13 +1,14 @@
 package com.alliex.cvs.web.dto;
 
-import com.alliex.cvs.domain.product.Product;
+import com.alliex.cvs.domain.product.Products;
 import lombok.Getter;
+
 import java.time.LocalDateTime;
 
 @Getter
-public class ProductListResponse {
+public class ProductsListResponse {
 
-    private String id;
+    private Long id;
 
     private String categoryId;
 
@@ -27,7 +28,7 @@ public class ProductListResponse {
 
     private LocalDateTime modifiedDate;
 
-    public ProductListResponse(Product entity) {
+    public ProductsListResponse(Products entity) {
         this.id = entity.getId();
         this.categoryId = entity.getCategoryId();
         this.barcode = entity.getBarcode();
