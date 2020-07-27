@@ -38,7 +38,7 @@ public class ProductsController {
             pages.add(i);
         }
 
-        //총 페이지 list에 담아서 전달
+        // 총 페이지 list에 담아서 전달
         model.addAttribute("loginUser", loginUser.getUsername());
         model.addAttribute("page", pages);
         model.addAttribute("findBy", "all");

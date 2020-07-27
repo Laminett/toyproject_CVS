@@ -37,7 +37,7 @@ public class Products extends BaseTimeEntity {
     private String modifiedId;
 
     @Builder
-    public Products(Long id, String categoryId, String barcode, String name, Integer point, Boolean isEnabled, String createdId, String modifiedId){
+    public Products(Long id, String categoryId, String barcode, String name, Integer point, Boolean isEnabled, String createdId, String modifiedId) {
         this.id = id;
         this.categoryId = categoryId;
         this.barcode = barcode;
@@ -51,9 +51,9 @@ public class Products extends BaseTimeEntity {
     public void update(Long id, String categoryId, String name, Integer point, boolean isEnabled, String modifiedId) {
         this.id = id;
         this.categoryId = categoryId;
-        this.name=name;
-        this.point=point;
-        this.isEnabled=isEnabled;
-        this.modifiedId=modifiedId;
+        this.name = name;
+        this.point = point;
+        this.isEnabled = isEnabled;
+        this.modifiedId = modifiedId;
     }
 }
