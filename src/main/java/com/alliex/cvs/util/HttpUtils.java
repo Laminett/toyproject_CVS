@@ -8,6 +8,7 @@ import java.util.Set;
 public class HttpUtils {
 
     public static String requestParametersToString(HttpServletRequest request) {
+
         StringBuilder sb = new StringBuilder();
 
         Set<Map.Entry<String, String[]>> entries = request.getParameterMap().entrySet();
