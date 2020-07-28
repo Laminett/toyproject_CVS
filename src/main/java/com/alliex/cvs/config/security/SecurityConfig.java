@@ -56,8 +56,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) throws Exception {
         web.ignoring()
-                .antMatchers("/resources/**")
-                .antMatchers("/css/**");
+                .antMatchers("/img/**")
+                .antMatchers("/js/**")
+                .antMatchers("/material-dashboard/**")
+        ;
     }
 
     @Bean
@@ -69,7 +71,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         jwtAuthenticationFilter.setAuthenticationSuccessHandler(
                 new SavedRequestAwareAuthenticationSuccessHandler() {{
-                    setDefaultTargetUrl("/index");
+                    setDefaultTargetUrl("/");
                 }}
         );
 
