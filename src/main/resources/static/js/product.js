@@ -113,7 +113,7 @@ var main = {
             data: JSON.stringify(addProductData)
         }).done(function () {
             alert('글이 등록되었습니다.');
-            window.location.href = '/product';
+            window.location.href = '/products';
         }).fail(function (error) {
             alert(JSON.stringify(error));
         });
@@ -127,7 +127,7 @@ var main = {
             data: JSON.stringify(UpdateProductData)
         }).done(function () {
             alert('글이 수정되었습니다.');
-            window.location.href = '/product';
+            window.location.href = '/products';
         }).fail(function (error) {
             alert(JSON.stringify(error));
         });
@@ -141,7 +141,7 @@ var main = {
             data: productId//JSON.stringify(data)
         }).done(function () {
             alert('글이 삭제되었습니다.');
-            window.location.href = '/product';
+            window.location.href = '/products';
         }).fail(function (error) {
             alert(JSON.stringify(error));
         });
@@ -149,7 +149,7 @@ var main = {
     paging: function (pageNum, searchpaging, searchText) {
         $.ajax({
             type: 'POST',
-            url: '/api/v1/product',
+            url: '/api/v1/products',
             dataType: 'JSON',
             data: {page: pageNum, findBy: searchpaging, findText: searchText}
         }).done(function (data) {
@@ -232,7 +232,7 @@ var main = {
     search: function (searchParams) {
         $.ajax({
             type: 'POST',
-            url: '/product/find',
+            url: '/products/find',
             dataType: 'html',
             contentType: 'application/json; charset=utf-8',
             // data: searchParams

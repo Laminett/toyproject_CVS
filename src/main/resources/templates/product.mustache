@@ -64,8 +64,18 @@
                                         <td>{{isEnabled}}</td>
                                         <td>{{createdId}}</td>
                                         <td>{{createdDate}}</td>
-                                        <td>{{modifiedId}}</td>
-                                        <td>{{modifiedDate}}</td>
+                                        {{#modifiedId}}
+                                            <td>{{modifiedId}}</td>
+                                        {{/modifiedId}}
+                                        {{^modifiedId}}
+                                            <td>null</td>
+                                        {{/modifiedId}}
+                                        {{#modifiedDate}}
+                                            <td>{{modifiedDate}}</td>
+                                        {{/modifiedDate}}
+                                        {{^modifiedDate}}
+                                            <td>null</td>
+                                        {{/modifiedDate}}
                                         <td class="td-actions text-right">
                                             <button type="button" rel="tooltip" class="btn btn-success" name="update">
                                                 <i class="material-icons" data-toggle="modal"
@@ -155,7 +165,7 @@
         </div>
     </div>
 </div>
+<script src="/js/jquery.scannerdetection.js"></script>
 <script type="text/javascript" src="/js/product.js"></script>
 <!-- barcode scanner -->
-<script src="/js/jquery.scannerdetection.js"></script>
 {{>layout/footer}}

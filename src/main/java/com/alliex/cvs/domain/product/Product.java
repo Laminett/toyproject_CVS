@@ -11,7 +11,7 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor
 @Entity
-public class Products extends BaseTimeEntity {
+public class Product extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,7 +37,7 @@ public class Products extends BaseTimeEntity {
     private String modifiedId;
 
     @Builder
-    public Products(Long id, String categoryId, String barcode, String name, Integer point, Boolean isEnabled, String createdId, String modifiedId) {
+    public Product(Long id, String categoryId, String barcode, String name, Integer point, Boolean isEnabled, String createdId, String modifiedId) {
         this.id = id;
         this.categoryId = categoryId;
         this.barcode = barcode;
@@ -56,4 +56,5 @@ public class Products extends BaseTimeEntity {
         this.isEnabled = isEnabled;
         this.modifiedId = modifiedId;
     }
+
 }

@@ -1,12 +1,9 @@
 package com.alliex.cvs.web.dto;
 
-import com.alliex.cvs.domain.posts.Posts;
-import com.alliex.cvs.domain.product.Products;
+import com.alliex.cvs.domain.product.Product;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor
@@ -35,8 +32,8 @@ public class ProductsSaveRequest {
         this.createdId = createdId;
     }
 
-    public Products toEntity() {
-        return Products.builder()
+    public Product toEntity() {
+        return Product.builder()
                 .categoryId(categoryId)
                 .barcode(barcode)
                 .name(name)

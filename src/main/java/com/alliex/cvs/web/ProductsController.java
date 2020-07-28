@@ -1,9 +1,11 @@
 package com.alliex.cvs.web;
 
 import com.alliex.cvs.config.security.LoginUser;
-import com.alliex.cvs.domain.product.Products;
-import com.alliex.cvs.domain.product.ProductsRepository;
+import com.alliex.cvs.domain.product.Product;
+import com.alliex.cvs.domain.product.ProductRepository;
 import com.alliex.cvs.service.ProductsService;
+import com.alliex.cvs.web.dto.ProductsAppResponse;
+import com.alliex.cvs.web.dto.ProductsFindRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,7 +15,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,13 +26,12 @@ import java.util.Map;
 public class ProductsController {
 
     private final ProductsService productsService;
-    private final ProductsRepository productsRepository;
+    private final ProductRepository productRepository;
 
-    @GetMapping("/product")
+    @GetMapping("/products")
     public String getProduct(Model model, Pageable pageable, @AuthenticationPrincipal LoginUser loginUser) {
-
         // paging default size = 20
-        Page<Products> AllPage = productsRepository.findAll(pageable);
+        Page<Product> AllPage = productRepository.findAll(pageable);
 
         List<Integer> pages = new ArrayList<>();
         for (int i = 1; i <= AllPage.getTotalPages(); i++) {
@@ -48,17 +48,18 @@ public class ProductsController {
         return "product";
     }
 
-    @PostMapping("/product/find")
-    public String findProduct(Model model, Pageable pageable, @RequestBody Map<String, Object> paramMap, @AuthenticationPrincipal LoginUser loginUser) {
-        Page<Products> findPage = null;
-        String selector = paramMap.get("searchSelect").toString();
-        String findText = paramMap.get("searchText").toString();
+    @PostMapping("/products/find")
+    public String findProduct(Model model, Pageable pageable, @RequestBody ProductsFindRequest productsFindRequest, @AuthenticationPrincipal LoginUser loginUser) {
+        Page<Product> findPage = null;
+
+        String selector = productsFindRequest.getSearchSelect();
+        String findText = productsFindRequest.getSearchText();
         if ("name".equals(selector)) {
-            findPage = productsRepository.findByName(pageable, findText);
+            findPage = productRepository.findByName(pageable, findText);
         } else if ("category".equals(selector)) {
-            findPage = productsRepository.findByCategoryId(pageable, findText);
+            findPage = productRepository.findByCategoryId(pageable, findText);
         } else {
-            findPage = productsRepository.findAll(pageable);
+            findPage = productRepository.findAll(pageable);
         }
 
         List<Integer> pages = new ArrayList<>();

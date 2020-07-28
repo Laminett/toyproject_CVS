@@ -1,6 +1,6 @@
 package com.alliex.cvs.web.dto;
 
-import com.alliex.cvs.domain.product.Products;
+import com.alliex.cvs.domain.product.Product;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -12,7 +12,7 @@ public class ProductsAppResponse {
     private Integer point;
 
     @Builder
-    public ProductsAppResponse(Products entity){
+    public ProductsAppResponse(Product entity) {
         this.name = entity.getName();
         this.point = entity.getPoint();
     }
