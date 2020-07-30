@@ -5,8 +5,38 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header card-header-primary">
-                        <h4 class="card-title ">Product Table_jenkins</h4>
-                        <p class="card-category"> Here is a subtitle for this table</p>
+                        <div style="float: left">
+                            <h4 class="card-title ">Product Table</h4>
+                            <p class="card-category"> Here is a subtitle for this table</p>
+                        </div>
+                        <div style="float: right">
+                            <form class="form-inline ml-auto" id="searchForm">
+                                <div class="form-group">
+                                    <input type="hidden" id="searchpaging" name="searchpaging" value={{findBy}}>
+                                    <input type="hidden" id="searchText" name="searchText" value={{findText}}>
+                                    <input type="hidden" id="LoginUser" name="LoginUser" value={{loginUser}}>
+                                    <select id="searchField" class="form-control" data-style="btn btn-link"
+                                            name="searchField">
+                                        <option selected>Choose...</option>
+                                        <option>category</option>
+                                        <option>name</option>
+                                    </select>
+                                </div>
+                                <div class="form-group has-white">
+                                    <input id="searchValue" name="searchValue" type="text" value="" class="form-control"
+                                           placeholder="Search">
+                                </div>
+                                <button type="button" class="btn btn-white btn-round btn-just-icon" id="search"
+                                        name="search">
+                                    <i class="material-icons">search</i>
+                                    <div class="ripple-container"></div>
+                                </button>
+                                <button type="button" name="addProduct" class="btn btn-primary"
+                                        data-toggle="modal" data-target=".bd-example-modal-lg">상품추가
+                                </button>
+                            </form>
+
+                        </div>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive" id="result1">
@@ -21,26 +51,47 @@
                                 <th>CREATED_DATE</th>
                                 <th>MODIFIED_ID</th>
                                 <th>MODIFIED_DATE</th>
+                                <th>ACTIONS</th>
                                 </thead>
                                 <tbody>
-                                {{#Product}}
+                                {{#product}}
                                     <tr>
                                         <td>{{id}}</td>
                                         <td>{{categoryId}}</td>
                                         <td>{{name}}</td>
                                         <td class="text-primary">{{point}}</td>
+                                        <td style="display: none;position: absolute">{{barcode}}</td>
                                         <td>{{isEnabled}}</td>
                                         <td>{{createdId}}</td>
                                         <td>{{createdDate}}</td>
-                                        <td>{{modifiedId}}</td>
-                                        <td>{{modifiedDate}}</td>
+                                        {{#modifiedId}}
+                                            <td>{{modifiedId}}</td>
+                                        {{/modifiedId}}
+                                        {{^modifiedId}}
+                                            <td>null</td>
+                                        {{/modifiedId}}
+                                        {{#modifiedDate}}
+                                            <td>{{modifiedDate}}</td>
+                                        {{/modifiedDate}}
+                                        {{^modifiedDate}}
+                                            <td>null</td>
+                                        {{/modifiedDate}}
+                                        <td class="td-actions text-right">
+                                            <button type="button" rel="tooltip" class="btn btn-success" name="update">
+                                                <i class="material-icons" data-toggle="modal"
+                                                   data-target=".bd-example-modal-lg">edit</i>
+                                            </button>
+                                            <button type="button" rel="tooltip" class="btn btn-danger" name="delete">
+                                                <i class="material-icons">close</i>
+                                            </button>
+                                        </td>
                                     </tr>
-                                {{/Product}}
-                                {{^Product}}
+                                {{/product}}
+                                {{^product}}
                                     <tr>
                                         <td>조회 결과가 없습니다.</td>
                                     </tr>
-                                {{/Product}}
+                                {{/product}}
                                 </tbody>
                             </table>
                         </div>
@@ -61,5 +112,60 @@
         </div>
     </div>
 </div>
+
+<div id="addUpdateModal" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog"
+     aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div style="margin: 10px">
+                <form id="addProductsForm">
+                    <input type="hidden" id="id" name="id">
+                    <div class="form-row">
+                        <input type="hidden" id="createdId" name="createdId">
+                        <input type="hidden" id="modifiedId" name="modifiedId">
+                        <div class="form-group col-md-3">
+                            <label for="inputAddress">Name</label>
+                            <input type="text" class="form-control" id="name" name="name" placeholder="ex> name">
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="inputAddress2">Point</label>
+                            <input type="text" class="form-control" id="point" name="point" placeholder="ex> 10000">
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="inputState">Category</label>
+                            <select id="categoryId" class="form-control" data-style="btn btn-link" name="categoryId">
+                                <option selected>Choose...</option>
+                                <option>a1</option>
+                                <option>a2</option>
+                                <option>a3</option>
+                                <option>a4</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                            <label for="inputCity">Barcode</label>
+                            <input type="text" class="form-control" id="barcode" name="barcode" value="12d3123123123"
+                                   readonly>
+                        </div>
+                        <div class="form-group">
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="checkbox" value="" name="isEnabled"
+                                           id="isEnabled">
+                                    isEnabled
+                                    <span class="form-check-sign"><span class="check"></span></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary" id="addProuct">Sign in</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/js/jquery.scannerdetection.js"></script>
 <script type="text/javascript" src="/js/product.js"></script>
+<!-- barcode scanner -->
 {{>layout/footer}}
