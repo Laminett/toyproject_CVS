@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration scan="true" scanPeriod="60 seconds">
 
-
     <!--========================================================================================================
         Properties
     =========================================================================================================-->
@@ -14,9 +13,8 @@
         <property resource="logback-dev.properties"/>
     </springProfile>
 
-    <property name="LOG_PATH" value="${log.config.path}"/>
-    <property name="LOG_FILE_NAME" value="${log.config.filename}"/>
-    <property name="ERR_LOG_FILE_NAME" value="err_log"/>
+    <property name="LOG_PATH" value="${log.file.path}"/>
+    <property name="LOG_FILE_NAME" value="app_cvs"/>
     <property name="LOG_PATTERN" value="%-5level %d{yy-MM-dd HH:mm:ss}[%thread] [%logger{0}:%line] - %msg%n"/>
 
     <!--========================================================================================================
@@ -83,6 +81,9 @@
     <logger name="org.springframework.integration.handler" level="INFO"/>
     <logger name="org.springframework.scheduling.annotation.ScheduledAnnotationBeanPostProcessor" level="INFO"/>
 
+    <!-- Hibernate -->
+    <logger name="org.hibernate" level="INFO"/>
+
     <!-- Hibernate Validator -->
     <logger name="org.hibernate.validator" level="WARN"/>
 
@@ -109,7 +110,7 @@
     <logger name="org.junit" level="DEBUG"/>
 
     <!-- Root -->
-    <root level="${log.config.logging.level}">
+    <root level="${logging.level}">
         <appender-ref ref="ASYNC"/>
     </root>
 
