@@ -9,6 +9,3 @@ $ docker exec -it mariadb /bin/bash
 $ mysql -u root -ppwForRoot
 ```
 
-
-
-test commit
