@@ -1,14 +1,12 @@
 package com.alliex.cvs.web.dto;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor
-public class ProductsUpdateRequest {
+public class ProductUpdateRequest {
 
     private Long id;
 
@@ -16,18 +14,19 @@ public class ProductsUpdateRequest {
 
     private String name;
 
-    private int point;
+    private Integer point;
 
-    private boolean getisEnabled;
+    private Boolean isEnabled;
 
     private String modifiedId;
 
     @Builder
-    public ProductsUpdateRequest(String categoryId, String name, int point, boolean getisEnabled, String modifiedId) {
+    public ProductUpdateRequest(String categoryId, String name, Integer point, Boolean isEnabled, String modifiedId) {
         this.categoryId = categoryId;
         this.name = name;
         this.point = point;
-        this.getisEnabled = getisEnabled;
+        this.isEnabled = isEnabled;
         this.modifiedId = modifiedId;
     }
+
 }

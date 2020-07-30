@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class ProductsSaveRequest {
+public class ProductSaveRequest {
 
     private String categoryId;
 
@@ -17,18 +17,18 @@ public class ProductsSaveRequest {
 
     private Integer point;
 
-    private boolean getisEnabled;
+    private Boolean isEnabled;
 
     private String createdId;
 
 
     @Builder
-    public ProductsSaveRequest(String categoryId, String barcode, String name, Integer point, boolean getisEnabled, String createdId) {
+    public ProductSaveRequest(String categoryId, String barcode, String name, Integer point, Boolean isEnabled, String createdId) {
         this.categoryId = categoryId;
         this.barcode = barcode;
         this.name = name;
         this.point = point;
-        this.getisEnabled = getisEnabled;
+        this.isEnabled = isEnabled;
         this.createdId = createdId;
     }
 
@@ -38,7 +38,7 @@ public class ProductsSaveRequest {
                 .barcode(barcode)
                 .name(name)
                 .point(point)
-                .isEnabled(getisEnabled)
+                .isEnabled(isEnabled)
                 .createdId(createdId)
                 .build();
     }

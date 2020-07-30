@@ -1,35 +1,15 @@
-$.fn.serializeObject = function () {
-    var obj = null;
-    try {
-        if (this[0].tagName && this[0].tagName.toUpperCase() == "FORM") {
-            var arr = this.serializeArray();
-            if (arr) {
-                obj = {};
-                $.each(arr, function () {
-                    obj[this.name] = this.value;
-                });
-            }
-        }
-    } catch (e) {
-        alert(e.message);
-    } finally {
-    }
-    return obj;
-};
-
 var main = {
     init: function () {
         var addOrUpdate = 0;
 
         var _this = this;
         $('.page-link').on('click', function () {
-            _this.paging(this.text, $('#searchpaging').val(), $('#searchText').val());
+            _this.paging(this.text);
         });
 
         // delete
         $(document).on('click', 'button[name=delete]', function () {
-            var productId = $(this).parent().parent().find('td').eq(0).text();
-            _this.delete(productId);
+            _this.delete();
         });
 
         // 상품 추가와 업데이트 구분 분기
@@ -38,23 +18,20 @@ var main = {
                 return false;
             }
 
-            var ProductData = $('#addProductsForm').serializeObject();
-
             if (addOrUpdate == 0) {
-                _this.save(ProductData);
+                _this.save();
             } else {
-                _this.update(ProductData);
+                _this.update();
             }
         });
 
         // 검색 이벤트
         $('#search').on('click', function () {
-            var searchParams = $('#searchForm').serializeObject();
-            if (searchParams.searchSelect == 'Choose...') {
+            if ($('#searchField').val() == 'Choose...') {
                 alert('Please select search category');
                 return false;
             }
-            _this.search(searchParams);
+            _this.search();
         });
 
         // 상품 추가와 업데이트 창 데이터 전달
@@ -69,9 +46,9 @@ var main = {
                 $('#point').val($(this).closest('tr').find('td').eq(3).text());
                 $('#barcode').val($(this).closest('tr').find('td').eq(4).text());
                 if ($(this).closest('tr').find('td').eq(5).text() == "true") {
-                    $('#getisEnabled').prop('checked', true);
+                    $('#isEnabled').prop('checked', true);
                 } else {
-                    $('#getisEnabled').prop('checked', false);
+                    $('#isEnabled').prop('checked', false);
                 }
                 _this.addFormVisible(true);
             } else {
@@ -83,7 +60,7 @@ var main = {
                 $('#name').val('');
                 $('#point').val('');
                 $('#barcode').val('');
-                $('#getisEnabled').prop('checked', false);
+                $('#isEnabled').prop('checked', false);
 
                 // 상품 추가시 바코드 스캔 이후 상품정보 입력 가능하게 함.
                 _this.addFormVisible(false);
@@ -104,54 +81,80 @@ var main = {
             }
         });
     },
-    save: function (addProductData) {
+    save: function () {
+        var data = {
+            barcode: $('#barcode').val(),
+            categoryId: $('#categoryId').val(),
+            id: $('#id').val(),
+            createdId: $('#createdId').val(),
+            name: $('#name').val(),
+            point: $('#point').val(),
+            isEnabled: $('#isEnabled').val()
+        };
+
         $.ajax({
             type: 'POST',
             url: '/api/v1/addproducts',
             dataType: 'json',
             contentType: 'application/json; charset=utf-8',
-            data: JSON.stringify(addProductData)
+            data: JSON.stringify(data)
         }).done(function () {
             alert('글이 등록되었습니다.');
-            window.location.href = '/products';
+            window.location.href = '/products?searchField=&searchValue=';
         }).fail(function (error) {
             alert(JSON.stringify(error));
         });
     },
-    update: function (UpdateProductData) {
+    update: function () {
+        var data = {
+            barcode: $('#barcode').val(),
+            categoryId: $('#categoryId').val(),
+            id: $('#id').val(),
+            modifiedId: $('#modifiedId').val(),
+            name: $('#name').val(),
+            point: $('#point').val(),
+            isEnabled: $('#isEnabled').val()
+        };
+
+        var id = $('#id').val();
+
         $.ajax({
             type: 'PUT',
-            url: '/api/v1/products/' + UpdateProductData.id,
+            url: '/api/v1/products/' + id,
             dataType: 'json',
             contentType: 'application/json; charset=utf-8',
-            data: JSON.stringify(UpdateProductData)
+            data: JSON.stringify(data)
         }).done(function () {
             alert('글이 수정되었습니다.');
-            window.location.href = '/products';
+            window.location.href = '/products?searchField=&searchValue=';
         }).fail(function (error) {
             alert(JSON.stringify(error));
         });
     },
-    delete: function (productId) {
+    delete: function () {
+        var id = $('#id').val();
+
         $.ajax({
             type: 'DELETE',
-            url: '/api/v1/products/' + productId,
+            url: '/api/v1/products/' + id,
             dataType: 'json',
             contentType: 'application/json; charset=utf-8',
             data: productId//JSON.stringify(data)
         }).done(function () {
             alert('글이 삭제되었습니다.');
-            window.location.href = '/products';
+            window.location.href = '/products?searchField=&searchValue=';
         }).fail(function (error) {
             alert(JSON.stringify(error));
         });
     },
-    paging: function (pageNum, searchpaging, searchText) {
+    paging: function (pageNum) {
+        var data = "page=" + pageNum + "&findBy=" + $('#searchpaging').val() + "&findText=" + $('#searchText').val();
+
         $.ajax({
-            type: 'POST',
+            type: 'GET',
             url: '/api/v1/products',
             dataType: 'JSON',
-            data: {page: pageNum, findBy: searchpaging, findText: searchText}
+            data: data
         }).done(function (data) {
             $('tbody').empty();
             data.forEach(function (element) {
@@ -208,10 +211,10 @@ var main = {
             return false;
         }
 
-        if ($('#getisEnabled').is(':checked')) {
-            $('#getisEnabled').val(true);
+        if ($('#isEnabled').is(':checked')) {
+            $('#isEnabled').val(true);
         } else {
-            $('#getisEnabled').val(false);
+            $('#isEnabled').val(false);
         }
 
         return true;
@@ -229,14 +232,15 @@ var main = {
             $('.form-check-sign').css('display', 'none');
         }
     },
-    search: function (searchParams) {
+    search: function () {
+        var data = "searchField=" + $('#searchField').val() + "&searchValue=" + $('#searchValue').val();
+
         $.ajax({
-            type: 'POST',
-            url: '/products/find',
+            type: 'GET',
+            url: '/products',
             dataType: 'html',
             contentType: 'application/json; charset=utf-8',
-            // data: searchParams
-            data: JSON.stringify(searchParams)
+            data: data
         }).done(function (data) {
             $('body').html(data.split('<body>')[1].split('</body>')[0]);
         }).fail(function (error) {

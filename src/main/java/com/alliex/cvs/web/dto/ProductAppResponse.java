@@ -5,15 +5,16 @@ import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-public class ProductsAppResponse {
+public class ProductAppResponse {
 
     private String name;
 
     private Integer point;
 
     @Builder
-    public ProductsAppResponse(Product entity) {
+    public ProductAppResponse(Product entity) {
         this.name = entity.getName();
         this.point = entity.getPoint();
     }
+
 }

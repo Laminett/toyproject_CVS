@@ -2,12 +2,15 @@ package com.alliex.cvs.service;
 
 import com.alliex.cvs.domain.product.Product;
 import com.alliex.cvs.domain.product.ProductRepository;
+import com.alliex.cvs.exception.ProductNotFoundException;
 import com.alliex.cvs.web.dto.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -18,44 +21,58 @@ public class ProductsService {
     private final ProductRepository productRepository;
 
     @Transactional(readOnly = true)
-    public List<ProductsListResponse> findAll(Pageable pageable) {
-        return productRepository.findAll(pageable).stream()
-                .map(ProductsListResponse::new).collect(Collectors.toList());
+    public List<Integer> getPages(Pageable pageable, String searchField, String searchValue) {
+        // paging default size = 20
+        Page<Product> getPage = null;
+
+        if ("name".equals(searchField)) {
+            getPage = productRepository.findByName(pageable, searchValue);
+        } else if ("category".equals(searchField)) {
+            getPage = productRepository.findByCategoryId(pageable, searchValue);
+        } else {
+            getPage = productRepository.findAll(pageable);
+        }
+
+        List<Integer> pages = new ArrayList<>();
+        for (int i = 1; i <= getPage.getTotalPages(); i++) {
+            pages.add(i);
+        }
+        return pages;
     }
 
     @Transactional(readOnly = true)
-    public List<ProductsListResponse> findSelect(Pageable pageable, String selector, String findText) {
+    public List<ProductResponse> getProducts(Pageable pageable, String selector, String findText) {
         if ("name".equals(selector)) {
             return productRepository.findByName(pageable, findText).stream()
-                    .map(ProductsListResponse::new).collect(Collectors.toList());
+                    .map(ProductResponse::new).collect(Collectors.toList());
         } else if ("category".equals(selector)) {
             return productRepository.findByCategoryId(pageable, findText).stream()
-                    .map(ProductsListResponse::new).collect(Collectors.toList());
+                    .map(ProductResponse::new).collect(Collectors.toList());
         } else {
             return productRepository.findAll(pageable).stream()
-                    .map(ProductsListResponse::new).collect(Collectors.toList());
+                    .map(ProductResponse::new).collect(Collectors.toList());
         }
     }
 
     @Transactional
-    public ProductsAppResponse scanProducts(String barcode) {
+    public ProductAppResponse scanProducts(String barcode) {
         Product product = productRepository.findByBarcode(barcode)
-                .orElseThrow(() -> new IllegalArgumentException("not found Products. barcode: " + barcode));
-        return new ProductsAppResponse(product);
-    }
+                .orElseThrow(() -> new ProductNotFoundException("not found Products. barcode: " + barcode));
 
-
-    @Transactional
-    public Long save(ProductsSaveRequest productsSaveRequest) {
-        return productRepository.save(productsSaveRequest.toEntity()).getId();
+        return new ProductAppResponse(product);
     }
 
     @Transactional
-    public Long update(Long id, ProductsUpdateRequest request) {
+    public Long save(ProductSaveRequest productSaveRequest) {
+        return productRepository.save(productSaveRequest.toEntity()).getId();
+    }
+
+    @Transactional
+    public Long update(Long id, ProductUpdateRequest request) {
         Product product = productRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("not found posts. id: " + id));
+                .orElseThrow(() -> new ProductNotFoundException("not found product. id: " + id));
 
-        product.update(request.getId(), request.getCategoryId(), request.getName(), request.getPoint(), request.isGetisEnabled(), request.getModifiedId());
+        product.update(request.getId(), request.getCategoryId(), request.getName(), request.getPoint(), request.getIsEnabled(), request.getModifiedId());
 
         return id;
     }
@@ -63,7 +80,7 @@ public class ProductsService {
     @Transactional
     public void delete(Long id) {
         Product product = productRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("not found posts. id:" + id));
+                .orElseThrow(() -> new ProductNotFoundException("not found product. id:" + id));
 
         productRepository.delete(product);
     }

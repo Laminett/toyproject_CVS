@@ -6,7 +6,7 @@ import lombok.Getter;
 import java.time.LocalDateTime;
 
 @Getter
-public class ProductsListResponse {
+public class ProductResponse {
 
     private Long id;
 
@@ -28,13 +28,13 @@ public class ProductsListResponse {
 
     private LocalDateTime modifiedDate;
 
-    public ProductsListResponse(Product entity) {
+    public ProductResponse(Product entity) {
         this.id = entity.getId();
         this.categoryId = entity.getCategoryId();
         this.barcode = entity.getBarcode();
         this.name = entity.getName();
         this.point = entity.getPoint();
-        this.isEnabled = entity.getIsEnabled();
+        this.isEnabled = entity.getEnabled();
         this.createdId = entity.getCreatedId();
         this.createdDate = entity.getCreatedDate();
         this.modifiedId = entity.getModifiedId();

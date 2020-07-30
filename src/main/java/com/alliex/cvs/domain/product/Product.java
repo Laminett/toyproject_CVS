@@ -1,10 +1,7 @@
 package com.alliex.cvs.domain.product;
 
 import com.alliex.cvs.domain.BaseTimeEntity;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import org.springframework.web.servlet.view.InternalResourceViewResolver;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -29,6 +26,8 @@ public class Product extends BaseTimeEntity {
     @Column(nullable = false)
     private Integer point;
 
+    @Getter(AccessLevel.NONE)
+    @Setter(AccessLevel.NONE)
     @Column(nullable = false)
     private Boolean isEnabled;
 
@@ -55,6 +54,14 @@ public class Product extends BaseTimeEntity {
         this.point = point;
         this.isEnabled = isEnabled;
         this.modifiedId = modifiedId;
+    }
+
+    public Boolean getEnabled() {
+        return isEnabled;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        isEnabled = enabled;
     }
 
 }

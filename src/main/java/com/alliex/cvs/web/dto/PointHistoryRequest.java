@@ -29,4 +29,5 @@ public class PointHistoryRequest {
                 .registrant(registrant)
                 .build();
     }
+
 }
