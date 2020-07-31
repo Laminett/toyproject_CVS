@@ -27,7 +27,7 @@ public class ProductsController {
     @GetMapping("/products")
     public String getProduct(Model model, Pageable pageable, @RequestParam(value = "searchField", required = false) String searchField,
                              @RequestParam(value = "searchValue", required = false) String searchValue, @AuthenticationPrincipal LoginUser loginUser) {
-        if ("".equals(searchField)) {
+        if (searchField == null) {
             model.addAttribute("findBy", "all");
             model.addAttribute("findText", "all");
         } else {
