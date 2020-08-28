@@ -1,11 +1,14 @@
 package com.alliex.cvs.domain.product;
 
 import com.alliex.cvs.domain.BaseTimeEntity;
+import com.alliex.cvs.domain.transactionDetail.TransactionDetail;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.Collection;
 
 @Getter
+@Setter
 @NoArgsConstructor
 @Entity
 public class Product extends BaseTimeEntity {
@@ -34,6 +37,9 @@ public class Product extends BaseTimeEntity {
     private String createdId;
 
     private String modifiedId;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    private Collection<TransactionDetail> transactionDetailId;
 
     @Builder
     public Product(Long id, String categoryId, String barcode, String name, Integer point, Boolean isEnabled, String createdId, String modifiedId) {

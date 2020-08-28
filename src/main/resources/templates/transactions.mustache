@@ -1,0 +1,121 @@
+{{>layout/header}}
+<div class="content" id="context">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header card-header-primary">
+                        <div style="float: left">
+                            <h4 class="card-title ">Transaction Table</h4>
+                            <p class="card-category"> Here is a subtitle for this table</p>
+                        </div>
+                        <div style="float: right">
+                            <form class="form-inline ml-auto" id="searchForm">
+                                <div class="form-group">
+                                    <input type="hidden" id="LoginUser" name="LoginUser" value={{loginUser}}>
+                                    <select id="searchField" class="form-control" data-style="btn btn-link" name="searchField">
+                                        <option selected>Choose...</option>
+                                        <option>id</option>
+                                        <option>buyerId</option>
+                                        <option>merchantId</option>
+                                        <option>paymentType</option>
+                                        <option>transPoint</option>
+                                        <option>transState</option>
+                                        <option>transType</option>
+                                    </select>
+                                </div>
+                                <div class="form-group has-white">
+                                    <input id="searchValue" name="searchValue" type="text" value="" class="form-control" placeholder="Search">
+                                </div>
+                                <button type="button" class="btn btn-white btn-round btn-just-icon" id="search" name="search">
+                                    <i class="material-icons">search</i>
+                                    <div class="ripple-container"></div>
+                                </button>
+                            </form>
+
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive" id="result1">
+                            <table class="table" id="templ1">
+                                <thead class=" text-primary">
+                                <th>id</th>
+                                <th>buyerId</th>
+                                <th>merchantId</th>
+                                <th>paymentType</th>
+                                <th>transPoint</th>
+                                <th>transState</th>
+                                <th>transType</th>
+                                <th>createdDate</th>
+                                <th>modifiedDate</th>
+                                <th>ACTIONS</th>
+                                </thead>
+                                <tbody id="transactions"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination justify-content-center"></ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="addUpdateModal" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog"
+     aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div style="margin: 10px">
+                <form id="addProductsForm">
+                    <input type="hidden" id="id" name="id">
+                    <div class="form-row">
+                        <div class="form-group col-md-3">
+                            <label for="inputAddress">TransactionId</label>
+                            <input type="text" class="form-control" id="TransactionId" name="TransactionId" placeholder="ex> TransactionId" disabled>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="inputAddress2">BuyerId</label>
+                            <input type="text" class="form-control" id="BuyerId" name="BuyerId" placeholder="ex> BuyerId" disabled>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="inputCity">MerchantId</label>
+                            <input type="text" class="form-control" id="MerchantId" name="MerchantId" placeholder="ex> MerchantId" disabled>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="inputAddress">PaymentType</label>
+                            <input type="text" class="form-control" id="PaymentType" name="PaymentType" placeholder="ex> TransactionId" disabled>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-3">
+                            <label for="inputAddress2">TransactionPoint</label>
+                            <input type="text" class="form-control" id="TransactionPoint" name="TransactionPoint" placeholder="ex> BuyerId" disabled>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="inputCity">TransactionState</label>
+                            <input type="text" class="form-control" id="TransactionState" name="TransactionState" placeholder="ex> MerchantId" disabled>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="inputCity">TransactionType</label>
+                            <input type="text" class="form-control" id="TransactionType" name="TransactionType" placeholder="ex> MerchantId" disabled>
+                        </div>
+                    </div>
+                    <div class="form-group"></div>
+                    <table class="table" id="templ1">
+                        <thead class=" text-primary">
+                        <th>productName</th>
+                        <th>point</th>
+                        <th>amount</th>
+                        </thead>
+                        <tbody id="transactionDetail"></tbody>
+                    </table>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="/js/transaction.js"></script>
+{{>layout/footer}}
