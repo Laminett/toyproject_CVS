@@ -107,10 +107,12 @@ public class TransactionsService {
                 // 해당 상세거래 상태 변경 "SUCCESS" transactionDetail
                 transactionsDetailService.update(transaction.getId(), TransState.SUCCESS);
             } else {
-                return "TRANS_STATE ERROR";
+                throw new TransactionNotFoundException("trans_state error");
             }
         } else {
-            return "BARCODE ERROR";
+            update(transaction.getId(), TransState.FAIL);
+            transactionsDetailService.update(transaction.getId(), TransState.FAIL);
+            throw new TransactionNotFoundException("Invalid BARCODE");
         }
 
         return "SUCCESS";
