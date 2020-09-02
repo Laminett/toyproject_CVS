@@ -99,7 +99,7 @@ public class TransactionsService {
             if (TransState.WAIT.equals(transaction.getTransState())) {
                 // 거래 진행
                 // 포인트 차감 point
-                pointService.updatePointMinus(transaction.getBuyerId(), transaction.getTransPoint());
+                pointService.updatePointMinus(transaction.getUser().getId(), transaction.getTransPoint());
                 // 재고 차감 product productService productAmountMinus 작업 후 적용예정
 
                 // 거래상태 변경 "SUCCESS" transaction
@@ -127,14 +127,14 @@ public class TransactionsService {
             // transState='SUCCESS' and transType = 'PAYMENT' 일때만 가능
             if (TransState.SUCCESS.equals(transaction.getTransState()) && TransType.PAYMENT.equals(transaction.getTransType())) {
                 // 포인트 복구 point
-                pointService.updatePointPlus(transaction.getBuyerId(), transaction.getTransPoint());
+                pointService.updatePointPlus(transaction.getUser().getId(), transaction.getTransPoint());
                 // 재고 복구 product productService productAmountPlus 작업 후 적용예정
 
                 // 상세거래 상태 변경 "REFUND" transactionDetail
                 transactionsDetailService.update(transId, TransState.REFUND);
                 // 취소거래 save transaction
                 transaction.setOriginId(transId);
-                TransactionSaveRequest transactionRefundRequest = new TransactionSaveRequest(transaction.getBuyerId(), transaction.getMerchantId(), transaction.getId(),
+                TransactionSaveRequest transactionRefundRequest = new TransactionSaveRequest(transaction.getUser().getId(), transaction.getMerchantId(), transaction.getId(),
                         transaction.getTransPoint(), TransState.REFUND, TransType.REFUND, transaction.getTransNumber());
                 return transactionRepository.save(transactionRefundRequest.toEntity()).getId();
             } else {

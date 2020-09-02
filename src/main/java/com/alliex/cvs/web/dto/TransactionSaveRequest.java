@@ -3,6 +3,7 @@ package com.alliex.cvs.web.dto;
 import com.alliex.cvs.domain.transaction.TransState;
 import com.alliex.cvs.domain.transaction.TransType;
 import com.alliex.cvs.domain.transaction.Transaction;
+import com.alliex.cvs.domain.user.User;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -56,8 +57,10 @@ public class TransactionSaveRequest {
     }
 
     public Transaction toEntity() {
+        User setUserId = new User();
+        setUserId.setId(buyerId);
         return Transaction.builder()
-                .buyerId(buyerId)
+                .user(setUserId)
                 .merchantId(merchantId)
                 .originId(originId)
                 .transPoint(transPoint)

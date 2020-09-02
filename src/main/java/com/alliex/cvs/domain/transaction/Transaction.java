@@ -1,6 +1,7 @@
 package com.alliex.cvs.domain.transaction;
 
 import com.alliex.cvs.domain.BaseTimeEntity;
+import com.alliex.cvs.domain.user.User;
 import lombok.*;
 
 import javax.persistence.*;
@@ -20,8 +21,9 @@ public class Transaction extends BaseTimeEntity {
     @Column(nullable = false)
     private TransState transState;
 
-    @Column(nullable = false)
-    private Long buyerId;
+    @ManyToOne
+    @JoinColumn(name = "buyer_id", referencedColumnName = "id")
+    private User user;
 
     @Column(nullable = false)
     private Long merchantId;
@@ -40,10 +42,10 @@ public class Transaction extends BaseTimeEntity {
     private String paymentType;
 
     @Builder
-    public Transaction(Long id, TransState transState, Long buyerId, Long merchantId, Long originId, Integer transPoint, TransType transType, String transNumber, String paymentType) {
+    public Transaction(Long id, TransState transState, User user, Long merchantId, Long originId, Integer transPoint, TransType transType, String transNumber, String paymentType) {
         this.id = id;
         this.transState = transState;
-        this.buyerId = buyerId;
+        this.user = user;
         this.merchantId = merchantId;
         this.transPoint = transPoint;
         this.transType = transType;

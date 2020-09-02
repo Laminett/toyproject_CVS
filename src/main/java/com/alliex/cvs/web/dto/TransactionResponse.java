@@ -3,6 +3,7 @@ package com.alliex.cvs.web.dto;
 import com.alliex.cvs.domain.transaction.TransState;
 import com.alliex.cvs.domain.transaction.TransType;
 import com.alliex.cvs.domain.transaction.Transaction;
+import com.alliex.cvs.domain.user.User;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
@@ -28,16 +29,17 @@ public class TransactionResponse {
 
     private LocalDateTime modifiedDate;
 
-    public TransactionResponse(Transaction entity) {
-        this.id = entity.getId();
-        this.transState = entity.getTransState();
-        this.buyerId = entity.getBuyerId();
-        this.merchantId = entity.getMerchantId();
-        this.transPoint = entity.getTransPoint();
-        this.transType = entity.getTransType();
-        this.paymentType = entity.getPaymentType();
-        this.createdDate = entity.getCreatedDate();
-        this.modifiedDate = entity.getModifiedDate();
+    public TransactionResponse(Long id, TransState transState, Long buyerId, Long merchantId, Integer transPoint, TransType transType, String paymentType,
+                               LocalDateTime createdDate, LocalDateTime modifiedDate) {
+        this.id = id;
+        this.transState = transState;
+        this.buyerId = buyerId;
+        this.merchantId = merchantId;
+        this.transPoint = transPoint;
+        this.transType = transType;
+        this.paymentType = paymentType;
+        this.createdDate = createdDate;
+        this.modifiedDate = modifiedDate;
     }
 
 }

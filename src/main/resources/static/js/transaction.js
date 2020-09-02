@@ -90,15 +90,15 @@ var main = {
                     + "</tr>");
             } else {
                 data.content.forEach(function (element) {
-                    var str ="";
-                    if(element.transState == "SUCCESS") {
+                    var str = "";
+                    if (element.transState == "SUCCESS") {
                         str = "    <button type='button' rel='tooltip' class='btn btn-danger' name='refund'>"
                             + "     <i class='material-icons'>close</i>"
                             + "    </button>";
                     }
                     $('#transactions').append(" <tr> "
                         + "<td>" + element.id + "</td>  "
-                        + "<td>" + element.buyerId + "</td> "
+                        + "<td>" + element.user.username + "</td> "
                         + "<td>" + element.merchantId + "</td>"
                         + "<td class='text-primary'>" + element.paymentType + "</td>"
                         + "<td>" + element.transPoint + "</td>"
