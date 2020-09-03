@@ -1,13 +1,19 @@
 package com.alliex.cvs.domain.user;
 
 import com.alliex.cvs.domain.BaseTimeEntity;
+import com.alliex.cvs.domain.transaction.Transaction;
+import com.alliex.cvs.domain.type.Role;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Collection;
 
 @Getter
+@Setter
 @NoArgsConstructor
 @Entity
 public class User extends BaseTimeEntity {
@@ -28,6 +34,10 @@ public class User extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Role role;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private Collection<Transaction> transactionId;
 
     @Builder
     public User(String username, String email, String password, Role role) {
