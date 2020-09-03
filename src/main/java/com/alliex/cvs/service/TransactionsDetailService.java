@@ -1,6 +1,6 @@
 package com.alliex.cvs.service;
 
-import com.alliex.cvs.domain.transaction.TransState;
+import com.alliex.cvs.domain.type.TransState;
 import com.alliex.cvs.domain.transaction.Transaction;
 import com.alliex.cvs.domain.transaction.TransactionRepository;
 import com.alliex.cvs.domain.transactionDetail.TransactionDetail;
@@ -8,8 +8,6 @@ import com.alliex.cvs.domain.transactionDetail.TransactionDetailRepository;
 import com.alliex.cvs.exception.TransactionNotFoundException;
 import com.alliex.cvs.web.dto.TransactionDetailResponse;
 import com.alliex.cvs.web.dto.TransactionDetailSaveRequest;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

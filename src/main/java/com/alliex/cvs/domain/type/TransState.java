@@ -1,4 +1,4 @@
-package com.alliex.cvs.domain.transaction;
+package com.alliex.cvs.domain.type;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

@@ -2,7 +2,7 @@ package com.alliex.cvs.domain.user;
 
 import com.alliex.cvs.domain.BaseTimeEntity;
 import com.alliex.cvs.domain.transaction.Transaction;
-import com.alliex.cvs.domain.transactionDetail.TransactionDetail;
+import com.alliex.cvs.domain.type.Role;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Builder;
 import lombok.Getter;

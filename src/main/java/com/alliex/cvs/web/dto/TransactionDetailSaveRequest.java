@@ -1,7 +1,7 @@
 package com.alliex.cvs.web.dto;
 
 import com.alliex.cvs.domain.product.Product;
-import com.alliex.cvs.domain.transaction.TransState;
+import com.alliex.cvs.domain.type.TransState;
 import com.alliex.cvs.domain.transactionDetail.TransactionDetail;
 import lombok.Builder;
 import lombok.Getter;
@@ -30,6 +30,7 @@ public class TransactionDetailSaveRequest {
     public TransactionDetail toEntity() {
         Product setProductId = new Product();
         setProductId.setId(productId);
+
         return TransactionDetail.builder()
                 .productAmount(productAmount)
                 .transId(transId)

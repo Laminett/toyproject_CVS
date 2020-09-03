@@ -1,9 +1,7 @@
 package com.alliex.cvs.web.dto;
 
-import com.alliex.cvs.domain.transaction.TransState;
-import com.alliex.cvs.domain.transaction.TransType;
-import com.alliex.cvs.domain.transaction.Transaction;
-import com.alliex.cvs.domain.user.User;
+import com.alliex.cvs.domain.type.TransState;
+import com.alliex.cvs.domain.type.TransType;
 import lombok.Getter;
 
 import java.time.LocalDateTime;

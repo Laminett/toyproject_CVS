@@ -1,6 +1,8 @@
 package com.alliex.cvs.domain.transaction;
 
 import com.alliex.cvs.domain.BaseTimeEntity;
+import com.alliex.cvs.domain.type.TransState;
+import com.alliex.cvs.domain.type.TransType;
 import com.alliex.cvs.domain.user.User;
 import lombok.*;
 
@@ -31,7 +33,7 @@ public class Transaction extends BaseTimeEntity {
     private Long originId;
 
     @Column(nullable = false)
-    private Integer transPoint;
+    private Integer point;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -42,12 +44,12 @@ public class Transaction extends BaseTimeEntity {
     private String paymentType;
 
     @Builder
-    public Transaction(Long id, TransState transState, User user, Long merchantId, Long originId, Integer transPoint, TransType transType, String transNumber, String paymentType) {
+    public Transaction(Long id, TransState transState, User user, Long merchantId, Long originId, Integer point, TransType transType, String transNumber, String paymentType) {
         this.id = id;
         this.transState = transState;
         this.user = user;
         this.merchantId = merchantId;
-        this.transPoint = transPoint;
+        this.point = point;
         this.transType = transType;
         this.originId = originId;
         this.transNumber = transNumber;

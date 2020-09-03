@@ -1,7 +1,7 @@
 package com.alliex.cvs.web.dto;
 
-import com.alliex.cvs.domain.transaction.TransState;
-import com.alliex.cvs.domain.transaction.TransType;
+import com.alliex.cvs.domain.type.TransState;
+import com.alliex.cvs.domain.type.TransType;
 import com.alliex.cvs.domain.transaction.Transaction;
 import com.alliex.cvs.domain.user.User;
 import lombok.Builder;
@@ -23,7 +23,7 @@ public class TransactionSaveRequest {
 
     private Long originId;
 
-    private Integer transPoint;
+    private Integer point;
 
     private TransState transState;
 
@@ -34,11 +34,11 @@ public class TransactionSaveRequest {
     private List<Map<String, String>> transProduct;
 
     @Builder
-    public TransactionSaveRequest(Long buyerId, Long merchantId, Long originId, Integer transPoint, TransState transState, TransType transType, String transNumber, List<Map<String, String>> transProduct) {
+    public TransactionSaveRequest(Long buyerId, Long merchantId, Long originId, Integer point, TransState transState, TransType transType, String transNumber, List<Map<String, String>> transProduct) {
         this.buyerId = buyerId;
         this.merchantId = merchantId;
         this.originId = originId;
-        this.transPoint = transPoint;
+        this.point = point;
         this.transState = transState;
         this.transType = transType;
         this.transNumber = transNumber;
@@ -46,11 +46,11 @@ public class TransactionSaveRequest {
     }
 
     @Builder
-    public TransactionSaveRequest(Long buyerId, Long merchantId, Long originId, Integer transPoint, TransState transState, TransType transType, String transNumber) {
+    public TransactionSaveRequest(Long buyerId, Long merchantId, Long originId, Integer point, TransState transState, TransType transType, String transNumber) {
         this.buyerId = buyerId;
         this.merchantId = merchantId;
         this.originId = originId;
-        this.transPoint = transPoint;
+        this.point = point;
         this.transState = transState;
         this.transType = transType;
         this.transNumber = transNumber;
@@ -59,11 +59,12 @@ public class TransactionSaveRequest {
     public Transaction toEntity() {
         User setUserId = new User();
         setUserId.setId(buyerId);
+
         return Transaction.builder()
                 .user(setUserId)
                 .merchantId(merchantId)
                 .originId(originId)
-                .transPoint(transPoint)
+                .point(point)
                 .transState(transState)
                 .transType(transType)
                 .transNumber(transNumber)

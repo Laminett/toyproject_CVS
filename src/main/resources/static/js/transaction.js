@@ -1,6 +1,5 @@
 var main = {
     init: function () {
-
         var _this = this;
 
         _this.dataLoad(1);
@@ -67,7 +66,6 @@ var main = {
                 alert(JSON.stringify(error.responseJSON.message));
             });
         });
-
     },
     dataLoad: function (pageNum) {
         var searchData;
@@ -101,7 +99,7 @@ var main = {
                         + "<td>" + element.user.username + "</td> "
                         + "<td>" + element.merchantId + "</td>"
                         + "<td class='text-primary'>" + element.paymentType + "</td>"
-                        + "<td>" + element.transPoint + "</td>"
+                        + "<td>" + element.point + "</td>"
                         + "<td>" + element.transState + "</td>"
                         + "<td>" + element.transType + "</td>"
                         + "<td>" + element.createdDate + "</td>"
@@ -136,7 +134,6 @@ var main = {
             alert(JSON.stringify(error.responseJSON.message));
         });
     }
-
 };
 
 main.init();

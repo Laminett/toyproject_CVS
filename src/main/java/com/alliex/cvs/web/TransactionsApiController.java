@@ -1,12 +1,9 @@
 package com.alliex.cvs.web;
 
 import com.alliex.cvs.domain.transaction.Transaction;
-import com.alliex.cvs.domain.transactionDetail.TransactionDetail;
 import com.alliex.cvs.service.TransactionsDetailService;
 import com.alliex.cvs.service.TransactionsService;
-import com.alliex.cvs.util.RandomMathUtils;
 import com.alliex.cvs.web.dto.TransactionDetailResponse;
-import com.alliex.cvs.web.dto.TransactionDetailSaveRequest;
 import com.alliex.cvs.web.dto.TransactionRequest;
 import com.alliex.cvs.web.dto.TransactionSaveRequest;
 import org.springframework.data.domain.Page;
@@ -43,9 +40,7 @@ public class TransactionsApiController {
     // 바코드 조회 거래 승인/거절
     @PutMapping("/api/v1/transactions/payment/step2/{barcode}")
     public String TransactionPaymentStep2(@PathVariable String barcode) {
-        String transId = transactionsService.transactionPaymentStep2(barcode);
-
-        return transId;
+        return transactionsService.transactionPaymentStep2(barcode);
     }
     @PostMapping("/api/v1/transactions/refund/{transId}")
     public Long TransactionRefund(@PathVariable Long transId){

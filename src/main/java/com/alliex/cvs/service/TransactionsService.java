@@ -1,7 +1,8 @@
 package com.alliex.cvs.service;
 
-import com.alliex.cvs.domain.product.ProductRepository;
 import com.alliex.cvs.domain.transaction.*;
+import com.alliex.cvs.domain.type.TransState;
+import com.alliex.cvs.domain.type.TransType;
 import com.alliex.cvs.exception.TransactionNotFoundException;
 import com.alliex.cvs.util.RandomMathUtils;
 import com.alliex.cvs.web.dto.*;
@@ -31,7 +32,6 @@ public class TransactionsService {
 
     @Transactional(readOnly = true)
     public Page<Transaction> getTransactions(Pageable pageable, TransactionRequest searchRequest) {
-
         Map<TransactionSpecs.SearchKey, Object> searchKeys = new HashMap<>();
 
         if (!"".equals(searchRequest.getSearchField()) && !"".equals(searchRequest.getSearchValue())) {
@@ -73,7 +73,7 @@ public class TransactionsService {
         // user point 조회 후 거래금액보다 작을시 false
         PointResponse point = pointService.findByUserId(requestParam.getBuyerId());
         String transNumber = "NOT ENOUGH POINT";
-        if (point.getPoint() >= requestParam.getTransPoint()) {
+        if (point.getPoint() >= requestParam.getPoint()) {
             transNumber = RandomMathUtils.createTransNumber();
             requestParam.setTransNumber(transNumber);
             Long transId = save(requestParam);
@@ -93,13 +93,13 @@ public class TransactionsService {
         Transaction transaction = transactionRepository.findByTransNumber(barcode);
         List<TransactionDetailResponse> transactionDetail = transactionsDetailService.getDetails(transaction.getId());
         // 데이터 추출 by barcode
-        if (transaction.getTransNumber() != null) {
+        if (!transaction.getTransNumber().isEmpty()) {
             // 거래상태가 WAIT 상태일때 진행
             // paymnet
             if (TransState.WAIT.equals(transaction.getTransState())) {
                 // 거래 진행
                 // 포인트 차감 point
-                pointService.updatePointMinus(transaction.getUser().getId(), transaction.getTransPoint());
+                pointService.updatePointMinus(transaction.getUser().getId(), transaction.getPoint());
                 // 재고 차감 product productService productAmountMinus 작업 후 적용예정
 
                 // 거래상태 변경 "SUCCESS" transaction
@@ -121,13 +121,13 @@ public class TransactionsService {
     @Transactional
     public Long transactionRefund(Long transId) {
         List<Transaction> transactionchk = transactionRepository.findByOriginId(transId);
-        if (transactionchk.size() == 0) {
+        if (transactionchk.isEmpty()) {
             Transaction transaction = transactionRepository.findById(transId).orElseThrow(()
                     -> new TransactionNotFoundException("Not found transaction : id" + transId));
             // transState='SUCCESS' and transType = 'PAYMENT' 일때만 가능
             if (TransState.SUCCESS.equals(transaction.getTransState()) && TransType.PAYMENT.equals(transaction.getTransType())) {
                 // 포인트 복구 point
-                pointService.updatePointPlus(transaction.getUser().getId(), transaction.getTransPoint());
+                pointService.updatePointPlus(transaction.getUser().getId(), transaction.getPoint());
                 // 재고 복구 product productService productAmountPlus 작업 후 적용예정
 
                 // 상세거래 상태 변경 "REFUND" transactionDetail
@@ -135,7 +135,8 @@ public class TransactionsService {
                 // 취소거래 save transaction
                 transaction.setOriginId(transId);
                 TransactionSaveRequest transactionRefundRequest = new TransactionSaveRequest(transaction.getUser().getId(), transaction.getMerchantId(), transaction.getId(),
-                        transaction.getTransPoint(), TransState.REFUND, TransType.REFUND, transaction.getTransNumber());
+                        transaction.getPoint(), TransState.REFUND, TransType.REFUND, transaction.getTransNumber());
+
                 return transactionRepository.save(transactionRefundRequest.toEntity()).getId();
             } else {
                 throw new TransactionNotFoundException("REFUND Fail");

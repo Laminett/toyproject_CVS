@@ -2,7 +2,7 @@ package com.alliex.cvs.domain.transactionDetail;
 
 import com.alliex.cvs.domain.BaseTimeEntity;
 import com.alliex.cvs.domain.product.Product;
-import com.alliex.cvs.domain.transaction.TransState;
+import com.alliex.cvs.domain.type.TransState;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
