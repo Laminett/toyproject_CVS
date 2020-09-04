@@ -92,11 +92,7 @@ public class ProductsService {
         Product productEntity = productRepository.findById(productId)
                 .orElseThrow(() -> new ProductNotFoundException("Not Found product. productId : " + productId));
 
-        int originAmount = productEntity.getAmount();
-        int resultAmount = originAmount + amount;
-
-        productEntity.setAmount(resultAmount);
-        productEntity.updateAmount(productEntity.getAmount());
+        productEntity.updateAmount(productEntity.getAmount() + amount);
 
         return productId;
     }
@@ -106,14 +102,12 @@ public class ProductsService {
         Product productEntity = productRepository.findById(productId)
                 .orElseThrow(() -> new ProductNotFoundException("Not Found product. productId : " + productId));
 
-        int originAmount = productEntity.getAmount();
-        int resultAmount = originAmount - amount;
-        if (resultAmount < 0) {
-            throw new ProductAmountLimitExcessException("Not enough Product amount. amount :" + resultAmount);
+        int _amount = productEntity.getAmount() - amount;
+        if (_amount < 0) {
+            throw new ProductAmountLimitExcessException("Not enough Product amount. amount :" + _amount);
         }
 
-        productEntity.setAmount(resultAmount);
-        productEntity.updateAmount(productEntity.getAmount());
+        productEntity.updateAmount(_amount);
 
         return productId;
     }

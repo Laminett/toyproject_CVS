@@ -13,8 +13,6 @@ var main = {
             if (confirm('Really want to REFUND')) {
                 var transId = $(this).closest('tr').find('td').eq(0).text();
                 _this.refund(transId);
-            } else {
-                return false;
             }
         });
 

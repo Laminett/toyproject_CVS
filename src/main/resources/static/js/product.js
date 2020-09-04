@@ -12,8 +12,6 @@ var main = {
             if (confirm('Really want to DELETE?')) {
                 var productId = $(this).closest('tr').find('td').eq(0).text();
                 _this.delete(productId);
-            } else {
-                return false;
             }
         });
 
@@ -194,31 +192,31 @@ var main = {
         $('#barcode').val(barcode);
     },
     inputDataCheck: function () {
-        if ($('#categoryId').val() == null || $('#categoryId').val() == undefined || $('#categoryId').val() == '') {
+        if (!$('#categoryId').val()) {
             alert("Please select categoryId");
             $('#categoryId').focus();
             return false;
         }
 
-        if ($('#name').val() == null || $('#name').val() == undefined || $('#name').val() == '') {
+        if (!$('#name').val()) {
             alert("Please input name");
             $('#name').focus();
             return false;
         }
 
-        if ($('#point').val() == null || $('#point').val() == undefined || $('#point').val() == '') {
+        if (!$('#point').val()) {
             alert("Please input point");
             $('#point').focus();
             return false;
         }
 
-        if ($('#amount').val() == null || $('#amount').val() == undefined || $('#amount').val() == '') {
+        if (!$('#amount').val()) {
             alert("Please input amount");
             $('#amount').focus();
             return false;
         }
 
-        if ($('#barcode').val() == null || $('#barcode').val() == undefined || $('#barcode').val() == '') {
+        if (!$('#barcode').val()) {
             alert("Please scan barcode");
             $('#barcode').focus();
             return false;
@@ -262,7 +260,6 @@ var main = {
             alert(JSON.stringify(error));
         });
     }
-
 };
 
 main.init();
