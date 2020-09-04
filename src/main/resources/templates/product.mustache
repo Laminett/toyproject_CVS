@@ -15,24 +15,20 @@
                                     <input type="hidden" id="searchpaging" name="searchpaging" value={{findBy}}>
                                     <input type="hidden" id="searchText" name="searchText" value={{findText}}>
                                     <input type="hidden" id="LoginUser" name="LoginUser" value={{loginUser}}>
-                                    <select id="searchField" class="form-control" data-style="btn btn-link"
-                                            name="searchField">
+                                    <select id="searchField" class="form-control" data-style="btn btn-link" name="searchField">
                                         <option selected>Choose...</option>
                                         <option>category</option>
                                         <option>name</option>
                                     </select>
                                 </div>
                                 <div class="form-group has-white">
-                                    <input id="searchValue" name="searchValue" type="text" value="" class="form-control"
-                                           placeholder="Search">
+                                    <input id="searchValue" name="searchValue" type="text" value="" class="form-control" placeholder="Search">
                                 </div>
-                                <button type="button" class="btn btn-white btn-round btn-just-icon" id="search"
-                                        name="search">
+                                <button type="button" class="btn btn-white btn-round btn-just-icon" id="search" name="search">
                                     <i class="material-icons">search</i>
                                     <div class="ripple-container"></div>
                                 </button>
-                                <button type="button" name="addProduct" class="btn btn-primary"
-                                        data-toggle="modal" data-target=".bd-example-modal-lg">상품추가
+                                <button type="button" name="addProduct" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg">상품추가
                                 </button>
                             </form>
 
@@ -46,6 +42,7 @@
                                 <th>CATEGORY</th>
                                 <th>NAME</th>
                                 <th>PRICE</th>
+                                <th>AMOUNT</th>
                                 <th>USEYN</th>
                                 <th>CREATED_ID</th>
                                 <th>CREATED_DATE</th>
@@ -60,6 +57,7 @@
                                         <td>{{categoryId}}</td>
                                         <td>{{name}}</td>
                                         <td class="text-primary">{{point}}</td>
+                                        <td class="text-primary">{{amount}}</td>
                                         <td style="display: none;position: absolute">{{barcode}}</td>
                                         <td>{{isEnabled}}</td>
                                         <td>{{createdId}}</td>
@@ -68,18 +66,17 @@
                                             <td>{{modifiedId}}</td>
                                         {{/modifiedId}}
                                         {{^modifiedId}}
-                                            <td>null</td>
+                                            <td>a</td>
                                         {{/modifiedId}}
                                         {{#modifiedDate}}
                                             <td>{{modifiedDate}}</td>
                                         {{/modifiedDate}}
                                         {{^modifiedDate}}
-                                            <td>null</td>
+                                            <td>a</td>
                                         {{/modifiedDate}}
                                         <td class="td-actions text-right">
                                             <button type="button" rel="tooltip" class="btn btn-success" name="update">
-                                                <i class="material-icons" data-toggle="modal"
-                                                   data-target=".bd-example-modal-lg">edit</i>
+                                                <i class="material-icons" data-toggle="modal" data-target=".bd-example-modal-lg">edit</i>
                                             </button>
                                             <button type="button" rel="tooltip" class="btn btn-danger" name="delete">
                                                 <i class="material-icons">close</i>
@@ -124,15 +121,19 @@
                         <input type="hidden" id="createdId" name="createdId">
                         <input type="hidden" id="modifiedId" name="modifiedId">
                         <div class="form-group col-md-3">
-                            <label for="inputAddress">Name</label>
+                            <label for="inputName">Name</label>
                             <input type="text" class="form-control" id="name" name="name" placeholder="ex> name">
                         </div>
                         <div class="form-group col-md-3">
-                            <label for="inputAddress2">Point</label>
+                            <label for="inputPoint">Point</label>
                             <input type="text" class="form-control" id="point" name="point" placeholder="ex> 10000">
                         </div>
                         <div class="form-group col-md-3">
-                            <label for="inputState">Category</label>
+                            <label for="inputAmount">Amount</label>
+                            <input type="text" class="form-control" id="amount" name="amount" placeholder="ex> 100">
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="inputCategory">Category</label>
                             <select id="categoryId" class="form-control" data-style="btn btn-link" name="categoryId">
                                 <option selected>Choose...</option>
                                 <option>a1</option>
@@ -144,8 +145,8 @@
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-4">
-                            <label for="inputCity">Barcode</label>
-                            <input type="text" class="form-control" id="barcode" name="barcode" value="12d3123123123"
+                            <label for="inputBarcode">Barcode</label>
+                            <input type="text" class="form-control" id="barcode" name="barcode" value="testvalue"
                                    readonly>
                         </div>
                         <div class="form-group">

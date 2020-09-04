@@ -2,6 +2,7 @@ package com.alliex.cvs.service;
 
 import com.alliex.cvs.domain.product.Product;
 import com.alliex.cvs.domain.product.ProductRepository;
+import com.alliex.cvs.exception.ProductAmountLimitExcessException;
 import com.alliex.cvs.exception.ProductNotFoundException;
 import com.alliex.cvs.web.dto.*;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -72,7 +74,7 @@ public class ProductsService {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new ProductNotFoundException("not found product. id: " + id));
 
-        product.update(request.getId(), request.getCategoryId(), request.getName(), request.getPoint(), request.getIsEnabled(), request.getModifiedId());
+        product.update(request.getId(), request.getCategoryId(), request.getName(), request.getPoint(), request.getAmount(), request.getIsEnabled(), request.getModifiedId());
 
         return id;
     }
@@ -83,6 +85,37 @@ public class ProductsService {
                 .orElseThrow(() -> new ProductNotFoundException("not found product. id:" + id));
 
         productRepository.delete(product);
+    }
+
+    @Transactional
+    public Long updateAmountPlus(Long productId, int amount) {
+        Product productEntity = productRepository.findById(productId)
+                .orElseThrow(() -> new ProductNotFoundException("Not Found product. productId : " + productId));
+
+        int originAmount = productEntity.getAmount();
+        int resultAmount = originAmount + amount;
+
+        productEntity.setAmount(resultAmount);
+        productEntity.updateAmount(productEntity.getAmount());
+
+        return productId;
+    }
+
+    @Transactional
+    public Long updateAmountMinus(Long productId, int amount) {
+        Product productEntity = productRepository.findById(productId)
+                .orElseThrow(() -> new ProductNotFoundException("Not Found product. productId : " + productId));
+
+        int originAmount = productEntity.getAmount();
+        int resultAmount = originAmount - amount;
+        if (resultAmount < 0) {
+            throw new ProductAmountLimitExcessException("Not enough Product amount. amount :" + resultAmount);
+        }
+
+        productEntity.setAmount(resultAmount);
+        productEntity.updateAmount(productEntity.getAmount());
+
+        return productId;
     }
 
 }

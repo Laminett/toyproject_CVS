@@ -16,15 +16,18 @@ public class ProductUpdateRequest {
 
     private Integer point;
 
+    private Integer amount;
+
     private Boolean isEnabled;
 
     private String modifiedId;
 
     @Builder
-    public ProductUpdateRequest(String categoryId, String name, Integer point, Boolean isEnabled, String modifiedId) {
+    public ProductUpdateRequest(String categoryId, String name, Integer point, Integer amount, Boolean isEnabled, String modifiedId) {
         this.categoryId = categoryId;
         this.name = name;
         this.point = point;
+        this.amount = amount;
         this.isEnabled = isEnabled;
         this.modifiedId = modifiedId;
     }

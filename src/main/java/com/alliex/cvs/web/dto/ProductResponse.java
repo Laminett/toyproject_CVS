@@ -18,6 +18,8 @@ public class ProductResponse {
 
     private Integer point;
 
+    private Integer amount;
+
     private Boolean isEnabled;
 
     private String createdId;
@@ -34,6 +36,7 @@ public class ProductResponse {
         this.barcode = entity.getBarcode();
         this.name = entity.getName();
         this.point = entity.getPoint();
+        this.amount = entity.getAmount();
         this.isEnabled = entity.getEnabled();
         this.createdId = entity.getCreatedId();
         this.createdDate = entity.getCreatedDate();

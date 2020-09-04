@@ -9,7 +9,12 @@ var main = {
 
         // delete
         $(document).on('click', 'button[name=delete]', function () {
-            _this.delete();
+            if (confirm('Really want to DELETE?')) {
+                var productId = $(this).closest('tr').find('td').eq(0).text();
+                _this.delete(productId);
+            } else {
+                return false;
+            }
         });
 
         // 상품 추가와 업데이트 구분 분기
@@ -44,8 +49,9 @@ var main = {
                 $('#categoryId').val($(this).closest('tr').find('td').eq(1).text());
                 $('#name').val($(this).closest('tr').find('td').eq(2).text());
                 $('#point').val($(this).closest('tr').find('td').eq(3).text());
-                $('#barcode').val($(this).closest('tr').find('td').eq(4).text());
-                if ($(this).closest('tr').find('td').eq(5).text() == "true") {
+                $('#amount').val($(this).closest('tr').find('td').eq(4).text());
+                $('#barcode').val($(this).closest('tr').find('td').eq(5).text());
+                if ($(this).closest('tr').find('td').eq(6).text() == "true") {
                     $('#isEnabled').prop('checked', true);
                 } else {
                     $('#isEnabled').prop('checked', false);
@@ -59,6 +65,7 @@ var main = {
                 $('#categoryId').val('');
                 $('#name').val('');
                 $('#point').val('');
+                $('#amount').val('');
                 $('#barcode').val('');
                 $('#isEnabled').prop('checked', false);
 
@@ -89,6 +96,7 @@ var main = {
             createdId: $('#createdId').val(),
             name: $('#name').val(),
             point: $('#point').val(),
+            amount: $('#amount').val(),
             isEnabled: $('#isEnabled').val()
         };
 
@@ -99,7 +107,7 @@ var main = {
             contentType: 'application/json; charset=utf-8',
             data: JSON.stringify(data)
         }).done(function () {
-            alert('글이 등록되었습니다.');
+            alert('상품이 등록되었습니다.');
             window.location.href = '/products?searchField=&searchValue=';
         }).fail(function (error) {
             alert(JSON.stringify(error));
@@ -113,6 +121,7 @@ var main = {
             modifiedId: $('#modifiedId').val(),
             name: $('#name').val(),
             point: $('#point').val(),
+            amount: $('#amount').val(),
             isEnabled: $('#isEnabled').val()
         };
 
@@ -125,23 +134,20 @@ var main = {
             contentType: 'application/json; charset=utf-8',
             data: JSON.stringify(data)
         }).done(function () {
-            alert('글이 수정되었습니다.');
+            alert('상품이 수정되었습니다.');
             window.location.href = '/products?searchField=&searchValue=';
         }).fail(function (error) {
             alert(JSON.stringify(error));
         });
     },
-    delete: function () {
-        var id = $('#id').val();
-
+    delete: function (productId) {
         $.ajax({
             type: 'DELETE',
-            url: '/api/v1/products/' + id,
+            url: '/api/v1/products/' + productId,
             dataType: 'json',
-            contentType: 'application/json; charset=utf-8',
-            data: productId//JSON.stringify(data)
+            contentType: 'application/json; charset=utf-8'
         }).done(function () {
-            alert('글이 삭제되었습니다.');
+            alert('상품이 삭제되었습니다.');
             window.location.href = '/products?searchField=&searchValue=';
         }).fail(function (error) {
             alert(JSON.stringify(error));
@@ -163,6 +169,7 @@ var main = {
                     + "<td>" + element.categoryId + "</td> "
                     + "<td>" + element.name + "</td>"
                     + "<td class='text-primary'>" + element.point + "</td>"
+                    + "<td class='text-primary'>" + element.amount + "</td>"
                     + "<td style='display: none;position: absolute'>" + element.barcode + "</td>"
                     + "<td>" + element.isEnabled + "</td>"
                     + "<td>" + element.createdId + "</td>"
@@ -205,6 +212,12 @@ var main = {
             return false;
         }
 
+        if ($('#amount').val() == null || $('#amount').val() == undefined || $('#amount').val() == '') {
+            alert("Please input amount");
+            $('#amount').focus();
+            return false;
+        }
+
         if ($('#barcode').val() == null || $('#barcode').val() == undefined || $('#barcode').val() == '') {
             alert("Please scan barcode");
             $('#barcode').focus();
@@ -224,11 +237,13 @@ var main = {
             $('#categoryId').css('display', 'block');
             $('#name').css('display', 'block');
             $('#point').css('display', 'block');
+            $('#amount').css('display', 'block');
             $('.form-check-sign').css('display', 'block');
         } else {
             $('#categoryId').css('display', 'none');
             $('#name').css('display', 'none');
             $('#point').css('display', 'none');
+            $('#amount').css('display', 'none');
             $('.form-check-sign').css('display', 'none');
         }
     },
