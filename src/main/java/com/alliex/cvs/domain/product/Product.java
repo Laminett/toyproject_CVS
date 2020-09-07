@@ -29,6 +29,9 @@ public class Product extends BaseTimeEntity {
     @Column(nullable = false)
     private Integer point;
 
+    @Column(nullable = false)
+    private Integer amount;
+
     @Getter(AccessLevel.NONE)
     @Setter(AccessLevel.NONE)
     @Column(nullable = false)
@@ -42,24 +45,30 @@ public class Product extends BaseTimeEntity {
     private Collection<TransactionDetail> transactionDetailId;
 
     @Builder
-    public Product(Long id, String categoryId, String barcode, String name, Integer point, Boolean isEnabled, String createdId, String modifiedId) {
+    public Product(Long id, String categoryId, String barcode, String name, Integer point, Integer amount, Boolean isEnabled, String createdId, String modifiedId) {
         this.id = id;
         this.categoryId = categoryId;
         this.barcode = barcode;
         this.name = name;
         this.point = point;
+        this.amount = amount;
         this.isEnabled = isEnabled;
         this.createdId = createdId;
         this.modifiedId = modifiedId;
     }
 
-    public void update(Long id, String categoryId, String name, Integer point, boolean isEnabled, String modifiedId) {
+    public void update(Long id, String categoryId, String name, Integer point, Integer amount, boolean isEnabled, String modifiedId) {
         this.id = id;
         this.categoryId = categoryId;
         this.name = name;
         this.point = point;
+        this.amount = amount;
         this.isEnabled = isEnabled;
         this.modifiedId = modifiedId;
+    }
+
+    public void updateAmount(Integer amount) {
+        this.amount = amount;
     }
 
     public Boolean getEnabled() {

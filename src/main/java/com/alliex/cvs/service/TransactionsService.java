@@ -30,6 +30,9 @@ public class TransactionsService {
     @Autowired
     private PointService pointService;
 
+    @Autowired
+    private ProductsService productsService;
+
     @Transactional(readOnly = true)
     public Page<Transaction> getTransactions(Pageable pageable, TransactionRequest searchRequest) {
         Map<TransactionSpecs.SearchKey, Object> searchKeys = new HashMap<>();
@@ -92,28 +95,22 @@ public class TransactionsService {
     public String transactionPaymentStep2(String barcode) {
         Transaction transaction = transactionRepository.findByTransNumber(barcode);
         List<TransactionDetailResponse> transactionDetail = transactionsDetailService.getDetails(transaction.getId());
-        // 데이터 추출 by barcode
-        if (!transaction.getTransNumber().isEmpty()) {
-            // 거래상태가 WAIT 상태일때 진행
-            // paymnet
-            if (TransState.WAIT.equals(transaction.getTransState())) {
-                // 거래 진행
-                // 포인트 차감 point
-                pointService.updatePointMinus(transaction.getUser().getId(), transaction.getPoint());
-                // 재고 차감 product productService productAmountMinus 작업 후 적용예정
-
-                // 거래상태 변경 "SUCCESS" transaction
-                update(transaction.getId(), TransState.SUCCESS);
-                // 해당 상세거래 상태 변경 "SUCCESS" transactionDetail
-                transactionsDetailService.update(transaction.getId(), TransState.SUCCESS);
-            } else {
-                throw new TransactionNotFoundException("trans_state error");
-            }
-        } else {
+        if (transaction.getTransNumber().isEmpty()) {
             update(transaction.getId(), TransState.FAIL);
             transactionsDetailService.update(transaction.getId(), TransState.FAIL);
             throw new TransactionNotFoundException("Invalid BARCODE");
         }
+
+        if (!TransState.WAIT.equals(transaction.getTransState())) {
+            throw new TransactionNotFoundException("trans_state error");
+        }
+
+        pointService.updatePointMinus(transaction.getUser().getId(), transaction.getPoint());
+        for (TransactionDetailResponse product : transactionDetail) {
+            productsService.updateAmountMinus(product.getProductId(), product.getProductAmount());
+        }
+        update(transaction.getId(), TransState.SUCCESS);
+        transactionsDetailService.update(transaction.getId(), TransState.SUCCESS);
 
         return "SUCCESS";
     }
@@ -121,29 +118,28 @@ public class TransactionsService {
     @Transactional
     public Long transactionRefund(Long transId) {
         List<Transaction> transactionchk = transactionRepository.findByOriginId(transId);
-        if (transactionchk.isEmpty()) {
-            Transaction transaction = transactionRepository.findById(transId).orElseThrow(()
-                    -> new TransactionNotFoundException("Not found transaction : id" + transId));
-            // transState='SUCCESS' and transType = 'PAYMENT' 일때만 가능
-            if (TransState.SUCCESS.equals(transaction.getTransState()) && TransType.PAYMENT.equals(transaction.getTransType())) {
-                // 포인트 복구 point
-                pointService.updatePointPlus(transaction.getUser().getId(), transaction.getPoint());
-                // 재고 복구 product productService productAmountPlus 작업 후 적용예정
-
-                // 상세거래 상태 변경 "REFUND" transactionDetail
-                transactionsDetailService.update(transId, TransState.REFUND);
-                // 취소거래 save transaction
-                transaction.setOriginId(transId);
-                TransactionSaveRequest transactionRefundRequest = new TransactionSaveRequest(transaction.getUser().getId(), transaction.getMerchantId(), transaction.getId(),
-                        transaction.getPoint(), TransState.REFUND, TransType.REFUND, transaction.getTransNumber());
-
-                return transactionRepository.save(transactionRefundRequest.toEntity()).getId();
-            } else {
-                throw new TransactionNotFoundException("REFUND Fail");
-            }
-        } else {
+        if (!transactionchk.isEmpty()) {
             throw new TransactionNotFoundException("already REFUND");
         }
+
+        Transaction transaction = transactionRepository.findById(transId).orElseThrow(()
+                -> new TransactionNotFoundException("Not found transaction : id" + transId));
+
+        List<TransactionDetailResponse> transactionDetail = transactionsDetailService.getDetails(transaction.getId());
+        if (!TransState.SUCCESS.equals(transaction.getTransState()) || !TransType.PAYMENT.equals(transaction.getTransType())) {
+            throw new TransactionNotFoundException("REFUND Fail");
+        }
+
+        pointService.updatePointPlus(transaction.getUser().getId(), transaction.getPoint());
+        for (TransactionDetailResponse product : transactionDetail) {
+            productsService.updateAmountPlus(product.getProductId(), product.getProductAmount());
+        }
+        transactionsDetailService.update(transId, TransState.REFUND);
+        transaction.setOriginId(transId);
+        TransactionSaveRequest transactionRefundRequest = new TransactionSaveRequest(transaction.getUser().getId(), transaction.getMerchantId(), transaction.getId(),
+                transaction.getPoint(), TransState.REFUND, TransType.REFUND, transaction.getTransNumber());
+
+        return transactionRepository.save(transactionRefundRequest.toEntity()).getId();
     }
 
 }
