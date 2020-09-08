@@ -1,94 +1,103 @@
+
 package com.alliex.cvs.config.security;
 
+import com.alliex.cvs.security.JwtAuthenticationTokenFilter;
+import com.alliex.cvs.security.provider.ApiUserAuthenticationProvider;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.core.annotation.Order;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
-import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
-import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.stereotype.Component;
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+public class SecurityConfig {
 
-    private AuthenticationProvider authenticationProvider;
+    @Configuration
+    @Component
+    @Order(1)
+    public static class ApiWebSecurityConfigurationAdapter extends WebSecurityConfigurerAdapter {
+        @Autowired
+        private ApiUserAuthenticationProvider apiUserAuthenticationProvider;
 
-    public SecurityConfig(AuthenticationProvider authenticationProvider) {
-        this.authenticationProvider = authenticationProvider;
+        @Autowired
+        public void configureAuthentication(AuthenticationManagerBuilder authenticationManagerBuilder) {
+            authenticationManagerBuilder
+                    .authenticationProvider(apiUserAuthenticationProvider);
+        }
+
+        @Bean
+        @Override
+        public AuthenticationManager authenticationManagerBean() throws Exception {
+            return super.authenticationManagerBean();
+        }
+
+        @Bean
+        public JwtAuthenticationTokenFilter jwtAuthenticationTokenFilterBean() {
+            return new JwtAuthenticationTokenFilter();
+        }
+
+        @Override
+        protected void configure(HttpSecurity http) throws Exception {
+            http
+                .antMatcher("/api/**")
+                .authorizeRequests()
+                .antMatchers("/api/login/**").permitAll()
+                .antMatchers("/api/**").hasRole("USER");
+
+            http
+                .csrf()
+                    .disable()
+                .sessionManagement()
+                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
+            // JWT based authentication
+            http
+                .addFilterBefore(jwtAuthenticationTokenFilterBean(), UsernamePasswordAuthenticationFilter.class);
+        }
     }
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.authenticationProvider(authenticationProvider);
-    }
+    @Configuration
+    @Component
+    @Order(2)
+    public static class FormLoginWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
-                .antMatchers("/login/**").permitAll()
-                .antMatchers("/logout/**").permitAll()
-                .antMatchers("/admin/*").hasRole("ADMIN")
-                .antMatchers("/events/*").hasRole("ADMIN")
-                .antMatchers("/**").hasRole("USER")
+        @Autowired
+        private CustomUserAuthenticationProvider customUserAuthenticationProvider;
 
-                .and()
-                .logout()
-                .logoutUrl("/logout")
-                .logoutSuccessUrl("/logout/success")
+        @Override
+        protected void configure(AuthenticationManagerBuilder auth) {
+            auth.authenticationProvider(customUserAuthenticationProvider);
+        }
 
-                .and()
-                .csrf().disable()
+        @Override
+        protected void configure(HttpSecurity http) throws Exception {
+            http.authorizeRequests()
+                    .antMatchers("/css/**", "/js/**", "/img/**", "/material-dashboard/**").permitAll()
+                    .antMatchers("/login/**").permitAll()
+                    .antMatchers("/logout/**").permitAll()
+                    .antMatchers("/**").hasRole("USER");
 
-                .addFilter(jwtAuthenticationFilter())
+            http.formLogin()
+                    .defaultSuccessUrl("/")
+                    .usernameParameter("username")
+                    .passwordParameter("password")
+                    .permitAll();
 
-                .exceptionHandling()
-                .accessDeniedPage("/errors/403")
-                .authenticationEntryPoint(loginUrlAuthenticationEntryPoint());
+            http.logout()
+                    .logoutUrl("/logout") // default
+                    .logoutSuccessUrl("/login")
+                    .permitAll();
 
-        http.headers().frameOptions().disable();
-    }
-
-    @Override
-    public void configure(WebSecurity web) throws Exception {
-        web.ignoring()
-                .antMatchers("/img/**")
-                .antMatchers("/js/**")
-                .antMatchers("/material-dashboard/**")
-        ;
-    }
-
-    @Bean
-    public JwtAuthenticationFilter jwtAuthenticationFilter() throws Exception {
-        JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(authenticationManager());
-        jwtAuthenticationFilter.setFilterProcessesUrl("/login");
-        jwtAuthenticationFilter.setUsernameParameter("username");
-        jwtAuthenticationFilter.setPasswordParameter("password");
-
-        jwtAuthenticationFilter.setAuthenticationSuccessHandler(
-                new SavedRequestAwareAuthenticationSuccessHandler() {{
-                    setDefaultTargetUrl("/");
-                }}
-        );
-
-        jwtAuthenticationFilter.setAuthenticationFailureHandler(
-                new SimpleUrlAuthenticationFailureHandler() {{
-                    setDefaultFailureUrl("/login/form?error=e");
-                }}
-        );
-
-        jwtAuthenticationFilter.afterPropertiesSet();
-
-        return jwtAuthenticationFilter;
-    }
-
-    @Bean
-    public LoginUrlAuthenticationEntryPoint loginUrlAuthenticationEntryPoint() {
-        return new CustomAuthenticationEntryPoint("/login/form");
+            http.csrf().disable();
+        }
     }
 
 }
