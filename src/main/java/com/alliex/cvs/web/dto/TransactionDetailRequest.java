@@ -21,6 +21,7 @@ public class TransactionDetailRequest {
 
     @Builder
     public TransactionDetailRequest(Long buyerId, Long merchantId, List<Map<String, String>> transProduct, String transPoint) {
+
         this.buyerId = buyerId;
         this.merchantId = merchantId;
         this.transProduct = transProduct;
