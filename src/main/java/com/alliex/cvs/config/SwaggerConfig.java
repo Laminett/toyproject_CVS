@@ -24,7 +24,7 @@ public class SwaggerConfig {
                 .apiInfo(getApiInfo())
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.alliex.cvs.web"))
-                .paths(PathSelectors.ant("/api/v1/**"))
+                .paths(PathSelectors.ant("/api/**"))
                 .build();
     }
 

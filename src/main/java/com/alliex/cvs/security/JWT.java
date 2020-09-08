@@ -41,11 +41,13 @@ public class JWT {
         options.setNotValidBeforeLeeway(0);
         options.setIssuedAt(true);
         options.setJwtId(false);
+
         return options;
     }
 
     public String generateToken(Map<String, Object> claims) {
         claims.put("iss", issuer);
+
         return signer.sign(claims, defaultOptions());
     }
 
@@ -54,6 +56,7 @@ public class JWT {
         claims.remove("exp");
         claims.remove("nbf");
         claims.remove("iat");
+
         return signer.sign(claims, defaultOptions());
     }
 

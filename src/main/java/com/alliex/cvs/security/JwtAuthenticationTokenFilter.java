@@ -51,7 +51,7 @@ public class JwtAuthenticationTokenFilter extends GenericFilterBean {
                     if (log.isDebugEnabled())
                         log.debug("Jwt parse result: {}", claims);
 
-                    //-- 만료 10분 전
+                    // 만료 10분 전
                     if (canRefresh(claims, 60 * 10)) {
                         String newAuthorizationToken = jwt.refreshToken(authorizationToken);
                         response.setHeader("api_key", newAuthorizationToken);
@@ -100,6 +100,7 @@ public class JwtAuthenticationTokenFilter extends GenericFilterBean {
     @SuppressWarnings("unchecked")
     private List<GrantedAuthority> obtainAuthorities(Map<String, Object> claims) {
         Collection<Map<String, String>> authMaps = (Collection<Map<String, String>>) claims.get("roles");
+
         return authMaps.stream()
                 .map(authMap -> new SimpleGrantedAuthority(MapUtils.getString(authMap, "authority", "ROLE_ANONYMOUS")))
                 .collect(Collectors.toList());
