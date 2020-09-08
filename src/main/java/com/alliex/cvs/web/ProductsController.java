@@ -1,21 +1,13 @@
 package com.alliex.cvs.web;
 
-import com.alliex.cvs.config.security.LoginUser;
-import com.alliex.cvs.domain.product.Product;
-import com.alliex.cvs.domain.product.ProductRepository;
+import com.alliex.cvs.domain.user.LoginUser;
 import com.alliex.cvs.service.ProductsService;
-import com.alliex.cvs.web.dto.ProductRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.List;
 
 
 @RequiredArgsConstructor

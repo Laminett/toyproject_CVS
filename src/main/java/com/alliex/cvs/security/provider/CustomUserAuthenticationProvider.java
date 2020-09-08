@@ -1,5 +1,6 @@
-package com.alliex.cvs.config.security;
+package com.alliex.cvs.security.provider;
 
+import com.alliex.cvs.domain.user.LoginUser;
 import com.alliex.cvs.util.AuthoritiesUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Qualifier;

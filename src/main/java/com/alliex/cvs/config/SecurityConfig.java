@@ -1,8 +1,9 @@
 
-package com.alliex.cvs.config.security;
+package com.alliex.cvs.config;
 
 import com.alliex.cvs.security.JwtAuthenticationTokenFilter;
 import com.alliex.cvs.security.provider.ApiUserAuthenticationProvider;
+import com.alliex.cvs.security.provider.CustomUserAuthenticationProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

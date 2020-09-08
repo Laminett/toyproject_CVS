@@ -1,6 +1,6 @@
 package com.alliex.cvs.security;
 
-import com.alliex.cvs.config.security.LoginUser;
+import com.alliex.cvs.domain.user.LoginUser;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.CharEncoding;

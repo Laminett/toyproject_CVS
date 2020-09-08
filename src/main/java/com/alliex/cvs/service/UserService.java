@@ -1,6 +1,6 @@
 package com.alliex.cvs.service;
 
-import com.alliex.cvs.config.security.LoginUser;
+import com.alliex.cvs.domain.user.LoginUser;
 import com.alliex.cvs.util.AuthoritiesUtils;
 import com.alliex.cvs.domain.user.User;
 import com.alliex.cvs.domain.user.UserRepository;
