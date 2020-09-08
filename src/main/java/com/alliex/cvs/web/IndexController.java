@@ -13,8 +13,6 @@ public class IndexController {
 
     @GetMapping("/")
     public String index(Model model, @AuthenticationPrincipal LoginUser loginUser) {
-        System.out.println("loginUser:" + loginUser);
-
         if (loginUser != null) {
             model.addAttribute("loginUser", loginUser);
         }
