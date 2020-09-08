@@ -5,6 +5,8 @@ import com.alliex.cvs.web.dto.PostsListResponse;
 import com.alliex.cvs.web.dto.PostsResponse;
 import com.alliex.cvs.web.dto.PostsSaveRequest;
 import com.alliex.cvs.web.dto.PostsUpdateRequest;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -29,6 +31,9 @@ public class PostsApiController {
     }
 
     @GetMapping("/api/v1/posts")
+    @ApiImplicitParams({
+        @ApiImplicitParam(name = "Authorization", value = "authorization header", required = true, dataType = "string", paramType = "header", defaultValue = "Bearer xxx")
+    })
     public List<PostsListResponse> getPosts() {
         return postsService.findAllDesc();
     }
