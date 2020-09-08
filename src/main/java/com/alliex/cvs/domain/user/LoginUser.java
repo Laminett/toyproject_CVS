@@ -1,4 +1,4 @@
-package com.alliex.cvs.config.security;
+package com.alliex.cvs.domain.user;
 
 import lombok.Getter;
 import lombok.Setter;

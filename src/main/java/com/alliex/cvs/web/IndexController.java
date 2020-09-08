@@ -1,6 +1,6 @@
 package com.alliex.cvs.web;
 
-import com.alliex.cvs.config.security.LoginUser;
+import com.alliex.cvs.domain.user.LoginUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -13,8 +13,6 @@ public class IndexController {
 
     @GetMapping("/")
     public String index(Model model, @AuthenticationPrincipal LoginUser loginUser) {
-        System.out.println("loginUser:" + loginUser);
-
         if (loginUser != null) {
             model.addAttribute("loginUser", loginUser);
         }

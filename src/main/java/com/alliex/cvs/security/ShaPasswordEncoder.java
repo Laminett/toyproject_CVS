@@ -1,4 +1,4 @@
-package com.alliex.cvs.config.security;
+package com.alliex.cvs.security;
 
 import com.alliex.cvs.util.CryptoUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;

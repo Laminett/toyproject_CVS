@@ -19,7 +19,6 @@ spring:
     hibernate:
       format_sql: true
       ddl-auto: update
-
 logging:
   level:
     org:
@@ -29,3 +28,10 @@ logging:
           descriptor:
             sql:
               BasicBinder: TRACE
+jwt:
+  token:
+    header: Authorization
+    issuer: alliex
+    clientId: cvs-jwt-app
+    clientSecret: cvs-jwt-secret
+    expirySeconds: 7200

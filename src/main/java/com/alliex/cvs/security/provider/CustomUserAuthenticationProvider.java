@@ -1,5 +1,6 @@
-package com.alliex.cvs.config.security;
+package com.alliex.cvs.security.provider;
 
+import com.alliex.cvs.domain.user.LoginUser;
 import com.alliex.cvs.util.AuthoritiesUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -23,6 +24,7 @@ import java.util.Collection;
 public class CustomUserAuthenticationProvider implements AuthenticationProvider {
 
     private UserDetailsService userDetailsService;
+
     private PasswordEncoder encoder;
 
     public CustomUserAuthenticationProvider(@Qualifier("userService") UserDetailsService userDetailsService, PasswordEncoder encoder) {
@@ -44,14 +46,13 @@ public class CustomUserAuthenticationProvider implements AuthenticationProvider 
         user.setUsername(findUser.getUsername());
         user.setPassword(findUser.getPassword());
 
-        String password = user.getPassword();
-        if (!StringUtils.equals(password, encoder.encode(String.valueOf(token.getCredentials())))) {
+        if (!StringUtils.equals(user.getPassword(), encoder.encode(String.valueOf(token.getCredentials())))) {
             throw new BadCredentialsException("Invalid password");
         }
 
         Collection<? extends GrantedAuthority> authorities = AuthoritiesUtils.createAuthorities(user);
 
-        return new UsernamePasswordAuthenticationToken(user, password, authorities);
+        return new UsernamePasswordAuthenticationToken(user, user.getPassword(), authorities);
 
     }
 
