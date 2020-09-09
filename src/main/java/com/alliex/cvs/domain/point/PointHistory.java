@@ -1,35 +1,48 @@
 package com.alliex.cvs.domain.point;
 
 import com.alliex.cvs.domain.BaseTimeEntity;
+import com.alliex.cvs.domain.user.User;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Table;
 
 import javax.persistence.*;
 
 @Getter
-@NoArgsConstructor
 @Entity
+@NoArgsConstructor
 public class PointHistory extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private Long userId;
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User user;
 
     @Column(nullable = false)
     private Integer point;
 
-    @Column(nullable = false)
-    private String registrant;
+    @Column
+    private String status;
+
+    @Column
+    private String adminId;
 
     @Builder
-    public PointHistory(Long userId, Integer point, String registrant) {
-        this.userId = userId;
+    public PointHistory(Long id, User user, Integer point, String status, String adminId) {
+        this.id = id;
+        this.user = user;
         this.point = point;
-        this.registrant = registrant;
+        this.status = status;
+        this.adminId = adminId;
     }
+
+    public void update(Long id, String status, String adminId) {
+        this.id = id;
+        this.status = status;
+        this.adminId = adminId;
+    }
+
 }

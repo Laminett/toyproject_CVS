@@ -1,32 +1,32 @@
 package com.alliex.cvs.web.dto;
 
 import com.alliex.cvs.domain.point.PointHistory;
+import com.alliex.cvs.domain.user.User;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class PointHistoryRequest {
+public class PointHistorySaveRequest {
 
     private Long userId;
 
     private int point;
 
-    private String registrant;
-
     @Builder
-    public PointHistoryRequest(Long userId, Integer point, String registrant) {
+    public PointHistorySaveRequest(Long userId, Integer point) {
         this.userId = userId;
         this.point = point;
-        this.registrant = registrant;
     }
 
     public PointHistory toEntity() {
+        User setUser = new User();
+        setUser.setId(userId);
+
         return PointHistory.builder()
-                .userId(userId)
+                .user(setUser)
                 .point(point)
-                .registrant(registrant)
                 .build();
     }
 
