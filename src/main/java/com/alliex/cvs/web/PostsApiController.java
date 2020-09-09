@@ -30,7 +30,7 @@ public class PostsApiController {
         return postsService.update(id, request);
     }
 
-    @GetMapping("/api/v1/posts")
+    @GetMapping({"/api/v1/posts", "/web-api/v1/posts"})
     @ApiImplicitParams({
         @ApiImplicitParam(name = "Authorization", value = "authorization header", required = true, dataType = "string", paramType = "header", defaultValue = "Bearer xxx")
     })
