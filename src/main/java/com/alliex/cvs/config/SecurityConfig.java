@@ -82,8 +82,8 @@ public class SecurityConfig {
         protected void configure(HttpSecurity http) throws Exception {
             http.authorizeRequests()
                     .antMatchers("/css/**", "/js/**", "/img/**", "/material-dashboard/**").permitAll()
-                    .antMatchers("/login/**").permitAll()
-                    .antMatchers("/logout/**").permitAll()
+                    .antMatchers("/login/**", "/logout/**").permitAll()
+                    .antMatchers("/ping").permitAll()
                     .antMatchers("/**").hasRole("USER");
 
             http.formLogin()
