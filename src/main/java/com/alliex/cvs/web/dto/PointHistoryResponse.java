@@ -16,7 +16,7 @@ public class PointHistoryResponse {
 
     private Long id;
 
-    private User user;
+    private String username;
 
     private Integer point;
 
@@ -37,7 +37,7 @@ public class PointHistoryResponse {
     @Builder
     public PointHistoryResponse(PointHistory entity) {
         this.id = entity.getId();
-        this.user = entity.getUser();
+        this.username = entity.getUser().getUsername();
         this.point = entity.getPoint();
         this.status = entity.getStatus();
         this.adminId = entity.getAdminId();

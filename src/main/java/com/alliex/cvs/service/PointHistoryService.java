@@ -29,22 +29,22 @@ public class PointHistoryService {
     @Transactional(readOnly = true)
     public List<Integer> getPage(Pageable pageable, String status, String userName) {
         Page<PointHistory> getPage = null;
-        if(StringUtils.isBlank(userName)){
-            if(StringUtils.isBlank(status)) {
-                getPage = pointHistoryRepository.findAll(pageable);
-            }else{
-                getPage = pointHistoryRepository.findByStatus(pageable, status);
-            }
-        }else{
-            if(StringUtils.isBlank(status)) {
-                getPage = pointHistoryRepository.findByUserUsername(pageable, userName);
-            }else{
+        if (StringUtils.isNotBlank(userName)) {
+            if (StringUtils.isNotBlank(status)) {
                 getPage = pointHistoryRepository.findByStatusAndUserUsername(pageable, status, userName);
+            } else {
+                getPage = pointHistoryRepository.findByUserUsername(pageable, userName);
+            }
+        } else {
+            if (StringUtils.isNotBlank(status)) {
+                getPage = pointHistoryRepository.findByStatus(pageable, status);
+            } else {
+                getPage = pointHistoryRepository.findAll(pageable);
             }
         }
 
         List<Integer> pages = new ArrayList<>();
-        for(int i = 1; i<= getPage.getTotalPages(); i++) {
+        for (int i = 1; i <= getPage.getTotalPages(); i++) {
             pages.add(i);
         }
 
@@ -54,45 +54,47 @@ public class PointHistoryService {
     @Transactional(readOnly = true)
     public List<PointHistoryResponse> getPointHistory(Pageable pageable, String status, String userName) {
         List<PointHistoryResponse> pointHistoryList = null;
-        if(StringUtils.isBlank(userName)){
-            if(StringUtils.isBlank(status)) {
-                pointHistoryList = pointHistoryRepository.findAll(pageable).stream().map(PointHistoryResponse::new).collect(Collectors.toList());
-            }else{
-                pointHistoryList = pointHistoryRepository.findByStatus(pageable, status).stream().map(PointHistoryResponse::new).collect(Collectors.toList());
-            }
-        }else{
-            if(StringUtils.isBlank(status)) {
-                pointHistoryList = pointHistoryRepository.findByUserUsername(pageable, userName).stream().map(PointHistoryResponse::new).collect(Collectors.toList());
-            }else{
+        if (StringUtils.isNotBlank(userName)) {
+            if (StringUtils.isNotBlank(status)) {
                 pointHistoryList = pointHistoryRepository.findByStatusAndUserUsername(pageable, status, userName).stream().map(PointHistoryResponse::new).collect(Collectors.toList());
+            } else {
+                pointHistoryList = pointHistoryRepository.findByUserUsername(pageable, userName).stream().map(PointHistoryResponse::new).collect(Collectors.toList());
             }
+        } else {
+            if (StringUtils.isNotBlank(status)) {
+                pointHistoryList = pointHistoryRepository.findByStatus(pageable, status).stream().map(PointHistoryResponse::new).collect(Collectors.toList());
+            } else {
+                pointHistoryList = pointHistoryRepository.findAll(pageable).stream().map(PointHistoryResponse::new).collect(Collectors.toList());
+            }
+
         }
 
-        for (PointHistoryResponse pointHistoryResponse : pointHistoryList){
-            if("Y".equals(pointHistoryResponse.getStatus())) {
+        for (PointHistoryResponse pointHistoryResponse : pointHistoryList) {
+            if ("Y".equals(pointHistoryResponse.getStatus())) {
                 pointHistoryResponse.setIsApproved("Y");
             }
 
             pointHistoryResponse.setRequestDate(pointHistoryResponse.getCreatedDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:dd")));
-            if(pointHistoryResponse.getModifiedDate() != null) {
+            if (pointHistoryResponse.getModifiedDate() != null) {
                 pointHistoryResponse.setUpdateDate(pointHistoryResponse.getModifiedDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:dd")));
             }
         }
+
         return pointHistoryList;
     }
 
     @Transactional
-    public Long update(Long id, PointHisotryUpdateRequest request){
+    public Long update(Long id, PointHisotryUpdateRequest request) {
         PointHistory pointHistory = pointHistoryRepository.findById(id)
                 .orElseThrow(() -> new PointHistoryNotFoundException("not found pointHistory. id: " + id));
 
         pointHistory.update(id, request.getStatus(), request.getAdminId());
 
-        if("Y".equals(pointHistory.getStatus())){
+        if ("Y".equals(pointHistory.getStatus())) {
             pointService.updatePointPlus(pointHistory.getUser().getId(), pointHistory.getPoint());
         }
 
-        return  pointHistory.getId();
+        return pointHistory.getId();
     }
 
     @Transactional

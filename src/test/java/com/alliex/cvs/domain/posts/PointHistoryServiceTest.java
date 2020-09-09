@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-public class PointHistoryTest {
+public class PointHistoryServiceTest {
 
     @Autowired
     PointHistoryRepository pointHistoryRepository;
@@ -29,16 +29,6 @@ public class PointHistoryTest {
 
         Long result = pointHistoryService.save(pointHistorySaveRequest);
         System.out.println("result : " + result);
-    }
-
-    @Test
-    public void stringIsEmpty(){
-        String _temp1 = null;
-        if(StringUtils.isBlank(_temp1)){
-            System.out.println("empty");
-        }else{
-            System.out.println("not empty");
-        }
     }
 
 }

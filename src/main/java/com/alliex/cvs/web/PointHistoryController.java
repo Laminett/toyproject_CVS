@@ -17,13 +17,14 @@ public class PointHistoryController {
 
     private final PointHistoryService pointHistoryService;
 
-    @GetMapping("/pointHistory")
-    public String getPointHistory(Model model, @RequestParam(value="searchStatus", required = false) String status, @RequestParam(value = "searchUserName", required = false) String uesrName, @AuthenticationPrincipal LoginUser loginUser) {
+    @GetMapping("/point/history")
+    public String getPointHistory(Model model, @AuthenticationPrincipal LoginUser loginUser, @RequestParam(value = "searchStatus", required = false) String status, @RequestParam(value = "searchUserName", required = false) String uesrName) {
         model.addAttribute("loginUser", loginUser.getUsername());
 
         PageRequest pageRequest = PageRequest.of(0, 20, Sort.Direction.DESC, "id");
         model.addAttribute("page", pointHistoryService.getPage(pageRequest, status, uesrName));
         model.addAttribute("pointHistory", pointHistoryService.getPointHistory(pageRequest, status, uesrName));
+
         return "point-history";
     }
 

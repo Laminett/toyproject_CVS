@@ -21,11 +21,11 @@ public class PointHistorySaveRequest {
     }
 
     public PointHistory toEntity() {
-        User setUserId = new User();
-        setUserId.setId(userId);
+        User setUser = new User();
+        setUser.setId(userId);
 
         return PointHistory.builder()
-                .user(setUserId)
+                .user(setUser)
                 .point(point)
                 .build();
     }

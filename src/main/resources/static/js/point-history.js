@@ -1,5 +1,5 @@
 var main = {
-    init : function() {
+    init: function() {
         var _this = this;
         
         // 페이징
@@ -19,14 +19,14 @@ var main = {
             _this.update(id, status);
         });
     },
-    search:function() {
+    search: function() {
         var search_status = $('#search_status').val();
         var search_userName = $('#search_userName').val();
         var data = "searchStatus="+search_status+"&searchUserName="+search_userName;
 
         $.ajax({
             type: 'GET',
-            url: '/pointHistory',
+            url: '/point/history',
             dataType: 'html',
             contentType: 'application/json; charset=utf-8',
             data: data
@@ -38,7 +38,7 @@ var main = {
             alert(JSON.stringify(error));
         });
     },
-    paging : function (pageNum) {
+    paging: function (pageNum) {
         var search_userId = $('#search_userId').val();
         if (typeof search_userId == 'undefined') {
             search_userId = "";
@@ -47,7 +47,7 @@ var main = {
 
         $.ajax({
             type: 'GET',
-            url: '/api/v1/pointHistory',
+            url: '/api/v1/point/history',
             dataType: 'JSON',
             data: data
         }).done(function (data) {
@@ -55,7 +55,7 @@ var main = {
             data.forEach(function (element) {
                 var _html = " <tr id='" + element.id + "'> "
                     + "<td>" + element.id + "</td> "
-                    + "<td>" + element.user.username + "</td>"
+                    + "<td>" + element.username + "</td>"
                     + "<td class='text-center text-primary'>" + element.point + "</td>"
                     + "<td>" + element.requestDate + "</td>";
                 if(element.status == null){
@@ -83,7 +83,7 @@ var main = {
             alert(JSON.stringify(error));
         });
     },
-    update : function (id, status) {
+    update: function (id, status) {
         var data = {
             id: id,
             status : status,
@@ -92,13 +92,13 @@ var main = {
 
         $.ajax({
             type: 'PUT',
-            url: '/api/v1/pointHistory/'+id,
+            url: '/api/v1/point/history/'+id,
             dataType: 'json',
             contentType: 'application/json; charset=utf-8',
             data: JSON.stringify(data)
         }).done(function () {
             alert('승인완료');
-            window.location.href = '/pointHistory';
+            window.location.href = '/point/history';
         }).fail(function (error) {
             alert(JSON.stringify(error));
         })
