@@ -1,6 +1,6 @@
 package com.alliex.cvs.web;
 
-import com.alliex.cvs.config.security.LoginUser;
+import com.alliex.cvs.domain.user.LoginUser;
 import com.alliex.cvs.service.PointHistoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
