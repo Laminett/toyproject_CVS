@@ -22,17 +22,17 @@ public class PointHistoryResponse {
 
     private String status;
 
-    private String isApproved;
-
     private String adminId;
 
     private LocalDateTime createdDate;
 
-    private String requestDate;
-
     private LocalDateTime modifiedDate;
 
-    private String checkDate;
+    private String isApproved;
+
+    private String requestDate;
+
+    private String updateDate;
 
     @Builder
     public PointHistoryResponse(PointHistory entity) {

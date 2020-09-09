@@ -13,14 +13,17 @@ var main = {
         });
 
         // 상태 업데이트
-        $("[name='btn_approve'],[name='btn_deny']").on('click', function() {
+        $(document).on('click', "[name='btn_approve'],[name='btn_deny']", function() {
             var id = $(this).parent().parent().attr('id');
             var status = $(this).val();
             _this.update(id, status);
         });
     },
     search:function() {
-        var data = "searchStatus="+$('#search_status').val()+"&searchUserName=" + $('#search_userName').val();
+        var search_status = $('#search_status').val();
+        var search_userName = $('#search_userName').val();
+        var data = "searchStatus="+search_status+"&searchUserName="+search_userName;
+
         $.ajax({
             type: 'GET',
             url: '/pointHistory',
@@ -29,12 +32,18 @@ var main = {
             data: data
         }).done(function (data) {
             $('body').html(data.split('<body>')[1].split('</body>')[0]);
+            $('#search_status').val(search_status);
+            $('#search_userName').val(search_userName);
         }).fail(function (error) {
             alert(JSON.stringify(error));
         });
     },
     paging : function (pageNum) {
-        var data = "page="+pageNum+"&searchStatus="+$('#search_status').val()+"&searchUserName=" + $('#search_userId').val();;
+        var search_userId = $('#search_userId').val();
+        if (typeof search_userId == 'undefined') {
+            search_userId = "";
+        }
+        var data = "page="+pageNum+"&searchStatus="+$('#search_status').val()+"&searchUserName="+search_userId;
 
         $.ajax({
             type: 'GET',
@@ -45,22 +54,22 @@ var main = {
             $('tbody').empty();
             data.forEach(function (element) {
                 var _html = " <tr id='" + element.id + "'> "
-                    + "<td>1</td> "
-                    + "<td>id</td>"
-                    + "<td>" + element.point + "</td>"
+                    + "<td>" + element.id + "</td> "
+                    + "<td>" + element.user.username + "</td>"
+                    + "<td class='text-center text-primary'>" + element.point + "</td>"
                     + "<td>" + element.requestDate + "</td>";
                 if(element.status == null){
                     _html+=  "<td></td>"
                         + "<td class='td-actions text-center'>"
                         + "<button type='button' class='btn btn-info' name='btn_approve' value='Y'>"
                         + "<i class='material-icons'>done</i>"
-                        + "</button>"
+                        + "</button>&nbsp;"
                         + "<button type='button' class='btn btn-danger' name='btn_deny' value='N'>"
                         + "<i class='material-icons'>clear</i>"
                         + "</button>"
                         + "</td>";
                 }else{
-                    _html+= "<td>" + element.checkDate + "</td>";
+                    _html+= "<td>" + element.updateDate + "</td>";
                     if(element.isApproved == "Y"){
                         _html+= "<td>Arrpoved by " + element.adminId + "</td>";
                     }else {

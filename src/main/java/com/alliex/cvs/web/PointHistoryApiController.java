@@ -26,7 +26,7 @@ public class PointHistoryApiController {
 
     @ApiOperation(value = "Update Point History", notes = "충전 요청 업데이트")
     @PutMapping("/api/v1/pointHistory/{id}")
-    public boolean PointHistoryUpdate(@PathVariable Long id, @RequestBody PointHisotryUpdateRequest pointHisotryUpdateRequest) {
+    public Long PointHistoryUpdate(@PathVariable Long id, @RequestBody PointHisotryUpdateRequest pointHisotryUpdateRequest) {
         return pointHistoryService.update(id, pointHisotryUpdateRequest);
     }
 
