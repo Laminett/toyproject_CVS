@@ -1,0 +1,72 @@
+{{>layout/header}}
+<div class="content" id="context">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header card-header-primary">
+                        <div style="float: left">
+                            <h4 class="card-title ">Users</h4>
+                            <p class="card-category"> Here is a subtitle for this table</p>
+                        </div>
+                        <div style="float: right">
+                            <form class="form-inline ml-auto" id="searchForm">
+                                <div class="form-group">
+                                    <select id="searchField" class="form-control" data-style="btn btn-link" name="searchField">
+                                        <option selected>Choose...</option>
+                                        <option>id</option>
+                                        <option>buyerId</option>
+                                        <option>merchantId</option>
+                                        <option>paymentType</option>
+                                        <option>transPoint</option>
+                                        <option>transState</option>
+                                        <option>transType</option>
+                                    </select>
+                                </div>
+                                <div class="form-group has-white">
+                                    <input id="searchValue" name="searchValue" type="text" value="" class="form-control" placeholder="Search">
+                                </div>
+                                <button type="button" class="btn btn-white btn-round btn-just-icon" id="search" name="search">
+                                    <i class="material-icons">search</i>
+                                    <div class="ripple-container"></div>
+                                </button>
+                            </form>
+
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive" id="result1">
+                            <table class="table" id="templ1">
+                                <thead class=" text-primary">
+                                <th>No</th>
+                                <th>사번</th>
+                                <th>이름</th>
+                                <th>부서</th>
+                                <th>등록일</th>
+                                </thead>
+                                <tbody id="usersArea"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination justify-content-center"></ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script id="usersTemplate" type="text/x-jquery-tmpl">
+<tr>
+    <td>No</td>
+    <td>${username}</td>
+    <td>${fullName}</td>
+    <td>${department}</td>
+    <td>${createdDate}</td>
+</tr>
+</script>
+<script type="text/javascript" src="/js/plugins/jquery.tmpl.js"></script>
+<script type="text/javascript" src="/js/user.js"></script>
+{{>layout/footer}}
