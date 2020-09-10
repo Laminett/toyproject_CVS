@@ -47,7 +47,7 @@ var main = {
 
         $.ajax({
             type: 'GET',
-            url: '/api/v1/point/history',
+            url: '/web-api/v1/point/history',
             dataType: 'JSON',
             data: data
         }).done(function (data) {
@@ -92,7 +92,7 @@ var main = {
 
         $.ajax({
             type: 'PUT',
-            url: '/api/v1/point/history/'+id,
+            url: '/web-api/v1/point/history/'+id,
             dataType: 'json',
             contentType: 'application/json; charset=utf-8',
             data: JSON.stringify(data)
