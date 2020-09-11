@@ -2,6 +2,10 @@ package com.alliex.cvs.service;
 
 import com.alliex.cvs.domain.product.Product;
 import com.alliex.cvs.domain.product.ProductRepository;
+import com.alliex.cvs.domain.product.ProductSpecs;
+import com.alliex.cvs.domain.transaction.TransactionSpecs;
+import com.alliex.cvs.domain.type.TransState;
+import com.alliex.cvs.domain.type.TransType;
 import com.alliex.cvs.exception.ProductAmountLimitExcessException;
 import com.alliex.cvs.exception.ProductNotFoundException;
 import com.alliex.cvs.web.dto.*;
@@ -11,9 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -22,38 +24,15 @@ public class ProductsService {
 
     private final ProductRepository productRepository;
 
-    @Transactional(readOnly = true)
-    public List<Integer> getPages(Pageable pageable, String searchField, String searchValue) {
-        // paging default size = 20
-        Page<Product> getPage = null;
-
-        if ("name".equals(searchField)) {
-            getPage = productRepository.findByName(pageable, searchValue);
-        } else if ("category".equals(searchField)) {
-            getPage = productRepository.findByCategoryId(pageable, searchValue);
-        } else {
-            getPage = productRepository.findAll(pageable);
-        }
-
-        List<Integer> pages = new ArrayList<>();
-        for (int i = 1; i <= getPage.getTotalPages(); i++) {
-            pages.add(i);
-        }
-        return pages;
-    }
 
     @Transactional(readOnly = true)
-    public List<ProductResponse> getProducts(Pageable pageable, String selector, String findText) {
-        if ("name".equals(selector)) {
-            return productRepository.findByName(pageable, findText).stream()
-                    .map(ProductResponse::new).collect(Collectors.toList());
-        } else if ("category".equals(selector)) {
-            return productRepository.findByCategoryId(pageable, findText).stream()
-                    .map(ProductResponse::new).collect(Collectors.toList());
-        } else {
-            return productRepository.findAll(pageable).stream()
-                    .map(ProductResponse::new).collect(Collectors.toList());
+    public Page<Product> getProducts(Pageable pageable, ProductRequest searchRequest) {
+        Map<ProductSpecs.SearchKey, Object> searchKeys = new HashMap<>();
+        if (!"".equals(searchRequest.getSearchField()) && !"".equals(searchRequest.getSearchValue())) {
+            searchKeys.put(ProductSpecs.SearchKey.valueOf(searchRequest.getSearchField().toUpperCase()), searchRequest.getSearchValue());
         }
+
+        return searchKeys.isEmpty() ? productRepository.findAll(pageable) : productRepository.findAll(ProductSpecs.searchWith(searchKeys), pageable);
     }
 
     @Transactional
@@ -74,7 +53,7 @@ public class ProductsService {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new ProductNotFoundException("not found product. id: " + id));
 
-        product.update(request.getId(), request.getCategoryId(), request.getName(), request.getPoint(), request.getAmount(), request.getIsEnabled(), request.getModifiedId());
+        product.update(request.getId(), request.getCategoryId(), request.getName(), request.getPoint(), request.getQuantity(), request.getIsEnabled(), request.getModifiedId());
 
         return id;
     }
@@ -88,26 +67,26 @@ public class ProductsService {
     }
 
     @Transactional
-    public Long updateAmountPlus(Long productId, int amount) {
+    public Long updateAmountPlus(Long productId, int quantity) {
         Product productEntity = productRepository.findById(productId)
                 .orElseThrow(() -> new ProductNotFoundException("Not Found product. productId : " + productId));
 
-        productEntity.updateAmount(productEntity.getAmount() + amount);
+        productEntity.updateQuantity(productEntity.getQuantity() + quantity);
 
         return productId;
     }
 
     @Transactional
-    public Long updateAmountMinus(Long productId, int amount) {
+    public Long updateAmountMinus(Long productId, int quantity) {
         Product productEntity = productRepository.findById(productId)
                 .orElseThrow(() -> new ProductNotFoundException("Not Found product. productId : " + productId));
 
-        int _amount = productEntity.getAmount() - amount;
-        if (_amount < 0) {
-            throw new ProductAmountLimitExcessException("Not enough Product amount. amount :" + _amount);
+        int _quantity = productEntity.getQuantity() - quantity;
+        if (_quantity < 0) {
+            throw new ProductAmountLimitExcessException("Not enough Product amount. amount :" + _quantity);
         }
 
-        productEntity.updateAmount(_amount);
+        productEntity.updateQuantity(_quantity);
 
         return productId;
     }

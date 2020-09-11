@@ -39,7 +39,7 @@ var main = {
 
             $.ajax({
                 type: 'GET',
-                url: '/api/v1/transactions/Detail/' + transId,
+                url: '/web-api/v1/transactions/Detail/' + transId,
                 dataType: 'json'
             }).done(function (data) {
                 $('#transactionDetail').empty();
@@ -75,7 +75,7 @@ var main = {
 
         $.ajax({
             type: 'GET',
-            url: '/api/v1/transactions',
+            url: '/web-api/v1/transactions',
             data: searchData
         }).done(function (data) {
             $('#transactions').empty();
@@ -122,7 +122,7 @@ var main = {
     refund: function (transId) {
         $.ajax({
             type: 'POST',
-            url: '/api/v1/transactions/refund/' + transId,
+            url: '/web-api/v1/transactions/refund/' + transId,
             contentType: 'application/json; charset=utf-8',
         }).done(function () {
             alert('취소 처리 되었습니다.');
