@@ -45,7 +45,6 @@ var main = {
         // 상품 추가와 업데이트 창 데이터 전달
         $(document).on('click', '[data-toggle=modal]', function () {
             if ($(this).text() == "edit") {
-                debugger;
                 addOrUpdate = 1;
                 $('#modifiedId').val($('#LoginUser').val());
                 $('#createdId').val('');
