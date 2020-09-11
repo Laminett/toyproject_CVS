@@ -10,17 +10,17 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UserSaveRequest {
 
-    protected String username;
+    private String username;
 
-    protected String password;
+    private String password;
 
-    protected String department;
+    private String department;
 
-    protected String fullName;
+    private String fullName;
 
-    protected String email;
+    private String email;
 
-    protected String phoneNumber;
+    private String phoneNumber;
 
     @Builder
     public UserSaveRequest(String username, String password, String department, String fullName, String email, String phoneNumber) {

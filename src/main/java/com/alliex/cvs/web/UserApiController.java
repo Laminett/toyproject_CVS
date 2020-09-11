@@ -1,6 +1,7 @@
 package com.alliex.cvs.web;
 
 import com.alliex.cvs.service.UserService;
+import com.alliex.cvs.web.dto.UserRequest;
 import com.alliex.cvs.web.dto.UserResponse;
 import com.alliex.cvs.web.dto.UserSaveRequest;
 import com.alliex.cvs.web.dto.UserUpdateRequest;
@@ -24,14 +25,14 @@ public class UserApiController {
 
     @ApiOperation(value = "Update User")
     @PostMapping({"api/v1/users/{id}", "web-api/v1/users/{id}"})
-    public Long update(@PathVariable Long id, @RequestBody UserUpdateRequest request) {
-        return userService.update(id, request);
+    public Long update(@PathVariable Long id, @RequestBody UserUpdateRequest userUpdateRequest) {
+        return userService.update(id, userUpdateRequest);
     }
 
     @ApiOperation(value = "Get Users")
     @GetMapping("/web-api/v1/users")
-    public List<UserResponse> getUsers() {
-        return userService.getUsers();
+    public List<UserResponse> getUsers(@RequestBody UserRequest userRequest) {
+        return userService.getUsers(userRequest);
     }
 
     @ApiOperation(value = "Get User")

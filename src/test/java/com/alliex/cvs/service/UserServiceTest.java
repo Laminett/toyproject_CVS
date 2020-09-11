@@ -1,5 +1,6 @@
 package com.alliex.cvs.service;
 
+import com.alliex.cvs.web.dto.UserRequest;
 import com.alliex.cvs.web.dto.UserResponse;
 import com.alliex.cvs.web.dto.UserSaveRequest;
 import com.alliex.cvs.web.dto.UserUpdateRequest;
@@ -76,6 +77,18 @@ public class UserServiceTest {
         List<UserResponse> users = userService.getUsers();
 
         assertThat(users.size()).isGreaterThanOrEqualTo(1);
+    }
+
+    @Test
+    public void getUsersByFullName() {
+        String fullName = "admin";
+        UserRequest userRequest = new UserRequest();
+        userRequest.setFullName(fullName);
+
+        List<UserResponse> users = userService.getUsers(userRequest);
+        users.forEach(userResponse -> {
+            assertThat(userResponse.getFullName()).isEqualTo(fullName);
+        });
     }
 
     @Test

@@ -4,6 +4,7 @@ import com.alliex.cvs.domain.user.LoginUser;
 import com.alliex.cvs.domain.user.User;
 import com.alliex.cvs.domain.user.UserRepository;
 import com.alliex.cvs.util.AuthoritiesUtils;
+import com.alliex.cvs.web.dto.UserRequest;
 import com.alliex.cvs.web.dto.UserResponse;
 import com.alliex.cvs.web.dto.UserSaveRequest;
 import com.alliex.cvs.web.dto.UserUpdateRequest;
@@ -104,6 +105,16 @@ public class UserService implements UserDetailsService {
                 .orElseThrow(() -> new IllegalArgumentException("User " + id + " does not exist."));
 
         return new UserResponse(user);
+    }
+
+    public List<UserResponse> getUsers(UserRequest userRequest) {
+        if (StringUtils.isNotBlank(userRequest.getFullName())) {
+            return userRepository.findByFullName(userRequest.getFullName()).stream()
+                    .map(UserResponse::new)
+                    .collect(Collectors.toList());
+        } else {
+            return getUsers();
+        }
     }
 
 }
