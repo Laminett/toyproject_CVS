@@ -3,8 +3,10 @@ package com.alliex.cvs.web.dto;
 import com.alliex.cvs.domain.user.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
+@Setter
 @NoArgsConstructor
 public class UserUpdateRequest {
 
