@@ -86,13 +86,25 @@ var main = {
             timeBeforeScanTest: 100,
             avgTimeByChar: 20,
             onComplete: function (barcode, qty) {
-                if ($('#addUpdateModal').is(':visible')) {
-                    _this.barcodeScan(barcode, qty);
-                    _this.addFormVisible(true);
-                    $('.description').text('Input Product Content');
-                } else {
+                if (!$('#addUpdateModal').is(':visible')) {
                     alert('Please Use barcode scan on Add/Update Process.');
+                    return false;
                 }
+
+                $.ajax({
+                    type: 'GET',
+                    url: '/web-api/v1/barcodescan/' + barcode,
+                    dataType: 'JSON',
+                    contentType: 'application/json; charset=utf-8',
+                }).done(function (data) {
+                    alert("this barcode already added \nname:" + data.name + ", point:" + data.point);
+                }).fail(function (error) {
+                    if (error.responseJSON.message.indexOf("not found Products.") > -1) {
+                        _this.barcodeScan(barcode, qty);
+                        _this.addFormVisible(true);
+                        $('.description').text('Input Product Content');
+                    }
+                });
             }
         });
     },

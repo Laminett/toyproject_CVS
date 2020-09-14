@@ -43,9 +43,12 @@ public class ProductSpecs {
             switch (key) {
                 case CATEGORY:
                 case NAME:
-                case POINT:
                     predicates.add(builder.like(
                             root.get(key.value), "%" + searchKeyword.get(key) + "%"
+                    ));
+                case POINT:
+                    predicates.add(builder.equal(
+                            root.get(key.value), searchKeyword.get(key)
                     ));
                     break;
                 default:
