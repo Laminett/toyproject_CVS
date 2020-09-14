@@ -39,11 +39,8 @@ var main = {
         });
     },
     paging: function (pageNum) {
-        var search_userId = $('#search_userId').val();
-        if (typeof search_userId == 'undefined') {
-            search_userId = "";
-        }
-        var data = "page="+pageNum+"&searchStatus="+$('#search_status').val()+"&searchUserName="+search_userId;
+        var search_userName = $('#search_userName').val();
+        var data = "page="+pageNum+"&searchStatus="+$('#search_status').val()+"&searchUserName="+search_userName;
 
         $.ajax({
             type: 'GET',
