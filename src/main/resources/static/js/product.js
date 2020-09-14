@@ -60,7 +60,7 @@ var main = {
                     $('#isEnabled').prop('checked', false);
                 }
                 $('#addProuct').text('MODIFY Product');
-                $('.card-title').text('Modify Product')
+                $('#modalTitle').text('Modify Product')
                 $('.description').text('Modify Product Detail');
                 _this.addFormVisible(true);
             } else {
@@ -74,7 +74,7 @@ var main = {
                 $('#barcode').val('');
                 $('#isEnabled').prop('checked', false);
                 $('#addProuct').text('ADD Product');
-                $('.card-title').text('Add Product');
+                $('#modalTitle').text('Add Product');
                 $('.description').text('Please scan barcode first');
                 // 상품 추가시 바코드 스캔 이후 상품정보 입력 가능하게 함.
                 _this.addFormVisible(false);
