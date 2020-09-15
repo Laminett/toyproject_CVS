@@ -1,11 +1,12 @@
 package com.alliex.cvs.domain.settle;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
-public interface SettleRepository extends JpaRepository<Settle, Long> {
+import java.util.Optional;
 
-    Page<Settle> findByDate(Pageable pageable, String date);
+public interface SettleRepository extends JpaRepository<Settle, Long>, JpaSpecificationExecutor<Settle> {
+
+    Optional<Settle> findById(Long id);
 
 }

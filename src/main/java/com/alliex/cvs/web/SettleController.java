@@ -18,13 +18,14 @@ public class SettleController {
     private final SettleService settleService;
 
     @GetMapping("/settle")
-    public String getSettleList(Model model, @AuthenticationPrincipal LoginUser loginUser, @RequestParam(value = "searchDate", required = false) String date) {
+    public String getSettleList(Model model, @AuthenticationPrincipal LoginUser loginUser, @RequestParam(value = "searchDate", required = false) String date, @RequestParam(value = "searchUsername", required = false) String username) {
         model.addAttribute("loginUser", loginUser.getUsername());
 
         PageRequest pageRequest = PageRequest.of(0, 20, Sort.Direction.DESC, "id");
-        model.addAttribute("page", settleService.getPage(pageRequest, date));
-        model.addAttribute("settle", settleService.getSettleList(pageRequest, date));
+        model.addAttribute("page", settleService.getPage(pageRequest, date, username));
+        model.addAttribute("settle", settleService.getSettleList(pageRequest, date, username));
 
         return "settle";
     }
+
 }

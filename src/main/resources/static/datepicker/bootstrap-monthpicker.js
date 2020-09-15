@@ -11,11 +11,7 @@
 
     'use strict';
 
-    var months = [
-        '一', '二', '三', '四',
-        '五', '六', '七', '八',
-        '九', '十', '十一', '十二'
-    ];
+    var months = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'];
 
     function bind(obj, func) {
         return function() {

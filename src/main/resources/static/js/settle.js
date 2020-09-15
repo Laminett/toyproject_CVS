@@ -2,30 +2,18 @@ var main = {
     init: function () {
         var _this = this;
 
-        $('.monthpicker').bootstrapMonthpicker({
-        });
-
-
-        /*$(".datepicker").monthpicker({pattern: 'yyyy/mm'}).bind('monthpicker-check', function (e, isCheck, value) {
-            $(this).val(value);
-        });*/
-
-        //$('.datepicker').datepicker();
-        /*$(document).ready(function(){
-            var date_input=$('.datepicker');
-            var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
-            var options={
-                format: 'mm/dd/yyyy',
-                container: container,
-                todayHighlight: true,
-                autoclose: true,
-            };
-            date_input.datepicker(options);
-        });*/
+        $('.monthpicker').bootstrapMonthpicker({});
 
         // 검색 이벤트
         $('#btn_search').click(function() {
             _this.search();
+        });
+
+        // 상태 업데이트
+        $(document).on('click', "[name='btn_approve'],[name='btn_deny']", function() {
+            var id = $(this).parent().parent().attr('id');
+            var status = $(this).val();
+            _this.update(id, status);
         });
 
         // 페이징
@@ -34,9 +22,9 @@ var main = {
         });
     },
     search: function () {
-        var search_date = $('#serch_date').val();
-        var searchUserName = $('#searchUserName').val();
-        var data = "searchDate="+search_date+"&searchUserName="+searchUserName;
+        var search_date = $('#search_date').val();
+        var search_username = $('#search_username').val();
+        var data = "searchDate="+search_date.replace(/[^0-9]/g,"")+"&searchUsername="+search_username;
 
         $.ajax({
             type: 'GET',
@@ -44,20 +32,16 @@ var main = {
             dataType: 'html',
             contentType: 'application/json; charset=utf-8',
             data: data
-        }).done(function (date) {
+        }).done(function (data) {
             $('body').html(data.split('<body>')[1].split('</body>')[0]);
             $('#search_date').val(search_date);
-            $('#searchUserName').val(searchUserName);
+            $('#search_username').val(search_username);
         }).fail(function (error) {
             alert(JSON.stringify(error));
         });
     },
-    paging: function () {
-        var searchUserName = $('#searchUserName').val();
-        if (typeof searchUserName == 'undefined') {
-            searchUserName = "";
-        }
-        var data = "page="+pageNum+"&searchDate="+$('#search_date').val()+"&searchUserName="+searchUserName;
+    paging: function (pageNum) {
+        var data = "page="+pageNum+"&searchDate="+$('#search_date').val().replace(/[^0-9]/g,"")+"&searchUsername="+$('#search_username').val();
 
         $.ajax({
             type: 'GET',
@@ -65,12 +49,44 @@ var main = {
             dataType: 'JSON',
             data: data
         }).done(function (data) {
-
+            $('tbody').empty();
+            data.forEach(function (element) {
+                var _html = "<tr id='" + element.id + "' class='text-center'>"
+                    + "<td>" + element.id + "</td> "
+                    + "<td>" + element.username + "</td>"
+                    + "<td>" + element.date + "</td>"
+                    + "<td>" + element.approvalCount + "</td>"
+                    + "<td>" + element.approvalAmount + "</td>"
+                    + "<td>" + element.cancelCount + "</td>"
+                    + "<td>" + element.cancelAmount + "</td>"
+                    + "<td>" + element.totalCount + "</td>"
+                    + "<td>" + element.totalAmount + "</td>"
+                    + "<td>" + element.createdDate + "</td>";
+                if(element.status == null){
+                    _html+=  "<td></td>"
+                        + "<td class='td-actions text-center'>"
+                        + "<button type='button' class='btn btn-info' name='btn_approve' value='Y'>"
+                        + "<i class='material-icons'>done</i>"
+                        + "</button>&nbsp;"
+                        + "<button type='button' class='btn btn-danger' name='btn_deny' value='N'>"
+                        + "<i class='material-icons'>clear</i>"
+                        + "</button>"
+                        + "</td>";
+                }else{
+                    _html+= "<td>" + element.modifiedDate + "</td>";
+                    if(element.status == "Y"){
+                        _html+= "<td>Arrpoved by " + element.adminId + "</td>";
+                    }else {
+                        _html+= "<td>Denied by " + element.adminId + "</td>";
+                    }
+                }
+                $('tbody').append(_html);
+            });
         }).fail(function (error) {
             alert(JSON.stringify(error));
         });
     },
-    update: function () {
+    update: function (id, status) {
         var data = {
             id: id,
             status : status,
@@ -83,8 +99,8 @@ var main = {
             dataType: 'json',
             contentType: 'application/json; charset=utf-8',
             data: JSON.stringify(data)
-        }).done(function () {
-            alert('승인완료');
+        }).done(function (data) {
+            alert(data.message.info.msg.success);
             window.location.href = '/settle';
         }).fail(function (error) {
             alert(JSON.stringify(error));
