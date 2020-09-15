@@ -189,8 +189,6 @@ var main = {
             $('#name').focus();
 
             return false;
-        } else {
-
         }
 
         if (!$('#point').val()) {

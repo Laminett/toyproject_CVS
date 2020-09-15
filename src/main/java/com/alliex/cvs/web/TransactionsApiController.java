@@ -51,13 +51,13 @@ public class TransactionsApiController {
     }
 
     @ApiOperation(value = "get Transaction Status", notes = "거래상태 조회")
-    @GetMapping({"/api/v1/transactions/transactionState/{barcode}", "/web-api/v1/transactions/transactionState/{barcode}"})
-    public String getTransactionState(@PathVariable String barcode) {
+    @GetMapping({"/api/v1/transactions/state/{barcode}", "/web-api/v1/transactions/state/{barcode}"})
+    public Transaction getTransactionState(@PathVariable String barcode) {
         return transactionsService.getTransStateByBarcode(barcode);
     }
 
     @ApiOperation(value = "get Transaction detail", notes = "거래 상세정보 조회")
-    @GetMapping({"/api/v1/transactions/Detail/{transId}", "/web-api/v1/transactions/Detail/{transId}"})
+    @GetMapping({"/api/v1/transactions/{transId}", "/web-api/v1/transactions/{transId}"})
     public List<TransactionDetailResponse> getTransactionDetailById(@PathVariable Long transId) {
         return transactionsDetailService.getDetails(transId);
     }
