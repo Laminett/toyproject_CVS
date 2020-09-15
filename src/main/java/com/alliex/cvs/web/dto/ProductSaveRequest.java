@@ -17,7 +17,7 @@ public class ProductSaveRequest {
 
     private String name;
 
-    private BigDecimal point;
+    private Long point;
 
     private Integer quantity;
 
@@ -27,7 +27,7 @@ public class ProductSaveRequest {
 
 
     @Builder
-    public ProductSaveRequest(String categoryId, String barcode, String name, BigDecimal point, Integer quantity, Boolean isEnabled, String createdId) {
+    public ProductSaveRequest(String categoryId, String barcode, String name, Long point, Integer quantity, Boolean isEnabled, String createdId) {
         this.categoryId = categoryId;
         this.barcode = barcode;
         this.name = name;

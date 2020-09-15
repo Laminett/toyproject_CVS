@@ -29,7 +29,7 @@ public class Product extends BaseTimeEntity {
     private String name;
 
     @Column(nullable = false)
-    private BigDecimal point;
+    private Long point;
 
     @Column(nullable = false)
     private Integer quantity;
@@ -48,7 +48,7 @@ public class Product extends BaseTimeEntity {
     private Collection<TransactionDetail> transactionDetailId;
 
     @Builder
-    public Product(Long id, String categoryId, String barcode, String name, BigDecimal point, Integer quantity, Boolean isEnabled, String createdId, String modifiedId) {
+    public Product(Long id, String categoryId, String barcode, String name, Long point, Integer quantity, Boolean isEnabled, String createdId, String modifiedId) {
         this.id = id;
         this.categoryId = categoryId;
         this.barcode = barcode;
@@ -60,7 +60,7 @@ public class Product extends BaseTimeEntity {
         this.modifiedId = modifiedId;
     }
 
-    public void update(Long id, String categoryId, String name, BigDecimal point, Integer quantity, boolean isEnabled, String modifiedId) {
+    public void update(Long id, String categoryId, String name, Long point, Integer quantity, boolean isEnabled, String modifiedId) {
         this.id = id;
         this.categoryId = categoryId;
         this.name = name;

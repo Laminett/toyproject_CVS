@@ -15,7 +15,7 @@ public class ProductUpdateRequest {
 
     private String name;
 
-    private BigDecimal point;
+    private Long point;
 
     private Integer quantity;
 
@@ -24,7 +24,7 @@ public class ProductUpdateRequest {
     private String modifiedId;
 
     @Builder
-    public ProductUpdateRequest(String categoryId, String name, BigDecimal point, Integer quantity, Boolean isEnabled, String modifiedId) {
+    public ProductUpdateRequest(String categoryId, String name, Long point, Integer quantity, Boolean isEnabled, String modifiedId) {
         this.categoryId = categoryId;
         this.name = name;
         this.point = point;

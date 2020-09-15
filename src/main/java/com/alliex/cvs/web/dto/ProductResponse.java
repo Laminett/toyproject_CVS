@@ -17,7 +17,7 @@ public class ProductResponse {
 
     private String name;
 
-    private BigDecimal point;
+    private Long point;
 
     private Integer quantity;
 

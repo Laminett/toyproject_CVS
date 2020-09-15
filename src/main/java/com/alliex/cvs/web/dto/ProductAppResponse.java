@@ -11,7 +11,7 @@ public class ProductAppResponse {
 
     private String name;
 
-    private BigDecimal point;
+    private Long point;
 
     @Builder
     public ProductAppResponse(Product entity) {
