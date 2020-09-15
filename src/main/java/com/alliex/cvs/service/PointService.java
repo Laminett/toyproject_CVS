@@ -35,7 +35,7 @@ public class PointService {
         int originPoint = pointEntity.getPoint();
         int resultPoint = originPoint + point;
         // 충전한도는 정해지는 대로 변경
-        if(resultPoint > 500) {
+        if(resultPoint > 2000000) {
             throw new PointLimitExcessException("The point is too much to charge. point : " + point);
         }
 

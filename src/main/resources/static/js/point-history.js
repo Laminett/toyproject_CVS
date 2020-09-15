@@ -21,8 +21,8 @@ var main = {
     },
     search: function() {
         var search_status = $('#search_status').val();
-        var search_userName = $('#search_userName').val();
-        var data = "searchStatus="+search_status+"&searchUserName="+search_userName;
+        var search_username = $('#search_username').val();
+        var data = "searchStatus="+search_status+"&searchUsername="+search_username;
 
         $.ajax({
             type: 'GET',
@@ -33,14 +33,14 @@ var main = {
         }).done(function (data) {
             $('body').html(data.split('<body>')[1].split('</body>')[0]);
             $('#search_status').val(search_status);
-            $('#search_userName').val(search_userName);
+            $('#search_username').val(search_username);
         }).fail(function (error) {
             alert(JSON.stringify(error));
         });
     },
     paging: function (pageNum) {
-        var search_userName = $('#search_userName').val();
-        var data = "page="+pageNum+"&searchStatus="+$('#search_status').val()+"&searchUserName="+search_userName;
+        var search_username = $('#search_username').val();
+        var data = "page="+pageNum+"&searchStatus="+$('#search_status').val()+"&searchUsername="+search_username;
 
         $.ajax({
             type: 'GET',
@@ -50,14 +50,14 @@ var main = {
         }).done(function (data) {
             $('tbody').empty();
             data.forEach(function (element) {
-                var _html = " <tr id='" + element.id + "'> "
+                var _html = " <tr id='" + element.id + "' class='text-center'> "
                     + "<td>" + element.id + "</td> "
                     + "<td>" + element.username + "</td>"
-                    + "<td class='text-center text-primary'>" + element.point + "</td>"
+                    + "<td class='text-primary'>" + element.point + "</td>"
                     + "<td>" + element.requestDate + "</td>";
                 if(element.status == null){
                     _html+=  "<td></td>"
-                        + "<td class='td-actions text-center'>"
+                        + "<td class='td-actions'>"
                         + "<button type='button' class='btn btn-info' name='btn_approve' value='Y'>"
                         + "<i class='material-icons'>done</i>"
                         + "</button>&nbsp;"
