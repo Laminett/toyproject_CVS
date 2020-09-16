@@ -21,7 +21,7 @@ public class SettleController {
     public String getSettleList(Model model, @AuthenticationPrincipal LoginUser loginUser, @RequestParam(value = "searchDate", required = false) String date, @RequestParam(value = "searchUsername", required = false) String username) {
         model.addAttribute("loginUser", loginUser.getUsername());
 
-        PageRequest pageRequest = PageRequest.of(0, 20, Sort.Direction.DESC, "id");
+        PageRequest pageRequest = PageRequest.of(0, 10, Sort.Direction.DESC, "id");
         model.addAttribute("page", settleService.getPage(pageRequest, date, username));
         model.addAttribute("settle", settleService.getSettleList(pageRequest, date, username));
 

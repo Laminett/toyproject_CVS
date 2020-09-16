@@ -11,9 +11,11 @@ var main = {
 
         // 상태 업데이트
         $(document).on('click', "[name='btn_approve'],[name='btn_deny']", function() {
-            var id = $(this).parent().parent().attr('id');
-            var status = $(this).val();
-            _this.update(id, status);
+            if(confirm(messages["alert.settle.confirm"])){
+                var id = $(this).parent().parent().attr('id');
+                var status = $(this).val();
+                _this.update(id, status);
+            }
         });
 
         // 페이징
@@ -51,17 +53,17 @@ var main = {
         }).done(function (data) {
             $('tbody').empty();
             data.forEach(function (element) {
-                var _html = "<tr id='" + element.id + "' class='text-center'>"
-                    + "<td>" + element.id + "</td> "
-                    + "<td>" + element.username + "</td>"
-                    + "<td>" + element.date + "</td>"
-                    + "<td>" + element.approvalCount + "</td>"
-                    + "<td>" + element.approvalAmount + "</td>"
-                    + "<td>" + element.cancelCount + "</td>"
-                    + "<td>" + element.cancelAmount + "</td>"
-                    + "<td>" + element.totalCount + "</td>"
-                    + "<td>" + element.totalAmount + "</td>"
-                    + "<td>" + element.createdDate + "</td>";
+                var _html = "<tr id='" + element.id + "'>"
+                    + "<td class='text-center'>" + element.id + "</td> "
+                    + "<td class='text-left'>" + element.username + "</td>"
+                    + "<td class='text-center'>" + element.date + "</td>"
+                    + "<td class='text-center'>" + element.approvalCount + "</td>"
+                    + "<td class='text-right'>" + element.approvalAmount + "</td>"
+                    + "<td class='text-center'>" + element.cancelCount + "</td>"
+                    + "<td class='text-right'>" + element.cancelAmount + "</td>"
+                    + "<td class='text-center'>" + element.totalCount + "</td>"
+                    + "<td class='text-right'>" + element.totalAmount + "</td>"
+                    + "<td class='text-center'>" + element.createdDate + "</td>";
                 if(element.status == null){
                     _html+=  "<td></td>"
                         + "<td class='td-actions text-center'>"
@@ -73,11 +75,11 @@ var main = {
                         + "</button>"
                         + "</td>";
                 }else{
-                    _html+= "<td>" + element.modifiedDate + "</td>";
+                    _html+= "<td class='text-center'>" + element.modifiedDate + "</td>";
                     if(element.status == "Y"){
-                        _html+= "<td>Arrpoved by " + element.adminId + "</td>";
+                        _html+= "<td class='text-left'>Arrpoved by " + element.adminId + "</td>";
                     }else {
-                        _html+= "<td>Denied by " + element.adminId + "</td>";
+                        _html+= "<td class='text-left'>Denied by " + element.adminId + "</td>";
                     }
                 }
                 $('tbody').append(_html);
@@ -100,10 +102,10 @@ var main = {
             contentType: 'application/json; charset=utf-8',
             data: JSON.stringify(data)
         }).done(function (data) {
-            alert(data.message.info.msg.success);
+            alert(messages["alert.update.success"]);
             window.location.href = '/settle';
         }).fail(function (error) {
-            alert(JSON.stringify(error));
+            alert(messages["alert.update.fail"]);
         });
     }
 };

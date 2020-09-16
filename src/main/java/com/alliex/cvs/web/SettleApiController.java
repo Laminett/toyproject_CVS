@@ -21,7 +21,7 @@ public class SettleApiController {
     @ApiOperation(value = "Get Settle List", notes = "정산 목록")
     @GetMapping("/web-api/v1/settle")
     public List<SettleResponse> getSettleList(@RequestParam(value = "page") int page, @RequestParam(value = "searchDate") String date, @RequestParam(value = "searchUsername") String username) {
-        return settleService.getSettleList(PageRequest.of(page - 1, 20, Sort.Direction.DESC, "id"), date, username);
+        return settleService.getSettleList(PageRequest.of(page - 1, 10, Sort.Direction.DESC, "id"), date, username);
     }
 
     @PutMapping("/web-api/v1/settle/{id}")

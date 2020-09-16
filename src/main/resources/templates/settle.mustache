@@ -24,51 +24,46 @@
                     <div class="card-body">
                         <table class="table">
                             <thead>
-                            <tr class="text-center">
-                                <th rowspan="2">#</th>
-                                <th rowspan="2">{{#messages}}user.name{{/messages}}</th>
-                                <th rowspan="2">date</th>
-                                <th colspan="2">{{#messages}}approval{{/messages}}</th>
-                                <th colspan="2">{{#messages}}cancel{{/messages}}</th>
-                                <th colspan="2>">{{#messages}}total{{/messages}}</th>
-                                <th rowspan="2">created date</th>
-                                <th rowspan="2">{{#messages}}settle.date{{/messages}}</th>
-                                <th rowspan="2">{{#messages}}state{{/messages}}</th>
-                            </tr>
-                            <tr class="text-center">
-                                <th>{{#messages}}count{{/messages}}</th>
-                                <th>{{#messages}}amount{{/messages}}</th>
-                                <th>{{#messages}}count{{/messages}}</th>
-                                <th>{{#messages}}amount{{/messages}}</th>
-                                <th>{{#messages}}count{{/messages}}</th>
-                                <th>{{#messages}}amount{{/messages}}</th>
-                            </tr>
+                                <tr class="text-center">
+                                    <th>#</th>
+                                    <th>{{#messages}}user.username{{/messages}}</th>
+                                    <th>{{#messages}}settle.date{{/messages}}</th>
+                                    <th>{{#messages}}approval.count{{/messages}}</th>
+                                    <th>{{#messages}}approval.amount{{/messages}}</th>
+                                    <th>{{#messages}}cancel.count{{/messages}}</th>
+                                    <th>{{#messages}}cancel.amount{{/messages}}</th>
+                                    <th>{{#messages}}total.count{{/messages}}</th>
+                                    <th>{{#messages}}total.amount{{/messages}}</th>
+                                    <th>{{#messages}}settle.created.date{{/messages}}</th>
+                                    <th>{{#messages}}settle.modified.date{{/messages}}</th>
+                                    <th>{{#messages}}state{{/messages}}</th>
+                                </tr>
                             </thead>
                             <tbody>
                             {{#settle}}
-                                <tr id="{{id}}" class="text-center">
-                                    <td>{{id}}</td>
+                                <tr id="{{id}}">
+                                    <td class="text-center">{{id}}</td>
                                     <td class="text-left">{{username}}</td>
-                                    <td>{{date}}</td>
-                                    <td>{{approvalCount}}</td>
-                                    <td>{{approvalAmount}}</td>
-                                    <td>{{cancelCount}}</td>
-                                    <td>{{cancelAmount}}</td>
-                                    <td>{{totalCount}}</td>
-                                    <td>{{totalAmount}}</td>
-                                    <td>{{createdDate}}</td>
+                                    <td class="text-center">{{date}}</td>
+                                    <td class="text-center">{{approvalCount}}</td>
+                                    <td class="text-right">{{approvalAmount}}</td>
+                                    <td class="text-center">{{cancelCount}}</td>
+                                    <td class="text-right">{{cancelAmount}}</td>
+                                    <td class="text-center">{{totalCount}}</td>
+                                    <td class="text-right">{{totalAmount}}</td>
+                                    <td class="text-center">{{createdDate}}</td>
                                     {{#isApproved}}
-                                     <td>{{modifiedDate}}</td>
-                                     <td>Approved by {{adminId}}</td>
+                                     <td class="text-center">{{modifiedDate}}</td>
+                                     <td class="text-left">Approved by {{adminId}}</td>
                                     {{/isApproved}}
                                     {{^isApproved}}
                                         {{#status}}
-                                         <td>{{modifiedDate}}</td>
-                                         <td> Denied by {{adminId}}</td>
+                                         <td class="text-center">{{modifiedDate}}</td>
+                                         <td class="text-left"> Denied by {{adminId}}</td>
                                         {{/status}}
                                         {{^status}}
                                          <td></td>
-                                        <td class="td-actions text-center">
+                                         <td class="td-actions text-center">
                                             <button type="button" class="btn btn-info" name="btn_approve" value="Y">
                                                 <i class="material-icons">done</i>
                                             </button>&nbsp;
@@ -81,7 +76,7 @@
                                 </tr>
                             {{/settle}}
                             {{^settle}}
-                                <tr>
+                                <tr class="text-center">
                                     <td>{{#messages}}search.no.data{{/messages}}</td>
                                 </tr>
                             {{/settle}}
@@ -111,9 +106,11 @@
     </div>
 </div>
 <script>
-    messages;
-    messages.hello2 = '안녕?';
-
+   var messages = {
+       "alert.settle.confirm" : "{{#messages}}alert.settle.confirm{{/messages}}"
+       ,"alert.update.success" : "{{#messages}}alert.update.success{{/messages}}"
+       ,"alert.update.fail" : "{{#messages}}alert.update.fail{{/messages}}"
+   };
 </script>
 <link rel="stylesheet" href="/datepicker/bootstrap-monthpicker.css">
 <script type="text/javascript" src="/datepicker/bootstrap-monthpicker.js"></script>
