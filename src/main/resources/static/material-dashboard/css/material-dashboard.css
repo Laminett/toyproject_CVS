@@ -5807,13 +5807,14 @@ button.close {
 }
 
 .modal-header {
-  display: flex;
+  display: block;
   align-items: flex-start;
   justify-content: space-between;
   padding: 1rem;
   border-bottom: 1px solid #e9ecef;
   border-top-left-radius: 0.3rem;
   border-top-right-radius: 0.3rem;
+  padding: 24px 24px 0;
 }
 
 .modal-header .close {

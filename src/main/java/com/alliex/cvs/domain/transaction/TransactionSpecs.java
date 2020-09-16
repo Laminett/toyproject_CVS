@@ -51,8 +51,8 @@ public class TransactionSpecs {
                 case TRANSPOINT:
                 case TRANSSTATE:
                 case TRANSTYPE:
-                    predicate.add(builder.equal(
-                            root.get(key.value), searchKeyword.get(key)
+                    predicate.add(builder.like(
+                            root.get(key.value), "%" + searchKeyword.get(key) + "%"
                     ));
                     break;
                 default:

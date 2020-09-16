@@ -3,6 +3,7 @@ package com.alliex.cvs.web.dto;
 import com.alliex.cvs.domain.product.Product;
 import lombok.Getter;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Getter
@@ -16,9 +17,9 @@ public class ProductResponse {
 
     private String name;
 
-    private Integer point;
+    private Long point;
 
-    private Integer amount;
+    private Integer quantity;
 
     private Boolean isEnabled;
 
@@ -36,7 +37,7 @@ public class ProductResponse {
         this.barcode = entity.getBarcode();
         this.name = entity.getName();
         this.point = entity.getPoint();
-        this.amount = entity.getAmount();
+        this.quantity = entity.getQuantity();
         this.isEnabled = entity.getEnabled();
         this.createdId = entity.getCreatedId();
         this.createdDate = entity.getCreatedDate();

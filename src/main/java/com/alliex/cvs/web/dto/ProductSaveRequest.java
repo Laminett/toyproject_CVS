@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+
 @Getter
 @NoArgsConstructor
 public class ProductSaveRequest {
@@ -15,9 +17,9 @@ public class ProductSaveRequest {
 
     private String name;
 
-    private Integer point;
+    private Long point;
 
-    private Integer amount;
+    private Integer quantity;
 
     private Boolean isEnabled;
 
@@ -25,12 +27,12 @@ public class ProductSaveRequest {
 
 
     @Builder
-    public ProductSaveRequest(String categoryId, String barcode, String name, Integer point, Integer amount, Boolean isEnabled, String createdId) {
+    public ProductSaveRequest(String categoryId, String barcode, String name, Long point, Integer quantity, Boolean isEnabled, String createdId) {
         this.categoryId = categoryId;
         this.barcode = barcode;
         this.name = name;
         this.point = point;
-        this.amount = amount;
+        this.quantity = quantity;
         this.isEnabled = isEnabled;
         this.createdId = createdId;
     }
@@ -41,7 +43,7 @@ public class ProductSaveRequest {
                 .barcode(barcode)
                 .name(name)
                 .point(point)
-                .amount(amount)
+                .quantity(quantity)
                 .isEnabled(isEnabled)
                 .createdId(createdId)
                 .build();
