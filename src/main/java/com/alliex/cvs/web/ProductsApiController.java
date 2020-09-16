@@ -33,7 +33,7 @@ public class ProductsApiController {
     }
 
     @ApiOperation(value = "Insert Product", notes = "상품 등록")
-    @PostMapping({"/api/v1/addproducts", "/web-api/v1/addproducts"})
+    @PostMapping({"/api/v1/products", "/web-api/v1/products"})
     public Long save(@RequestBody ProductSaveRequest productSaveRequest) {
         return productsService.save(productSaveRequest);
     }

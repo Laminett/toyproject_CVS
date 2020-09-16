@@ -39,7 +39,7 @@ var main = {
 
             $.ajax({
                 type: 'GET',
-                url: '/web-api/v1/transactions/Detail/' + transId,
+                url: '/web-api/v1/transactions/' + transId,
                 dataType: 'json'
             }).done(function (data) {
                 $('#transactionDetail').empty();
@@ -128,7 +128,6 @@ var main = {
             alert('취소 처리 되었습니다.');
             window.location.href = '/transactions';
         }).fail(function (error) {
-            debugger;
             alert(JSON.stringify(error.responseJSON.message));
         });
     }
