@@ -66,9 +66,7 @@ public class TransactionsService {
 
     @Transactional
     public Transaction getTransStateByBarcode(String barcode) {
-        Transaction transaction = transactionRepository.findByTransNumber(barcode);
-
-        return transaction;
+        return transactionRepository.findByTransNumber(barcode);
     }
 
     @Transactional
