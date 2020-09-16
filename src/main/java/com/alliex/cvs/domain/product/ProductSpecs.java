@@ -46,6 +46,7 @@ public class ProductSpecs {
                     predicates.add(builder.like(
                             root.get(key.value), "%" + searchKeyword.get(key) + "%"
                     ));
+                    break;
                 case POINT:
                     predicates.add(builder.equal(
                             root.get(key.value), searchKeyword.get(key)
