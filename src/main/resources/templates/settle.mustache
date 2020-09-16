@@ -10,8 +10,8 @@
                             <h4 class="card-title">{{#messages}}title.settle{{/messages}}</h4>
                         </div>
                         <div class="form-row" style="float: right">
-                            <div class="col">
-                                <input type="text" class="form-control monthpicker mp-monthpicker" id="search_date">
+                            <div class="col form-row">
+                                <input type="text" class="form-control monthpicker mp-monthpicker" placeholder="DATE" id="search_date">
                             </div>
                             <div class="col has-white">
                                 <input type="text" class="form-control" id="search_username" placeholder="USER ID" maxlength="25">
@@ -26,44 +26,44 @@
                             <thead>
                             <tr class="text-center">
                                 <th rowspan="2">#</th>
-                                <th rowspan="2">user name</th>
+                                <th rowspan="2">{{#messages}}user.name{{/messages}}</th>
                                 <th rowspan="2">date</th>
-                                <th colspan="2">approval</th>
-                                <th colspan="2">cancel</th>
-                                <th colspan="2>">total</th>
+                                <th colspan="2">{{#messages}}approval{{/messages}}</th>
+                                <th colspan="2">{{#messages}}cancel{{/messages}}</th>
+                                <th colspan="2>">{{#messages}}total{{/messages}}</th>
                                 <th rowspan="2">created date</th>
-                                <th rowspan="2">settled date</th>
-                                <th rowspan="2">status</th>
+                                <th rowspan="2">{{#messages}}settle.date{{/messages}}</th>
+                                <th rowspan="2">{{#messages}}state{{/messages}}</th>
                             </tr>
                             <tr class="text-center">
-                                <th>count</th>
-                                <th>amount</th>
-                                <th>count</th>
-                                <th>amount</th>
-                                <th>count</th>
-                                <th>amount</th>
+                                <th>{{#messages}}count{{/messages}}</th>
+                                <th>{{#messages}}amount{{/messages}}</th>
+                                <th>{{#messages}}count{{/messages}}</th>
+                                <th>{{#messages}}amount{{/messages}}</th>
+                                <th>{{#messages}}count{{/messages}}</th>
+                                <th>{{#messages}}amount{{/messages}}</th>
                             </tr>
                             </thead>
                             <tbody>
                             {{#settle}}
-                                <tr id="{{id}}">
-                                    <td class="text-center">{{id}}</td>
+                                <tr id="{{id}}" class="text-center">
+                                    <td>{{id}}</td>
                                     <td class="text-left">{{username}}</td>
-                                    <td class="text-center">{{date}}</td>
-                                    <td class="text-center">{{approvalCount}}</td>
-                                    <td class="text-center">{{approvalAmount}}</td>
-                                    <td class="text-center">{{cancelCount}}</td>
-                                    <td class="text-center">{{cancelAmount}}</td>
-                                    <td class="text-center">{{totalCount}}</td>
-                                    <td class="text-center">{{totalAmount}}</td>
-                                    <td class="text-center">{{createdDate}}</td>
+                                    <td>{{date}}</td>
+                                    <td>{{approvalCount}}</td>
+                                    <td>{{approvalAmount}}</td>
+                                    <td>{{cancelCount}}</td>
+                                    <td>{{cancelAmount}}</td>
+                                    <td>{{totalCount}}</td>
+                                    <td>{{totalAmount}}</td>
+                                    <td>{{createdDate}}</td>
                                     {{#isApproved}}
-                                     <td class="text-center">{{modifiedDate}}</td>
+                                     <td>{{modifiedDate}}</td>
                                      <td>Approved by {{adminId}}</td>
                                     {{/isApproved}}
                                     {{^isApproved}}
                                         {{#status}}
-                                         <td class="text-center">{{modifiedDate}}</td>
+                                         <td>{{modifiedDate}}</td>
                                          <td> Denied by {{adminId}}</td>
                                         {{/status}}
                                         {{^status}}
@@ -110,6 +110,11 @@
         </div>
     </div>
 </div>
+<script>
+    messages;
+    messages.hello2 = '안녕?';
+
+</script>
 <link rel="stylesheet" href="/datepicker/bootstrap-monthpicker.css">
 <script type="text/javascript" src="/datepicker/bootstrap-monthpicker.js"></script>
 <script type="text/javascript" src="/js/settle.js"></script>

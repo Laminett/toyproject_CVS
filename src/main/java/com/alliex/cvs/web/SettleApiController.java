@@ -29,9 +29,4 @@ public class SettleApiController {
         return settleService.update(id, request);
     }
 
-    @PostMapping("/web-api/v1/settle/save")
-    public Long SettleSave(@RequestBody SettleSaveRequest request) {
-        return settleService.save(request);
-    }
-
 }
