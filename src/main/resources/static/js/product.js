@@ -122,7 +122,7 @@ var main = {
 
         $.ajax({
             type: 'POST',
-            url: '/web-api/v1/addproducts',
+            url: '/web-api/v1/products',
             dataType: 'json',
             contentType: 'application/json; charset=utf-8',
             data: JSON.stringify(data)
