@@ -29,6 +29,7 @@ public class User extends BaseTimeEntity {
     @Column(nullable = false)
     private String password;
 
+    // ToDo nullable 고민 필요
     @Column(nullable = false)
     private String department;
 

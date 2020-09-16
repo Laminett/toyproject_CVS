@@ -10,11 +10,23 @@
                             <p class="card-category"> User management</p>
                         </div>
                         <div style="float: right">
-                            <form class="form-inline ml-auto" id="searchForm">
-                                <div class="form-group has-white">
-                                    <input id="searchValue" name="searchValue" type="text" value="" class="form-control" placeholder="이름">
+                            <form class="form-inline ml-auto" id="userSearchForm" action="" onsubmit="return false;">
+                                <input type="hidden" name="searchKey" value="" />
+                                <div class="dropdown" style="margin-right: 10px;">
+                                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton-user-search" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        사번
+                                    </button>
+                                    <div id="user-search-field" class="dropdown-menu" aria-labelledby="dropdownMenuButton-user-search">
+                                        <a class="dropdown-item" href="#none" searchKey="username">사번</a>
+                                        <a class="dropdown-item" href="#none" searchKey="fullName">이름</a>
+                                        <a class="dropdown-item" href="#none" searchKey="email">Email</a>
+                                        <a class="dropdown-item" href="#none" searchKey="department">부서</a>
+                                    </div>
                                 </div>
-                                <button type="button" class="btn btn-white btn-round btn-just-icon" id="search" name="search">
+                                <div class="form-group has-white">
+                                    <input id="searchValue" name="searchValue" type="text" value="" class="form-control" placeholder="">
+                                </div>
+                                <button type="button" class="btn btn-white btn-round btn-just-icon" id="user-search-btn">
                                     <i class="material-icons">search</i>
                                     <div class="ripple-container"></div>
                                 </button>

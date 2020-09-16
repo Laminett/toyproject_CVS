@@ -8,6 +8,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -74,7 +75,7 @@ public class UserServiceTest {
 
     @Test
     public void getUsers() {
-        List<UserResponse> users = userService.getUsers();
+        List<UserResponse> users = userService.getUsers(PageRequest.of(1, 10));
 
         assertThat(users.size()).isGreaterThanOrEqualTo(1);
     }
@@ -85,7 +86,7 @@ public class UserServiceTest {
         UserRequest userRequest = new UserRequest();
         userRequest.setFullName(fullName);
 
-        List<UserResponse> users = userService.getUsers(userRequest);
+        List<UserResponse> users = userService.getUsers(PageRequest.of(1, 10), userRequest);
         users.forEach(userResponse -> {
             assertThat(userResponse.getFullName()).isEqualTo(fullName);
         });

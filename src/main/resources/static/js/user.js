@@ -1,10 +1,34 @@
 var main = {
+    SEARCH_KEY: "username",
     init: function () {
         var _this = this;
 
         _this.getUsers();
 
+        // user search form handling
+        $("#user-search-field a").click(function(){
+            var searchKey = $(this).attr("searchKey");
+            var searchKeyLabel = $(this).text();
+
+            _this.SEARCH_KEY = searchKey;
+            $("#dropdownMenuButton-user-search").text(searchKeyLabel);
+        });
+
+        $("#searchValue").keyup(function (key) {
+            if (key.keyCode == 13) {
+                $("#user-search-btn").click();
+            }
+        });
+
+        $("#user-search-btn").click(function () {
+            var k, v;
+            k = _this.SEARCH_KEY;
+            v = $("#searchValue").val();
+            _this.getUsers(k, v);
+        });
+
         $("#createUserBtn").click(function () {
+            $("#username").removeAttr("readonly");
             _this.createUser();
         });
 
@@ -40,11 +64,21 @@ var main = {
             alert(JSON.stringify(error));
         });
     },
-    getUsers: function () {
+    getUsers: function (k, v) {
+        var param = {
+            number: 1,
+            // username: null,
+            // fullName: null,
+            // email: null,
+            // department: null
+        };
+        param[k] = v;
+
         $.ajax({
             type: 'GET',
             url: '/web-api/v1/users',
             dataType: 'json',
+            data: param,
             contentType: 'application/json; charset=utf-8'
         }).done(function (data) {
             $("#usersArea").html(null);

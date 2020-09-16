@@ -10,6 +10,7 @@ import com.alliex.cvs.web.dto.UserSaveRequest;
 import com.alliex.cvs.web.dto.UserUpdateRequest;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -45,8 +46,8 @@ public class UserService implements UserDetailsService {
         return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), AuthoritiesUtils.createAuthorities(loginUser));
     }
 
-    public List<UserResponse> getUsers() {
-        return userRepository.findAll().stream()
+    public List<UserResponse> getUsers(Pageable pageable) {
+        return userRepository.findAll(pageable).stream()
                 .map(UserResponse::new)
                 .collect(Collectors.toList());
     }
@@ -107,13 +108,25 @@ public class UserService implements UserDetailsService {
         return new UserResponse(user);
     }
 
-    public List<UserResponse> getUsers(UserRequest userRequest) {
-        if (StringUtils.isNotBlank(userRequest.getFullName())) {
+    public List<UserResponse> getUsers(Pageable pageable, UserRequest userRequest) {
+        if (StringUtils.isNotBlank(userRequest.getUsername())) {
+            return userRepository.findByUsername(userRequest.getUsername()).stream()
+                    .map(UserResponse::new)
+                    .collect(Collectors.toList());
+        } else if (StringUtils.isNotBlank(userRequest.getFullName())) {
             return userRepository.findByFullName(userRequest.getFullName()).stream()
                     .map(UserResponse::new)
                     .collect(Collectors.toList());
+        } else if (StringUtils.isNotBlank(userRequest.getEmail())) {
+            return userRepository.findByEmail(userRequest.getEmail()).stream()
+                    .map(UserResponse::new)
+                    .collect(Collectors.toList());
+        } else if (StringUtils.isNotBlank(userRequest.getDepartment())) {
+            return userRepository.findByDepartment(userRequest.getDepartment()).stream()
+                    .map(UserResponse::new)
+                    .collect(Collectors.toList());
         } else {
-            return getUsers();
+            return getUsers(pageable);
         }
     }
 
