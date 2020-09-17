@@ -12,13 +12,12 @@
                         <div style="float: right">
                             <form class="form-inline ml-auto" id="searchForm">
                                 <div class="form-group">
-                                    <input type="hidden" id="searchpaging" name="searchpaging" value={{findBy}}>
-                                    <input type="hidden" id="searchText" name="searchText" value={{findText}}>
                                     <input type="hidden" id="LoginUser" name="LoginUser" value={{loginUser}}>
                                     <select id="searchField" class="form-control" data-style="btn btn-link" name="searchField">
                                         <option selected>Choose...</option>
                                         <option>category</option>
                                         <option>name</option>
+                                        <option>point</option>
                                     </select>
                                 </div>
                                 <div class="form-group has-white">
@@ -28,21 +27,21 @@
                                     <i class="material-icons">search</i>
                                     <div class="ripple-container"></div>
                                 </button>
-                                <button type="button" name="addProduct" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg">상품추가
-                                </button>
+
                             </form>
 
                         </div>
                     </div>
+
                     <div class="card-body">
                         <div class="table-responsive" id="result1">
                             <table class="table" id="templ1">
-                                <thead class=" text-primary">
-                                <th>ID</th>
+                                <thead class="text-primary text-center">
+                                <th>NO</th>
                                 <th>CATEGORY</th>
                                 <th>NAME</th>
-                                <th>PRICE</th>
-                                <th>AMOUNT</th>
+                                <th>POINT</th>
+                                <th>QUANTITY</th>
                                 <th>USEYN</th>
                                 <th>CREATED_ID</th>
                                 <th>CREATED_DATE</th>
@@ -50,59 +49,17 @@
                                 <th>MODIFIED_DATE</th>
                                 <th>ACTIONS</th>
                                 </thead>
-                                <tbody>
-                                {{#product}}
-                                    <tr>
-                                        <td>{{id}}</td>
-                                        <td>{{categoryId}}</td>
-                                        <td>{{name}}</td>
-                                        <td class="text-primary">{{point}}</td>
-                                        <td class="text-primary">{{amount}}</td>
-                                        <td style="display: none;position: absolute">{{barcode}}</td>
-                                        <td>{{isEnabled}}</td>
-                                        <td>{{createdId}}</td>
-                                        <td>{{createdDate}}</td>
-                                        {{#modifiedId}}
-                                            <td>{{modifiedId}}</td>
-                                        {{/modifiedId}}
-                                        {{^modifiedId}}
-                                            <td>a</td>
-                                        {{/modifiedId}}
-                                        {{#modifiedDate}}
-                                            <td>{{modifiedDate}}</td>
-                                        {{/modifiedDate}}
-                                        {{^modifiedDate}}
-                                            <td>a</td>
-                                        {{/modifiedDate}}
-                                        <td class="td-actions text-right">
-                                            <button type="button" rel="tooltip" class="btn btn-success" name="update">
-                                                <i class="material-icons" data-toggle="modal" data-target=".bd-example-modal-lg">edit</i>
-                                            </button>
-                                            <button type="button" rel="tooltip" class="btn btn-danger" name="delete">
-                                                <i class="material-icons">close</i>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                {{/product}}
-                                {{^product}}
-                                    <tr>
-                                        <td>조회 결과가 없습니다.</td>
-                                    </tr>
-                                {{/product}}
-                                </tbody>
+                                <tbody id="products" class="text-center"></tbody>
                             </table>
                         </div>
                     </div>
                 </div>
                 <div>
+                    <button type="button" name="addProduct" class="btn btn-primary" data-toggle="modal"
+                            data-target="#addUpdateModal">상품추가
+                    </button>
                     <nav aria-label="Page navigation example">
-                        <ul class="pagination justify-content-center">
-                            {{#page}}
-                                <li class="page-item">
-                                    <a class="page-link" id="paging">{{{.}}}</a>
-                                </li>
-                            {{/page}}
-                        </ul>
+                        <ul class="pagination justify-content-center"></ul>
                     </nav>
                 </div>
             </div>
@@ -110,62 +67,109 @@
     </div>
 </div>
 
-<div id="addUpdateModal" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog"
-     aria-labelledby="myLargeModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+
+<div class="modal fade" id="addUpdateModal" tabindex="-1" role="">
+    <div class="modal-dialog modal-login" role="document" style="margin-top: 160px;">
         <div class="modal-content">
-            <div style="margin: 10px">
-                <form id="addProductsForm">
-                    <input type="hidden" id="id" name="id">
-                    <div class="form-row">
+            <div class="card card-signup card-plain" style="margin-top: 0;margin-bottom: 0">
+                <div class="modal-header" style="padding-top: 0;">
+                    <div class="card-header card-header-primary text-center">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                            <i class="material-icons">clear</i>
+                        </button>
+                        <h4 class="card-title" id="modalTitle">Log in</h4>
+                        <input type="hidden" id="id" name="id">
                         <input type="hidden" id="createdId" name="createdId">
                         <input type="hidden" id="modifiedId" name="modifiedId">
-                        <div class="form-group col-md-3">
-                            <label for="inputName">Name</label>
-                            <input type="text" class="form-control" id="name" name="name" placeholder="ex> name">
-                        </div>
-                        <div class="form-group col-md-3">
-                            <label for="inputPoint">Point</label>
-                            <input type="text" class="form-control" id="point" name="point" placeholder="ex> 10000">
-                        </div>
-                        <div class="form-group col-md-3">
-                            <label for="inputAmount">Amount</label>
-                            <input type="text" class="form-control" id="amount" name="amount" placeholder="ex> 100">
-                        </div>
-                        <div class="form-group col-md-3">
-                            <label for="inputCategory">Category</label>
-                            <select id="categoryId" class="form-control" data-style="btn btn-link" name="categoryId">
-                                <option selected>Choose...</option>
-                                <option>a1</option>
-                                <option>a2</option>
-                                <option>a3</option>
-                                <option>a4</option>
-                            </select>
-                        </div>
                     </div>
-                    <div class="form-row">
-                        <div class="form-group col-md-4">
-                            <label for="inputBarcode">Barcode</label>
-                            <input type="text" class="form-control" id="barcode" name="barcode" value="testvalue"
-                                   readonly>
-                        </div>
-                        <div class="form-group">
-                            <div class="form-check">
-                                <label class="form-check-label">
-                                    <input class="form-check-input" type="checkbox" value="" name="isEnabled"
-                                           id="isEnabled">
-                                    isEnabled
-                                    <span class="form-check-sign"><span class="check"></span></span>
-                                </label>
+                </div>
+                <div class="modal-body">
+                    <form class="form" method="" action="">
+                        <p class="description text-center">Modify Product Detail</p>
+                        <div class="card-body">
+
+                            <div class="form-group bmd-form-group">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text"><i class="material-icons">qr_code_scanner</i></div>
+                                    </div>
+                                    <input type="text" class="form-control" id="barcode" name="barcode" value="testvalue" readonly>
+                                </div>
                             </div>
+
+                            <div class="form-group bmd-form-group">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text"><i class="material-icons">format_list_bulleted</i></div>
+                                    </div>
+                                    <select id="categoryId" class="form-control" data-style="btn btn-link" name="categoryId" >
+                                        <option selected>Choose Product Category</option>
+                                        <option>Drink</option>
+                                        <option>Food</option>
+                                        <option>Snack</option>
+                                        <option>etc</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group bmd-form-group">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text"><i class="material-icons">local_offer</i></div>
+                                    </div>
+                                    <input type="text" class="form-control" id="name" name="name" placeholder="ex> Product Name" maxlength="100">
+                                </div>
+                            </div>
+
+                            <div class="form-group bmd-form-group">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text"><i class="material-icons">money</i></div>
+                                    </div>
+                                    <input type="text" class="form-control" id="point" name="point" placeholder="ex> Product Price" maxlength="17">
+                                </div>
+                            </div>
+
+                            <div class="form-group bmd-form-group">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text"><i class="material-icons">local_grocery_store</i></div>
+                                    </div>
+                                    <input type="text" class="form-control selectpicker" id="quantity" name="quantity" placeholder="Product Quantity" maxlength="5">
+                                </div>
+                            </div>
+
+                            <div class="form-group bmd-form-group">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+
+                                        <div class="input-group-text"><i id="check_icon" class="material-icons">check_box</i>
+                                        </div>
+
+                                        <div id="checkbox_div">
+                                            <input class="form-check-input" type="checkbox" value="" name="isEnabled"
+                                                   id="isEnabled"
+                                                   style="position: inherit;margin-left: 0px;margin-top: 6px;width: 20px; height: 18px;">
+                                            <label class="form-check-label" style="margin-left: 10px;margin-top: 7px;">
+                                                isEnabled
+                                                <span class="form-check-sign"><span class="check"></span></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
-                    </div>
-                    <button type="submit" class="btn btn-primary" id="addProuct">Sign in</button>
-                </form>
+                    </form>
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <button type="submit" class="btn btn-primary" id="addProuct" style="float:right">Sign in</button>
+                </div>
             </div>
         </div>
     </div>
 </div>
+
 <script src="/js/jquery.scannerdetection.js"></script>
 <script type="text/javascript" src="/js/product.js"></script>
 <!-- barcode scanner -->

@@ -2,6 +2,7 @@ package com.alliex.cvs.domain.user;
 
 import com.alliex.cvs.domain.BaseTimeEntity;
 import com.alliex.cvs.domain.point.PointHistory;
+import com.alliex.cvs.domain.settle.Settle;
 import com.alliex.cvs.domain.transaction.Transaction;
 import com.alliex.cvs.domain.type.Role;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -50,7 +51,11 @@ public class User extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonIgnore
-    private Collection<PointHistory> userId;
+    private Collection<PointHistory> pointHistoryId;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private  Collection<Settle> settleId;
 
     @Builder
     public User(String username, String password, String department, String fullName, String email, String phoneNumber, Role role) {
