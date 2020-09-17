@@ -80,9 +80,9 @@
             this.$dialog = $([
                 '<div class="mp-dialog">',
                 '<div class="mp-title">',
-                '<i class="mp-year-prev glyphicon glyphicon-circle-arrow-left"></i>',
+                '<i class="mp-year-prev material-icons">keyboard_arrow_left</i>',
                 ' <span></span> ',
-                '<i class="mp-year-next glyphicon glyphicon-circle-arrow-right"></i>',
+                '<i class="mp-year-next material-icons">keyboard_arrow_right</i>',
                 '</div>',
                 '<div class="mp-content">',
                 '<ul></ul>',

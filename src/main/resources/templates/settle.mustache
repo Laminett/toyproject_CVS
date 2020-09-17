@@ -11,7 +11,7 @@
                         </div>
                         <div class="form-row" style="float: right">
                             <div class="col form-row">
-                                <input type="text" class="form-control monthpicker mp-monthpicker" placeholder="DATE" id="search_date">
+                                <input type="text" class="form-control monthpicker" placeholder="{{#messages}}settle.aggregatedAt{{/messages}}" id="search_date">
                             </div>
                             <div class="col has-white">
                                 <input type="text" class="form-control" id="search_username" placeholder="USER ID" maxlength="25">
@@ -27,7 +27,7 @@
                                 <tr class="text-center">
                                     <th>#</th>
                                     <th>{{#messages}}user.username{{/messages}}</th>
-                                    <th>{{#messages}}settle.date{{/messages}}</th>
+                                    <th>{{#messages}}settle.aggregatedAt{{/messages}}</th>
                                     <th>{{#messages}}approval.count{{/messages}}</th>
                                     <th>{{#messages}}approval.amount{{/messages}}</th>
                                     <th>{{#messages}}cancel.count{{/messages}}</th>
