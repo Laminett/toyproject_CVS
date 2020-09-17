@@ -93,6 +93,20 @@ public class UserServiceTest {
     }
 
     @Test
+    public void getUsersByEmail() {
+        String email = "shkim";
+        UserRequest userRequest = new UserRequest();
+        userRequest.setEmail(email);
+
+        List<UserResponse> users = userService.getUsers(PageRequest.of(1, 10), userRequest);
+
+        assertThat(users.size()).isGreaterThanOrEqualTo(1);
+        users.forEach(userResponse -> {
+            assertThat(userResponse.getEmail()).contains(email);
+        });
+    }
+
+    @Test
     public void getUserByUsername() {
         String username = "test";
         UserResponse user = userService.getUserByUsername(username);

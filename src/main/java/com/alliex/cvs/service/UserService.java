@@ -110,19 +110,19 @@ public class UserService implements UserDetailsService {
 
     public List<UserResponse> getUsers(Pageable pageable, UserRequest userRequest) {
         if (StringUtils.isNotBlank(userRequest.getUsername())) {
-            return userRepository.findByUsername(userRequest.getUsername()).stream()
+            return userRepository.findByUsername(com.alliex.cvs.util.StringUtils.makeLike(userRequest.getUsername())).stream()
                     .map(UserResponse::new)
                     .collect(Collectors.toList());
         } else if (StringUtils.isNotBlank(userRequest.getFullName())) {
-            return userRepository.findByFullName(userRequest.getFullName()).stream()
+            return userRepository.findByFullName(com.alliex.cvs.util.StringUtils.makeLike(userRequest.getFullName())).stream()
                     .map(UserResponse::new)
                     .collect(Collectors.toList());
         } else if (StringUtils.isNotBlank(userRequest.getEmail())) {
-            return userRepository.findByEmail(userRequest.getEmail()).stream()
+            return userRepository.findByEmailLike(com.alliex.cvs.util.StringUtils.makeLike(userRequest.getEmail())).stream()
                     .map(UserResponse::new)
                     .collect(Collectors.toList());
         } else if (StringUtils.isNotBlank(userRequest.getDepartment())) {
-            return userRepository.findByDepartment(userRequest.getDepartment()).stream()
+            return userRepository.findByDepartment(com.alliex.cvs.util.StringUtils.makeLike(userRequest.getDepartment())).stream()
                     .map(UserResponse::new)
                     .collect(Collectors.toList());
         } else {
