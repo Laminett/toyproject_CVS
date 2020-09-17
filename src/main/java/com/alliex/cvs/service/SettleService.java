@@ -5,11 +5,11 @@ import com.alliex.cvs.domain.settle.SettleRepository;
 import com.alliex.cvs.domain.settle.SettleSpecification;
 import com.alliex.cvs.exception.SettleNotFoundException;
 import com.alliex.cvs.web.dto.SettleResponse;
-import com.alliex.cvs.web.dto.SettleSaveRequest;
 import com.alliex.cvs.web.dto.SettleUpdateRequest;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -26,26 +26,13 @@ public class SettleService {
     private final SettleRepository settleRepository;
 
     @Transactional(readOnly = true)
-    public List<Integer> getPage(Pageable pageable, String date, String username) {
-        Page<Settle> getPage = null;
-        getPage = settleRepository.findAll(Specification
-                .where(StringUtils.isBlank(date) ? null : SettleSpecification.withDate(date))
-                .and(StringUtils.isBlank(username) ? null : SettleSpecification.withUsername(username)), pageable);
-
-        List<Integer> pages = new ArrayList<>();
-        for (int i = 1; i <= getPage.getTotalPages(); i++) {
-            pages.add(i);
-        }
-
-        return pages;
-    }
-
-    @Transactional(readOnly = true)
-    public List<SettleResponse> getSettleList(Pageable pageable, String date, String username) {
-        return settleRepository.findAll(Specification
-                .where(StringUtils.isBlank(date) ? null : SettleSpecification.withDate(date))
+    public Page<SettleResponse> getSettleList(Pageable pageable, String aggregatedAt, String username) {
+        List <SettleResponse> settleList = settleRepository.findAll(Specification
+                .where(StringUtils.isBlank(aggregatedAt) ? null : SettleSpecification.withAggregatedAt(aggregatedAt))
                 .and(StringUtils.isBlank(username) ? null : SettleSpecification.withUsername(username)), pageable)
                 .stream().map(SettleResponse::new).collect(Collectors.toList());
+
+        return new PageImpl<>(settleList, pageable, settleList.size());
     }
 
     @Transactional
@@ -56,11 +43,6 @@ public class SettleService {
         settle.update(id, request.getStatus(), request.getAdminId());
 
         return settle.getId();
-    }
-
-    @Transactional
-    public Long save(SettleSaveRequest settleSaveRequest) {
-        return settleRepository.save(settleSaveRequest.toEntity()).getId();
     }
 
 }

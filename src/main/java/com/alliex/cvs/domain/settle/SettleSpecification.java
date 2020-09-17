@@ -7,8 +7,8 @@ import javax.persistence.criteria.*;
 
 public class SettleSpecification {
 
-    public static Specification<Settle> withDate(String date) {
-        return (root, query, builder) -> builder.equal(root.get("date"), date);
+    public static Specification<Settle> withAggregatedAt(String aggregatedAt) {
+        return (root, query, builder) -> builder.equal(root.get("aggregatedAt"), aggregatedAt);
     }
 
     public static Specification<Settle> withUsername(final String username) {
@@ -16,7 +16,7 @@ public class SettleSpecification {
             @Override
             public Predicate toPredicate(Root<Settle> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
                 Join<Settle, User> user = root.join("user");
-                return criteriaBuilder.equal(user.get("username"), username);
+                return criteriaBuilder.like(user.get("username"), username + "%");
             }
         };
     }

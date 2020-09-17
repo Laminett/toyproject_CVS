@@ -34,52 +34,11 @@
                                     <th>{{#messages}}cancel.amount{{/messages}}</th>
                                     <th>{{#messages}}total.count{{/messages}}</th>
                                     <th>{{#messages}}total.amount{{/messages}}</th>
-                                    <th>{{#messages}}settle.created.date{{/messages}}</th>
                                     <th>{{#messages}}settle.modified.date{{/messages}}</th>
-                                    <th>{{#messages}}state{{/messages}}</th>
+                                    <th>{{#messages}}status{{/messages}}</th>
                                 </tr>
                             </thead>
                             <tbody>
-                            {{#settle}}
-                                <tr id="{{id}}">
-                                    <td class="text-center">{{id}}</td>
-                                    <td class="text-left">{{username}}</td>
-                                    <td class="text-center">{{date}}</td>
-                                    <td class="text-center">{{approvalCount}}</td>
-                                    <td class="text-right">{{approvalAmount}}</td>
-                                    <td class="text-center">{{cancelCount}}</td>
-                                    <td class="text-right">{{cancelAmount}}</td>
-                                    <td class="text-center">{{totalCount}}</td>
-                                    <td class="text-right">{{totalAmount}}</td>
-                                    <td class="text-center">{{createdDate}}</td>
-                                    {{#isApproved}}
-                                     <td class="text-center">{{modifiedDate}}</td>
-                                     <td class="text-left">Approved by {{adminId}}</td>
-                                    {{/isApproved}}
-                                    {{^isApproved}}
-                                        {{#status}}
-                                         <td class="text-center">{{modifiedDate}}</td>
-                                         <td class="text-left"> Denied by {{adminId}}</td>
-                                        {{/status}}
-                                        {{^status}}
-                                         <td></td>
-                                         <td class="td-actions text-center">
-                                            <button type="button" class="btn btn-info" name="btn_approve" value="Y">
-                                                <i class="material-icons">done</i>
-                                            </button>&nbsp;
-                                            <button type="button" class="btn btn-danger" name="btn_deny" value="N">
-                                                <i class="material-icons">clear</i>
-                                            </button>
-                                        </td>
-                                        {{/status}}
-                                    {{/isApproved}}
-                                </tr>
-                            {{/settle}}
-                            {{^settle}}
-                                <tr class="text-center">
-                                    <td>{{#messages}}search.no.data{{/messages}}</td>
-                                </tr>
-                            {{/settle}}
                             </tbody>
                         </table>
                     </div>
@@ -90,11 +49,6 @@
                             <li class="page-item disabled">
                                 <a class="page-link" id="previous">Previous</a>
                             </li>
-                            {{#page}}
-                                <li class="page-item">
-                                    <a class="page-link" id="page_{{{.}}}" value="{{{.}}}">{{{.}}}</a>
-                                </li>
-                            {{/page}}
                             <li class="page-item disabled">
                                 <a class="page-link" id="next">Next</a>
                             </li>

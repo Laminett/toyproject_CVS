@@ -23,7 +23,7 @@ public class Settle extends BaseTimeEntity {
     private User user;
 
     @Column(nullable = false)
-    private String date;
+    private String aggregatedAt;
 
     @Column(nullable = false)
     @ColumnDefault("0")
@@ -31,7 +31,7 @@ public class Settle extends BaseTimeEntity {
 
     @Column(nullable = false)
     @ColumnDefault("0")
-    private Double approvalAmount;
+    private Long approvalAmount;
 
     @Column(nullable = false)
     @ColumnDefault("0")
@@ -39,7 +39,7 @@ public class Settle extends BaseTimeEntity {
 
     @Column(nullable = false)
     @ColumnDefault("0")
-    private Double cancelAmount;
+    private Long cancelAmount;
 
     @Column(nullable = false)
     @ColumnDefault("0")
@@ -47,7 +47,7 @@ public class Settle extends BaseTimeEntity {
 
     @Column(nullable = false)
     @ColumnDefault("0")
-    private Double totalAmount;
+    private Long totalAmount;
 
     @Column
     private String status;
@@ -56,10 +56,10 @@ public class Settle extends BaseTimeEntity {
     private String adminId;
 
     @Builder
-    public Settle(Long id, User user, String date, Integer approvalCount, Double approvalAmount, Integer cancelCount, Double cancelAmount, Integer totalCount, Double totalAmount, String status, String adminId) {
+    public Settle(Long id, User user, String aggregatedAt, Integer approvalCount, Long approvalAmount, Integer cancelCount, Long cancelAmount, Integer totalCount, Long totalAmount, String status, String adminId) {
         this.id = id;
         this.user = user;
-        this.date = date;
+        this.aggregatedAt = aggregatedAt;
         this.approvalCount = approvalCount;
         this.approvalAmount = approvalAmount;
         this.cancelCount = cancelCount;

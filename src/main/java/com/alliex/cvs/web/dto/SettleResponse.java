@@ -18,32 +18,23 @@ public class SettleResponse {
 
     private String username;
 
-    private String date;
+    private String aggregatedAt;
 
     private Integer approvalCount;
 
-    private Double approvalAmount;
+    private Long approvalAmount;
 
     private Integer cancelCount;
 
-    private Double cancelAmount;
+    private Long cancelAmount;
 
     private Integer totalCount;
 
-    private Double totalAmount;
+    private Long totalAmount;
 
     private String status;
 
-    public boolean isApproved() {
-        if("Y".equals(status)){
-            return true;
-        }else{
-            return false;
-        }
-    }
-
     private boolean isApproved;
-
 
     private String adminId;
 
@@ -57,7 +48,7 @@ public class SettleResponse {
     public SettleResponse(Settle settle) {
         this.id = settle.getId();
         this.username = settle.getUser().getUsername();
-        this.date = settle.getDate();
+        this.aggregatedAt = settle.getAggregatedAt();
         this.approvalCount = settle.getApprovalCount();
         this.approvalAmount = settle.getApprovalAmount();
         this.cancelCount = settle.getCancelCount();
@@ -69,4 +60,5 @@ public class SettleResponse {
         this.createdDate = settle.getCreatedDate();
         this.modifiedDate = settle.getModifiedDate();
     }
+
 }
