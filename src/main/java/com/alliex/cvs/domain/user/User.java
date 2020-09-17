@@ -28,10 +28,18 @@ public class User extends BaseTimeEntity {
     private String username;
 
     @Column(nullable = false)
-    private String email;
+    private String password;
+
+    // ToDo nullable 고민 필요
+    @Column(nullable = false)
+    private String department;
 
     @Column(nullable = false)
-    private String password;
+    private String fullName;
+
+    private String email;
+
+    private String phoneNumber;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -50,10 +58,13 @@ public class User extends BaseTimeEntity {
     private  Collection<Settle> settleId;
 
     @Builder
-    public User(String username, String email, String password, Role role) {
+    public User(String username, String password, String department, String fullName, String email, String phoneNumber, Role role) {
         this.username = username;
-        this.email = email;
         this.password = password;
+        this.department = department;
+        this.fullName = fullName;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
         this.role = role;
     }
 
