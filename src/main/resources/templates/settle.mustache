@@ -49,6 +49,11 @@
                             <li class="page-item disabled">
                                 <a class="page-link" id="previous">Previous</a>
                             </li>
+                            <!--{{#page}}
+                                <li class="page-item">
+                                    <a class="page-link" id="page_{{{.}}}" value="{{{.}}}">{{{.}}}</a>
+                                </li>
+                            {{/page}}-->
                             <li class="page-item disabled">
                                 <a class="page-link" id="next">Next</a>
                             </li>
@@ -61,7 +66,8 @@
 </div>
 <script>
    var messages = {
-       "alert.settle.confirm" : "{{#messages}}alert.settle.confirm{{/messages}}"
+       "info.search.no.data" : "{{#messages}}info.search.no.data{{/messages}}"
+       ,"alert.settle.confirm" : "{{#messages}}alert.settle.confirm{{/messages}}"
        ,"alert.update.success" : "{{#messages}}alert.update.success{{/messages}}"
        ,"alert.update.fail" : "{{#messages}}alert.update.fail{{/messages}}"
    };

@@ -7,18 +7,20 @@ import javax.persistence.criteria.*;
 
 public class SettleSpecification {
 
-    public static Specification<Settle> withAggregatedAt(String aggregatedAt) {
-        return (root, query, builder) -> builder.equal(root.get("aggregatedAt"), aggregatedAt);
-    }
-
-    public static Specification<Settle> withUsername(final String username) {
-        return new Specification<Settle>() {
-            @Override
-            public Predicate toPredicate(Root<Settle> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
-                Join<Settle, User> user = root.join("user");
-                return criteriaBuilder.like(user.get("username"), username + "%");
-            }
-        };
+    public static Specification<Settle> withSearchData(String searchField, String searchData) {
+        if ("aggregatedAt".equals(searchField)) {
+            return (root, query, builder) -> builder.equal(root.get(searchField), searchData);
+        } else if ("username".equals(searchField)) {
+            return new Specification<Settle>() {
+                @Override
+                public Predicate toPredicate(Root<Settle> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
+                    Join<Settle, User> user = root.join("user");
+                    return criteriaBuilder.like(user.get(searchField), searchData + "%");
+                }
+            };
+        } else {
+            throw new IllegalArgumentException("Wrong search field name: " + searchField);
+        }
     }
 
 }

@@ -27,12 +27,10 @@ public class SettleService {
 
     @Transactional(readOnly = true)
     public Page<SettleResponse> getSettleList(Pageable pageable, String aggregatedAt, String username) {
-        List <SettleResponse> settleList = settleRepository.findAll(Specification
-                .where(StringUtils.isBlank(aggregatedAt) ? null : SettleSpecification.withAggregatedAt(aggregatedAt))
-                .and(StringUtils.isBlank(username) ? null : SettleSpecification.withUsername(username)), pageable)
-                .stream().map(SettleResponse::new).collect(Collectors.toList());
-
-        return new PageImpl<>(settleList, pageable, settleList.size());
+        return settleRepository.findAll(Specification
+                .where(StringUtils.isBlank(aggregatedAt) ? null : SettleSpecification.withSearchData("aggregatedAt", aggregatedAt))
+                .and(StringUtils.isBlank(username) ? null : SettleSpecification.withSearchData("username", username)), pageable)
+                .map(SettleResponse::new);
     }
 
     @Transactional

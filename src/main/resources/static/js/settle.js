@@ -36,15 +36,13 @@ var main = {
             dataType: 'JSON',
             data: data
         }).done(function (data) {
-            console.log(data);
-
             $('#search_date').val(search_date);
             $('#search_username').val(search_username);
 
             $('tbody').empty();
-            if (data.content == "") {
-                $('tbody').append(" <tr> "
-                    + "<td> 조회 결과가 없습니다. </td>  "
+            if (data == "") {
+                $('tbody').append(" <tr class='text-center'> "
+                    + "<td colspan='11'>" + messages["info.search.no.data"] +"</td>  "
                     + "</tr>");
             } else {
                 data.content.forEach(function (element) {
@@ -79,10 +77,9 @@ var main = {
                     $('tbody').append(_html);
                 });
 
-                console.log(data.pageable);
                 $('.pagination').empty();
                 for (var i = 1; i <= data.totalPages; i++) {
-                    $('.pagination').append('<li class="page-item"><a class="page-link">' + i + '</a><li>');
+                    $('.pagination').append('<li class="page-item"><a class="page-link" id="paging">' + i + '</a><li>');
                 }
             }
         }).fail(function (error) {
