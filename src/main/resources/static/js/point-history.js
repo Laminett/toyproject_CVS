@@ -98,7 +98,7 @@ var main = {
             window.location.href = '/point/history';
         }).fail(function (error) {
             alert(JSON.stringify(error));
-        })
+        });
     }
 };
 
