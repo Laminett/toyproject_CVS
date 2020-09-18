@@ -21,43 +21,43 @@ public class Transaction extends BaseTimeEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private TransState transState;
+    private TransState state;
 
     @ManyToOne
-    @JoinColumn(name = "buyer_id", referencedColumnName = "id")
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
     @Column(nullable = false)
     private Long merchantId;
 
-    private Long originId;
+    private Long originid;
 
     @Column(nullable = false)
     private Integer point;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private TransType transType;
+    private TransType type;
 
-    private String transNumber;
+    private String requestid;
 
     private String paymentType;
 
     @Builder
-    public Transaction(Long id, TransState transState, User user, Long merchantId, Long originId, Integer point, TransType transType, String transNumber, String paymentType) {
+    public Transaction(Long id, TransState state, User user, Long merchantId, Long originid, Integer point, TransType type, String requestid, String paymentType) {
         this.id = id;
-        this.transState = transState;
+        this.state = state;
         this.user = user;
         this.merchantId = merchantId;
         this.point = point;
-        this.transType = transType;
-        this.originId = originId;
-        this.transNumber = transNumber;
+        this.type = type;
+        this.originid = originid;
+        this.requestid = requestid;
         this.paymentType = paymentType;
     }
 
-    public void update(TransState transState) {
-        this.transState = transState;
+    public void update(TransState state) {
+        this.state = state;
     }
 
 }

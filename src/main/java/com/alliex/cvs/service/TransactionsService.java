@@ -66,17 +66,17 @@ public class TransactionsService {
 
     @Transactional
     public Transaction getTransStateByBarcode(String barcode) {
-        return transactionRepository.findByTransNumber(barcode);
+        return transactionRepository.findByRequestid(barcode);
     }
 
     @Transactional
     public String transactionPaymentStep1(TransactionSaveRequest requestParam) {
         // user point 조회 후 거래금액보다 작을시 false
-        PointResponse point = pointService.findByUserId(requestParam.getBuyerId());
+        PointResponse point = pointService.findByUserId(requestParam.getUserId());
         String transNumber = "NOT ENOUGH POINT";
         if (point.getPoint() >= requestParam.getPoint()) {
             transNumber = RandomMathUtils.createTransNumber();
-            requestParam.setTransNumber(transNumber);
+            requestParam.setRequestid(transNumber);
             Long transId = save(requestParam);
 
             for (Map<String, String> tMap : requestParam.getTransProduct()) {
@@ -91,15 +91,15 @@ public class TransactionsService {
 
     @Transactional
     public String transactionPaymentStep2(String barcode) {
-        Transaction transaction = transactionRepository.findByTransNumber(barcode);
+        Transaction transaction = transactionRepository.findByRequestid(barcode);
         List<TransactionDetailResponse> transactionDetail = transactionsDetailService.getDetails(transaction.getId());
-        if (transaction.getTransNumber().isEmpty()) {
+        if (transaction.getRequestid().isEmpty()) {
             update(transaction.getId(), TransState.FAIL);
             transactionsDetailService.update(transaction.getId(), TransState.FAIL);
             throw new TransactionNotFoundException("Invalid BARCODE");
         }
 
-        if (!TransState.WAIT.equals(transaction.getTransState())) {
+        if (!TransState.WAIT.equals(transaction.getState())) {
             throw new TransactionNotFoundException("trans_state error");
         }
 
@@ -115,7 +115,7 @@ public class TransactionsService {
 
     @Transactional
     public Long transactionRefund(Long transId) {
-        List<Transaction> transactionchk = transactionRepository.findByOriginId(transId);
+        List<Transaction> transactionchk = transactionRepository.findByOriginid(transId);
         if (!transactionchk.isEmpty()) {
             throw new TransactionNotFoundException("already REFUND");
         }
@@ -124,7 +124,7 @@ public class TransactionsService {
                 -> new TransactionNotFoundException("Not found transaction : id" + transId));
 
         List<TransactionDetailResponse> transactionDetail = transactionsDetailService.getDetails(transaction.getId());
-        if (!TransState.SUCCESS.equals(transaction.getTransState()) || !TransType.PAYMENT.equals(transaction.getTransType())) {
+        if (!TransState.SUCCESS.equals(transaction.getState()) || !TransType.PAYMENT.equals(transaction.getType())) {
             throw new TransactionNotFoundException("REFUND Fail");
         }
 
@@ -133,9 +133,9 @@ public class TransactionsService {
             productsService.updateAmountPlus(product.getProductId(), product.getProductAmount());
         }
         transactionsDetailService.update(transId, TransState.REFUND);
-        transaction.setOriginId(transId);
+        transaction.setOriginid(transId);
         TransactionSaveRequest transactionRefundRequest = new TransactionSaveRequest(transaction.getUser().getId(), transaction.getMerchantId(), transaction.getId(),
-                transaction.getPoint(), TransState.REFUND, TransType.REFUND, transaction.getTransNumber());
+                transaction.getPoint(), TransState.REFUND, TransType.REFUND, transaction.getRequestid());
 
         return transactionRepository.save(transactionRefundRequest.toEntity()).getId();
     }

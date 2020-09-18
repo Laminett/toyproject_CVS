@@ -2321,6 +2321,7 @@ pre code {
   border: 0;
 }
 
+
 .form-control {
   display: block;
   width: 100%;
@@ -2328,6 +2329,20 @@ pre code {
   font-size: 1rem;
   line-height: 1.5;
   color: #495057;
+  background-color: rgba(0, 0, 0, 0);
+  background-clip: padding-box;
+  border: 1px solid #d2d2d2;
+  border-radius: 0;
+  box-shadow: none;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+.form-control-t {
+  display: block;
+  width: 100%;
+  padding: 0.4375rem 0;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: whitesmoke;
   background-color: rgba(0, 0, 0, 0);
   background-clip: padding-box;
   border: 1px solid #d2d2d2;
@@ -13286,7 +13301,9 @@ fieldset[disabled][disabled] .has-rose .form-control,
 }
 
 .bmd-form-group label {
-  color: #AAAAAA;
+  color: darkblue;
+  margin-bottom: 0px;
+  margin-left: .5rem;
 }
 
 .bmd-form-group .radio label,
@@ -13588,6 +13605,15 @@ select.form-control {
   -moz-appearance: none;
   -webkit-appearance: none;
 }
+select.form-control-t {
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  color: whitesmoke;
+
+}
+.form-control-t option{
+  color: black;
+}
 
 @media (min-width: 576px) {
   .form-inline .input-group {
@@ -13627,7 +13653,13 @@ select.form-control {
 }
 
 .form-group .bmd-label-static {
+  color: darkblue;
   top: -10px;
+  position: initial;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  margin-left: 0px;
 }
 
 textarea {
@@ -16862,6 +16894,18 @@ fieldset[disabled] .form-group.is-focused .togglebutton label {
 
 .table thead tr th {
   font-size: 1.063rem;
+}
+
+.table .popthead tr th {
+  font-size: 0.875rem;
+  color: darkblue;
+  font-weight: bolder;
+}
+
+.table .popthead td {
+  font-size: 0.875rem;
+  color: darkblue;
+  font-weight: bolder;
 }
 
 .table .th-description {

@@ -9,6 +9,7 @@ import com.alliex.cvs.web.dto.TransactionSaveRequest;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,7 +30,7 @@ public class TransactionsApiController {
     @ApiOperation(value = "get Transaction", notes = "거래 화면 데이터, 거래 화면 검색")
     @GetMapping({"/api/v1/transactions", "/web-api/v1/transactions"})
     public Page<Transaction> getTransactions(@RequestParam(value = "page", required = false) int page, TransactionRequest searchRequest) {
-        return transactionsService.getTransactions(PageRequest.of(page - 1, 20), searchRequest);
+        return transactionsService.getTransactions(PageRequest.of(page - 1, 10, Sort.Direction.DESC,"id"), searchRequest);
     }
 
     @ApiOperation(value = "Transaction Pay Step1", notes = "거래 바코드 전송")

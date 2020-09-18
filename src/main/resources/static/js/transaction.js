@@ -26,13 +26,14 @@ var main = {
         });
 
         $(document).on('click', '[data-toggle=modal]', function () {
-            $('#TransactionId').val($(this).closest('tr').find('td').eq(0).text());
-            $('#BuyerId').val($(this).closest('tr').find('td').eq(1).text());
-            $('#MerchantId').val($(this).closest('tr').find('td').eq(2).text());
-            $('#PaymentType').val($(this).closest('tr').find('td').eq(3).text());
-            $('#TransactionPoint').val($(this).closest('tr').find('td').eq(4).text());
-            $('#TransactionState').val($(this).closest('tr').find('td').eq(5).text());
-            $('#TransactionType').val($(this).closest('tr').find('td').eq(6).text());
+            $('#TransactionId').val($(this).closest('tr').find('td').eq(1).text());
+            $('#BuyerId').val($(this).closest('tr').find('td').eq(2).text());
+            $('#MerchantId').val($(this).closest('tr').find('td').eq(3).text());
+            $('#PaymentType').val($(this).closest('tr').find('td').eq(4).text());
+            $('#TransactionPoint').val($(this).closest('tr').find('td').eq(5).text());
+            $('#TransactionState').val($(this).closest('tr').find('td').eq(6).text());
+            $('#TransactionType').val($(this).closest('tr').find('td').eq(7).text());
+            $('#barcode').val($(this).closest('tr').find('td').eq(8).text());
 
             // 상세 데이터 ajax call
             var transId = $('#TransactionId').val();
@@ -43,18 +44,28 @@ var main = {
                 dataType: 'json'
             }).done(function (data) {
                 $('#transactionDetail').empty();
+                $('#detailsum').empty();
                 if (data.content == "") {
                     $('#transactionDetail').append(" <tr> "
                         + "<td> 조회 결과가 없습니다. </td>  "
                         + "</tr>");
                 } else {
+                    let summerize = 0;
                     data.forEach(function (element) {
+                        summerize += element.productPoint;
                         $('#transactionDetail').append(" <tr> "
-                            + "<td>" + element.productName + "</td>  "
-                            + "<td>" + element.productPoint + "</td>"
+                            + "<td>" + element.productName + "</td>"
                             + "<td>" + element.productAmount + "</td>"
-                            + "</tr>");
+                            + "<td class='text-right'>" + element.productPoint + "</td>"
+                            + "</tr>"
+                        );
                     });
+
+                    $('#detailsum').append(" <tr class='popthead' style='border: #9e9e9e 1px solid'> "
+                        + "<td> SUMMERIZE :</td>"
+                        + "<td colspan=2 class='text-right'>" + summerize + "</td>"
+                        + "</tr>"
+                    );
 
                     for (var i = 1; i <= data.totalPages; i++) {
                         $('.pagination').append('<li class="page-item"><a class="page-link" id="paging">' + i + '</a><li>');
@@ -85,26 +96,29 @@ var main = {
                     + "<td> 조회 결과가 없습니다. </td>  "
                     + "</tr>");
             } else {
+                let number = data.totalElements - (data.number * 10);
                 data.content.forEach(function (element) {
                     var str = "";
-                    if (element.transState == "SUCCESS") {
+                    if (element.state == "SUCCESS") {
                         str = "    <button type='button' rel='tooltip' class='btn btn-danger' name='refund'>"
                             + "     <i class='material-icons'>close</i>"
                             + "    </button>";
                     }
                     $('#transactions').append(" <tr> "
-                        + "<td>" + element.id + "</td>  "
+                        + "<td>" + number-- + "</td>  "
+                        + "<td style='display: none'>" + element.id + "</td>  "
                         + "<td>" + element.user.username + "</td> "
                         + "<td>" + element.merchantId + "</td>"
-                        + "<td class='text-primary'>" + element.paymentType + "</td>"
-                        + "<td>" + element.point + "</td>"
-                        + "<td>" + element.transState + "</td>"
-                        + "<td>" + element.transType + "</td>"
-                        + "<td>" + element.createdDate + "</td>"
-                        + "<td>" + element.modifiedDate + "</td>"
-                        + "<td class='td-actions text-right'>"
+                        + "<td>" + element.paymentType + "</td>"
+                        + "<td class='text-right'>" + element.point + "</td>"
+                        + "<td>" + element.state + "</td>"
+                        + "<td>" + element.type + "</td>"
+                        + "<td style='display:none;position:absolute'>" + element.requestid + "</td>"
+                        + "<td>" + element.createdDate.replace('T', ' ') + "</td>"
+                        + "<td>" + element.modifiedDate.replace('T', ' ') + "</td>"
+                        + "<td class='td-actions text-center'>"
                         + "    <button type='button' rel='tooltip' class='btn btn-success' name='details'>"
-                        + "     <i class='material-icons' data-toggle='modal' data-target='.bd-example-modal-lg'>details</i>"
+                        + "     <i class='material-icons' data-toggle='modal' data-target='#addUpdateModal'>details</i>"
                         + "    </button>"
                         + str
                         + "</td>"

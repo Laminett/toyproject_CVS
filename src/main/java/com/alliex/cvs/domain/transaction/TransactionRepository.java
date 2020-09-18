@@ -8,8 +8,8 @@ import java.util.List;
 
 public interface TransactionRepository extends JpaRepository<Transaction, Long>, JpaSpecificationExecutor<Transaction> {
 
-    Transaction findByTransNumber(String transNumber);
+    Transaction findByRequestid(String transNumber);
 
-    List<Transaction> findByOriginId(Long transId);
+    List<Transaction> findByOriginid(Long transId);
 
 }

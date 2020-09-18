@@ -17,57 +17,57 @@ import java.util.Map;
 @NoArgsConstructor
 public class TransactionSaveRequest {
 
-    private Long buyerId;
+    private Long userId;
 
     private Long merchantId;
 
-    private Long originId;
+    private Long originid;
 
     private Integer point;
 
-    private TransState transState;
+    private TransState state;
 
-    private TransType transType;
+    private TransType type;
 
-    private String transNumber;
+    private String requestid;
 
     private List<Map<String, String>> transProduct;
 
     @Builder
-    public TransactionSaveRequest(Long buyerId, Long merchantId, Long originId, Integer point, TransState transState, TransType transType, String transNumber, List<Map<String, String>> transProduct) {
-        this.buyerId = buyerId;
+    public TransactionSaveRequest(Long userId, Long merchantId, Long originid, Integer point, TransState state, TransType type, String requestid, List<Map<String, String>> transProduct) {
+        this.userId = userId;
         this.merchantId = merchantId;
-        this.originId = originId;
+        this.originid = originid;
         this.point = point;
-        this.transState = transState;
-        this.transType = transType;
-        this.transNumber = transNumber;
+        this.state = state;
+        this.type = type;
+        this.requestid = requestid;
         this.transProduct = transProduct;
     }
 
     @Builder
-    public TransactionSaveRequest(Long buyerId, Long merchantId, Long originId, Integer point, TransState transState, TransType transType, String transNumber) {
-        this.buyerId = buyerId;
+    public TransactionSaveRequest(Long userId, Long merchantId, Long originid, Integer point, TransState state, TransType type, String requestid) {
+        this.userId = userId;
         this.merchantId = merchantId;
-        this.originId = originId;
+        this.originid = originid;
         this.point = point;
-        this.transState = transState;
-        this.transType = transType;
-        this.transNumber = transNumber;
+        this.state = state;
+        this.type = type;
+        this.requestid = requestid;
     }
 
     public Transaction toEntity() {
         User setUserId = new User();
-        setUserId.setId(buyerId);
+        setUserId.setId(userId);
 
         return Transaction.builder()
                 .user(setUserId)
                 .merchantId(merchantId)
-                .originId(originId)
+                .originid(originid)
                 .point(point)
-                .transState(transState)
-                .transType(transType)
-                .transNumber(transNumber)
+                .state(state)
+                .type(type)
+                .requestid(requestid)
                 .build();
     }
 

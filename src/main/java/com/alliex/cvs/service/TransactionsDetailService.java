@@ -47,10 +47,10 @@ public class TransactionsDetailService {
     public List<TransactionDetailResponse> getDetails(Long transId) {
         Transaction transaction = transactionRepository.findById(transId).orElseThrow(()
                 -> new TransactionNotFoundException("Not Found Transaction Id : " + transId));
-        if(transaction.getOriginId() == null){
+        if (transaction.getOriginid() == null) {
             return transactionDetailRepository.findByTransId(transId);
         } else {
-            return transactionDetailRepository.findByTransId(transaction.getOriginId());
+            return transactionDetailRepository.findByTransId(transaction.getOriginid());
         }
     }
 
