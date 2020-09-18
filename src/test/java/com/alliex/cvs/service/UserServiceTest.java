@@ -8,6 +8,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,7 +21,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Transactional()
 @Rollback()
 public class UserServiceTest {
-
     @Autowired
     UserService userService;
 
@@ -75,7 +75,7 @@ public class UserServiceTest {
 
     @Test
     public void getUsers() {
-        List<UserResponse> users = userService.getUsers(PageRequest.of(1, 10));
+        List<UserResponse> users = userService.getUsers(PageRequest.of(0, 10));
 
         assertThat(users.size()).isGreaterThanOrEqualTo(1);
     }
@@ -86,22 +86,22 @@ public class UserServiceTest {
         UserRequest userRequest = new UserRequest();
         userRequest.setFullName(fullName);
 
-        List<UserResponse> users = userService.getUsers(PageRequest.of(1, 10), userRequest);
-        users.forEach(userResponse -> {
+        Page<UserResponse> users = userService.getUsers(PageRequest.of(0, 10), userRequest);
+        users.getContent().forEach(userResponse -> {
             assertThat(userResponse.getFullName()).isEqualTo(fullName);
         });
     }
 
     @Test
     public void getUsersByEmail() {
-        String email = "shkim";
+        String email = "test@test.com";
         UserRequest userRequest = new UserRequest();
         userRequest.setEmail(email);
 
-        List<UserResponse> users = userService.getUsers(PageRequest.of(1, 10), userRequest);
+        Page<UserResponse> users = userService.getUsers(PageRequest.of(0, 10), userRequest);
 
-        assertThat(users.size()).isGreaterThanOrEqualTo(1);
-        users.forEach(userResponse -> {
+        assertThat(users.getContent().size()).isGreaterThanOrEqualTo(1);
+        users.getContent().forEach(userResponse -> {
             assertThat(userResponse.getEmail()).contains(email);
         });
     }

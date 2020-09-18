@@ -24,11 +24,20 @@ public class UserApiControllerTest {
 
     @WithMockUser(roles = "USER")
     @Test
-    public void getUsers() throws Exception {
-        mvc.perform(get("/web-api/v1/users"))
+    public void getUsersByDepartment() throws Exception {
+        mvc.perform(get("/web-api/v1/users").param("department", "Mobile Div"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].username").value("test"));
+                .andExpect(jsonPath("$.content[0].department").value("Mobile Div"));
+    }
+
+    @WithMockUser(roles = "USER")
+    @Test
+    public void getUsersByFullName() throws Exception {
+        mvc.perform(get("/web-api/v1/users").param("fullName", "admin"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.content[0].fullName").value("admin"));
     }
 
 }

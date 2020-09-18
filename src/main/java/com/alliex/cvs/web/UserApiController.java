@@ -7,10 +7,9 @@ import com.alliex.cvs.web.dto.UserSaveRequest;
 import com.alliex.cvs.web.dto.UserUpdateRequest;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -32,8 +31,8 @@ public class UserApiController {
 
     @ApiOperation(value = "Get Users")
     @GetMapping("/web-api/v1/users")
-    public List<UserResponse> getUsers(Pageable pageable, UserRequest userRequest) {
-        return userService.getUsers(pageable, userRequest);
+    public Page<UserResponse> getUsers(@RequestParam(required = false, defaultValue = "1") int page, UserRequest userRequest) {
+        return userService.getUsers(PageRequest.of(page - 1, 20), userRequest);
     }
 
     @ApiOperation(value = "Get User")

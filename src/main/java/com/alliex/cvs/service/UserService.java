@@ -1,5 +1,6 @@
 package com.alliex.cvs.service;
 
+import com.alliex.cvs.domain.type.UserSearchType;
 import com.alliex.cvs.domain.user.LoginUser;
 import com.alliex.cvs.domain.user.User;
 import com.alliex.cvs.domain.user.UserRepository;
@@ -10,7 +11,9 @@ import com.alliex.cvs.web.dto.UserSaveRequest;
 import com.alliex.cvs.web.dto.UserUpdateRequest;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -18,7 +21,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.criteria.Predicate;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -108,26 +114,25 @@ public class UserService implements UserDetailsService {
         return new UserResponse(user);
     }
 
-    public List<UserResponse> getUsers(Pageable pageable, UserRequest userRequest) {
-        if (StringUtils.isNotBlank(userRequest.getUsername())) {
-            return userRepository.findByUsernameLike(com.alliex.cvs.util.StringUtils.makeLike(userRequest.getUsername())).stream()
-                    .map(UserResponse::new)
-                    .collect(Collectors.toList());
-        } else if (StringUtils.isNotBlank(userRequest.getFullName())) {
-            return userRepository.findByFullNameLike(com.alliex.cvs.util.StringUtils.makeLike(userRequest.getFullName())).stream()
-                    .map(UserResponse::new)
-                    .collect(Collectors.toList());
-        } else if (StringUtils.isNotBlank(userRequest.getEmail())) {
-            return userRepository.findByEmailLike(com.alliex.cvs.util.StringUtils.makeLike(userRequest.getEmail())).stream()
-                    .map(UserResponse::new)
-                    .collect(Collectors.toList());
-        } else if (StringUtils.isNotBlank(userRequest.getDepartment())) {
-            return userRepository.findByDepartmentLike(com.alliex.cvs.util.StringUtils.makeLike(userRequest.getDepartment())).stream()
-                    .map(UserResponse::new)
-                    .collect(Collectors.toList());
-        } else {
-            return getUsers(pageable);
-        }
+    public Page<UserResponse> getUsers(Pageable pageable, UserRequest userRequest) {
+        Page<UserResponse> entities =
+                userRepository.findAll(searchWith(UserSearchType.getPredicateData(userRequest)), pageable)
+                        .map(UserResponse::new);
+
+        return entities;
+    }
+
+    private Specification<User> searchWith(Map<UserSearchType, String> predicateData) {
+        return (Specification<User>) ((root, query, builder) -> {
+            List<Predicate> predicate = new ArrayList<>();
+            for (Map.Entry<UserSearchType, String> entry : predicateData.entrySet()) {
+                predicate.add(builder.like(
+                        root.get(entry.getKey().getField()), "%" + entry.getValue() + "%"
+                ));
+            }
+
+            return builder.and(predicate.toArray(new Predicate[0]));
+        });
     }
 
 }
