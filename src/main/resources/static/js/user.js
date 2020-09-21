@@ -32,7 +32,6 @@ var main = {
 
         // create user
         $("#createUserBtn").click(function () {
-            $("#username").removeAttr("readonly");
             _this.createUser();
         });
 
@@ -46,6 +45,7 @@ var main = {
         $('.modal').on('hidden.bs.modal', function (e) {
             $(this).find('form')[0].reset()
             $("#userId").val("");
+            $("#username").removeAttr("readonly");
         });
     },
     getUser: function (id) {
