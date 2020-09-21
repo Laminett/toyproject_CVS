@@ -21,17 +21,22 @@ var main = {
         });
 
         $("#user-search-btn").click(function () {
-            var k, v;
-            k = _this.SEARCH_KEY;
-            v = $("#searchValue").val();
-            _this.getUsers(k, v);
+            _this.getUsers(1);
         });
 
+        // page click
+        $(document).on('click', '.page-link', function () {
+            var page = this.text;
+            _this.getUsers(page);
+        });
+
+        // create user
         $("#createUserBtn").click(function () {
             $("#username").removeAttr("readonly");
             _this.createUser();
         });
 
+        // user detail
         $(document).on('click', '#usersArea a', function () {
             _this.isUserUpdate = true;
             var userId = $(this).attr("user-id");
@@ -64,14 +69,16 @@ var main = {
             alert(JSON.stringify(error));
         });
     },
-    getUsers: function (k, v) {
+    getUsers: function (page) {
+        var _this = this;
+
         var param = {
-            number: 1,
-            // username: null,
-            // fullName: null,
-            // email: null,
-            // department: null
+            page: page || 1,
         };
+
+        var k, v;
+        k = _this.SEARCH_KEY;
+        v = $("#searchValue").val();
         param[k] = v;
 
         $.ajax({
@@ -81,8 +88,23 @@ var main = {
             data: param,
             contentType: 'application/json; charset=utf-8'
         }).done(function (data) {
+            // init
             $("#usersArea").html(null);
-            $("#usersTemplate").tmpl(data.content).appendTo("#usersArea");
+            $("#usersPagingArea").html(null);
+
+            // set list.
+            if (data.content.length == 0) {
+                $("#usersNoDataTemplate").tmpl().appendTo("#usersArea");
+            } else {
+                $("#usersTemplate").tmpl(data.content).appendTo("#usersArea");
+            }
+
+            // set paging.
+            var  pages = [];
+            for (var i = 0; i < data.totalPages; i++) {
+                pages.push({"page": i + 1});
+            }
+            $("#usersPagingTemplate").tmpl(pages).appendTo("#usersPagingArea");
         }).fail(function (error) {
             alert(JSON.stringify(error));
         });

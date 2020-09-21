@@ -49,8 +49,8 @@
                     </div>
                 </div>
                 <div>
-                    <nav aria-label="Page navigation example">
-                        <ul class="pagination justify-content-center"></ul>
+                    <nav aria-label="Page navigation">
+                        <ul id="usersPagingArea" class="pagination justify-content-center"></ul>
                     </nav>
                 </div>
                 <div>
@@ -144,6 +144,16 @@
     <td>${department}</td>
     <td>${createdDate}</td>
 </tr>
+</script>
+<script id="usersNoDataTemplate" type="text/x-jquery-tmpl">
+<tr>
+    <td colspan="5">No Data.</td>
+</tr>
+</script>
+<script id="usersPagingTemplate" type="text/x-jquery-tmpl">
+<li class="page-item">
+    <a class="page-link" href="#none">${page}</a>
+</li>
 </script>
 <script type="text/javascript" src="/js/plugins/jquery.tmpl.js"></script>
 <script type="text/javascript" src="/js/user.js"></script>

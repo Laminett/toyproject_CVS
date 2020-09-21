@@ -40,4 +40,13 @@ public class UserApiControllerTest {
                 .andExpect(jsonPath("$.content[0].fullName").value("admin"));
     }
 
+    @WithMockUser(roles = "USER")
+    @Test
+    public void getUsersWithPage() throws Exception {
+        mvc.perform(get("/web-api/v1/users").param("page", "2"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.content[0].fullName").value("admin"));
+    }
+
 }
