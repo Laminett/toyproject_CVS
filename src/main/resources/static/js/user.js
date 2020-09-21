@@ -82,7 +82,7 @@ var main = {
             contentType: 'application/json; charset=utf-8'
         }).done(function (data) {
             $("#usersArea").html(null);
-            $("#usersTemplate").tmpl(data).appendTo("#usersArea");
+            $("#usersTemplate").tmpl(data.content).appendTo("#usersArea");
         }).fail(function (error) {
             alert(JSON.stringify(error));
         });

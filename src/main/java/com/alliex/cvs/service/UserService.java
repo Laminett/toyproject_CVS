@@ -22,10 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.criteria.Predicate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -115,9 +112,8 @@ public class UserService implements UserDetailsService {
     }
 
     public Page<UserResponse> getUsers(Pageable pageable, UserRequest userRequest) {
-        Page<UserResponse> entities =
-                userRepository.findAll(searchWith(UserSearchType.getPredicateData(userRequest)), pageable)
-                        .map(UserResponse::new);
+        Page<UserResponse> entities = userRepository.findAll(searchWith(getPredicateData(userRequest)), pageable)
+                .map(UserResponse::new);
 
         return entities;
     }
@@ -133,6 +129,28 @@ public class UserService implements UserDetailsService {
 
             return builder.and(predicate.toArray(new Predicate[0]));
         });
+    }
+
+    private Map<UserSearchType, String> getPredicateData(UserRequest userRequest) {
+        Map<UserSearchType, String> predicateData = new HashMap<>();
+
+        if (StringUtils.isNotBlank(userRequest.getUsername())) {
+            predicateData.put(UserSearchType.USERNAME, userRequest.getUsername());
+        }
+
+        if (StringUtils.isNotBlank(userRequest.getFullName())) {
+            predicateData.put(UserSearchType.FULL_NAME, userRequest.getFullName());
+        }
+
+        if (StringUtils.isNotBlank(userRequest.getEmail())) {
+            predicateData.put(UserSearchType.EMAIL, userRequest.getEmail());
+        }
+
+        if (StringUtils.isNotBlank(userRequest.getDepartment())) {
+            predicateData.put(UserSearchType.DEPARTMENT, userRequest.getDepartment());
+        }
+
+        return predicateData;
     }
 
 }
