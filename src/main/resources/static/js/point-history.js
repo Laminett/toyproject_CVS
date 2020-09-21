@@ -1,105 +1,97 @@
 var main = {
-    init: function() {
+    init: function () {
         var _this = this;
-        
-        // 페이징
-        $('.page-link').on('click', function () {
-            _this.paging(this.text);
+
+        _this.getPointHistories(1);
+
+        $('.datepicker').datetimepicker({
+            format: "L",
+            defaultDate: new Date()
         });
-        
+
+        // 페이징
+        $(document).on('click', '.page-link', function () {
+            _this.getPointHistories(this.text);
+        });
+
         // 검색 이벤트
-        $('#btn_search').click(function() {
-            _this.search();
+        $(document).on('click', '#btn_search', function () {
+            _this.getPointHistories(1);
         });
 
         // 상태 업데이트
-        $(document).on('click', "[name='btn_approve'],[name='btn_deny']", function() {
-            var id = $(this).parent().parent().attr('id');
-            var status = $(this).val();
-            _this.update(id, status);
+        $(document).on('click', "[name='btn_approve'],[name='btn_deny']", function () {
+            if(confirm(messages["alert.point.history.confirm"])){
+                var id = $(this).parent().parent().attr('id');
+                var status = $(this).val();
+                _this.update(id, status);
+            }
         });
     },
-    search: function() {
-        var search_status = $('#search_status').val();
-        var search_username = $('#search_username').val();
-        var data = "searchStatus="+search_status+"&searchUsername="+search_username;
-
-        $.ajax({
-            type: 'GET',
-            url: '/point/history',
-            dataType: 'html',
-            contentType: 'application/json; charset=utf-8',
-            data: data
-        }).done(function (data) {
-            $('body').html(data.split('<body>')[1].split('</body>')[0]);
-            $('#search_status').val(search_status);
-            $('#search_username').val(search_username);
-        }).fail(function (error) {
-            alert(JSON.stringify(error));
-        });
-    },
-    paging: function (pageNum) {
-        var search_username = $('#search_username').val();
-        var data = "page="+pageNum+"&searchStatus="+$('#search_status').val()+"&searchUsername="+search_username;
+    getPointHistories: function (PageNum) {
+        var param = {
+            pageNumber: PageNum,
+            startDate: $("#search_startDate").val() == "" ? getToday() : getDateString($("#search_startDate").val()),
+            endDate: $("#search_endDate").val() == "" ? getToday() : getDateString($("#search_endDate").val()),
+            status: $('#search_status').val(),
+            fullName: $('#search_username').val()
+        };
 
         $.ajax({
             type: 'GET',
             url: '/web-api/v1/point/history',
-            dataType: 'JSON',
-            data: data
+            dataType: 'json',
+            data: param,
+            contentType: 'application/json; charset=utf-8'
         }).done(function (data) {
-            $('tbody').empty();
-            data.forEach(function (element) {
-                var _html = " <tr id='" + element.id + "' class='text-center'> "
-                    + "<td>" + element.id + "</td> "
-                    + "<td>" + element.username + "</td>"
-                    + "<td class='text-primary'>" + element.point + "</td>"
-                    + "<td>" + element.requestDate + "</td>";
-                if(element.status == null){
-                    _html+=  "<td></td>"
-                        + "<td class='td-actions'>"
-                        + "<button type='button' class='btn btn-info' name='btn_approve' value='Y'>"
-                        + "<i class='material-icons'>done</i>"
-                        + "</button>&nbsp;"
-                        + "<button type='button' class='btn btn-danger' name='btn_deny' value='N'>"
-                        + "<i class='material-icons'>clear</i>"
-                        + "</button>"
-                        + "</td>";
-                }else{
-                    _html+= "<td>" + element.updateDate + "</td>";
-                    if(element.isApproved == "Y"){
-                        _html+= "<td>Arrpoved by " + element.adminId + "</td>";
-                    }else {
-                        _html+= "<td>Denied by " + element.adminId + "</td>";
-                    }
-                }
-                _html += "</tr>"
-                $('tbody').append(_html);
-            });
+            $("#pointHistoriesArea").html(null);
+            if(data.content == ""){
+                $("#pointHistoriesArea").append(" <tr class='text-center'> "
+                    + "<td colspan='7'>" + messages["info.search.no.data"] +"</td>  "
+                    + "</tr>");
+            } else {
+                $("#pointHistoriesTemplate").tmpl(data.content, function(element){
+                    console.log(element);
+                }).appendTo("#pointHistoriesArea");
+            }
+
+            $('.pagination').empty();
+            for (var i = 1; i <= data.totalPages; i++) {
+                $('.pagination').append('<li class="page-item"><a class="page-link">' + i + '</a><li>');
+            }
         }).fail(function (error) {
-            alert(JSON.stringify(error));
+            console.log(JSON.stringify(error));
+            alert();
         });
     },
     update: function (id, status) {
         var data = {
             id: id,
-            status : status,
+            status: status,
             adminId: $('#loginUser').val()
         };
 
         $.ajax({
             type: 'PUT',
-            url: '/web-api/v1/point/history/'+id,
+            url: '/web-api/v1/point/history/' + id,
             dataType: 'json',
             contentType: 'application/json; charset=utf-8',
             data: JSON.stringify(data)
         }).done(function () {
-            alert('승인완료');
+            alert(messages["alert.update.success"]);
             window.location.href = '/point/history';
         }).fail(function (error) {
-            alert(JSON.stringify(error));
+            console.log(JSON.stringify(error));
+            alert(messages["alert.update.fail"]);
         });
     }
 };
 
 main.init();
+
+function getDateString(date){
+    var mmdd = date.substring(0,5).replace(/[^0-9]/g,"");
+    var yyyy = date.substring(6,10);
+
+    return yyyy+mmdd;
+}
