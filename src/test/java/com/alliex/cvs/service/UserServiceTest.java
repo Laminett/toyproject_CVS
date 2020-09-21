@@ -1,5 +1,6 @@
 package com.alliex.cvs.service;
 
+import com.alliex.cvs.domain.type.Role;
 import com.alliex.cvs.web.dto.UserRequest;
 import com.alliex.cvs.web.dto.UserResponse;
 import com.alliex.cvs.web.dto.UserSaveRequest;
@@ -32,6 +33,7 @@ public class UserServiceTest {
         String fullName = "fullName " + RandomStringUtils.randomAlphanumeric(5);
         String email = RandomStringUtils.randomAlphanumeric(5) + "@email.com";
         String phoneNumber = "010-1111-2222";
+        Role role = Role.ADMIN;
 
         // Create user.
         UserSaveRequest userSaveRequest = UserSaveRequest.builder()
@@ -41,6 +43,7 @@ public class UserServiceTest {
                 .fullName(fullName)
                 .email(email)
                 .phoneNumber(phoneNumber)
+                .role(role)
                 .build();
 
         Long savedId = userService.save(userSaveRequest);
@@ -53,6 +56,7 @@ public class UserServiceTest {
         assertThat(userResponse.getFullName()).isEqualTo(fullName);
         assertThat(userResponse.getEmail()).isEqualTo(email);
         assertThat(userResponse.getPhoneNumber()).isEqualTo(phoneNumber);
+        assertThat(userResponse.getRole()).isEqualTo(role);
     }
 
     @Test
