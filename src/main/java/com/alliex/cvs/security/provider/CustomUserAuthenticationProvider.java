@@ -1,7 +1,6 @@
 package com.alliex.cvs.security.provider;
 
 import com.alliex.cvs.domain.user.LoginUser;
-import com.alliex.cvs.util.AuthoritiesUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -9,15 +8,12 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
-
-import java.util.Collection;
 
 
 @Component
@@ -50,10 +46,7 @@ public class CustomUserAuthenticationProvider implements AuthenticationProvider 
             throw new BadCredentialsException("Invalid password");
         }
 
-        Collection<? extends GrantedAuthority> authorities = AuthoritiesUtils.createAuthorities(user);
-
-        return new UsernamePasswordAuthenticationToken(user, user.getPassword(), authorities);
-
+        return new UsernamePasswordAuthenticationToken(user, user.getPassword(), findUser.getAuthorities());
     }
 
     @Override

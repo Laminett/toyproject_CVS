@@ -1,6 +1,7 @@
 
 package com.alliex.cvs.config;
 
+import com.alliex.cvs.domain.type.Role;
 import com.alliex.cvs.security.JwtAuthenticationTokenFilter;
 import com.alliex.cvs.security.provider.ApiUserAuthenticationProvider;
 import com.alliex.cvs.security.provider.CustomUserAuthenticationProvider;
@@ -51,7 +52,7 @@ public class SecurityConfig {
                 .antMatcher("/api/**")
                 .authorizeRequests()
                 .antMatchers("/api/login/**").permitAll()
-                .antMatchers("/api/**").hasRole("USER");
+                .antMatchers("/api/**").hasRole(Role.USER.name());
 
             http
                 .csrf()
@@ -84,7 +85,7 @@ public class SecurityConfig {
                     .antMatchers("/css/**", "/js/**", "/img/**", "/material-dashboard/**").permitAll()
                     .antMatchers("/login/**", "/logout/**").permitAll()
                     .antMatchers("/ping").permitAll()
-                    .antMatchers("/**").hasRole("USER");
+                    .antMatchers("/**").hasRole(Role.ADMIN.name());
 
             http.formLogin()
                     .defaultSuccessUrl("/")
