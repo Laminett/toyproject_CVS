@@ -37,12 +37,12 @@
                         <div class="table-responsive" id="result1">
                             <table class="table" id="templ1">
                                 <thead class=" text-primary">
-                                <th>사번</th>
-                                <th>이름</th>
-                                <th>Email</th>
-                                <th>부서</th>
-                                <th>Level</th>
-                                <th>등록일</th>
+                                    <th>사번</th>
+                                    <th>이름</th>
+                                    <th>Email</th>
+                                    <th>부서</th>
+                                    <th>Role</th>
+                                    <th>등록일</th>
                                 </thead>
                                 <tbody id="usersArea"></tbody>
                             </table>
@@ -98,11 +98,11 @@
                             <div class="form-group bmd-form-group">
                                 <div class="input-group">
                                     <div class="input-group-prepend" style="width:100px;">
-                                        <div class="input-group-text">Level</div>
+                                        <div class="input-group-text">Role</div>
                                     </div>
                                     <select id="role" name="role" class="form-control">
                                         {{#roleNames}}
-                                            <option>{{{.}}}</option>
+                                            <option value="{{{.}}}">{{{.}}}</option>
                                         {{/roleNames}}
                                     </select>
                                 </div>
