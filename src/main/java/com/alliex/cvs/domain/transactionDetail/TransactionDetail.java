@@ -2,7 +2,7 @@ package com.alliex.cvs.domain.transactionDetail;
 
 import com.alliex.cvs.domain.BaseTimeEntity;
 import com.alliex.cvs.domain.product.Product;
-import com.alliex.cvs.domain.type.TransState;
+import com.alliex.cvs.domain.type.TransactionState;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,30 +19,30 @@ public class TransactionDetail extends BaseTimeEntity {
     private Long id;
 
     @Column(nullable = false)
-    private Long transId;
+    private Long transactionId;
 
     @Column(nullable = false)
-    private Integer productAmount;
+    private Integer productQuantity;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private TransState transState;
+    private TransactionState transactionState;
 
     @ManyToOne
     @JoinColumn(name = "product_id", referencedColumnName = "id")
     private Product product;
 
     @Builder
-    public TransactionDetail(Long id, Long transId, Integer productAmount, TransState transState, Product product) {
+    public TransactionDetail(Long id, Long transactionId, Integer productQuantity, TransactionState transactionState, Product product) {
         this.id = id;
-        this.transId = transId;
-        this.productAmount = productAmount;
-        this.transState = transState;
+        this.transactionId = transactionId;
+        this.productQuantity = productQuantity;
+        this.transactionState = transactionState;
         this.product = product;
     }
 
-    public void update(TransState transState) {
-        this.transState = transState;
+    public void update(TransactionState transactionState) {
+        this.transactionState = transactionState;
     }
 
 }

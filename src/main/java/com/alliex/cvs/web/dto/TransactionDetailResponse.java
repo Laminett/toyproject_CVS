@@ -11,19 +11,19 @@ public class TransactionDetailResponse {
 
     private String productName;
 
-    private Long transId;
+    private Long transactionId;
 
     private Long productPoint;
 
-    private Integer productAmount;
+    private Integer productQuantity;
 
-    public TransactionDetailResponse(Long id, Long productId, String productName, Long productPoint, Integer productAmount, Long transId) {
+    public TransactionDetailResponse(Long id, Long productId, String productName, Long productPoint, Integer productQuantity, Long transactionId) {
         this.id = id;
         this.productId = productId;
         this.productName = productName;
         this.productPoint = productPoint;
-        this.productAmount = productAmount;
-        this.transId = transId;
+        this.productQuantity = productQuantity;
+        this.transactionId = transactionId;
     }
 
 }

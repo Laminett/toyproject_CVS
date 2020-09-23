@@ -10,7 +10,7 @@ var main = {
 
         // refund
         $(document).on('click', 'button[name=refund]', function () {
-            if (confirm('Really want to REFUND')) {
+            if (confirm('Really want to REFUND?')) {
                 var transId = $(this).closest('tr').find('td').eq(0).text();
                 _this.refund(transId);
             }
@@ -55,7 +55,7 @@ var main = {
                         summerize += element.productPoint;
                         $('#transactionDetail').append(" <tr> "
                             + "<td>" + element.productName + "</td>"
-                            + "<td>" + element.productAmount + "</td>"
+                            + "<td>" + element.productQuantity + "</td>"
                             + "<td class='text-right'>" + element.productPoint + "</td>"
                             + "</tr>"
                         );
@@ -75,6 +75,82 @@ var main = {
                 alert(JSON.stringify(error.responseJSON.message));
             });
         });
+        /////////////////////////////////////////////////////////////////////////////////////////////
+
+        $('#step1').on('click', function () {
+            var data = {
+                userId: 1,
+                merchantId: 123,
+                type: 0,
+                state: 'WAIT',
+                transProduct: [
+                    {
+                        productId: 1,
+                        productAmount: 1,
+                        productPoint: 11
+                    },
+                    {
+                        productId: 3,
+                        productAmount: 2,
+                        productPoint: 12
+                    },
+                    {
+                        productId: 4,
+                        productAmount: 3,
+                        productPoint: 13
+                    },
+                ],
+                point: 100
+            };
+
+            $.ajax({
+                type: 'POST',
+                url: '/web-api/v1/transactions/payment/step1',
+                data: JSON.stringify(data),
+                dataType: 'TEXT',
+                contentType: 'application/json'
+            }).done(function (data) {
+                alert(data);
+            }).fail(function (error) {
+                alert(JSON.stringify(error));
+            });
+        });
+
+        $('#step2').on('click', function () {
+            var barcode = prompt("input barcode");
+
+            $.ajax({
+                type: 'GET',
+                url: '/web-api/v1/transactions/state/' + barcode,
+                // data:JSON.stringify(data),
+                dataType: 'TEXT'
+                // contentType: 'application/json'
+            }).done(function (data) {
+                alert(data);
+            }).fail(function (error) {
+                alert(JSON.stringify(error));
+            });
+        });
+
+        $('#step3').on('click', function () {
+            var barcode = prompt("input barcode");
+            let data = {
+              paymentType : 1
+            };
+            $.ajax({
+                type: 'PUT',
+                url: '/web-api/v1/transactions/payment/step2/' + barcode,
+                // data:"barcode=9aLdIvsYFFy7",
+                dataType: 'TEXT',
+                contentType: 'application/json',
+                data: JSON.stringify(data)
+            }).done(function (data) {
+                alert(data);
+            }).fail(function (error) {
+                alert(JSON.stringify(error));
+            });
+        });
+/////////////////////////////////////////////////////////////////////////////////////////////
     },
     dataLoad: function (pageNum) {
         var searchData;
@@ -113,7 +189,7 @@ var main = {
                         + "<td class='text-right'>" + element.point + "</td>"
                         + "<td>" + element.state + "</td>"
                         + "<td>" + element.type + "</td>"
-                        + "<td style='display:none;position:absolute'>" + element.requestid + "</td>"
+                        + "<td style='display:none;position:absolute'>" + element.requestId + "</td>"
                         + "<td>" + element.createdDate.replace('T', ' ') + "</td>"
                         + "<td>" + element.modifiedDate.replace('T', ' ') + "</td>"
                         + "<td class='td-actions text-center'>"

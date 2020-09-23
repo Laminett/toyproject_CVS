@@ -5,6 +5,7 @@ import com.alliex.cvs.service.TransactionsDetailService;
 import com.alliex.cvs.service.TransactionsService;
 import com.alliex.cvs.web.dto.TransactionDetailResponse;
 import com.alliex.cvs.web.dto.TransactionRequest;
+import com.alliex.cvs.web.dto.TransactionResponse;
 import com.alliex.cvs.web.dto.TransactionSaveRequest;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.data.domain.Page;
@@ -35,14 +36,14 @@ public class TransactionsApiController {
 
     @ApiOperation(value = "Transaction Pay Step1", notes = "거래 바코드 전송")
     @PostMapping({"/api/v1/transactions/payment/step1", "/web-api/v1/transactions/payment/step1"})
-    public String TransactionPaymentStep1(@RequestBody TransactionSaveRequest requestParam) {
+    public TransactionResponse TransactionPaymentStep1(@RequestBody TransactionSaveRequest requestParam) {
         return transactionsService.transactionPaymentStep1(requestParam);
     }
 
     @ApiOperation(value = "Transaction Pay Step2", notes = "바코드 조회 거래 승인/거절")
     @PutMapping({"/api/v1/transactions/payment/step2/{barcode}", "/web-api/v1/transactions/payment/step2/{barcode}"})
-    public String TransactionPaymentStep2(@PathVariable String barcode) {
-        return transactionsService.transactionPaymentStep2(barcode);
+    public TransactionResponse TransactionPaymentStep2(@PathVariable String barcode, @RequestBody Transaction transaction) {
+        return transactionsService.transactionPaymentStep2(barcode, transaction.getPaymentType());
     }
 
     @ApiOperation(value = "Transaction refund", notes = "거래 취소")
@@ -53,7 +54,7 @@ public class TransactionsApiController {
 
     @ApiOperation(value = "get Transaction Status", notes = "거래상태 조회")
     @GetMapping({"/api/v1/transactions/state/{barcode}", "/web-api/v1/transactions/state/{barcode}"})
-    public Transaction getTransactionState(@PathVariable String barcode) {
+    public TransactionResponse getTransactionState(@PathVariable String barcode) {
         return transactionsService.getTransStateByBarcode(barcode);
     }
 

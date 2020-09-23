@@ -4,12 +4,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 import java.util.List;
+import java.util.Optional;
 
 
 public interface TransactionRepository extends JpaRepository<Transaction, Long>, JpaSpecificationExecutor<Transaction> {
 
-    Transaction findByRequestid(String transNumber);
+    Optional<Transaction> findByRequestId(String transNumber);
 
-    List<Transaction> findByOriginid(Long transId);
+    List<Transaction> findByOriginId(Long transId);
 
 }

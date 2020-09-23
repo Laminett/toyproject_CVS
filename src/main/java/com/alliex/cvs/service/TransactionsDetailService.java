@@ -1,6 +1,6 @@
 package com.alliex.cvs.service;
 
-import com.alliex.cvs.domain.type.TransState;
+import com.alliex.cvs.domain.type.TransactionState;
 import com.alliex.cvs.domain.transaction.Transaction;
 import com.alliex.cvs.domain.transaction.TransactionRepository;
 import com.alliex.cvs.domain.transactionDetail.TransactionDetail;
@@ -32,12 +32,12 @@ public class TransactionsDetailService {
     }
 
     @Transactional
-    public Long update(Long transid, TransState transState) {
-        List<TransactionDetailResponse> transactionDetailResponses = transactionDetailRepository.findByTransId(transid);
+    public Long update(Long transid, TransactionState transactionState) {
+        List<TransactionDetailResponse> transactionDetailResponses = transactionDetailRepository.findByTransactionId(transid);
         for (TransactionDetailResponse transDetail : transactionDetailResponses) {
             TransactionDetail transactionDetail = transactionDetailRepository.findById(transDetail.getId()).orElseThrow(()
                     -> new TransactionNotFoundException("Not found TransactionDetail id : " + transDetail.getId()));
-            transactionDetail.update(transState);
+            transactionDetail.update(transactionState);
         }
 
         return transid;
@@ -47,11 +47,12 @@ public class TransactionsDetailService {
     public List<TransactionDetailResponse> getDetails(Long transId) {
         Transaction transaction = transactionRepository.findById(transId).orElseThrow(()
                 -> new TransactionNotFoundException("Not Found Transaction Id : " + transId));
-        if (transaction.getOriginid() == null) {
-            return transactionDetailRepository.findByTransId(transId);
-        } else {
-            return transactionDetailRepository.findByTransId(transaction.getOriginid());
+
+        if (transaction.getOriginId() != null) {
+            return transactionDetailRepository.findByTransactionId(transaction.getOriginId());
         }
+
+        return transactionDetailRepository.findByTransactionId(transId);
     }
 
 }

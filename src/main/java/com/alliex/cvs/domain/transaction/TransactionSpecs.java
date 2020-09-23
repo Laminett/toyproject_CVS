@@ -18,8 +18,8 @@ public class TransactionSpecs {
         MERCHANTID("merchantId"),
         PAYMENTTYPE("paymentType"),
         POINT("point"),
-        TRANSSTATE("state"),
-        TRANSTYPE("type");
+        STATE("state"),
+        TYPE("type");
 
         private final String value;
 
@@ -49,8 +49,8 @@ public class TransactionSpecs {
                 case MERCHANTID:
                 case PAYMENTTYPE:
                 case POINT:
-                case TRANSSTATE:
-                case TRANSTYPE:
+                case STATE:
+                case TYPE:
                     predicate.add(builder.equal(
                             root.get(key.value), searchKeyword.get(key)
                     ));

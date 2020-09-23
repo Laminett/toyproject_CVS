@@ -1,7 +1,8 @@
 package com.alliex.cvs.web.dto;
 
-import com.alliex.cvs.domain.type.TransState;
-import com.alliex.cvs.domain.type.TransType;
+import com.alliex.cvs.domain.type.TransactionPaymentType;
+import com.alliex.cvs.domain.type.TransactionState;
+import com.alliex.cvs.domain.type.TransactionType;
 import com.alliex.cvs.domain.transaction.Transaction;
 import com.alliex.cvs.domain.user.User;
 import lombok.Builder;
@@ -21,39 +22,42 @@ public class TransactionSaveRequest {
 
     private Long merchantId;
 
-    private Long originid;
+    private Long originId;
 
     private Integer point;
 
-    private TransState state;
+    private TransactionPaymentType paymentType;
 
-    private TransType type;
+    private TransactionState state;
 
-    private String requestid;
+    private TransactionType type;
+
+    private String requestId;
 
     private List<Map<String, String>> transProduct;
 
     @Builder
-    public TransactionSaveRequest(Long userId, Long merchantId, Long originid, Integer point, TransState state, TransType type, String requestid, List<Map<String, String>> transProduct) {
+    public TransactionSaveRequest(Long userId, Long merchantId, Long originId, Integer point, TransactionState state, TransactionType type, String requestId, List<Map<String, String>> transProduct) {
         this.userId = userId;
         this.merchantId = merchantId;
-        this.originid = originid;
+        this.originId = originId;
         this.point = point;
         this.state = state;
         this.type = type;
-        this.requestid = requestid;
+        this.requestId = requestId;
         this.transProduct = transProduct;
     }
 
     @Builder
-    public TransactionSaveRequest(Long userId, Long merchantId, Long originid, Integer point, TransState state, TransType type, String requestid) {
+    public TransactionSaveRequest(Long userId, Long merchantId, Long originId, Integer point, TransactionState state, TransactionType type, String requestId, TransactionPaymentType paymentType) {
         this.userId = userId;
         this.merchantId = merchantId;
-        this.originid = originid;
+        this.originId = originId;
         this.point = point;
         this.state = state;
         this.type = type;
-        this.requestid = requestid;
+        this.requestId = requestId;
+        this.paymentType = paymentType;
     }
 
     public Transaction toEntity() {
@@ -63,11 +67,11 @@ public class TransactionSaveRequest {
         return Transaction.builder()
                 .user(setUserId)
                 .merchantId(merchantId)
-                .originid(originid)
+                .originId(originId)
                 .point(point)
                 .state(state)
                 .type(type)
-                .requestid(requestid)
+                .requestId(requestId)
                 .build();
     }
 

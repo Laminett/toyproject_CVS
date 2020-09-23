@@ -13,15 +13,18 @@
                             <form class="form-inline ml-auto" id="searchForm">
                                 <div class="form-group">
                                     <input type="hidden" id="LoginUser" name="LoginUser" value={{loginUser}}>
+                                    <input type="button" id="step1" name="step1" value="step1"/>
+                                    <input type="button" id="step2" name="step2" value="step2"/>
+                                    <input type="button" id="step3" name="step3" value="step3"/>
+                                    <input type="button" id="step4" name="step4" value="step4"/>
                                     <select id="searchField" class="form-control form-control-t" data-style="btn btn-link" name="searchField" style="color: whitesmoke">
                                         <option selected>Choose...</option>
-                                        <option>id</option>
-                                        <option>buyerId</option>
+                                        <option>userId</option>
                                         <option>merchantId</option>
                                         <option>paymentType</option>
                                         <option>point</option>
-                                        <option>transState</option>
-                                        <option>transType</option>
+                                        <option>state</option>
+                                        <option>type</option>
                                     </select>
                                 </div>
                                 <div class="col has-white">

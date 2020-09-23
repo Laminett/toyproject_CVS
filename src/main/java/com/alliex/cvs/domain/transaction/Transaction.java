@@ -1,8 +1,9 @@
 package com.alliex.cvs.domain.transaction;
 
 import com.alliex.cvs.domain.BaseTimeEntity;
-import com.alliex.cvs.domain.type.TransState;
-import com.alliex.cvs.domain.type.TransType;
+import com.alliex.cvs.domain.type.TransactionPaymentType;
+import com.alliex.cvs.domain.type.TransactionState;
+import com.alliex.cvs.domain.type.TransactionType;
 import com.alliex.cvs.domain.user.User;
 import lombok.*;
 
@@ -21,7 +22,7 @@ public class Transaction extends BaseTimeEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private TransState state;
+    private TransactionState state;
 
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
@@ -30,34 +31,35 @@ public class Transaction extends BaseTimeEntity {
     @Column(nullable = false)
     private Long merchantId;
 
-    private Long originid;
+    private Long originId;
 
     @Column(nullable = false)
     private Integer point;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private TransType type;
+    private TransactionType type;
 
-    private String requestid;
+    private String requestId;
 
-    private String paymentType;
+    private TransactionPaymentType paymentType;
 
     @Builder
-    public Transaction(Long id, TransState state, User user, Long merchantId, Long originid, Integer point, TransType type, String requestid, String paymentType) {
+    public Transaction(Long id, TransactionState state, User user, Long merchantId, Long originId, Integer point, TransactionType type, String requestId, TransactionPaymentType paymentType) {
         this.id = id;
         this.state = state;
         this.user = user;
         this.merchantId = merchantId;
         this.point = point;
         this.type = type;
-        this.originid = originid;
-        this.requestid = requestid;
+        this.originId = originId;
+        this.requestId = requestId;
         this.paymentType = paymentType;
     }
 
-    public void update(TransState state) {
+    public void update(TransactionState state, TransactionPaymentType paymentType) {
         this.state = state;
+        this.paymentType = paymentType;
     }
 
 }

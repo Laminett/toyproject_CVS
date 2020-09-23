@@ -1,7 +1,8 @@
 package com.alliex.cvs.web.dto;
 
-import com.alliex.cvs.domain.type.TransState;
-import com.alliex.cvs.domain.type.TransType;
+import com.alliex.cvs.domain.transaction.Transaction;
+import com.alliex.cvs.domain.type.TransactionState;
+import com.alliex.cvs.domain.type.TransactionType;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
@@ -9,35 +10,18 @@ import java.time.LocalDateTime;
 @Getter
 public class TransactionResponse {
 
-    private Long id;
+    private TransactionState transactionState;
 
-    private TransState transState;
+    private String requestId;
 
-    private Long buyerId;
-
-    private Long merchantId;
-
-    private Integer transPoint;
-
-    private TransType transType;
-
-    private String paymentType;
-
-    private LocalDateTime createdDate;
-
-    private LocalDateTime modifiedDate;
-
-    public TransactionResponse(Long id, TransState transState, Long buyerId, Long merchantId, Integer transPoint, TransType transType, String paymentType,
-                               LocalDateTime createdDate, LocalDateTime modifiedDate) {
-        this.id = id;
-        this.transState = transState;
-        this.buyerId = buyerId;
-        this.merchantId = merchantId;
-        this.transPoint = transPoint;
-        this.transType = transType;
-        this.paymentType = paymentType;
-        this.createdDate = createdDate;
-        this.modifiedDate = modifiedDate;
+    public TransactionResponse(TransactionState transactionState, String requestId) {
+        this.requestId = requestId;
+        this.transactionState = transactionState;
     }
 
+    public TransactionResponse(Transaction entity) {
+        this.requestId = entity.getRequestId();
+        this.transactionState = entity.getState();
+
+    }
 }
