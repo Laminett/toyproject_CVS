@@ -7,97 +7,87 @@
                 <div class="card">
                     <div class="card-header card-header-primary">
                         <div style="float: left">
-                            <h4 class="card-title">{{#messages}}title.pointHistory{{/messages}}</h4>
+                            <h4 class="card-title">{{#messages}}title.point.history{{/messages}}</h4>
                         </div>
+
                         <div style="float: right">
-                            <form class="form-inline ml-auto" id="searchForm">
-                                <div class="form-group">
-                                    <select class="form-control" data-style="btn btn-link" id="search_status">
-                                        <option value="" selected>{{#messages}}all{{/messages}}</option>
-                                        <option value="Y">{{#messages}}approved{{/messages}}</option>
-                                        <option value="N">{{#messages}}deny{{/messages}}</option>
-                                    </select>
+                            <form class="form-inline ml-auto" id="pointHistorySearchForm">
+                                <span>{{#messages}}point.history.created.date{{/messages}}</span>
+                                <div class="form-group has-white">
+                                    <input type="text" class="form-control datepicker" id="search_startDate"
+                                           maxlength="10">
+                                    <span>-</span>
+                                    <input type="text" class="form-control datepicker" id="search_endDate"
+                                           maxlength="10">
                                 </div>
-                                <div class="col has-white">
-                                    <input type="text" class="form-control" id="search_username" placeholder="USER ID" maxlength="25">
+                                <span>{{#messages}}user.full.name{{/messages}}</span>
+                                <div class="form-group has-white">
+                                    <input type="text" class="form-control" id="search_username" maxlength="25" style="color: white;">
                                 </div>
-                                <button type="button" class="btn btn-white btn-round btn-just-icon" id="btn_search" name="search">
+                                <button type="button" class="btn btn-white btn-round btn-just-icon" id="btn_search"
+                                        name="search">
                                     <i class="material-icons">search</i>
-                                    <div class="ripple-container"></div>
                                 </button>
                             </form>
                         </div>
                     </div>
                     <div class="card-body">
-                        <table class="table">
-                            <thead class="text-center">
-                            <tr>
+                        <div class="table-responsive" id="result1">
+                            <table class="table" id="templ1">
+                                <thead class="text-center text-primary">
                                 <th>No</th>
-                                <th>{{#messages}}user.id{{/messages}}</th>
-                                <th>{{#messages}}point{{/messages}}</th>
-                                <th>{{#messages}}request.date{{/messages}}</th>
-                                <th>{{#messages}}update.date{{/messages}}</th>
-                                <th>{{#messages}}state{{/messages}}</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {{#pointHistory}}
-                                <tr id="{{id}}" class="text-center">
-                                    <td>{{id}}</td>
-                                    <td>{{username}}</td>
-                                    <td class="text-primary">{{point}}</td>
-                                    <td>{{requestDate}}</td>
-                                    {{#status}}
-                                        <td>{{updateDate}}</td>
-                                        {{#isApproved}}
-                                            <td>Approved by {{adminId}}</td>
-                                        {{/isApproved}}
-                                        {{^isApproved}}
-                                            <td>Denied by {{adminId}}</td>
-                                        {{/isApproved}}
-                                    {{/status}}
-                                    {{^status}}
-                                        <td></td>
-                                        <td class="td-actions">
-                                            <button type="button" class="btn btn-info" name="btn_approve" value="Y">
-                                                <i class="material-icons">done</i>
-                                            </button>&nbsp;
-                                            <button type="button" class="btn btn-danger" name="btn_deny" value="N">
-                                                <i class="material-icons">clear</i>
-                                            </button>
-                                        </td>
-                                    {{/status}}
-                                </tr>
-                            {{/pointHistory}}
-                            {{^pointHistory}}
-                                <tr class="text-center">
-                                    <td>{{#messages}}search.no.data{{/messages}}</td>
-                                </tr>
-                            {{/pointHistory}}
-                            </tbody>
-                        </table>
+                                <th>{{#messages}}user.username{{/messages}}</th>
+                                <th>{{#messages}}user.full.name{{/messages}}</th>
+                                <th>{{#messages}}point.history.point{{/messages}}</th>
+                                <th>{{#messages}}point.history.created.date{{/messages}}</th>
+                                <th>{{#messages}}point.history.modified.date{{/messages}}</th>
+                                <th>{{#messages}}status{{/messages}}</th>
+                                </thead>
+                                <tbody id="pointHistoriesArea"></tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
                 <div>
                     <nav aria-label="Page navigation">
-                        <ul class="pagination justify-content-center">
-                            <li class="page-item disabled">
-                                <a class="page-link" id="previous">Previous</a>
-                            </li>
-                            {{#page}}
-                                <li class="page-item">
-                                    <a class="page-link" id="page_{{{.}}}" value="{{{.}}}">{{{.}}}</a>
-                                </li>
-                            {{/page}}
-                            <li class="page-item disabled">
-                                <a class="page-link" id="next">Next</a>
-                            </li>
-                        </ul>
+                        <ul class="pagination justify-content-center"></ul>
                     </nav>
                 </div>
             </div>
         </div>
     </div>
 </div>
+<script id="pointHistoriesTemplate" type="text/x-jquery-tmpl">
+<tr>
+    <td class="text-center">${id}</td>
+    <td class="text-left">${username}</td>
+    <td class="text-left">${fullName}</td>
+    <td class="text-right">${point}</td>
+    <td class="text-center">${createdDate}</td>
+    <td class="text-center">${modifiedDate}</td>
+{%if status%}
+    {%if status == 'Y'%}
+        <td class="text-left">Approved by ${adminId}</td>
+    {%else%}
+        <td class="text-left">Denied by ${adminId}</td>
+    {%/if%}
+{%else%}
+    <td class="td-actions text-center">
+        <button type="button" class="btn btn-info" name="btn_approve" value="Y"><i class="material-icons">done</i></button>&nbsp;
+        <button type="button" class="btn btn-danger" name="btn_deny" value="N"><i class="material-icons">clear</i></button>
+    </td>
+{%/if%}
+<tr>
+
+</script>
+<script>
+    var messages = {
+        "info.search.no.data" : "{{#messages}}info.search.no.data{{/messages}}"
+        , "alert.point.history.confirm": "{{#messages}}alert.settle.confirm{{/messages}}"
+        , "alert.update.success": "{{#messages}}alert.update.success{{/messages}}"
+        , "alert.update.fail": "{{#messages}}alert.update.fail{{/messages}}"
+    }
+</script>
+<script type="text/javascript" src="/js/plugins/jquery.tmpl.js"></script>
 <script type="text/javascript" src="/js/point-history.js"></script>
 {{>layout/footer}}
