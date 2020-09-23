@@ -9,6 +9,8 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
@@ -19,6 +21,7 @@ public class UserApiController {
 
     @ApiOperation(value = "Create User")
     @PostMapping({"api/v1/users", "web-api/v1/users"})
+    @ResponseStatus(HttpStatus.CREATED)
     public Long save(@RequestBody UserSaveRequest userSaveRequest) {
         return userService.save(userSaveRequest);
     }
@@ -32,7 +35,7 @@ public class UserApiController {
     @ApiOperation(value = "Get Users")
     @GetMapping("/web-api/v1/users")
     public Page<UserResponse> getUsers(@RequestParam(required = false, defaultValue = "1") int page, UserRequest userRequest) {
-        return userService.getUsers(PageRequest.of(page - 1, 20), userRequest);
+        return userService.getUsers(PageRequest.of(page - 1, 20, Sort.Direction.DESC, "id"), userRequest);
     }
 
     @ApiOperation(value = "Get User")

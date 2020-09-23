@@ -62,6 +62,7 @@ var main = {
             $("#fullName").val(data.fullName);
             $("#email").val(data.email);
             $("#phoneNumber").val(data.phoneNumber);
+            $("#role").val(data.role);
 
             $("#createUserModal").modal("show");
             $("#username").attr("readonly", "readonly");
@@ -124,7 +125,8 @@ var main = {
             department: $("#department").val(),
             fullName: $("#fullName").val(),
             email: $("#email").val(),
-            phoneNumber: $("#phoneNumber").val()
+            phoneNumber: $("#phoneNumber").val(),
+            role: $("#role").val()
         };
 
         if (!isUpdate && !data.username) {

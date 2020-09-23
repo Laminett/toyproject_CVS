@@ -37,11 +37,12 @@
                         <div class="table-responsive" id="result1">
                             <table class="table" id="templ1">
                                 <thead class=" text-primary">
-                                <th>사번</th>
-                                <th>이름</th>
-                                <th>Email</th>
-                                <th>부서</th>
-                                <th>등록일</th>
+                                    <th>사번</th>
+                                    <th>이름</th>
+                                    <th>Email</th>
+                                    <th>부서</th>
+                                    <th>Role</th>
+                                    <th>등록일</th>
                                 </thead>
                                 <tbody id="usersArea"></tbody>
                             </table>
@@ -97,6 +98,18 @@
                             <div class="form-group bmd-form-group">
                                 <div class="input-group">
                                     <div class="input-group-prepend" style="width:100px;">
+                                        <div class="input-group-text">Role</div>
+                                    </div>
+                                    <select id="role" name="role" class="form-control">
+                                        {{#roleNames}}
+                                            <option value="{{{.}}}">{{{.}}}</option>
+                                        {{/roleNames}}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group bmd-form-group">
+                                <div class="input-group">
+                                    <div class="input-group-prepend" style="width:100px;">
                                         <div class="input-group-text">부서</div>
                                     </div>
                                     <input type="text" id="department" name="department" class="form-control">
@@ -142,12 +155,13 @@
     <td>${fullName}</td>
     <td>${email}</td>
     <td>${department}</td>
+    <td>${role}</td>
     <td>${createdDate}</td>
 </tr>
 </script>
 <script id="usersNoDataTemplate" type="text/x-jquery-tmpl">
 <tr>
-    <td colspan="5">No Data.</td>
+    <td colspan="6">No Data.</td>
 </tr>
 </script>
 <script id="usersPagingTemplate" type="text/x-jquery-tmpl">

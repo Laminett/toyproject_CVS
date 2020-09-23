@@ -1,10 +1,8 @@
 package com.alliex.cvs.service;
 
 import com.alliex.cvs.domain.type.UserSearchType;
-import com.alliex.cvs.domain.user.LoginUser;
 import com.alliex.cvs.domain.user.User;
 import com.alliex.cvs.domain.user.UserRepository;
-import com.alliex.cvs.util.AuthoritiesUtils;
 import com.alliex.cvs.web.dto.UserRequest;
 import com.alliex.cvs.web.dto.UserResponse;
 import com.alliex.cvs.web.dto.UserSaveRequest;
@@ -14,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -43,10 +43,9 @@ public class UserService implements UserDetailsService {
         User user = findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User " + username + " not found."));
 
-        LoginUser loginUser = new LoginUser();
-        loginUser.setUsername(username);
+        List<GrantedAuthority> USER_ROLES = AuthorityUtils.createAuthorityList(user.getRole().getKey());
 
-        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), AuthoritiesUtils.createAuthorities(loginUser));
+        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), USER_ROLES);
     }
 
     public List<UserResponse> getUsers(Pageable pageable) {
