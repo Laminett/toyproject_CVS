@@ -21,8 +21,7 @@ CREATE TABLE user
     phone_number  varchar(255) NULL,
     role          varchar(255) NOT NULL,
     created_date  datetime     NULL,
-    modified_date datetime     NULL
+    modified_date datetime     NULL,
+    UNIQUE INDEX uix_username (username),
+    INDEX ix_full_name (full_name)
 );
-
-
-

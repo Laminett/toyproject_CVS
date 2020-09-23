@@ -18,6 +18,10 @@ import java.util.Collection;
 @Setter
 @NoArgsConstructor
 @Entity
+@Table(indexes = {
+        @Index(name = "uix_username", columnList = "username", unique = true),
+        @Index(name = "ix_full_name", columnList = "fullName")
+})
 public class User extends BaseTimeEntity {
 
     @Id
@@ -55,7 +59,7 @@ public class User extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonIgnore
-    private  Collection<Settle> settleId;
+    private Collection<Settle> settleId;
 
     @Builder
     public User(String username, String password, String department, String fullName, String email, String phoneNumber, Role role) {
