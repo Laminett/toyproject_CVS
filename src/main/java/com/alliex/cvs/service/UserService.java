@@ -3,6 +3,7 @@ package com.alliex.cvs.service;
 import com.alliex.cvs.domain.type.UserSearchType;
 import com.alliex.cvs.domain.user.User;
 import com.alliex.cvs.domain.user.UserRepository;
+import com.alliex.cvs.exception.UserAlreadyExistsException;
 import com.alliex.cvs.web.dto.UserRequest;
 import com.alliex.cvs.web.dto.UserResponse;
 import com.alliex.cvs.web.dto.UserSaveRequest;
@@ -62,6 +63,11 @@ public class UserService implements UserDetailsService {
     }
 
     public Long save(UserSaveRequest userSaveRequest) {
+        // Check existence of an user.
+        userRepository.findByUsername(userSaveRequest.getUsername()).ifPresent(user -> {
+            throw new UserAlreadyExistsException(userSaveRequest.getUsername());
+        });
+
         // Password encode.
         User user = userSaveRequest.toEntity();
         user.setPassword(encoder.encode(user.getPassword()));
