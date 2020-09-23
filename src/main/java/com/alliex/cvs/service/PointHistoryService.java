@@ -22,6 +22,8 @@ public class PointHistoryService {
 
     private final PointService pointService;
 
+    private final Long CHARGE_LIMIT_POINT = 100000L;
+
     @Transactional(readOnly = true)
     public Page<PointHistoryResponse> getPointHistories(Pageable pageable, PointHistoryRequest pointHistoryRequest) {
         return pointHistoryRepository.findAll(Specification
@@ -47,10 +49,10 @@ public class PointHistoryService {
 
     @Transactional
     public Long save(PointHistorySaveRequest pointHistorySaveRequest) {
-        if(pointHistorySaveRequest.getPoint() > 100000){
+        if (pointHistorySaveRequest.getPoint() > CHARGE_LIMIT_POINT) {
             return pointHistoryRepository.save(pointHistorySaveRequest.toEntity()).getId();
         } else {
-            throw new PointLimitExcessException("The point is too much to charge. point: "+pointHistorySaveRequest.getPoint());
+            throw new PointLimitExcessException("The point is too much to charge. point: " + pointHistorySaveRequest.getPoint());
         }
     }
 
