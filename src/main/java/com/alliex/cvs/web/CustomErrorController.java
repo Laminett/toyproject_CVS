@@ -3,7 +3,7 @@ package com.alliex.cvs.web;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 public class CustomErrorController implements ErrorController {
 
-    @RequestMapping(value = "/error")
+    @GetMapping("error")
     public String handleError(HttpServletRequest request) {
         Object errorStatusCode = request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
         log.warn("Error Status Code: " + errorStatusCode);
@@ -28,7 +28,7 @@ public class CustomErrorController implements ErrorController {
 
     @Override
     public String getErrorPath() {
-        return "/error";
+        return "error";
     }
 
 }
