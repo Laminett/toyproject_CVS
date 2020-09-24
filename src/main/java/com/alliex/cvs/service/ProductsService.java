@@ -3,9 +3,6 @@ package com.alliex.cvs.service;
 import com.alliex.cvs.domain.product.Product;
 import com.alliex.cvs.domain.product.ProductRepository;
 import com.alliex.cvs.domain.product.ProductSpecs;
-import com.alliex.cvs.domain.transaction.TransactionSpecs;
-import com.alliex.cvs.domain.type.TransState;
-import com.alliex.cvs.domain.type.TransType;
 import com.alliex.cvs.exception.ProductAmountLimitExcessException;
 import com.alliex.cvs.exception.ProductNotFoundException;
 import com.alliex.cvs.web.dto.*;
@@ -16,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service

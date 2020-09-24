@@ -14,12 +14,12 @@ public class TransactionSpecs {
 
     public enum SearchKey {
         ID("id"),
-        BUYERID("buyerId"),
+        USERID("userId"),
         MERCHANTID("merchantId"),
         PAYMENTTYPE("paymentType"),
-        TRANSPOINT("transPoint"),
-        TRANSSTATE("transState"),
-        TRANSTYPE("transType");
+        POINT("point"),
+        STATE("state"),
+        TYPE("type");
 
         private final String value;
 
@@ -45,14 +45,14 @@ public class TransactionSpecs {
         for (SearchKey key : searchKeyword.keySet()) {
             switch (key) {
                 case ID:
-                case BUYERID:
+                case USERID:
                 case MERCHANTID:
                 case PAYMENTTYPE:
-                case TRANSPOINT:
-                case TRANSSTATE:
-                case TRANSTYPE:
-                    predicate.add(builder.like(
-                            root.get(key.value), "%" + searchKeyword.get(key) + "%"
+                case POINT:
+                case STATE:
+                case TYPE:
+                    predicate.add(builder.equal(
+                            root.get(key.value), searchKeyword.get(key)
                     ));
                     break;
                 default:

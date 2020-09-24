@@ -13,21 +13,21 @@
                             <form class="form-inline ml-auto" id="searchForm">
                                 <div class="form-group">
                                     <input type="hidden" id="LoginUser" name="LoginUser" value={{loginUser}}>
-                                    <select id="searchField" class="form-control" data-style="btn btn-link" name="searchField">
+                                    <select id="searchField" class="form-control form-control-t" data-style="btn btn-link" name="searchField" style="color: whitesmoke">
                                         <option selected>Choose...</option>
-                                        <option>id</option>
-                                        <option>buyerId</option>
+                                        <option>userId</option>
                                         <option>merchantId</option>
                                         <option>paymentType</option>
-                                        <option>transPoint</option>
-                                        <option>transState</option>
-                                        <option>transType</option>
+                                        <option>point</option>
+                                        <option>state</option>
+                                        <option>type</option>
                                     </select>
                                 </div>
-                                <div class="form-group has-white">
-                                    <input id="searchValue" name="searchValue" type="text" value="" class="form-control" placeholder="Search">
+                                <div class="col has-white">
+                                    <input id="searchValue" name="searchValue" type="text" value="" class="form-control form-control-t" placeholder="Search">
                                 </div>
-                                <button type="button" class="btn btn-white btn-round btn-just-icon" id="search" name="search">
+                                <button type="button" class="btn btn-white btn-round btn-just-icon" id="search"
+                                        name="search">
                                     <i class="material-icons">search</i>
                                     <div class="ripple-container"></div>
                                 </button>
@@ -38,19 +38,19 @@
                     <div class="card-body">
                         <div class="table-responsive" id="result1">
                             <table class="table" id="templ1">
-                                <thead class=" text-primary">
+                                <thead class=" text-primary text-center">
                                 <th>id</th>
-                                <th>buyerId</th>
+                                <th>userId</th>
                                 <th>merchantId</th>
                                 <th>paymentType</th>
-                                <th>transPoint</th>
-                                <th>transState</th>
-                                <th>transType</th>
+                                <th>Point</th>
+                                <th>State</th>
+                                <th>Type</th>
                                 <th>createdDate</th>
                                 <th>modifiedDate</th>
                                 <th>ACTIONS</th>
                                 </thead>
-                                <tbody id="transactions"></tbody>
+                                <tbody id="transactions" class="text-center"></tbody>
                             </table>
                         </div>
                     </div>
@@ -64,55 +64,76 @@
         </div>
     </div>
 </div>
-<div id="addUpdateModal" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog"
-     aria-labelledby="myLargeModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+
+<div class="modal fade" id="addUpdateModal" tabindex="-1" role="">
+    <div class="modal-dialog modal-login" role="document" style="max-width: 800px;margin-top: 160px;">
         <div class="modal-content">
-            <div style="margin: 10px">
-                <form id="addProductsForm">
-                    <input type="hidden" id="id" name="id">
-                    <div class="form-row">
-                        <div class="form-group col-md-3">
-                            <label for="inputAddress">TransactionId</label>
-                            <input type="text" class="form-control" id="TransactionId" name="TransactionId" placeholder="ex> TransactionId" disabled>
-                        </div>
-                        <div class="form-group col-md-3">
-                            <label for="inputAddress2">BuyerId</label>
-                            <input type="text" class="form-control" id="BuyerId" name="BuyerId" placeholder="ex> BuyerId" disabled>
-                        </div>
-                        <div class="form-group col-md-3">
-                            <label for="inputCity">MerchantId</label>
-                            <input type="text" class="form-control" id="MerchantId" name="MerchantId" placeholder="ex> MerchantId" disabled>
-                        </div>
-                        <div class="form-group col-md-3">
-                            <label for="inputAddress">PaymentType</label>
-                            <input type="text" class="form-control" id="PaymentType" name="PaymentType" placeholder="ex> TransactionId" disabled>
-                        </div>
+            <div class="card card-signup card-plain" style="margin-top: 0;margin-bottom: 0">
+                <div class="modal-header" style="padding-top: 0;">
+                    <div class="card-header card-header-primary text-center">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                            <i class="material-icons">clear</i>
+                        </button>
+                        <h4 class="card-title" id="modalTitle">Transaction Detail</h4>
+                        <input type="hidden" id="id" name="id">
+                        <input type="hidden" id="createdId" name="createdId">
+                        <input type="hidden" id="modifiedId" name="modifiedId">
                     </div>
-                    <div class="form-row">
-                        <div class="form-group col-md-3">
-                            <label for="inputAddress2">TransactionPoint</label>
-                            <input type="text" class="form-control" id="TransactionPoint" name="TransactionPoint" placeholder="ex> BuyerId" disabled>
+                </div>
+                <div class="modal-body">
+                    <form class="form" method="" action="">
+                        <div class="card-body">
+                            <input type="hidden" id="id" name="id">
+                            <div class="form-row text-center">
+                                <div class="form-group col-md-3 ">
+                                    <label for="inputTransactionId">NO</label>
+                                    <input type="text" class="form-control text-center" id="TransactionId" name="TransactionId" placeholder="ex> TransactionId" disabled>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label for="inputUserId">userId</label>
+                                    <input type="text" class="form-control text-center" id="BuyerId" name="BuyerId" placeholder="ex> BuyerId" disabled>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label for="inputMerchantId">MerchantId</label>
+                                    <input type="text" class="form-control text-center" id="MerchantId" name="MerchantId" placeholder="ex> MerchantId" disabled>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label for="inputPaymentType">PaymentType</label>
+                                    <input type="text" class="form-control text-center" id="PaymentType" name="PaymentType" placeholder="ex> TransactionId" disabled>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-3">
+                                    <label for="inputPoint">TransactionPoint</label>
+                                    <input type="text" class="form-control text-right" id="TransactionPoint" name="TransactionPoint" placeholder="ex> BuyerId" disabled>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label for="inputState">TransactionState</label>
+                                    <input type="text" class="form-control text-center" id="TransactionState" name="TransactionState" placeholder="ex> MerchantId" disabled>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label for="inputType">TransactionType</label>
+                                    <input type="text" class="form-control text-center" id="TransactionType" name="TransactionType" placeholder="ex> MerchantId" disabled>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label for="inputCity">Barcode</label>
+                                    <input type="text" class="form-control text-center" id="barcode" name="barcode" placeholder="ex> MerchantId" disabled>
+                                </div>
+                            </div>
+                            <div class="form-group"></div>
+                            <table class="table" id="templ1">
+                                <thead class=" text-primary text-center popthead">
+                                <th>productName</th>
+                                <th>amount</th>
+                                <th>point</th>
+                                </thead>
+                                <tbody id="transactionDetail" class="text-center"></tbody>
+                                <table id="detailsum" class="table text-center"></table>
+                            </table>
+
                         </div>
-                        <div class="form-group col-md-3">
-                            <label for="inputCity">TransactionState</label>
-                            <input type="text" class="form-control" id="TransactionState" name="TransactionState" placeholder="ex> MerchantId" disabled>
-                        </div>
-                        <div class="form-group col-md-3">
-                            <label for="inputCity">TransactionType</label>
-                            <input type="text" class="form-control" id="TransactionType" name="TransactionType" placeholder="ex> MerchantId" disabled>
-                        </div>
-                    </div>
-                    <div class="form-group"></div>
-                    <table class="table" id="templ1">
-                        <thead class=" text-primary">
-                        <th>productName</th>
-                        <th>point</th>
-                        <th>amount</th>
-                        </thead>
-                        <tbody id="transactionDetail"></tbody>
-                    </table>
-                </form>
+                    </form>
+                </div>
             </div>
         </div>
     </div>

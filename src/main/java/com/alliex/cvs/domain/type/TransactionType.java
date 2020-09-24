@@ -5,11 +5,9 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public enum TransType {
+public enum TransactionType {
 
-    PAYMENT("payment"),
-    REFUND("refund");
-
-    private final String value;
+    PAYMENT,
+    REFUND
 
 }

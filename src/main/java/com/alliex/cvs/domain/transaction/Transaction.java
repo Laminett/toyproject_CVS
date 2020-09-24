@@ -1,8 +1,9 @@
 package com.alliex.cvs.domain.transaction;
 
 import com.alliex.cvs.domain.BaseTimeEntity;
-import com.alliex.cvs.domain.type.TransState;
-import com.alliex.cvs.domain.type.TransType;
+import com.alliex.cvs.domain.type.PaymentType;
+import com.alliex.cvs.domain.type.TransactionState;
+import com.alliex.cvs.domain.type.TransactionType;
 import com.alliex.cvs.domain.user.User;
 import lombok.*;
 
@@ -21,10 +22,10 @@ public class Transaction extends BaseTimeEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private TransState transState;
+    private TransactionState state;
 
     @ManyToOne
-    @JoinColumn(name = "buyer_id", referencedColumnName = "id")
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
     @Column(nullable = false)
@@ -37,27 +38,29 @@ public class Transaction extends BaseTimeEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private TransType transType;
+    private TransactionType type;
 
-    private String transNumber;
+    private String requestId;
 
-    private String paymentType;
+    @Enumerated(EnumType.STRING)
+    private PaymentType paymentType;
 
     @Builder
-    public Transaction(Long id, TransState transState, User user, Long merchantId, Long originId, Integer point, TransType transType, String transNumber, String paymentType) {
+    public Transaction(Long id, TransactionState transactionState, User user, Long merchantId, Long originId, Integer point, TransactionType transactionType, String requestId, PaymentType paymentType) {
         this.id = id;
-        this.transState = transState;
+        this.state = transactionState;
         this.user = user;
         this.merchantId = merchantId;
         this.point = point;
-        this.transType = transType;
+        this.type = transactionType;
         this.originId = originId;
-        this.transNumber = transNumber;
+        this.requestId = requestId;
         this.paymentType = paymentType;
     }
 
-    public void update(TransState transState) {
-        this.transState = transState;
+    public void update(TransactionState transactionState, PaymentType paymentType) {
+        this.state = transactionState;
+        this.paymentType = paymentType;
     }
 
 }

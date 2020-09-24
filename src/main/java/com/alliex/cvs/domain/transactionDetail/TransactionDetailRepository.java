@@ -8,6 +8,6 @@ import java.util.List;
 
 public interface TransactionDetailRepository extends JpaRepository<TransactionDetail, Long> {
 
-    List<TransactionDetailResponse> findByTransId(Long transId);
+    List<TransactionDetailResponse> findByTransactionId(Long transactionId);
 
 }

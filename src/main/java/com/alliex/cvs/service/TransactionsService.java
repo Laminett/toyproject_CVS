@@ -1,12 +1,15 @@
 package com.alliex.cvs.service;
 
 import com.alliex.cvs.domain.transaction.*;
-import com.alliex.cvs.domain.type.TransState;
-import com.alliex.cvs.domain.type.TransType;
+import com.alliex.cvs.domain.type.PaymentType;
+import com.alliex.cvs.domain.type.TransactionState;
+import com.alliex.cvs.domain.type.TransactionType;
+import com.alliex.cvs.exception.NotEnoughPointException;
 import com.alliex.cvs.exception.TransactionNotFoundException;
-import com.alliex.cvs.util.RandomMathUtils;
 import com.alliex.cvs.web.dto.*;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -36,18 +39,30 @@ public class TransactionsService {
     @Transactional(readOnly = true)
     public Page<Transaction> getTransactions(Pageable pageable, TransactionRequest searchRequest) {
         Map<TransactionSpecs.SearchKey, Object> searchKeys = new HashMap<>();
+        Object searchValue;
 
-        if (!"".equals(searchRequest.getSearchField()) && !"".equals(searchRequest.getSearchValue())) {
-            if ("transState".equals(searchRequest.getSearchField())) {
-                searchKeys.put(TransactionSpecs.SearchKey.valueOf(searchRequest.getSearchField().toUpperCase()), TransState.valueOf(searchRequest.getSearchValue().toUpperCase()));
-            } else if ("transType".equals(searchRequest.getSearchField())) {
-                searchKeys.put(TransactionSpecs.SearchKey.valueOf(searchRequest.getSearchField().toUpperCase()), TransType.valueOf(searchRequest.getSearchValue().toUpperCase()));
-            } else {
-                searchKeys.put(TransactionSpecs.SearchKey.valueOf(searchRequest.getSearchField().toUpperCase()), searchRequest.getSearchValue());
-            }
+        // FIXME
+        if (StringUtils.isBlank(searchRequest.getSearchValue())) {
+            return transactionRepository.findAll(pageable);
         }
 
-        return searchKeys.isEmpty() ? transactionRepository.findAll(pageable) : transactionRepository.findAll(TransactionSpecs.searchWith(searchKeys), pageable);
+        switch (searchRequest.getSearchField()) {
+            case "state":
+                searchValue = TransactionState.valueOf(searchRequest.getSearchValue().toUpperCase());
+                break;
+            case "type":
+                searchValue = TransactionType.valueOf(searchRequest.getSearchValue().toUpperCase());
+                break;
+            case "paymentType":
+                searchValue = PaymentType.valueOf(searchRequest.getSearchValue().toUpperCase());
+                break;
+            default:
+                searchValue = searchRequest.getSearchValue();
+                break;
+        }
+        searchKeys.put(TransactionSpecs.SearchKey.valueOf(searchRequest.getSearchField().toUpperCase()), searchValue);
+
+        return transactionRepository.findAll(TransactionSpecs.searchWith(searchKeys), pageable);
     }
 
     @Transactional
@@ -56,61 +71,66 @@ public class TransactionsService {
     }
 
     @Transactional
-    public Long update(Long transId, TransState transState) {
+    public Long update(Long transId, TransactionState transactionState, PaymentType paymentType) {
         Transaction transaction = transactionRepository.findById(transId).orElseThrow(()
                 -> new TransactionNotFoundException("Not found transaction : id" + transId));
-        transaction.update(transState);
+        transaction.update(transactionState, PaymentType.valueOf(paymentType.toString()));
 
         return transaction.getId();
     }
 
     @Transactional
-    public Transaction getTransStateByBarcode(String barcode) {
-        return transactionRepository.findByTransNumber(barcode);
+    public TransactionResponse getTransStateByBarcode(String barcode) {
+        Transaction transaction = transactionRepository.findByRequestId(barcode)
+                .orElseThrow(() -> new TransactionNotFoundException("Not found transaction : barcode" + barcode));
+        return new TransactionResponse(transaction);
     }
 
     @Transactional
-    public String transactionPaymentStep1(TransactionSaveRequest requestParam) {
+    public TransactionResponse transactionPaymentStep1(TransactionSaveRequest requestParam) {
         // user point 조회 후 거래금액보다 작을시 false
-        PointResponse point = pointService.findByUserId(requestParam.getBuyerId());
-        String transNumber = "NOT ENOUGH POINT";
-        if (point.getPoint() >= requestParam.getPoint()) {
-            transNumber = RandomMathUtils.createTransNumber();
-            requestParam.setTransNumber(transNumber);
-            Long transId = save(requestParam);
-
-            for (Map<String, String> tMap : requestParam.getTransProduct()) {
-                TransactionDetailSaveRequest saveRequest = new TransactionDetailSaveRequest(Integer.parseInt(tMap.get("productAmount")),
-                        Long.parseLong(tMap.get("productId")), TransState.WAIT, transId);
-                transactionsDetailService.save(saveRequest);
-            }
+        PointResponse point = pointService.findByUserId(requestParam.getUserId());
+        if (point.getPoint() < requestParam.getPoint()) {
+            throw new NotEnoughPointException("Not Enough point : have point " + point.getPoint() + " necessary point " + requestParam.getPoint());
         }
 
-        return transNumber;
+        String requestId = RandomStringUtils.randomAlphanumeric(20);
+        requestParam.setRequestId(requestId);
+        Long transId = save(requestParam);
+
+        for (Map<String, String> tMap : requestParam.getTransProduct()) {
+            TransactionDetailSaveRequest saveRequest = new TransactionDetailSaveRequest(Integer.parseInt(tMap.get("productAmount")),
+                    Long.parseLong(tMap.get("productId")), TransactionState.WAIT, transId);
+            transactionsDetailService.save(saveRequest);
+        }
+
+        return new TransactionResponse(TransactionState.WAIT, requestId);
     }
 
     @Transactional
-    public String transactionPaymentStep2(String barcode) {
-        Transaction transaction = transactionRepository.findByTransNumber(barcode);
+    public TransactionResponse transactionPaymentStep2(String barcode, PaymentType paymentType) {
+        Transaction transaction = transactionRepository.findByRequestId(barcode)
+                .orElseThrow(() -> new TransactionNotFoundException("Not found transaction : barcode" + barcode));
+
         List<TransactionDetailResponse> transactionDetail = transactionsDetailService.getDetails(transaction.getId());
-        if (transaction.getTransNumber().isEmpty()) {
-            update(transaction.getId(), TransState.FAIL);
-            transactionsDetailService.update(transaction.getId(), TransState.FAIL);
+        if (transaction.getRequestId().isEmpty()) {
+            update(transaction.getId(), TransactionState.FAIL, paymentType);
+            transactionsDetailService.update(transaction.getId(), TransactionState.FAIL);
             throw new TransactionNotFoundException("Invalid BARCODE");
         }
 
-        if (!TransState.WAIT.equals(transaction.getTransState())) {
+        if (!TransactionState.WAIT.equals(transaction.getState())) {
             throw new TransactionNotFoundException("trans_state error");
         }
 
         pointService.updatePointMinus(transaction.getUser().getId(), transaction.getPoint());
         for (TransactionDetailResponse product : transactionDetail) {
-            productsService.updateAmountMinus(product.getProductId(), product.getProductAmount());
+            productsService.updateAmountMinus(product.getProductId(), product.getProductQuantity());
         }
-        update(transaction.getId(), TransState.SUCCESS);
-        transactionsDetailService.update(transaction.getId(), TransState.SUCCESS);
+        update(transaction.getId(), TransactionState.SUCCESS, paymentType);
+        transactionsDetailService.update(transaction.getId(), TransactionState.SUCCESS);
 
-        return "SUCCESS";
+        return new TransactionResponse(transaction.getState(), transaction.getRequestId());
     }
 
     @Transactional
@@ -124,18 +144,17 @@ public class TransactionsService {
                 -> new TransactionNotFoundException("Not found transaction : id" + transId));
 
         List<TransactionDetailResponse> transactionDetail = transactionsDetailService.getDetails(transaction.getId());
-        if (!TransState.SUCCESS.equals(transaction.getTransState()) || !TransType.PAYMENT.equals(transaction.getTransType())) {
+        if (!TransactionState.SUCCESS.equals(transaction.getState()) || !TransactionType.PAYMENT.equals(transaction.getType())) {
             throw new TransactionNotFoundException("REFUND Fail");
         }
 
         pointService.updatePointPlus(transaction.getUser().getId(), transaction.getPoint());
         for (TransactionDetailResponse product : transactionDetail) {
-            productsService.updateAmountPlus(product.getProductId(), product.getProductAmount());
+            productsService.updateAmountPlus(product.getProductId(), product.getProductQuantity());
         }
-        transactionsDetailService.update(transId, TransState.REFUND);
-        transaction.setOriginId(transId);
+        transactionsDetailService.update(transId, TransactionState.REFUND);
         TransactionSaveRequest transactionRefundRequest = new TransactionSaveRequest(transaction.getUser().getId(), transaction.getMerchantId(), transaction.getId(),
-                transaction.getPoint(), TransState.REFUND, TransType.REFUND, transaction.getTransNumber());
+                transaction.getPoint(), TransactionState.REFUND, TransactionType.REFUND, transaction.getRequestId(), transaction.getPaymentType());
 
         return transactionRepository.save(transactionRefundRequest.toEntity()).getId();
     }

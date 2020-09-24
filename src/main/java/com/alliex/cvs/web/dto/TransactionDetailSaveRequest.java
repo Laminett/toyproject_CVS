@@ -1,7 +1,7 @@
 package com.alliex.cvs.web.dto;
 
 import com.alliex.cvs.domain.product.Product;
-import com.alliex.cvs.domain.type.TransState;
+import com.alliex.cvs.domain.type.TransactionState;
 import com.alliex.cvs.domain.transactionDetail.TransactionDetail;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,20 +11,20 @@ import lombok.Setter;
 @Setter
 public class TransactionDetailSaveRequest {
 
-    private Integer productAmount;
+    private Integer productQuantity;
 
     private Long productId;
 
-    private TransState transState;
+    private TransactionState transactionState;
 
-    private Long transId;
+    private Long transactionId;
 
     @Builder
-    public TransactionDetailSaveRequest(Integer productAmount, Long productId, TransState transState, Long transId) {
-        this.productAmount = productAmount;
+    public TransactionDetailSaveRequest(Integer productQuantity, Long productId, TransactionState transactionState, Long transactionId) {
+        this.productQuantity = productQuantity;
         this.productId = productId;
-        this.transState = transState;
-        this.transId = transId;
+        this.transactionState = transactionState;
+        this.transactionId = transactionId;
     }
 
     public TransactionDetail toEntity() {
@@ -32,9 +32,9 @@ public class TransactionDetailSaveRequest {
         setProductId.setId(productId);
 
         return TransactionDetail.builder()
-                .productAmount(productAmount)
-                .transId(transId)
-                .transState(transState)
+                .productQuantity(productQuantity)
+                .transactionId(transactionId)
+                .transactionState(transactionState)
                 .product(setProductId)
                 .build();
     }
