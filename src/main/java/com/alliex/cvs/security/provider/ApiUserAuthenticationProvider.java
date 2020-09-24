@@ -39,13 +39,13 @@ public class ApiUserAuthenticationProvider implements AuthenticationProvider {
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        String principal = (String) authentication.getPrincipal();
+        String username = (String) authentication.getPrincipal();
         String credentials = (String) authentication.getCredentials();
 
         try {
-            User findUser = (User) userDetailsService.loadUserByUsername(principal);
+            User findUser = (User) userDetailsService.loadUserByUsername(username);
             if (ObjectUtils.isEmpty(findUser)) {
-                throw new UsernameNotFoundException("User " + principal + " does not exist.");
+                throw new UsernameNotFoundException("User " + username + " does not exist.");
             }
 
             if (!StringUtils.equals(findUser.getPassword(), encoder.encode(String.valueOf(credentials)))) {
@@ -59,8 +59,8 @@ public class ApiUserAuthenticationProvider implements AuthenticationProvider {
             authenticated.setDetails(new AuthenticationResult(apiToken, user));
 
             return authenticated;
-        } catch (UserNotFoundException e) {
-            throw new UsernameNotFoundException(e.getMessage());
+        } catch (UsernameNotFoundException e) {
+            throw new UserNotFoundException(e.getMessage(), e);
         } catch (IllegalArgumentException e) {
             throw new BadCredentialsException(e.getMessage());
         } catch (Exception e) {
