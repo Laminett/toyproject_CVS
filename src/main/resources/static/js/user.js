@@ -167,7 +167,17 @@ var main = {
             $("#createUserModal").modal("hide");
             _this.getUsers();
         }).fail(function (error) {
-            alert(JSON.stringify(error));
+            if (error.responseJSON.code == 'USER_ALREADY_EXISTS') {
+                alert('동일한 사번이 존재합니다.');
+            } else {
+                console.log(error);
+                var responseJSON = '';
+                if (error.responseJSON) {
+                    responseJSON = '\n' + error.responseJSON;
+                }
+
+                alert('오류가 발생했습니다. 관리자에게 문의해 주세요.' + responseJSON);
+            }
         });
     },
 };

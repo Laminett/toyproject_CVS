@@ -39,7 +39,43 @@ public class UserApiControllerTest {
     @WithMockUser(roles = "ADMIN")
     @Test
     public void createUser() throws Exception {
-        String username = "test " + RandomStringUtils.randomAlphanumeric(5);
+        // given
+        UserSaveRequest userSaveRequest = getUserSaveRequest(RandomStringUtils.randomAlphanumeric(5));
+
+        mvc.perform(post("/web-api/v1/users")
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(userSaveRequest)))
+                .andDo(print())
+                .andExpect(status().isCreated());
+    }
+
+    @WithMockUser(roles = "ADMIN")
+    @Test
+    public void createUser_UserAlreadyExists() throws Exception {
+        // given
+        UserSaveRequest userSaveRequest = getUserSaveRequest(RandomStringUtils.randomAlphanumeric(5));
+
+        // create
+        mvc.perform(post("/web-api/v1/users")
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(userSaveRequest)))
+                .andDo(print())
+                .andExpect(status().isCreated());
+
+        // create one more
+        mvc.perform(post("/web-api/v1/users")
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(userSaveRequest)))
+                .andDo(print())
+                .andExpect(status().isConflict())
+                .andExpect(jsonPath("$.code", is("USER_ALREADY_EXISTS")));
+
+    }
+
+    private UserSaveRequest getUserSaveRequest(String username) {
         String password = "password";
         String department = "department";
         String fullName = "fullName " + RandomStringUtils.randomAlphanumeric(5);
@@ -48,7 +84,7 @@ public class UserApiControllerTest {
         Role role = Role.ADMIN;
 
         // Create user.
-        UserSaveRequest userSaveRequest = UserSaveRequest.builder()
+        return UserSaveRequest.builder()
                 .username(username)
                 .password(password)
                 .department(department)
@@ -57,13 +93,6 @@ public class UserApiControllerTest {
                 .phoneNumber(phoneNumber)
                 .role(role)
                 .build();
-
-        mvc.perform(post("/web-api/v1/users")
-                .accept(MediaType.APPLICATION_JSON)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(userSaveRequest)))
-                .andDo(print())
-                .andExpect(status().isCreated());
     }
 
     @WithMockUser(roles = "ADMIN")
