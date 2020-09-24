@@ -1,7 +1,7 @@
 package com.alliex.cvs.service;
 
 import com.alliex.cvs.domain.transaction.*;
-import com.alliex.cvs.domain.type.TransactionPaymentType;
+import com.alliex.cvs.domain.type.PaymentType;
 import com.alliex.cvs.domain.type.TransactionState;
 import com.alliex.cvs.domain.type.TransactionType;
 import com.alliex.cvs.exception.NotEnoughPointException;
@@ -9,6 +9,7 @@ import com.alliex.cvs.exception.TransactionNotFoundException;
 import com.alliex.cvs.web.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -41,7 +42,7 @@ public class TransactionsService {
         Object searchValue;
 
         // FIXME
-        if ("".equals(searchRequest.getSearchValue())) {
+        if (StringUtils.isBlank(searchRequest.getSearchValue())) {
             return transactionRepository.findAll(pageable);
         }
 
@@ -53,7 +54,7 @@ public class TransactionsService {
                 searchValue = TransactionType.valueOf(searchRequest.getSearchValue().toUpperCase());
                 break;
             case "paymentType":
-                searchValue = TransactionPaymentType.valueOf(searchRequest.getSearchValue().toUpperCase());
+                searchValue = PaymentType.valueOf(searchRequest.getSearchValue().toUpperCase());
                 break;
             default:
                 searchValue = searchRequest.getSearchValue();
@@ -70,10 +71,10 @@ public class TransactionsService {
     }
 
     @Transactional
-    public Long update(Long transId, TransactionState transactionState, TransactionPaymentType paymentType) {
+    public Long update(Long transId, TransactionState transactionState, PaymentType paymentType) {
         Transaction transaction = transactionRepository.findById(transId).orElseThrow(()
                 -> new TransactionNotFoundException("Not found transaction : id" + transId));
-        transaction.update(transactionState, TransactionPaymentType.valueOf(paymentType.toString()));
+        transaction.update(transactionState, PaymentType.valueOf(paymentType.toString()));
 
         return transaction.getId();
     }
@@ -93,8 +94,8 @@ public class TransactionsService {
             throw new NotEnoughPointException("Not Enough point : have point " + point.getPoint() + " necessary point " + requestParam.getPoint());
         }
 
-        String transNumber = RandomStringUtils.randomAlphanumeric(20);
-        requestParam.setRequestId(transNumber);
+        String requestId = RandomStringUtils.randomAlphanumeric(20);
+        requestParam.setRequestId(requestId);
         Long transId = save(requestParam);
 
         for (Map<String, String> tMap : requestParam.getTransProduct()) {
@@ -103,11 +104,11 @@ public class TransactionsService {
             transactionsDetailService.save(saveRequest);
         }
 
-        return new TransactionResponse(TransactionState.WAIT, transNumber);
+        return new TransactionResponse(TransactionState.WAIT, requestId);
     }
 
     @Transactional
-    public TransactionResponse transactionPaymentStep2(String barcode, TransactionPaymentType paymentType) {
+    public TransactionResponse transactionPaymentStep2(String barcode, PaymentType paymentType) {
         Transaction transaction = transactionRepository.findByRequestId(barcode)
                 .orElseThrow(() -> new TransactionNotFoundException("Not found transaction : barcode" + barcode));
 

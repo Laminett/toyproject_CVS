@@ -1,7 +1,7 @@
 package com.alliex.cvs.domain.transaction;
 
 import com.alliex.cvs.domain.BaseTimeEntity;
-import com.alliex.cvs.domain.type.TransactionPaymentType;
+import com.alliex.cvs.domain.type.PaymentType;
 import com.alliex.cvs.domain.type.TransactionState;
 import com.alliex.cvs.domain.type.TransactionType;
 import com.alliex.cvs.domain.user.User;
@@ -42,23 +42,24 @@ public class Transaction extends BaseTimeEntity {
 
     private String requestId;
 
-    private TransactionPaymentType paymentType;
+    @Enumerated(EnumType.STRING)
+    private PaymentType paymentType;
 
     @Builder
-    public Transaction(Long id, TransactionState state, User user, Long merchantId, Long originId, Integer point, TransactionType type, String requestId, TransactionPaymentType paymentType) {
+    public Transaction(Long id, TransactionState transactionState, User user, Long merchantId, Long originId, Integer point, TransactionType transactionType, String requestId, PaymentType paymentType) {
         this.id = id;
-        this.state = state;
+        this.state = transactionState;
         this.user = user;
         this.merchantId = merchantId;
         this.point = point;
-        this.type = type;
+        this.type = transactionType;
         this.originId = originId;
         this.requestId = requestId;
         this.paymentType = paymentType;
     }
 
-    public void update(TransactionState state, TransactionPaymentType paymentType) {
-        this.state = state;
+    public void update(TransactionState transactionState, PaymentType paymentType) {
+        this.state = transactionState;
         this.paymentType = paymentType;
     }
 

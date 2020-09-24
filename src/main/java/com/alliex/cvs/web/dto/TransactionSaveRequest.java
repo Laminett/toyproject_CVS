@@ -1,6 +1,6 @@
 package com.alliex.cvs.web.dto;
 
-import com.alliex.cvs.domain.type.TransactionPaymentType;
+import com.alliex.cvs.domain.type.PaymentType;
 import com.alliex.cvs.domain.type.TransactionState;
 import com.alliex.cvs.domain.type.TransactionType;
 import com.alliex.cvs.domain.transaction.Transaction;
@@ -26,7 +26,7 @@ public class TransactionSaveRequest {
 
     private Integer point;
 
-    private TransactionPaymentType paymentType;
+    private PaymentType paymentType;
 
     private TransactionState state;
 
@@ -37,25 +37,25 @@ public class TransactionSaveRequest {
     private List<Map<String, String>> transProduct;
 
     @Builder
-    public TransactionSaveRequest(Long userId, Long merchantId, Long originId, Integer point, TransactionState state, TransactionType type, String requestId, List<Map<String, String>> transProduct) {
+    public TransactionSaveRequest(Long userId, Long merchantId, Long originId, Integer point, TransactionState transactionState, TransactionType transactionType, String requestId, List<Map<String, String>> transProduct) {
         this.userId = userId;
         this.merchantId = merchantId;
         this.originId = originId;
         this.point = point;
-        this.state = state;
-        this.type = type;
+        this.state = transactionState;
+        this.type = transactionType;
         this.requestId = requestId;
         this.transProduct = transProduct;
     }
 
     @Builder
-    public TransactionSaveRequest(Long userId, Long merchantId, Long originId, Integer point, TransactionState state, TransactionType type, String requestId, TransactionPaymentType paymentType) {
+    public TransactionSaveRequest(Long userId, Long merchantId, Long originId, Integer point, TransactionState transactionState, TransactionType transactionType, String requestId, PaymentType paymentType) {
         this.userId = userId;
         this.merchantId = merchantId;
         this.originId = originId;
         this.point = point;
-        this.state = state;
-        this.type = type;
+        this.state = transactionState;
+        this.type = transactionType;
         this.requestId = requestId;
         this.paymentType = paymentType;
     }
@@ -69,8 +69,8 @@ public class TransactionSaveRequest {
                 .merchantId(merchantId)
                 .originId(originId)
                 .point(point)
-                .state(state)
-                .type(type)
+                .transactionState(state)
+                .transactionType(type)
                 .requestId(requestId)
                 .build();
     }
