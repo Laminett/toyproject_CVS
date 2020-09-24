@@ -16,6 +16,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
+import static org.hamcrest.CoreMatchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -35,27 +36,11 @@ public class UserApiControllerTest {
     @Autowired
     protected ObjectMapper objectMapper;
 
-    @WithMockUser(roles = "USER")
+    @WithMockUser(roles = "ADMIN")
     @Test
     public void createUser() throws Exception {
-        String username = "test " + RandomStringUtils.randomAlphanumeric(5);
-        String password = "password";
-        String department = "department";
-        String fullName = "fullName " + RandomStringUtils.randomAlphanumeric(5);
-        String email = RandomStringUtils.randomAlphanumeric(5) + "@email.com";
-        String phoneNumber = "010-1111-2222";
-        Role role = Role.ADMIN;
-
-        // Create user.
-        UserSaveRequest userSaveRequest = UserSaveRequest.builder()
-                .username(username)
-                .password(password)
-                .department(department)
-                .fullName(fullName)
-                .email(email)
-                .phoneNumber(phoneNumber)
-                .role(role)
-                .build();
+        // given
+        UserSaveRequest userSaveRequest = getUserSaveRequest(RandomStringUtils.randomAlphanumeric(5));
 
         mvc.perform(post("/web-api/v1/users")
                 .accept(MediaType.APPLICATION_JSON)
@@ -65,7 +50,52 @@ public class UserApiControllerTest {
                 .andExpect(status().isCreated());
     }
 
-    @WithMockUser(roles = "USER")
+    @WithMockUser(roles = "ADMIN")
+    @Test
+    public void createUser_UserAlreadyExists() throws Exception {
+        // given
+        UserSaveRequest userSaveRequest = getUserSaveRequest(RandomStringUtils.randomAlphanumeric(5));
+
+        // create
+        mvc.perform(post("/web-api/v1/users")
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(userSaveRequest)))
+                .andDo(print())
+                .andExpect(status().isCreated());
+
+        // create one more
+        mvc.perform(post("/web-api/v1/users")
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(userSaveRequest)))
+                .andDo(print())
+                .andExpect(status().isConflict())
+                .andExpect(jsonPath("$.code", is("USER_ALREADY_EXISTS")));
+
+    }
+
+    private UserSaveRequest getUserSaveRequest(String username) {
+        String password = "password";
+        String department = "department";
+        String fullName = "fullName " + RandomStringUtils.randomAlphanumeric(5);
+        String email = RandomStringUtils.randomAlphanumeric(5) + "@email.com";
+        String phoneNumber = "010-1111-2222";
+        Role role = Role.ADMIN;
+
+        // Create user.
+        return UserSaveRequest.builder()
+                .username(username)
+                .password(password)
+                .department(department)
+                .fullName(fullName)
+                .email(email)
+                .phoneNumber(phoneNumber)
+                .role(role)
+                .build();
+    }
+
+    @WithMockUser(roles = "ADMIN")
     @Test
     public void getUsersByDepartment() throws Exception {
         mvc.perform(get("/web-api/v1/users").param("department", "Mobile Div"))
@@ -74,7 +104,7 @@ public class UserApiControllerTest {
                 .andExpect(jsonPath("$.content[0].department").value("Mobile Div"));
     }
 
-    @WithMockUser(roles = "USER")
+    @WithMockUser(roles = "ADMIN")
     @Test
     public void getUsersByFullName() throws Exception {
         mvc.perform(get("/web-api/v1/users").param("fullName", "admin"))
@@ -83,7 +113,7 @@ public class UserApiControllerTest {
                 .andExpect(jsonPath("$.content[0].fullName").value("admin"));
     }
 
-    @WithMockUser(roles = "USER")
+    @WithMockUser(roles = "ADMIN")
     @Test
     public void getUsers() throws Exception {
         mvc.perform(get("/web-api/v1/users"))
@@ -91,13 +121,30 @@ public class UserApiControllerTest {
                 .andExpect(status().isOk());
     }
 
-    @WithMockUser(roles = "USER")
+    @WithMockUser(roles = "ADMIN")
     @Test
     public void getUsersWithPage() throws Exception {
         mvc.perform(get("/web-api/v1/users").param("page", "2"))
                 .andDo(print())
+                .andExpect(status().isOk());
+    }
+
+    @WithMockUser(roles = "ADMIN")
+    @Test
+    public void getUserById() throws Exception {
+        mvc.perform(get("/web-api/v1/users/{id}", 1))
+                .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.content[0].fullName").value("admin"));
+    }
+
+    @WithMockUser(roles = "ADMIN")
+    @Test
+    public void getUserById_UserNotFound() throws Exception {
+        mvc.perform(get("/web-api/v1/users/{id}", 4))
+                .andDo(print())
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.code", is("USER_NOT_FOUND")));
     }
 
 }

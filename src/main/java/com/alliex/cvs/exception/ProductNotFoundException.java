@@ -1,17 +1,27 @@
 package com.alliex.cvs.exception;
 
-public class ProductNotFoundException extends RuntimeException {
+import org.springframework.http.HttpStatus;
+
+public class ProductNotFoundException extends InternalException {
+
+    private static final long serialVersionUID = -4453625322924754581L;
+
+    private static final HttpStatus httpStatus = HttpStatus.NOT_FOUND;
+
+    private static final ErrorCode errorCode = ErrorCode.PRODUCT_NOT_FOUND;
+
+    @Override
+    public HttpStatus getHttpStatus() {
+        return httpStatus;
+    }
+
+    @Override
+    public ErrorCode getErrorCode() {
+        return errorCode;
+    }
 
     public ProductNotFoundException(String message) {
         super(message);
-    }
-
-    public ProductNotFoundException(Throwable cause) {
-        super("Point Limit Excess.", cause);
-    }
-
-    public ProductNotFoundException(String message, Throwable cause) {
-        super(message, cause);
     }
 
 }

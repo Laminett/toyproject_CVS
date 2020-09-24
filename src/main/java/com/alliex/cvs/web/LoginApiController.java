@@ -1,6 +1,6 @@
 package com.alliex.cvs.web;
 
-import com.alliex.cvs.exception.UnauthorizedException;
+import com.alliex.cvs.exception.LoginFailedException;
 import com.alliex.cvs.security.ApiUserAuthenticationToken;
 import com.alliex.cvs.web.dto.AuthenticationResult;
 import com.alliex.cvs.web.dto.LoginRequest;
@@ -35,7 +35,7 @@ public class LoginApiController {
 
             return new LoginResponse(authenticationResult.getUser().getUsername(), authenticationResult.getApiToken());
         } catch (AuthenticationException e) {
-            throw new UnauthorizedException(e.getMessage());
+            throw new LoginFailedException(authRequest.getUsername(), e);
         }
     }
 
