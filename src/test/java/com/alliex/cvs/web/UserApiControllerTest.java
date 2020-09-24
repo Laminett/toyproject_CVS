@@ -16,6 +16,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
+import static org.hamcrest.CoreMatchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -35,7 +36,7 @@ public class UserApiControllerTest {
     @Autowired
     protected ObjectMapper objectMapper;
 
-    @WithMockUser(roles = "USER")
+    @WithMockUser(roles = "ADMIN")
     @Test
     public void createUser() throws Exception {
         String username = "test " + RandomStringUtils.randomAlphanumeric(5);
@@ -65,7 +66,7 @@ public class UserApiControllerTest {
                 .andExpect(status().isCreated());
     }
 
-    @WithMockUser(roles = "USER")
+    @WithMockUser(roles = "ADMIN")
     @Test
     public void getUsersByDepartment() throws Exception {
         mvc.perform(get("/web-api/v1/users").param("department", "Mobile Div"))
@@ -74,7 +75,7 @@ public class UserApiControllerTest {
                 .andExpect(jsonPath("$.content[0].department").value("Mobile Div"));
     }
 
-    @WithMockUser(roles = "USER")
+    @WithMockUser(roles = "ADMIN")
     @Test
     public void getUsersByFullName() throws Exception {
         mvc.perform(get("/web-api/v1/users").param("fullName", "admin"))
@@ -83,7 +84,7 @@ public class UserApiControllerTest {
                 .andExpect(jsonPath("$.content[0].fullName").value("admin"));
     }
 
-    @WithMockUser(roles = "USER")
+    @WithMockUser(roles = "ADMIN")
     @Test
     public void getUsers() throws Exception {
         mvc.perform(get("/web-api/v1/users"))
@@ -91,13 +92,30 @@ public class UserApiControllerTest {
                 .andExpect(status().isOk());
     }
 
-    @WithMockUser(roles = "USER")
+    @WithMockUser(roles = "ADMIN")
     @Test
     public void getUsersWithPage() throws Exception {
         mvc.perform(get("/web-api/v1/users").param("page", "2"))
                 .andDo(print())
+                .andExpect(status().isOk());
+    }
+
+    @WithMockUser(roles = "ADMIN")
+    @Test
+    public void getUserById() throws Exception {
+        mvc.perform(get("/web-api/v1/users/{id}", 1))
+                .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.content[0].fullName").value("admin"));
+    }
+
+    @WithMockUser(roles = "ADMIN")
+    @Test
+    public void getUserById_UserNotFound() throws Exception {
+        mvc.perform(get("/web-api/v1/users/{id}", 4))
+                .andDo(print())
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.code", is("USER_NOT_FOUND")));
     }
 
 }

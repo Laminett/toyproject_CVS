@@ -4,6 +4,7 @@ import com.alliex.cvs.domain.type.UserSearchType;
 import com.alliex.cvs.domain.user.User;
 import com.alliex.cvs.domain.user.UserRepository;
 import com.alliex.cvs.exception.UserAlreadyExistsException;
+import com.alliex.cvs.exception.UserNotFoundException;
 import com.alliex.cvs.web.dto.UserRequest;
 import com.alliex.cvs.web.dto.UserResponse;
 import com.alliex.cvs.web.dto.UserSaveRequest;
@@ -111,7 +112,7 @@ public class UserService implements UserDetailsService {
 
     public UserResponse getUserById(Long id) {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("User " + id + " does not exist."));
+                .orElseThrow(() -> new UserNotFoundException("User id " + id + " does not exist."));
 
         return new UserResponse(user);
     }
