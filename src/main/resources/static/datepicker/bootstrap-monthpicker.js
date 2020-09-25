@@ -72,7 +72,7 @@
             $div.insertAfter(this.$el);
             $div.append(this.$el);
             if (this.$el.is('input')) {
-                this.$el.prop('readonly', true);
+                //this.$el.prop('readonly', true);
             }
 
             this.$document = $(document);
