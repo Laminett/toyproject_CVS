@@ -60,7 +60,7 @@
     <if condition='property("ENVIRONMENT").contains("ci")'>
         <then>
             <appender name="ASYNC" class="ch.qos.logback.classic.AsyncAppender">
-                <appender-ref ref="CONSOLE"/>
+                <appender-ref ref="FILE"/>
             </appender>
         </then>
     </if>
