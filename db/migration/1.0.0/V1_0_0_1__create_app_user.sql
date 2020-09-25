@@ -1,4 +1,5 @@
 create database db_cvs;
+create database db_cvs_ci;
 
 -- -----------------------------------------------------
 -- create user
