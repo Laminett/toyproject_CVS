@@ -50,9 +50,7 @@ var main = {
                     + "<td colspan='7'>" + messages["info.search.no.data"] +"</td>  "
                     + "</tr>");
             } else {
-                $("#pointHistoriesTemplate").tmpl(data.content, function(element){
-                    console.log(element);
-                }).appendTo("#pointHistoriesArea");
+                $("#pointHistoriesTemplate").tmpl(data.content).appendTo("#pointHistoriesArea");
             }
 
             $('.pagination').empty();
@@ -61,7 +59,7 @@ var main = {
             }
         }).fail(function (error) {
             console.log(JSON.stringify(error));
-            alert();
+            alert(messages["alert.load.fail"]);
         });
     },
     update: function (id, status) {

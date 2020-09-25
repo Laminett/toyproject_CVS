@@ -32,16 +32,16 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <div class="table-responsive" id="result1">
-                            <table class="table" id="templ1">
+                        <div class="table-responsive">
+                            <table class="table">
                                 <thead class="text-center text-primary">
-                                <th>No</th>
-                                <th>{{#messages}}user.username{{/messages}}</th>
-                                <th>{{#messages}}user.full.name{{/messages}}</th>
-                                <th>{{#messages}}point.history.point{{/messages}}</th>
-                                <th>{{#messages}}point.history.created.date{{/messages}}</th>
-                                <th>{{#messages}}point.history.modified.date{{/messages}}</th>
-                                <th>{{#messages}}status{{/messages}}</th>
+                                    <th>No</th>
+                                    <th>{{#messages}}user.username{{/messages}}</th>
+                                    <th>{{#messages}}user.full.name{{/messages}}</th>
+                                    <th>{{#messages}}point.history.point{{/messages}}</th>
+                                    <th>{{#messages}}point.history.created.date{{/messages}}</th>
+                                    <th>{{#messages}}point.history.modified.date{{/messages}}</th>
+                                    <th>{{#messages}}status{{/messages}}</th>
                                 </thead>
                                 <tbody id="pointHistoriesArea"></tbody>
                             </table>
@@ -58,7 +58,7 @@
     </div>
 </div>
 <script id="pointHistoriesTemplate" type="text/x-jquery-tmpl">
-<tr>
+<tr id='${id}'>
     <td class="text-center">${id}</td>
     <td class="text-left">${username}</td>
     <td class="text-left">${fullName}</td>
@@ -83,6 +83,7 @@
 <script>
     var messages = {
         "info.search.no.data" : "{{#messages}}info.search.no.data{{/messages}}"
+        ,"alert.load.fail": "{{#messages}}alert.load.fail{{/messages}}"
         , "alert.point.history.confirm": "{{#messages}}alert.settle.confirm{{/messages}}"
         , "alert.update.success": "{{#messages}}alert.update.success{{/messages}}"
         , "alert.update.fail": "{{#messages}}alert.update.fail{{/messages}}"
