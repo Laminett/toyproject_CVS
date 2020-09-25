@@ -4,15 +4,17 @@ import com.alliex.cvs.domain.type.Role;
 import com.alliex.cvs.web.dto.UserSaveRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.Rollback;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.context.jdbc.SqlGroup;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,11 +25,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest
 @AutoConfigureMockMvc
 @Transactional()
 @Rollback()
+@SqlGroup({
+        @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = "classpath:test-data.sql"),
+})
 public class UserApiControllerTest {
 
     @Autowired
@@ -35,6 +40,11 @@ public class UserApiControllerTest {
 
     @Autowired
     protected ObjectMapper objectMapper;
+
+    private final Long testId = 400L;
+    private final String testUsername = "testtest100";
+    private final String testEmail = "400@test.com";
+    private final String testFullName = "400_fullName";
 
     @WithMockUser(roles = "ADMIN")
     @Test
@@ -107,10 +117,10 @@ public class UserApiControllerTest {
     @WithMockUser(roles = "ADMIN")
     @Test
     public void getUsersByFullName() throws Exception {
-        mvc.perform(get("/web-api/v1/users").param("fullName", "admin"))
+        mvc.perform(get("/web-api/v1/users").param("fullName", testFullName))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.content[0].fullName").value("admin"));
+                .andExpect(jsonPath("$.content[0].fullName").value(testFullName));
     }
 
     @WithMockUser(roles = "ADMIN")
@@ -132,10 +142,10 @@ public class UserApiControllerTest {
     @WithMockUser(roles = "ADMIN")
     @Test
     public void getUserById() throws Exception {
-        mvc.perform(get("/web-api/v1/users/{id}", 1))
+        mvc.perform(get("/web-api/v1/users/{id}", testId))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.content[0].fullName").value("admin"));
+                .andExpect(jsonPath("$.fullName").value(testFullName));
     }
 
     @WithMockUser(roles = "ADMIN")

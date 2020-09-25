@@ -3,6 +3,8 @@ package com.alliex.cvs.domain.posts;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -10,15 +12,12 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
+@Transactional()
+@Rollback()
 public class PostsRepositoryTest {
 
     @Autowired
     PostsRepository postsRepository;
-
-//    @After
-//    public void cleanup() {
-//        postsRepository.deleteAll();
-//    }
 
     @Test
     public void getPosts() {
@@ -53,11 +52,11 @@ public class PostsRepositoryTest {
 
         // when
         List<Posts> postsList = postsRepository.findAll();
+        System.out.println("postsList:" + postsList);
 
-        System.out.println("postsList:"+postsList);
         // then
         Posts posts = postsList.get(0);
-        System.out.println("posts:"+posts);
+        System.out.println("posts:" + posts);
 
         System.out.printf("createDate:" + posts.getCreatedDate() + ", modifiedDate:" + posts.getModifiedDate());
         assertThat(posts.getCreatedDate()).isAfter(now);

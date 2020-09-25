@@ -7,26 +7,39 @@ import com.alliex.cvs.web.dto.UserSaveRequest;
 import com.alliex.cvs.web.dto.UserUpdateRequest;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.test.annotation.Rollback;
+import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.context.jdbc.SqlGroup;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@ExtendWith(SpringExtension.class)
 @SpringBootTest
 @Transactional()
 @Rollback()
+@SqlGroup({
+        @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = "classpath:test-data.sql"),
+})
 public class UserServiceTest {
+
     @Autowired
     UserService userService;
 
+    private final String testUsername = "testtest100";
+    private final String testEmail = "400@test.com";
+    private final String testFullName = "400_fullName";
+
     @Test
-    public void createUser() {
+    public void createAndGetUser() {
         String username = "test " + RandomStringUtils.randomAlphanumeric(5);
         String password = "password";
         String department = "department";
@@ -67,7 +80,7 @@ public class UserServiceTest {
         userUpdateRequest.setFullName("fullName updated");
         userUpdateRequest.setEmail("email updated");
         userUpdateRequest.setPhoneNumber("phoneNumber updated");
-        Long updatedId = userService.update(1L, userUpdateRequest);
+        Long updatedId = userService.update(400L, userUpdateRequest);
 
         // Get user.
         UserResponse userResponse = userService.getUserById(updatedId);
@@ -80,51 +93,37 @@ public class UserServiceTest {
     @Test
     public void getUsers() {
         List<UserResponse> users = userService.getUsers(PageRequest.of(0, 10));
-
         assertThat(users.size()).isGreaterThanOrEqualTo(1);
     }
 
     @Test
     public void getUsersByFullName() {
-        String fullName = "admin";
         UserRequest userRequest = new UserRequest();
-        userRequest.setFullName(fullName);
+        userRequest.setFullName(testFullName);
 
         Page<UserResponse> users = userService.getUsers(PageRequest.of(0, 10), userRequest);
         users.getContent().forEach(userResponse -> {
-            assertThat(userResponse.getFullName()).isEqualTo(fullName);
+            assertThat(userResponse.getFullName()).isEqualTo(testFullName);
         });
     }
 
     @Test
     public void getUsersByEmail() {
-        String email = "test@test.com";
         UserRequest userRequest = new UserRequest();
-        userRequest.setEmail(email);
+        userRequest.setEmail(testEmail);
 
         Page<UserResponse> users = userService.getUsers(PageRequest.of(0, 10), userRequest);
 
         assertThat(users.getContent().size()).isGreaterThanOrEqualTo(1);
         users.getContent().forEach(userResponse -> {
-            assertThat(userResponse.getEmail()).contains(email);
+            assertThat(userResponse.getEmail()).contains(testEmail);
         });
     }
 
     @Test
     public void getUserByUsername() {
-        String username = "test";
-        UserResponse user = userService.getUserByUsername(username);
-
-        assertThat(user.getUsername()).isEqualTo(username);
-    }
-
-    @Test
-    public void getUserById() {
-        Long id = 1L;
-        UserResponse userResponse = userService.getUserById(id);
-
-        assertThat(userResponse.getId()).isEqualTo(id);
-        assertThat(userResponse.getUsername()).isEqualTo("test");
+        UserResponse user = userService.getUserByUsername(testUsername);
+        assertThat(user.getUsername()).isEqualTo(testUsername);
     }
 
 }
