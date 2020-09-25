@@ -5,7 +5,10 @@ import com.alliex.cvs.domain.point.PointHistoryRepository;
 import com.alliex.cvs.domain.point.PointHistorySpecification;
 import com.alliex.cvs.exception.PointHistoryNotFoundException;
 import com.alliex.cvs.exception.PointLimitExcessException;
-import com.alliex.cvs.web.dto.*;
+import com.alliex.cvs.web.dto.PointHisotryUpdateRequest;
+import com.alliex.cvs.web.dto.PointHistoryRequest;
+import com.alliex.cvs.web.dto.PointHistoryResponse;
+import com.alliex.cvs.web.dto.PointHistorySaveRequest;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
@@ -50,10 +53,10 @@ public class PointHistoryService {
     @Transactional
     public Long save(PointHistorySaveRequest pointHistorySaveRequest) {
         if (pointHistorySaveRequest.getPoint() > CHARGE_LIMIT_POINT) {
-            return pointHistoryRepository.save(pointHistorySaveRequest.toEntity()).getId();
-        } else {
             throw new PointLimitExcessException("The point is too much to charge. point: " + pointHistorySaveRequest.getPoint());
         }
+
+        return pointHistoryRepository.save(pointHistorySaveRequest.toEntity()).getId();
     }
 
 }
