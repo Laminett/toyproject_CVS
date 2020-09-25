@@ -5,7 +5,7 @@ var main = {
         _this.getPointHistories(1);
 
         $('.datepicker').datetimepicker({
-            format: "L",
+            format: 'YYYY-MM-DD',
             defaultDate: new Date()
         });
 
