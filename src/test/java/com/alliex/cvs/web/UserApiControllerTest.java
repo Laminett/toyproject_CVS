@@ -151,7 +151,9 @@ public class UserApiControllerTest {
     @WithMockUser(roles = "ADMIN")
     @Test
     public void getUserById_UserNotFound() throws Exception {
-        mvc.perform(get("/web-api/v1/users/{id}", 4))
+        long notExistsId = 9999L;
+
+        mvc.perform(get("/web-api/v1/users/{id}", notExistsId))
                 .andDo(print())
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.code", is("USER_NOT_FOUND")));
