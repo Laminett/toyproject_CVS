@@ -12,6 +12,9 @@
     <springProfile name="dev">
         <property resource="logback-dev.properties"/>
     </springProfile>
+    <springProfile name="prod">
+        <property resource="logback-prod.properties"/>
+    </springProfile>
 
     <property name="LOG_PATH" value="${log.file.path}"/>
     <property name="LOG_FILE_NAME" value="app_cvs"/>

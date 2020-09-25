@@ -8,7 +8,6 @@ spring:
       enabled: true
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://192.168.0.95:3306/db_cvs?serverTimezone=UTC&characterEncoding=UTF-8
     username: admin_cvs
     password: pwforcvsadmin
   jpa:
@@ -25,12 +24,6 @@ logging:
       springframework:
         boot:
           autoconfigure: INFO
-      hibernate:
-        SQL: DEBUG
-        type:
-          descriptor:
-            sql:
-              BasicBinder: TRACE
 
 jwt:
   token:
@@ -39,3 +32,53 @@ jwt:
     clientId: cvs-jwt-app
     clientSecret: cvs-jwt-secret
     expirySeconds: 7200
+
+---
+spring:
+  profiles: local
+  datasource:
+#    url: jdbc:mysql://localhost:3306/db_cvs?serverTimezone=UTC&characterEncoding=UTF-8
+    url: jdbc:mysql://192.168.0.95:3306/db_cvs?serverTimezone=UTC&characterEncoding=UTF-8
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: DEBUG
+        type:
+          descriptor:
+            sql:
+              BasicBinder: TRACE
+---
+spring:
+  profiles: ci
+  datasource:
+    url: jdbc:mysql://192.168.0.95:3306/db_cvs_ci?serverTimezone=UTC&characterEncoding=UTF-8
+
+---
+spring:
+  profiles: dev
+  datasource:
+    url: jdbc:mysql://192.168.0.95:3306/db_cvs?serverTimezone=UTC&characterEncoding=UTF-8
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: INFO
+        type:
+          descriptor:
+            sql:
+              BasicBinder: INFO
+---
+spring:
+  profiles: prod
+  datasource:
+    url: jdbc:mysql://localhost:3306/db_cvs?serverTimezone=UTC&characterEncoding=UTF-8
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: INFO
+        type:
+          descriptor:
+            sql:
+              BasicBinder: INFO
