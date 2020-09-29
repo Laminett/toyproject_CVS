@@ -9,7 +9,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class SettleRequest {
 
-    private int pageNumber;
+    private int page;
 
     private String aggregatedAt;
 

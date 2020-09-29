@@ -9,13 +9,15 @@ import lombok.Setter;
 @NoArgsConstructor
 public class PointHistoryRequest {
 
-    private int pageNumber;
+    private int page;
 
     private String startDate;
 
     private String endDate;
 
     private String status;
+
+    private String username;
 
     private String fullName;
 

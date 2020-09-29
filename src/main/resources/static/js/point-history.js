@@ -28,13 +28,13 @@ var main = {
             }
         });
     },
-    getPointHistories: function (PageNum) {
+    getPointHistories: function (page) {
         var param = {
-            pageNumber: PageNum,
-            startDate: $("#search_startDate").val() == "" ? getToday() : getDateString($("#search_startDate").val()),
-            endDate: $("#search_endDate").val() == "" ? getToday() : getDateString($("#search_endDate").val()),
+            page: page,
+            startDate: $("#search_startDate").val() == "" ? moment(new Date().getTime()).format("YYYYMMDD") : $("#search_startDate").val().replace(/[^0-9]/g,""),
+            endDate: $("#search_endDate").val() == "" ? moment(new Date().getTime()).format("YYYYMMDD") : $("#search_endDate").val().replace(/[^0-9]/g,""),
             status: $('#search_status').val(),
-            fullName: $('#search_username').val()
+            fullName: $('#search_fullName').val()
         };
 
         $.ajax({
@@ -86,10 +86,3 @@ var main = {
 };
 
 main.init();
-
-function getDateString(date){
-    var mmdd = date.substring(0,5).replace(/[^0-9]/g,"");
-    var yyyy = date.substring(6,10);
-
-    return yyyy+mmdd;
-}
