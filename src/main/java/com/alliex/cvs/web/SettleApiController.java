@@ -19,8 +19,8 @@ public class SettleApiController {
 
     @ApiOperation(value = "Get Settle List", notes = "정산 목록")
     @GetMapping("/web-api/v1/settle")
-    public Page<SettleResponse> getSettleList(SettleRequest settleRequest) {
-        return settleService.getSettleList(PageRequest.of(settleRequest.getPageNumber() - 1, 10, Sort.Direction.DESC, "id"), settleRequest);
+    public Page<SettleResponse> getSettleList(@RequestParam(required = false, defaultValue = "1") int page, SettleRequest settleRequest) {
+        return settleService.getSettleList(PageRequest.of(page - 1, 10, Sort.Direction.DESC, "id"), settleRequest);
     }
 
     @ApiOperation(value = "Update Settle", notes = "정산 업데이트")

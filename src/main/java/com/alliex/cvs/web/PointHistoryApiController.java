@@ -22,8 +22,8 @@ public class PointHistoryApiController {
 
     @ApiOperation(value = "Get Point History", notes = "충전 요청 목록")
     @GetMapping("/web-api/v1/point/history")
-    public Page<PointHistoryResponse> getPointHistories(PointHistoryRequest pointHistoryRequest) {
-        return pointHistoryService.getPointHistories(PageRequest.of(pointHistoryRequest.getPageNumber() - 1, 10, Sort.Direction.DESC, "id"), pointHistoryRequest);
+    public Page<PointHistoryResponse> getPointHistories(@RequestParam(required = false, defaultValue = "1") int page, PointHistoryRequest pointHistoryRequest) {
+        return pointHistoryService.getPointHistories(PageRequest.of(page - 1, 10, Sort.Direction.DESC, "id"), pointHistoryRequest);
     }
 
     @ApiOperation(value = "Update Point History", notes = "충전 요청 업데이트")

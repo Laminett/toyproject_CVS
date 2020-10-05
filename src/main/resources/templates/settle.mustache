@@ -16,9 +16,9 @@
                                 <div class="form-group has-white">
                                     <input type="text" class="form-control monthpicker" id="search_date">
                                 </div>
-                                <span>{{#messages}}user.username{{/messages}}</span>
+                                <span>{{#messages}}user.full.name{{/messages}}</span>
                                 <div class="form-group has-white">
-                                    <input type="text" class="form-control" id="search_username" maxlength="25" style="color: white;">
+                                    <input type="text" class="form-control" id="search_fullName" maxlength="25" style="color: white;">
                                 </div>
                                 <button type="button" class="btn btn-white btn-round btn-just-icon" id="btn_search">
                                     <i class="material-icons">search</i>
@@ -101,5 +101,6 @@
 <link rel="stylesheet" href="/datepicker/bootstrap-monthpicker.css">
 <script type="text/javascript" src="/datepicker/bootstrap-monthpicker.js"></script>
 <script type="text/javascript" src="/js/plugins/jquery.tmpl.js"></script>
+<script type="text/javascript" src="/js/plugins/moment.js"></script>
 <script type="text/javascript" src="/js/settle.js"></script>
 {{>layout/footer}}

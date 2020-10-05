@@ -25,7 +25,7 @@ public class SettleService {
     public Page<SettleResponse> getSettleList(Pageable pageable, SettleRequest settleRequest) {
         return settleRepository.findAll(Specification
                 .where(StringUtils.isBlank(settleRequest.getAggregatedAt()) ? null : SettleSpecification.withSearchData("aggregatedAt", settleRequest.getAggregatedAt()))
-                .and(StringUtils.isBlank(settleRequest.getUsername()) ? null : SettleSpecification.withSearchData("username", settleRequest.getUsername())), pageable)
+                .and(StringUtils.isBlank(settleRequest.getFullName()) ? null : SettleSpecification.withSearchData("fullName", settleRequest.getFullName())), pageable)
                 .map(SettleResponse::new);
     }
 

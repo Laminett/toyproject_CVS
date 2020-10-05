@@ -4,7 +4,7 @@ var main = {
 
         _this.getSettles(1);
 
-        $('.monthpicker').bootstrapMonthpicker({});
+        $('.monthpicker').bootstrapMonthpicker({}).val(moment(new Date().getTime()).format("YYYY-MM"));
 
         // 페이징
         $(document).on('click', '.page-link', function () {
@@ -25,12 +25,12 @@ var main = {
             }
         });
     },
-    getSettles: function (PageNum) {
+    getSettles: function (page) {
+        console.log(moment(new Date().getTime()).format("YYYYMM"));
         var param = {
-            pageNumber: PageNum,
-            aggregatedAt: $("#search_date").val().replace(/[^0-9]/g,""),
-            status: $('#search_status').val(),
-            username: $('#search_username').val()
+            page: page,
+            aggregatedAt: $("#search_date").val() == "" ? moment(new Date().getTime()).format("YYYYMM") : $("#search_date").val().replace(/[^0-9]/g,""),
+            fullName: $('#search_fullName').val()
         };
 
         $.ajax({
