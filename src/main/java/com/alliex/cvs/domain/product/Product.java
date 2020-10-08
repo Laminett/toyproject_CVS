@@ -1,7 +1,9 @@
 package com.alliex.cvs.domain.product;
 
 import com.alliex.cvs.domain.BaseTimeEntity;
+import com.alliex.cvs.domain.product.category.ProductCategory;
 import com.alliex.cvs.domain.transactionDetail.TransactionDetail;
+import com.alliex.cvs.web.dto.ProductUpdateRequest;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
@@ -19,8 +21,9 @@ public class Product extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private String categoryId;
+    @ManyToOne
+    @JoinColumn(name = "category_id", referencedColumnName = "id")
+    private ProductCategory productCategory;
 
     @Column(nullable = false)
     private String barcode;
@@ -48,9 +51,9 @@ public class Product extends BaseTimeEntity {
     private Collection<TransactionDetail> transactionDetailId;
 
     @Builder
-    public Product(Long id, String categoryId, String barcode, String name, Long point, Integer quantity, Boolean isEnabled, String createdId, String modifiedId) {
+    public Product(Long id, ProductCategory productCategory, String barcode, String name, Long point, Integer quantity, Boolean isEnabled, String createdId, String modifiedId) {
         this.id = id;
-        this.categoryId = categoryId;
+        this.productCategory = productCategory;
         this.barcode = barcode;
         this.name = name;
         this.point = point;
@@ -60,14 +63,14 @@ public class Product extends BaseTimeEntity {
         this.modifiedId = modifiedId;
     }
 
-    public void update(Long id, String categoryId, String name, Long point, Integer quantity, boolean isEnabled, String modifiedId) {
-        this.id = id;
-        this.categoryId = categoryId;
-        this.name = name;
-        this.point = point;
-        this.quantity = quantity;
-        this.isEnabled = isEnabled;
-        this.modifiedId = modifiedId;
+    public void update(ProductUpdateRequest entity) {
+        this.id = entity.getId();
+        this.productCategory = entity.toEntity().productCategory;
+        this.name = entity.getName();
+        this.point = entity.getPoint();
+        this.quantity = entity.getQuantity();
+        this.isEnabled = entity.getIsEnabled();
+        this.modifiedId = entity.getModifiedId();
     }
 
     public void updateQuantity(Integer quantity) {

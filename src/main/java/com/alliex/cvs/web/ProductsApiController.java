@@ -22,7 +22,7 @@ public class ProductsApiController {
 
     @ApiOperation(value = "Get Products", notes = "상품 목록 조회")
     @GetMapping({"/api/v1/products", "/web-api/v1/products"})
-    public Page<Product> getProducts(@RequestParam(value = "page", required = false) int page, ProductRequest searchRequest) {
+    public Page<ProductResponse> getProducts(@RequestParam(value = "page", required = false, defaultValue = "1") int page, ProductRequest searchRequest) {
         return productsService.getProducts(PageRequest.of(page - 1, 10), searchRequest);
     }
 

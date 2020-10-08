@@ -6,30 +6,31 @@
                 <div class="card">
                     <div class="card-header card-header-primary">
                         <div style="float: left">
-                            <h4 class="card-title ">Product Table</h4>
-                            <p class="card-category"> Here is a subtitle for this table</p>
+                            <h4 class="card-title ">{{#messages}}menu.product{{/messages}}</h4>
+                            <p class="card-category"> Product management</p>
                         </div>
                         <div style="float: right">
-                            <form class="form-inline ml-auto" id="searchForm">
-                                <div class="form-group">
-                                    <input type="hidden" id="LoginUser" name="LoginUser" value={{loginUser}}>
-                                    <select id="searchField" class="form-control form-control-t" data-style="btn btn-link" name="searchField" style="color: whitesmoke">
-                                        <option selected>Choose...</option>
-                                        <option >category</option>
-                                        <option >name</option>
-                                        <option >point</option>
-                                    </select>
+                            <form class="form-inline ml-auto" id="productSearchForm" action="" onsubmit="return false;">
+                                <input type="hidden" id="LoginUser" name="LoginUser" value={{loginUser}}>
+                                <input type="hidden" name="searchKey" value=""/>
+                                <div class="dropdown" style="margin-right: 10px;">
+                                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton-product-search" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        category
+                                    </button>
+                                    <div id="product-search-field" class="dropdown-menu" aria-labelledby="dropdownMenuButton-product-search">
+                                        <a class="dropdown-item" href="#none" searchKey="category">category</a>
+                                        <a class="dropdown-item" href="#none" searchKey="name">name</a>
+                                        <a class="dropdown-item" href="#none" searchKey="point">point</a>
+                                    </div>
                                 </div>
                                 <div class="form-group has-white">
-                                    <input id="searchValue" name="searchValue" type="text" value="" class="form-control form-control-t" placeholder="Search" >
+                                    <input id="searchValue" name="searchValue" type="text" value="" class="form-control" placeholder="Search" style="color: whitesmoke">
                                 </div>
                                 <button type="button" class="btn btn-white btn-round btn-just-icon" id="search" name="search">
                                     <i class="material-icons">search</i>
                                     <div class="ripple-container"></div>
                                 </button>
-
                             </form>
-
                         </div>
                     </div>
 
@@ -55,12 +56,14 @@
                     </div>
                 </div>
                 <div>
-                    <button type="button" name="addProduct" class="btn btn-primary" data-toggle="modal"
-                            data-target="#addUpdateModal">상품추가
-                    </button>
-                    <nav aria-label="Page navigation example">
-                        <ul class="pagination justify-content-center"></ul>
+                    <nav aria-label="Page navigation">
+                        <ul id="categoriesPagingArea" class="pagination justify-content-center"></ul>
                     </nav>
+                </div>
+                <div>
+                    <button class="btn btn-round" data-toggle="modal" data-target="#createCategoryModal">
+                        <i class="material-icons">assignment</i>&nbsp;{{#messages}}button.create{{/messages}}
+                    </button>
                 </div>
             </div>
         </div>
@@ -68,12 +71,12 @@
 </div>
 
 
-<div class="modal fade" id="addUpdateModal" tabindex="-1" role="">
+<div class="modal fade" id="createProductModal" tabindex="-1" role="">
     <div class="modal-dialog modal-login" role="document" style="margin-top: 160px;">
         <div class="modal-content">
             <div class="card card-signup card-plain" style="margin-top: 0;margin-bottom: 0">
                 <div class="modal-header" style="padding-top: 0;">
-                    <div class="card-header card-header-primary text-center">
+                    <div class="card-header card-header-primary text-center" style="width: 100%">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
                             <i class="material-icons">clear</i>
                         </button>
@@ -110,10 +113,6 @@
                                     </div>
                                     <select id="categoryId" class="form-control" data-style="btn btn-link" name="categoryId" >
                                         <option selected>Choose Product Category</option>
-                                        <option>Drink</option>
-                                        <option>Food</option>
-                                        <option>Snack</option>
-                                        <option>etc</option>
                                     </select>
                                 </div>
                             </div>
@@ -183,8 +182,48 @@
         </div>
     </div>
 </div>
-
+<script id="productsTemplate" type="text/x-jquery-tmpl">
+<tr>
+    <td><a category-id="${id}">${id}</a></td>
+    <td>${categoryId.name}</td>
+    <td>${name}</td>
+    <td class='text-right'>${point}</td>
+    <td class='text-right'>${quantity}</td>
+    <td style='display:none;position:absolute'>${barcode}</td>
+  {%if isEnabled == true%}
+    <td>Y</td>
+  {%else%}
+    <td>N</td>
+  {%/if%}
+    <td>${createdId}</td>
+    <td>${createdDate}</td>
+    <td>${modifiedId}</td>
+    <td>${modifiedDate}</td>
+    <td class='td-actions text-center'>
+        <button type='button' rel='tooltip' class='btn btn-success' name='details'>
+            <i class='material-icons' data-toggle='modal' data-target='#createProductModal'>edit</i>
+        </button>
+        <button type='button' rel='tooltip' class='btn btn-danger' name='delete'>
+             <i class='material-icons'>close</i>
+         </button>
+    </td>
+</tr>
+</script>
+<script id="productsNoDataTemplate" type="text/x-jquery-tmpl">
+<tr>
+    <td colspan="6">No Data.</td>
+</tr>
+</script>
+<script id="productsPagingTemplate" type="text/x-jquery-tmpl">
+<li class="page-item">
+    <a class="page-link" href="#none">${page}</a>
+</li>
+</script>
+<script id="categoriesSelectTemplate" type="text/x-jquery-tmpl">
+    <option>${name}</option>
+</script>
 <script src="/js/jquery.scannerdetection.js"></script>
+<script type="text/javascript" src="/js/plugins/jquery.tmpl.js"></script>
 <script type="text/javascript" src="/js/product.js"></script>
 <!-- barcode scanner -->
 {{>layout/footer}}

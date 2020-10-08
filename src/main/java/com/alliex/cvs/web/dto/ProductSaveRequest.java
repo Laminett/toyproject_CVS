@@ -1,17 +1,22 @@
 package com.alliex.cvs.web.dto;
 
 import com.alliex.cvs.domain.product.Product;
+import com.alliex.cvs.domain.product.category.ProductCategory;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 
 @Getter
+@Setter
 @NoArgsConstructor
 public class ProductSaveRequest {
 
-    private String categoryId;
+    private Long categoryId;
+
+    private String categoryName;
 
     private String barcode;
 
@@ -27,8 +32,9 @@ public class ProductSaveRequest {
 
 
     @Builder
-    public ProductSaveRequest(String categoryId, String barcode, String name, Long point, Integer quantity, Boolean isEnabled, String createdId) {
+    public ProductSaveRequest(Long categoryId, String categoryName, String barcode, String name, Long point, Integer quantity, Boolean isEnabled, String createdId) {
         this.categoryId = categoryId;
+        this.categoryName = categoryName;
         this.barcode = barcode;
         this.name = name;
         this.point = point;
@@ -38,8 +44,11 @@ public class ProductSaveRequest {
     }
 
     public Product toEntity() {
+        ProductCategory setCategoryId = new ProductCategory();
+        setCategoryId.setId(categoryId);
+
         return Product.builder()
-                .categoryId(categoryId)
+                .productCategory(setCategoryId)
                 .barcode(barcode)
                 .name(name)
                 .point(point)

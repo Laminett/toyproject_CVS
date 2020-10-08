@@ -1,6 +1,5 @@
 package com.alliex.cvs.domain.product;
 
-import lombok.Getter;
 import org.springframework.data.jpa.domain.Specification;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -14,7 +13,7 @@ import java.util.Map;
 public class ProductSpecs {
 
     public enum SearchKey {
-        CATEGORY("categoryId"),
+        CATEGORY("productCategory"),
         NAME("name"),
         POINT("point");
 
@@ -41,12 +40,12 @@ public class ProductSpecs {
         List<Predicate> predicates = new ArrayList<>();
         for (SearchKey key : searchKeyword.keySet()) {
             switch (key) {
-                case CATEGORY:
                 case NAME:
                     predicates.add(builder.like(
                             root.get(key.value), "%" + searchKeyword.get(key) + "%"
                     ));
                     break;
+                case CATEGORY:
                 case POINT:
                     predicates.add(builder.equal(
                             root.get(key.value), searchKeyword.get(key)

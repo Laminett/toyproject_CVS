@@ -82,8 +82,15 @@
         <li class="nav-item">
             <a class="nav-link" href="/users">{{#messages}}menu.user{{/messages}}</a>
         </li>
-        <li class="nav-item">
-            <a class="nav-link" href="/products">{{#messages}}menu.product{{/messages}}</a>
+        <li class="nav-item dropdown">
+            <a class="nav-item nav-link dropdown-toggle mr-md-2" id="menu_product" data-toggle="dropdown"
+               aria-haspopup="true" aria-expanded="false">{{#messages}}menu.product{{/messages}}
+                <div class="ripple-container"></div>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="bd-menu_product">
+                <a class="dropdown-item" href="/products">{{#messages}}menu.product{{/messages}}</a>
+                <a class="dropdown-item" href="/products-categories">{{#messages}}menu.product.category{{/messages}}</a>
+            </div>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="/point/history">{{#messages}}menu.point.history{{/messages}}</a>
