@@ -41,6 +41,41 @@ public class PostsRepositoryTest {
     }
 
     @Test
+    public void getPostsDto() {
+        // given
+        postsRepository.save(Posts.builder()
+                .title("title1")
+                .content("myContent")
+                .author("author")
+                .build());
+
+        postsRepository.save(Posts.builder()
+                .title("title1")
+                .content("myContent")
+                .author("author")
+                .build());
+
+        postsRepository.save(Posts.builder()
+                .title("title2")
+                .content("myContent")
+                .author("author")
+                .build());
+
+
+        // when
+        List<PostsDto> postsList = postsRepository.findAllPostsByContent("myContent");
+
+        // then
+        PostsDto postsDto = postsList.get(0);
+        assertThat(postsDto.getTitle()).isEqualTo("title1");
+        assertThat(postsDto.getArticleCount()).isEqualTo(2);
+
+        PostsDto postsDto2 = postsList.get(1);
+        assertThat(postsDto2.getTitle()).isEqualTo("title2");
+        assertThat(postsDto2.getArticleCount()).isEqualTo(1);
+    }
+
+    @Test
     public void baseTimeEntity() {
         // given
         LocalDateTime now = LocalDateTime.of(2020, 3, 11, 0, 0, 0);
