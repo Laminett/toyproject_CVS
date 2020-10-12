@@ -134,6 +134,7 @@ var main = {
         var data = {
             categoryName: $("#categoryName").val(),
             isEnabled: $("#isEnabled").val(),
+            adminId: $("#adminId").val()
         };
 
         if (!isUpdate && !data.categoryName) {
@@ -143,10 +144,8 @@ var main = {
 
         var apiEndpoint;
         if (categoryId) {
-            data.modifiedId = $("#LoginUser").val();
             apiEndpoint = "/web-api/v1/products-categories/" + categoryId;
         } else {
-            data.createdId = $("#LoginUser").val();
             apiEndpoint = "/web-api/v1/products-categories";
         }
 

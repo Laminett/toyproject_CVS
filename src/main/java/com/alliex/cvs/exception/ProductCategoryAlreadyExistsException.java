@@ -21,7 +21,7 @@ public class ProductCategoryAlreadyExistsException extends InternalException {
     }
 
     public ProductCategoryAlreadyExistsException(String productCategory) {
-        super("Product Category" + productCategory + "is already exists.");
+        super("Product Category " + productCategory + " is already exists.");
     }
 
 }

@@ -13,20 +13,20 @@ public class ProductCategorySaveRequest {
 
     private Boolean isEnabled;
 
-    private String createdId;
+    private String adminId;
 
     @Builder
-    public ProductCategorySaveRequest(String categoryName, Boolean isEnabled, String createdId) {
+    public ProductCategorySaveRequest(String categoryName, Boolean isEnabled, String adminId) {
         this.categoryName = categoryName;
         this.isEnabled = isEnabled;
-        this.createdId = createdId;
+        this.adminId = adminId;
     }
 
     public ProductCategory toEntity() {
         return ProductCategory.builder()
-                .name(categoryName)
+                .name(categoryName.toUpperCase())
                 .isEnabled(isEnabled)
-                .createdId(createdId)
+                .adminId(adminId)
                 .build();
     }
 

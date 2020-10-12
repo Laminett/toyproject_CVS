@@ -11,7 +11,7 @@
                         </div>
                         <div style="float: right">
                             <form class="form-inline ml-auto" id="categorySearchForm" action="" onsubmit="return false;">
-                                <input type="hidden" id="LoginUser" name="LoginUser" value={{loginUser}}>
+                                <input type="hidden" id="adminId" name="adminId" value={{loginUser}}>
                                 <input type="hidden" name="searchKey" value=""/>
                                 <div class="dropdown" style="margin-right: 10px;">
                                     <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton-category-search" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -22,7 +22,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group has-white">
-                                    <input id="searchValue" name="searchValue" type="text" value="" class="form-control" placeholder="">
+                                    <input id="searchValue" name="searchValue" type="text" value="" class="form-control" style="color: whitesmoke" placeholder="">
                                 </div>
                                 <button type="button" class="btn btn-white btn-round btn-just-icon" id="category-search-btn">
                                     <i class="material-icons">search</i>
@@ -38,8 +38,8 @@
                                 <th>NO</th>
                                 <th>카테고리명</th>
                                 <th>사용여부</th>
-                                <th>등록자</th>
-                                <th>등록일시</th>
+                                <th>수정자</th>
+                                <th>수정일시</th>
                                 <th>동작</th>
                                 </thead>
                                 <tbody id="categoriesArea" class="text-center"></tbody>
@@ -73,8 +73,6 @@
                         </button>
                         <h4 class="card-title">Category Information</h4>
                         <input type="hidden" id="id" name="id">
-                        <input type="hidden" id="createdId" name="createdId">
-                        <input type="hidden" id="modifiedId" name="modifiedId">
                     </div>
                 </div>
                 <div class="modal-body">
@@ -122,8 +120,8 @@
   {%else%}
     <td>N</td>
   {%/if%}
-    <td>${createdId}</td>
-    <td>${createdDate}</td>
+    <td>${adminId}</td>
+    <td>${modifiedDate}</td>
     <td class='td-actions text-center'>
         <button type='button' rel='tooltip' class='btn btn-success' name='details'>
             <i class='material-icons' data-toggle='modal'>edit</i>

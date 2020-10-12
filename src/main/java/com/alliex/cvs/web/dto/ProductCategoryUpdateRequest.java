@@ -16,13 +16,13 @@ public class ProductCategoryUpdateRequest {
 
     protected Boolean isEnabled;
 
-    protected String modifiedId;
+    protected String adminId;
 
     public ProductCategory toEntity() {
         return ProductCategory.builder()
-                .name(categoryName)
+                .name(categoryName.toUpperCase())
                 .isEnabled(isEnabled)
-                .modifiedId(modifiedId)
+                .adminId(adminId)
                 .build();
     }
 }

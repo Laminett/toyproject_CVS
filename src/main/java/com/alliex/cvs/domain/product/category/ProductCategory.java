@@ -28,28 +28,25 @@ public class ProductCategory extends BaseTimeEntity {
     @Column(nullable = false)
     private Boolean isEnabled;
 
-    private String createdId;
-
-    private String modifiedId;
+    private String adminId;
 
     @OneToMany(mappedBy = "productCategory", cascade = CascadeType.ALL)
     @JsonIgnore
     private Collection<Product> productId;
 
     @Builder
-    public ProductCategory(Long id, String name, Boolean isEnabled, String createdId, String modifiedId) {
+    public ProductCategory(Long id, String name, Boolean isEnabled, String adminId) {
         this.id = id;
         this.name = name;
         this.isEnabled = isEnabled;
-        this.createdId = createdId;
-        this.modifiedId = modifiedId;
+        this.adminId = adminId;
     }
 
     public void update(Long id, ProductCategoryUpdateRequest productCategoryUpdateRequest) {
         this.id = id;
         this.name = productCategoryUpdateRequest.getCategoryName();
         this.isEnabled = productCategoryUpdateRequest.getIsEnabled();
-        this.modifiedId = productCategoryUpdateRequest.getModifiedId();
+        this.adminId = productCategoryUpdateRequest.getAdminId();
     }
 
     public Boolean getEnabled() {

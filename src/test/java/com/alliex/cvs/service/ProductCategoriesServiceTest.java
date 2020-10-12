@@ -39,14 +39,14 @@ public class ProductCategoriesServiceTest {
         ProductCategoryUpdateRequest productCategoryUpdateRequest = new ProductCategoryUpdateRequest();
         productCategoryUpdateRequest.setCategoryName("categoryName updated");
         productCategoryUpdateRequest.setIsEnabled(true);
-        productCategoryUpdateRequest.setModifiedId("modifiedId updated");
+        productCategoryUpdateRequest.setAdminId("modifiedId updated");
         Long updatedId = productCategoriesService.update(2L, productCategoryUpdateRequest);
 
         // Get category
         ProductCategoryResponse productCategoryResponse = productCategoriesService.getCategoryById(updatedId);
         assertThat(productCategoryResponse.getName()).isEqualTo("categoryName updated");
         assertThat(productCategoryResponse.getIsEnabled()).isEqualTo(true);
-        assertThat(productCategoryResponse.getModifiedId()).isEqualTo("modifiedId updated");
+        assertThat(productCategoryResponse.getAdminId()).isEqualTo("modifiedId updated");
     }
 
 

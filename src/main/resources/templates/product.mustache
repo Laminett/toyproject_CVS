@@ -11,7 +11,7 @@
                         </div>
                         <div style="float: right">
                             <form class="form-inline ml-auto" id="productSearchForm" action="" onsubmit="return false;">
-                                <input type="hidden" id="LoginUser" name="LoginUser" value={{loginUser}}>
+                                <input type="hidden" id="adminId" name="adminId" value={{loginUser}}>
                                 <input type="hidden" name="searchKey" value=""/>
                                 <div class="dropdown" style="margin-right: 10px;">
                                     <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton-product-search" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -44,9 +44,8 @@
                                 <th>POINT</th>
                                 <th>QUANTITY</th>
                                 <th>USEYN</th>
-                                <th>CREATED_ID</th>
-                                <th>CREATED_DATE</th>
                                 <th>MODIFIED_ID</th>
+                                <th>CREATED_DATE</th>
                                 <th>MODIFIED_DATE</th>
                                 <th>ACTIONS</th>
                                 </thead>
@@ -61,7 +60,7 @@
                     </nav>
                 </div>
                 <div>
-                    <button class="btn btn-round" data-toggle="modal" data-target="#createCategoryModal">
+                    <button class="btn btn-round" data-toggle="modal" data-target="#createProductModal">
                         <i class="material-icons">assignment</i>&nbsp;{{#messages}}button.create{{/messages}}
                     </button>
                 </div>
@@ -82,8 +81,6 @@
                         </button>
                         <h4 class="card-title" id="modalTitle">Log in</h4>
                         <input type="hidden" id="id" name="id">
-                        <input type="hidden" id="createdId" name="createdId">
-                        <input type="hidden" id="modifiedId" name="modifiedId">
                     </div>
                 </div>
                 <div class="modal-body">
@@ -195,9 +192,8 @@
   {%else%}
     <td>N</td>
   {%/if%}
-    <td>${createdId}</td>
+    <td>${adminId}</td>
     <td>${createdDate}</td>
-    <td>${modifiedId}</td>
     <td>${modifiedDate}</td>
     <td class='td-actions text-center'>
         <button type='button' rel='tooltip' class='btn btn-success' name='details'>

@@ -55,8 +55,6 @@ var main = {
         $(document).on('click', '[data-toggle=modal]', function () {
             if ($(this).text() == "edit") {
                 addOrUpdate = 1;
-                $('#modifiedId').val($('#LoginUser').val());
-                $('#createdId').val('');
                 $('#id').val($(this).closest('tr').find('td').eq(0).text());
                 $('#categoryId').val($(this).closest('tr').find('td').eq(1).text());
                 $('#name').val($(this).closest('tr').find('td').eq(2).text());
@@ -74,8 +72,6 @@ var main = {
                 _this.addFormVisible(true);
             } else {
                 addOrUpdate = 0;
-                $('#createdId').val($('#LoginUser').val());
-                $('#modifiedId').val('');
                 $('#id').val('');
                 $('#name').val('');
                 $('#point').val('');
@@ -123,7 +119,7 @@ var main = {
             barcode: $('#barcode').val(),
             categoryName: $('#categoryId').val(),
             id: $('#id').val(),
-            createdId: $('#createdId').val(),
+            adminId: $('#adminId').val(),
             name: $('#name').val(),
             point: $('#point').val(),
             quantity: $('#quantity').val(),
@@ -148,7 +144,7 @@ var main = {
             barcode: $('#barcode').val(),
             categoryName: $('#categoryId').val(),
             id: $('#id').val(),
-            modifiedId: $('#modifiedId').val(),
+            adminId: $('#adminId').val(),
             name: $('#name').val(),
             point: $('#point').val(),
             quantity: $('#quantity').val(),

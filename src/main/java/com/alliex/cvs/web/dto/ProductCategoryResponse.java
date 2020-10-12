@@ -18,9 +18,7 @@ public class ProductCategoryResponse {
 
     private Boolean isEnabled;
 
-    private String createdId;
-
-    private String modifiedId;
+    private String adminId;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdDate;
@@ -32,9 +30,8 @@ public class ProductCategoryResponse {
         this.id = entity.getId();
         this.name = entity.getName();
         this.isEnabled = entity.getEnabled();
-        this.createdId = entity.getCreatedId();
+        this.adminId = entity.getAdminId();
         this.createdDate = entity.getCreatedDate();
-        this.modifiedId = entity.getModifiedId();
         this.modifiedDate = entity.getModifiedDate();
     }
 

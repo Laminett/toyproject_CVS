@@ -25,11 +25,10 @@ import java.util.stream.Collectors;
 @Service
 public class ProductCategoriesService {
 
-    @Autowired
     private final ProductCategoryRepository productCategoryRepository;
 
     public Long save(ProductCategorySaveRequest productCategorySaveRequest) {
-        // Check existence of an category.
+        // Check existence of a category.
         productCategoryRepository.findByName(productCategorySaveRequest.getCategoryName()).ifPresent(productCategory -> {
             throw new UserAlreadyExistsException(productCategorySaveRequest.getCategoryName());
         });
@@ -80,7 +79,7 @@ public class ProductCategoriesService {
             List<Predicate> predicate = new ArrayList<>();
             for (Map.Entry<ProductCategorySearchType, String> entry : predicateData.entrySet()) {
                 predicate.add(builder.like(
-                        root.get(entry.getKey().getField()), "%" + entry.getValue() + "%"
+                        root.get(entry.getKey().toString().toLowerCase()), "%" + entry.getValue() + "%"
                 ));
             }
 

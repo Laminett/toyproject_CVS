@@ -28,11 +28,11 @@ public class ProductSaveRequest {
 
     private Boolean isEnabled;
 
-    private String createdId;
+    private String adminId;
 
 
     @Builder
-    public ProductSaveRequest(Long categoryId, String categoryName, String barcode, String name, Long point, Integer quantity, Boolean isEnabled, String createdId) {
+    public ProductSaveRequest(Long categoryId, String categoryName, String barcode, String name, Long point, Integer quantity, Boolean isEnabled, String adminId) {
         this.categoryId = categoryId;
         this.categoryName = categoryName;
         this.barcode = barcode;
@@ -40,7 +40,7 @@ public class ProductSaveRequest {
         this.point = point;
         this.quantity = quantity;
         this.isEnabled = isEnabled;
-        this.createdId = createdId;
+        this.adminId = adminId;
     }
 
     public Product toEntity() {
@@ -54,7 +54,7 @@ public class ProductSaveRequest {
                 .point(point)
                 .quantity(quantity)
                 .isEnabled(isEnabled)
-                .createdId(createdId)
+                .adminId(adminId)
                 .build();
     }
 

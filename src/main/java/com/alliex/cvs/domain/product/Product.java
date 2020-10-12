@@ -42,16 +42,14 @@ public class Product extends BaseTimeEntity {
     @Column(nullable = false)
     private Boolean isEnabled;
 
-    private String createdId;
-
-    private String modifiedId;
+    private String adminId;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     @JsonIgnore
     private Collection<TransactionDetail> transactionDetailId;
 
     @Builder
-    public Product(Long id, ProductCategory productCategory, String barcode, String name, Long point, Integer quantity, Boolean isEnabled, String createdId, String modifiedId) {
+    public Product(Long id, ProductCategory productCategory, String barcode, String name, Long point, Integer quantity, Boolean isEnabled, String adminId) {
         this.id = id;
         this.productCategory = productCategory;
         this.barcode = barcode;
@@ -59,8 +57,7 @@ public class Product extends BaseTimeEntity {
         this.point = point;
         this.quantity = quantity;
         this.isEnabled = isEnabled;
-        this.createdId = createdId;
-        this.modifiedId = modifiedId;
+        this.adminId = adminId;
     }
 
     public void update(ProductUpdateRequest entity) {
@@ -70,7 +67,7 @@ public class Product extends BaseTimeEntity {
         this.point = entity.getPoint();
         this.quantity = entity.getQuantity();
         this.isEnabled = entity.getIsEnabled();
-        this.modifiedId = entity.getModifiedId();
+        this.adminId = entity.getAdminId();
     }
 
     public void updateQuantity(Integer quantity) {

@@ -26,17 +26,17 @@ public class ProductUpdateRequest {
 
     private Boolean isEnabled;
 
-    private String modifiedId;
+    private String adminId;
 
     @Builder
-    public ProductUpdateRequest(Long categoryId, String categoryName, String name, Long point, Integer quantity, Boolean isEnabled, String modifiedId) {
+    public ProductUpdateRequest(Long categoryId, String categoryName, String name, Long point, Integer quantity, Boolean isEnabled, String adminId) {
         this.categoryId = categoryId;
         this.categoryName = categoryName;
         this.name = name;
         this.point = point;
         this.quantity = quantity;
         this.isEnabled = isEnabled;
-        this.modifiedId = modifiedId;
+        this.adminId = adminId;
     }
 
     public Product toEntity() {
@@ -49,7 +49,7 @@ public class ProductUpdateRequest {
                 .point(point)
                 .quantity(quantity)
                 .isEnabled(isEnabled)
-                .modifiedId(modifiedId)
+                .adminId(adminId)
                 .build();
     }
 

@@ -30,7 +30,7 @@ public class ProductCategoryRepositoryTest {
         productCategoryRepository.save(ProductCategory.builder()
         .name(name)
         .isEnabled(isEnabled)
-        .createdId(createdId)
+        .adminId(createdId)
         .build());
 
         //when
@@ -40,6 +40,6 @@ public class ProductCategoryRepositoryTest {
         ProductCategory productCategory = categoriesList.get(0);
         assertThat(productCategory.getName()).isEqualTo(name);
         assertThat(productCategory.getEnabled()).isEqualTo(isEnabled);
-        assertThat(productCategory.getCreatedId()).isEqualTo(createdId);
+        assertThat(productCategory.getAdminId()).isEqualTo(createdId);
     }
 }

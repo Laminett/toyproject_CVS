@@ -21,7 +21,7 @@ public class ProductCategoryNotFoundException extends InternalException {
     }
 
     public ProductCategoryNotFoundException(String productCategory) {
-        super("Product Category" + productCategory + "is already exists.");
+        super("Product Category " + productCategory + " is not found.");
     }
 
 }
