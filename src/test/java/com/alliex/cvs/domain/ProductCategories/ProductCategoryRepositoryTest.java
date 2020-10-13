@@ -21,23 +21,22 @@ public class ProductCategoryRepositoryTest {
     ProductCategoryRepository productCategoryRepository;
 
     @Test
-    public void getProductCategories(){
-
+    public void getProductCategories() {
         String name = "test category";
         Boolean isEnabled = true;
         String createdId = "ykk";
 
         productCategoryRepository.save(ProductCategory.builder()
-        .name(name)
-        .isEnabled(isEnabled)
-        .adminId(createdId)
-        .build());
+                .name(name)
+                .isEnabled(isEnabled)
+                .adminId(createdId)
+                .build());
 
         //when
-        List<ProductCategory> categoriesList = productCategoryRepository.findAll();
+        List<ProductCategory> categories = productCategoryRepository.findAll();
 
         //then
-        ProductCategory productCategory = categoriesList.get(0);
+        ProductCategory productCategory = categories.get(0);
         assertThat(productCategory.getName()).isEqualTo(name);
         assertThat(productCategory.getEnabled()).isEqualTo(isEnabled);
         assertThat(productCategory.getAdminId()).isEqualTo(createdId);

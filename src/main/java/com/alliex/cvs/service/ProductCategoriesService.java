@@ -30,7 +30,7 @@ public class ProductCategoriesService {
     public Long save(ProductCategorySaveRequest productCategorySaveRequest) {
         // Check existence of a category.
         productCategoryRepository.findByName(productCategorySaveRequest.getCategoryName()).ifPresent(productCategory -> {
-            throw new UserAlreadyExistsException(productCategorySaveRequest.getCategoryName());
+            throw new ProductCategoryAlreadyExistsException(productCategorySaveRequest.getCategoryName());
         });
 
         // Create category.
@@ -40,7 +40,7 @@ public class ProductCategoriesService {
     @Transactional
     public Long update(Long id, ProductCategoryUpdateRequest productCategoryUpdateRequest) {
         ProductCategory productCategory = productCategoryRepository.findById(id)
-                .orElseThrow(() -> new ProductCategoryNotFoundException("Product Category " + id + " does not exist."));
+                .orElseThrow(() -> new ProductCategoryNotFoundException(id));
 
         productCategory.update(id, productCategoryUpdateRequest);
 
@@ -50,7 +50,7 @@ public class ProductCategoriesService {
     @Transactional
     public void delete(Long id) {
         ProductCategory productCategory = productCategoryRepository.findById(id)
-                .orElseThrow(() -> new ProductCategoryNotFoundException("Product Category " + id + " does not exist."));
+                .orElseThrow(() -> new ProductCategoryNotFoundException(id));
 
         productCategoryRepository.delete(productCategory);
     }
@@ -68,7 +68,7 @@ public class ProductCategoriesService {
 
     public ProductCategoryResponse getCategoryById(Long id) {
         ProductCategory productCategory = productCategoryRepository.findById(id)
-                .orElseThrow(() -> new ProductCategoryNotFoundException("Category id " + id + " does not exist."));
+                .orElseThrow(() -> new ProductCategoryNotFoundException(id));
 
         return new ProductCategoryResponse(productCategory);
     }
@@ -79,7 +79,7 @@ public class ProductCategoriesService {
             List<Predicate> predicate = new ArrayList<>();
             for (Map.Entry<ProductCategorySearchType, String> entry : predicateData.entrySet()) {
                 predicate.add(builder.like(
-                        root.get(entry.getKey().toString().toLowerCase()), "%" + entry.getValue() + "%"
+                        root.get(entry.getKey().name().toLowerCase()), "%" + entry.getValue() + "%"
                 ));
             }
 

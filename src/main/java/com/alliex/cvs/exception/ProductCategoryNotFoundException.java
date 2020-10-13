@@ -20,8 +20,8 @@ public class ProductCategoryNotFoundException extends InternalException {
         return errorCode;
     }
 
-    public ProductCategoryNotFoundException(String productCategory) {
-        super("Product Category " + productCategory + " is not found.");
+    public ProductCategoryNotFoundException(Long id) {
+        super("ProductCategory id " + id + " does not exist.");
     }
 
 }

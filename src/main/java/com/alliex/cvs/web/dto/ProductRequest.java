@@ -1,6 +1,5 @@
 package com.alliex.cvs.web.dto;
 
-import com.alliex.cvs.domain.product.Product;
 import lombok.Builder;
 import lombok.Getter;
 

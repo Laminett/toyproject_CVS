@@ -26,15 +26,15 @@ public class ProductCategoriesServiceTest {
     ProductCategoriesService productCategoriesService;
 
     @Test
-    public void getProductCategories(){
+    public void getProductCategories() {
         ProductCategoryRequest productCategoryRequest = null;
-        List<ProductCategoryResponse> category = productCategoriesService.getCategories(PageRequest.of(0,10));
+        List<ProductCategoryResponse> category = productCategoriesService.getCategories(PageRequest.of(0, 10));
         assertThat(category.size()).isGreaterThanOrEqualTo(1);
 
     }
 
     @Test
-    public void updateCategory(){
+    public void updateCategory() {
         // Update category.
         ProductCategoryUpdateRequest productCategoryUpdateRequest = new ProductCategoryUpdateRequest();
         productCategoryUpdateRequest.setCategoryName("categoryName updated");
@@ -48,6 +48,5 @@ public class ProductCategoriesServiceTest {
         assertThat(productCategoryResponse.getIsEnabled()).isEqualTo(true);
         assertThat(productCategoryResponse.getAdminId()).isEqualTo("modifiedId updated");
     }
-
 
 }

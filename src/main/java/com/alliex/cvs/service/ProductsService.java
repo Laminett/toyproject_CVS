@@ -31,7 +31,7 @@ public class ProductsService {
             return productRepository.findAll(pageable).map(ProductResponse::new);
         }
 
-        if ("category".equals(searchRequest.getSearchField())) {
+        if (searchRequest.getSearchField().equals("category")) {
             Long categoryId = productCategoryRepository.findByName(searchRequest.getSearchValue()).get().getId();
             searchKeys.put(ProductSpecs.SearchKey.valueOf(searchRequest.getSearchField().toUpperCase()), categoryId);
         } else {

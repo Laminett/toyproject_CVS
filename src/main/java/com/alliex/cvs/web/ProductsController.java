@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 public class ProductsController {
 
-    @GetMapping("/products")
-    public String getProduct_post(Model model, @AuthenticationPrincipal LoginUser loginUser) {
+    @GetMapping("products")
+    public String getProducts(Model model, @AuthenticationPrincipal LoginUser loginUser) {
         model.addAttribute("loginUser", loginUser.getUsername());
 
         return "product";
