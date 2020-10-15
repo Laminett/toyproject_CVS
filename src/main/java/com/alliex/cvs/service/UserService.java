@@ -66,7 +66,7 @@ public class UserService implements UserDetailsService {
     public Long save(UserSaveRequest userSaveRequest) {
         // Check existence of an user.
         userRepository.findByUsername(userSaveRequest.getUsername()).ifPresent(user -> {
-            throw new UserAlreadyExistsException(userSaveRequest.getUsername());
+            throw new UserAlreadyExistsException(user.getUsername());
         });
 
         // Password encode.
