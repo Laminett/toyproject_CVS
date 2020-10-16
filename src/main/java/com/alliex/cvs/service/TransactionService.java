@@ -6,6 +6,7 @@ import com.alliex.cvs.domain.type.TransactionState;
 import com.alliex.cvs.domain.type.TransactionType;
 import com.alliex.cvs.exception.NotEnoughPointException;
 import com.alliex.cvs.exception.TransactionNotFoundException;
+import com.alliex.cvs.exception.TransactionStateException;
 import com.alliex.cvs.web.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -73,16 +74,16 @@ public class TransactionService {
     @Transactional
     public Long update(Long transId, TransactionState transactionState, PaymentType paymentType) {
         Transaction transaction = transactionRepository.findById(transId).orElseThrow(()
-                -> new TransactionNotFoundException("Not found transaction : id" + transId));
+                -> new TransactionNotFoundException(transId));
         transaction.update(transactionState, PaymentType.valueOf(paymentType.toString()));
 
         return transaction.getId();
     }
 
     @Transactional
-    public TransactionResponse getTransStateByBarcode(String barcode) {
-        Transaction transaction = transactionRepository.findByRequestId(barcode)
-                .orElseThrow(() -> new TransactionNotFoundException("Not found transaction : barcode" + barcode));
+    public TransactionResponse getTransStateByRequestId(String requestId) {
+        Transaction transaction = transactionRepository.findByRequestId(requestId)
+                .orElseThrow(() -> new TransactionNotFoundException(requestId));
         return new TransactionResponse(transaction);
     }
 
@@ -91,7 +92,8 @@ public class TransactionService {
         // user point 조회 후 거래금액보다 작을시 false
         PointResponse point = pointService.findByUserId(requestParam.getUserId());
         if (point.getPoint() < requestParam.getPoint()) {
-            throw new NotEnoughPointException("Not Enough point : have point " + point.getPoint() + " necessary point " + requestParam.getPoint());
+            // HACK point Integer? Long?
+            throw new NotEnoughPointException(point.getPoint(), requestParam.getPoint());
         }
 
         String requestId = RandomStringUtils.randomAlphanumeric(20);
@@ -108,19 +110,19 @@ public class TransactionService {
     }
 
     @Transactional
-    public TransactionResponse transactionPaymentStep2(String barcode, PaymentType paymentType) {
-        Transaction transaction = transactionRepository.findByRequestId(barcode)
-                .orElseThrow(() -> new TransactionNotFoundException("Not found transaction : barcode" + barcode));
+    public TransactionResponse transactionPaymentStep2(String requestId, PaymentType paymentType) {
+        Transaction transaction = transactionRepository.findByRequestId(requestId)
+                .orElseThrow(() -> new TransactionNotFoundException(requestId));
 
         List<TransactionDetailResponse> transactionDetail = transactionDetailService.getDetails(transaction.getId());
 
-        if (!TransactionState.WAIT.equals(transaction.getState())) {
+        if (TransactionState.WAIT != transaction.getState()) {
             throw new TransactionNotFoundException("trans_state error");
         }
 
         pointService.updatePointMinus(transaction.getUser().getId(), transaction.getPoint());
         for (TransactionDetailResponse product : transactionDetail) {
-            productService.updateAmountMinus(product.getProductId(), product.getProductQuantity());
+            productService.updateQuantityMinus(product.getProductId(), product.getProductQuantity());
         }
         update(transaction.getId(), TransactionState.SUCCESS, paymentType);
         transactionDetailService.update(transaction.getId(), TransactionState.SUCCESS);
@@ -130,22 +132,23 @@ public class TransactionService {
 
     @Transactional
     public Long transactionRefund(Long transId) {
-        List<Transaction> transactionchk = transactionRepository.findByOriginId(transId);
-        if (!transactionchk.isEmpty()) {
-            throw new TransactionNotFoundException("already REFUND");
+        List<Transaction> originTransactionIdCheck = transactionRepository.findByOriginId(transId);
+        if (!originTransactionIdCheck.isEmpty()) {
+            throw new TransactionNotFoundException(transId);
         }
 
         Transaction transaction = transactionRepository.findById(transId).orElseThrow(()
-                -> new TransactionNotFoundException("Not found transaction : id" + transId));
+                -> new TransactionNotFoundException(transId));
 
-        List<TransactionDetailResponse> transactionDetail = transactionDetailService.getDetails(transaction.getId());
-        if (!TransactionState.SUCCESS.equals(transaction.getState()) || !TransactionType.PAYMENT.equals(transaction.getType())) {
-            throw new TransactionNotFoundException("REFUND Fail");
+        if (TransactionState.SUCCESS != transaction.getState() || TransactionType.PAYMENT != transaction.getType()) {
+            // FIXME
+            throw new TransactionStateException("REFUND is possible only TransactionState=SUCCESS and TransactionType=PAYMENT");
         }
 
+        List<TransactionDetailResponse> transactionDetail = transactionDetailService.getDetails(transaction.getId());
         pointService.updatePointPlus(transaction.getUser().getId(), transaction.getPoint());
         for (TransactionDetailResponse product : transactionDetail) {
-            productService.updateAmountPlus(product.getProductId(), product.getProductQuantity());
+            productService.updateQuantityPlus(product.getProductId(), product.getProductQuantity());
         }
         transactionDetailService.update(transId, TransactionState.REFUND);
         TransactionSaveRequest transactionRefundRequest = new TransactionSaveRequest(transaction.getUser().getId(), transaction.getMerchantId(), transaction.getId(),

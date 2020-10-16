@@ -5,6 +5,7 @@ import com.alliex.cvs.domain.transaction.Transaction;
 import com.alliex.cvs.domain.transaction.TransactionRepository;
 import com.alliex.cvs.domain.transactionDetail.TransactionDetail;
 import com.alliex.cvs.domain.transactionDetail.TransactionDetailRepository;
+import com.alliex.cvs.exception.TransactionDetailNotFoundException;
 import com.alliex.cvs.exception.TransactionNotFoundException;
 import com.alliex.cvs.web.dto.TransactionDetailResponse;
 import com.alliex.cvs.web.dto.TransactionDetailSaveRequest;
@@ -36,7 +37,7 @@ public class TransactionDetailService {
         List<TransactionDetailResponse> transactionDetailResponses = transactionDetailRepository.findByTransactionId(transid);
         for (TransactionDetailResponse transDetail : transactionDetailResponses) {
             TransactionDetail transactionDetail = transactionDetailRepository.findById(transDetail.getId()).orElseThrow(()
-                    -> new TransactionNotFoundException("Not found TransactionDetail id : " + transDetail.getId()));
+                    -> new TransactionDetailNotFoundException(transDetail.getId()));
             transactionDetail.update(transactionState);
         }
 
@@ -46,7 +47,7 @@ public class TransactionDetailService {
     @Transactional(readOnly = true)
     public List<TransactionDetailResponse> getDetails(Long transId) {
         Transaction transaction = transactionRepository.findById(transId).orElseThrow(()
-                -> new TransactionNotFoundException("Not Found Transaction Id : " + transId));
+                -> new TransactionNotFoundException(transId));
 
         if (transaction.getOriginId() != null) {
             return transactionDetailRepository.findByTransactionId(transaction.getOriginId());

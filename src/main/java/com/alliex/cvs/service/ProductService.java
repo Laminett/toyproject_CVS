@@ -5,7 +5,7 @@ import com.alliex.cvs.domain.product.ProductRepository;
 import com.alliex.cvs.domain.product.ProductSpecs;
 import com.alliex.cvs.domain.product.category.ProductCategoryRepository;
 import com.alliex.cvs.exception.ProductAlreadyExistsException;
-import com.alliex.cvs.exception.ProductAmountLimitExcessException;
+import com.alliex.cvs.exception.ProductQuantityLimitExcessException;
 import com.alliex.cvs.exception.ProductNotFoundException;
 import com.alliex.cvs.web.dto.*;
 import lombok.RequiredArgsConstructor;
@@ -78,7 +78,7 @@ public class ProductService {
     }
 
     @Transactional
-    public Long updateAmountPlus(Long productId, int quantity) {
+    public Long updateQuantityPlus(Long productId, int quantity) {
         Product productEntity = productRepository.findById(productId)
                 .orElseThrow(() -> new ProductNotFoundException(productId));
 
@@ -88,13 +88,13 @@ public class ProductService {
     }
 
     @Transactional
-    public Long updateAmountMinus(Long productId, int quantity) {
+    public Long updateQuantityMinus(Long productId, int quantity) {
         Product productEntity = productRepository.findById(productId)
                 .orElseThrow(() -> new ProductNotFoundException(productId));
 
         int _quantity = productEntity.getQuantity() - quantity;
         if (_quantity < 0) {
-            throw new ProductAmountLimitExcessException(_quantity);
+            throw new ProductQuantityLimitExcessException(_quantity);
         }
 
         productEntity.updateQuantity(_quantity);

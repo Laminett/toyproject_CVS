@@ -53,9 +53,9 @@ public class TransactionApiController {
     }
 
     @ApiOperation(value = "get Transaction Status", notes = "거래상태 조회")
-    @GetMapping({"/api/v1/transactions/state/{barcode}", "/web-api/v1/transactions/state/{barcode}"})
-    public TransactionResponse getTransactionState(@PathVariable String barcode) {
-        return transactionService.getTransStateByBarcode(barcode);
+    @GetMapping({"/api/v1/transactions/state/{requestId}", "/web-api/v1/transactions/state/{requestId}"})
+    public TransactionResponse getTransactionState(@PathVariable String requestId) {
+        return transactionService.getTransStateByRequestId(requestId);
     }
 
     @ApiOperation(value = "get Transaction detail", notes = "거래 상세정보 조회")

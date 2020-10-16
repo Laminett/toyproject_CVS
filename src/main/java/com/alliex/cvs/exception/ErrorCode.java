@@ -17,6 +17,11 @@ public enum ErrorCode {
     // Transaction.
     TRANSACTION_NOT_FOUND,
     TRANSACTION_ALREADY_EXISTS,
+    TRANSACTION_REFUND_STATE_ERROR,
+    NOT_ENOUGH_POINT_TO_PAY,
+
+    // Transaction Detail
+    TRANSACTION_DETAIL_NOT_FOUND,
 
     // Settle.
     SETTLE_NOT_FOUND,

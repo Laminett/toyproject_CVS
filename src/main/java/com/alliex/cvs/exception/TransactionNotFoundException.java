@@ -20,8 +20,12 @@ public class TransactionNotFoundException extends InternalException {
         return errorCode;
     }
 
-    public TransactionNotFoundException(String message) {
-        super(message);
+    public TransactionNotFoundException(Long transId) {
+        super("Transaction id " + transId + " does not exist.");
+    }
+
+    public TransactionNotFoundException(String requestId) {
+        super("Transaction barcode " + requestId + "does not exist.");
     }
 
 }
