@@ -5,3 +5,6 @@ VALUES
 
 INSERT INTO point (id, created_date, modified_date, point, user_id)
 VALUES (400, '2020-09-25 04:21:51', '2020-09-25 04:21:51', 120, 400);
+
+INSERT INTO product_category(id, name, is_enabled, admin_id, created_date, modified_date)
+VALUES (500, 'categorytest', true, 'testid', '2020-10-15 16:00:00', '2020-10-16 16:00:00');

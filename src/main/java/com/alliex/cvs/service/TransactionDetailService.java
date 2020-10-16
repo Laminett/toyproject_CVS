@@ -15,13 +15,13 @@ import java.util.List;
 
 
 @Service
-public class TransactionsDetailService {
+public class TransactionDetailService {
 
     private final TransactionDetailRepository transactionDetailRepository;
 
     private final TransactionRepository transactionRepository;
 
-    public TransactionsDetailService(TransactionDetailRepository transactionDetailRepository, TransactionRepository transactionRepository) {
+    public TransactionDetailService(TransactionDetailRepository transactionDetailRepository, TransactionRepository transactionRepository) {
         this.transactionDetailRepository = transactionDetailRepository;
         this.transactionRepository = transactionRepository;
     }

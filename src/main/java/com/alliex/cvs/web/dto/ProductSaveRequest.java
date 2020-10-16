@@ -16,8 +16,6 @@ public class ProductSaveRequest {
 
     private Long categoryId;
 
-    private String categoryName;
-
     private String barcode;
 
     private String name;
@@ -32,9 +30,8 @@ public class ProductSaveRequest {
 
 
     @Builder
-    public ProductSaveRequest(Long categoryId, String categoryName, String barcode, String name, Long point, Integer quantity, Boolean isEnabled, String adminId) {
+    public ProductSaveRequest(Long categoryId, String barcode, String name, Long point, Integer quantity, Boolean isEnabled, String adminId) {
         this.categoryId = categoryId;
-        this.categoryName = categoryName;
         this.barcode = barcode;
         this.name = name;
         this.point = point;

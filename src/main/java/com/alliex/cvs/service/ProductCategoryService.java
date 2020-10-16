@@ -23,14 +23,14 @@ import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
-public class ProductCategoriesService {
+public class ProductCategoryService {
 
     private final ProductCategoryRepository productCategoryRepository;
 
     public Long save(ProductCategorySaveRequest productCategorySaveRequest) {
         // Check existence of a category.
         productCategoryRepository.findByName(productCategorySaveRequest.getCategoryName()).ifPresent(productCategory -> {
-            throw new ProductCategoryAlreadyExistsException(productCategorySaveRequest.getCategoryName());
+            throw new ProductCategoryAlreadyExistsException(productCategory.getName());
         });
 
         // Create category.

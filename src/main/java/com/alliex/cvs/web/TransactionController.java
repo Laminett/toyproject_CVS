@@ -7,7 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
-public class TransactionsController {
+public class TransactionController {
 
     @GetMapping("/transactions")
     public String getTransaction(Model model, @AuthenticationPrincipal LoginUser loginUser) {

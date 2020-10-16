@@ -73,7 +73,17 @@ var main = {
 
             $("#createCategoryModal").modal("show");
         }).fail(function (error) {
-            alert(JSON.stringify(error));
+            if (error.responseJSON.code == 'PRODUCT_CATEGORY_NOT_FOUND') {
+                alert('해당 카테고리가 존재하지 않습니다.');
+            } else {
+                console.log(error);
+                var responseJSON = '';
+                if (error.responseJSON) {
+                    responseJSON = '\n' + error.responseJSON;
+                }
+
+                alert('오류가 발생했습니다. 관리자에게 문의해 주세요.' + responseJSON);
+            }
         });
     },
     getCategories: function (page) {
@@ -167,6 +177,8 @@ var main = {
         }).fail(function (error) {
             if (error.responseJSON.code == 'PRODUCT_CATEGORY_ALREADY_EXISTS') {
                 alert('동일한 카테고리명이 존재합니다.');
+            } else if(error.responseJSON.code == 'PRODUCT_CATEGORY_NOT_FOUND') {
+                alert('해당 카테고리가 존재하지 않습니다.');
             } else {
                 console.log(error);
                 var responseJSON = '';
@@ -187,13 +199,17 @@ var main = {
             dataType: 'json',
             contentType: 'application/json; charset=utf-8'
         }).done(function () {
-            alert('삭제되었습니다.');
+            alert(messages["alert.delete.success"]);
             _this.getCategories();
         }).fail(function (error) {
-            console.log(error);
-            let responseJSON = '';
-            if (error.responseJSON) {
-                responseJSON = '\n' + error.responseJSON;
+            if (error.responseJSON.code == 'PRODUCT_CATEGORY_NOT_FOUND') {
+                alert('해당 카테고리가 존재하지 않습니다.');
+            } else {
+                console.log(error);
+                var responseJSON = '';
+                if (error.responseJSON) {
+                    responseJSON = '\n' + error.responseJSON;
+                }
             }
 
             alert('오류가 발생했습니다. 관리자에게 문의해 주세요.' + responseJSON);

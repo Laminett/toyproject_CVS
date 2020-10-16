@@ -22,19 +22,19 @@ import java.util.Map;
 
 @RequiredArgsConstructor
 @Service
-public class TransactionsService {
+public class TransactionService {
 
     @Autowired
     private TransactionRepository transactionRepository;
 
     @Autowired
-    private TransactionsDetailService transactionsDetailService;
+    private TransactionDetailService transactionDetailService;
 
     @Autowired
     private PointService pointService;
 
     @Autowired
-    private ProductsService productsService;
+    private ProductService productService;
 
     @Transactional(readOnly = true)
     public Page<Transaction> getTransactions(Pageable pageable, TransactionRequest searchRequest) {
@@ -101,7 +101,7 @@ public class TransactionsService {
         for (Map<String, String> tMap : requestParam.getTransProduct()) {
             TransactionDetailSaveRequest saveRequest = new TransactionDetailSaveRequest(Integer.parseInt(tMap.get("productAmount")),
                     Long.parseLong(tMap.get("productId")), TransactionState.WAIT, transId);
-            transactionsDetailService.save(saveRequest);
+            transactionDetailService.save(saveRequest);
         }
 
         return new TransactionResponse(TransactionState.WAIT, requestId);
@@ -112,10 +112,10 @@ public class TransactionsService {
         Transaction transaction = transactionRepository.findByRequestId(barcode)
                 .orElseThrow(() -> new TransactionNotFoundException("Not found transaction : barcode" + barcode));
 
-        List<TransactionDetailResponse> transactionDetail = transactionsDetailService.getDetails(transaction.getId());
+        List<TransactionDetailResponse> transactionDetail = transactionDetailService.getDetails(transaction.getId());
         if (transaction.getRequestId().isEmpty()) {
             update(transaction.getId(), TransactionState.FAIL, paymentType);
-            transactionsDetailService.update(transaction.getId(), TransactionState.FAIL);
+            transactionDetailService.update(transaction.getId(), TransactionState.FAIL);
             throw new TransactionNotFoundException("Invalid BARCODE");
         }
 
@@ -125,10 +125,10 @@ public class TransactionsService {
 
         pointService.updatePointMinus(transaction.getUser().getId(), transaction.getPoint());
         for (TransactionDetailResponse product : transactionDetail) {
-            productsService.updateAmountMinus(product.getProductId(), product.getProductQuantity());
+            productService.updateAmountMinus(product.getProductId(), product.getProductQuantity());
         }
         update(transaction.getId(), TransactionState.SUCCESS, paymentType);
-        transactionsDetailService.update(transaction.getId(), TransactionState.SUCCESS);
+        transactionDetailService.update(transaction.getId(), TransactionState.SUCCESS);
 
         return new TransactionResponse(transaction.getState(), transaction.getRequestId());
     }
@@ -143,16 +143,16 @@ public class TransactionsService {
         Transaction transaction = transactionRepository.findById(transId).orElseThrow(()
                 -> new TransactionNotFoundException("Not found transaction : id" + transId));
 
-        List<TransactionDetailResponse> transactionDetail = transactionsDetailService.getDetails(transaction.getId());
+        List<TransactionDetailResponse> transactionDetail = transactionDetailService.getDetails(transaction.getId());
         if (!TransactionState.SUCCESS.equals(transaction.getState()) || !TransactionType.PAYMENT.equals(transaction.getType())) {
             throw new TransactionNotFoundException("REFUND Fail");
         }
 
         pointService.updatePointPlus(transaction.getUser().getId(), transaction.getPoint());
         for (TransactionDetailResponse product : transactionDetail) {
-            productsService.updateAmountPlus(product.getProductId(), product.getProductQuantity());
+            productService.updateAmountPlus(product.getProductId(), product.getProductQuantity());
         }
-        transactionsDetailService.update(transId, TransactionState.REFUND);
+        transactionDetailService.update(transId, TransactionState.REFUND);
         TransactionSaveRequest transactionRefundRequest = new TransactionSaveRequest(transaction.getUser().getId(), transaction.getMerchantId(), transaction.getId(),
                 transaction.getPoint(), TransactionState.REFUND, TransactionType.REFUND, transaction.getRequestId(), transaction.getPaymentType());
 

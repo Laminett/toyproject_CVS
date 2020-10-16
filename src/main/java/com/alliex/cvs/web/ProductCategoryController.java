@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @RequiredArgsConstructor
 @Controller
-public class ProductCategoriesController {
+public class ProductCategoryController {
 
     @GetMapping("products-categories")
     public String getProductCategories(Model model, @AuthenticationPrincipal LoginUser loginUser) {

@@ -14,8 +14,6 @@ public class ProductUpdateRequest {
 
     private Long id;
 
-    private String categoryName;
-
     private Long categoryId;
 
     private String name;
@@ -29,9 +27,8 @@ public class ProductUpdateRequest {
     private String adminId;
 
     @Builder
-    public ProductUpdateRequest(Long categoryId, String categoryName, String name, Long point, Integer quantity, Boolean isEnabled, String adminId) {
+    public ProductUpdateRequest(Long categoryId, String name, Long point, Integer quantity, Boolean isEnabled, String adminId) {
         this.categoryId = categoryId;
-        this.categoryName = categoryName;
         this.name = name;
         this.point = point;
         this.quantity = quantity;

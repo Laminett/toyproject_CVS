@@ -23,6 +23,7 @@ public enum ErrorCode {
 
     // Product.
     PRODUCT_NOT_FOUND,
+    PRODUCT_ALREADY_EXISTS,
     PRODUCT_AMOUNT_LIMIT_EXCESS,
 
     // Product Category

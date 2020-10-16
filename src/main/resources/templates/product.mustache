@@ -108,8 +108,9 @@
                                             <label for="category">category</label>
                                         </div>
                                     </div>
-                                    <select id="categoryId" class="form-control" data-style="btn btn-link" name="categoryId" >
-                                        <option selected>Choose Product Category</option>
+                                    <input type="hidden" id="categoryId" name="categoryId" value="">
+                                    <select id="categoryName" class="form-control" data-style="btn btn-link" name="categoryName" >
+                                        <option value="0" selected>Choose Product Category</option>
                                     </select>
                                 </div>
                             </div>
@@ -153,19 +154,12 @@
                             <div class="form-group bmd-form-group">
                                 <div class="input-group">
                                     <div class="input-group-prepend">
-
                                         <div class="input-group-text">
                                             <i id="check_icon" class="material-icons">check_box</i>
-                                        </div>
-
-                                        <div id="checkbox_div">
-                                            <input class="form-check-input" type="checkbox" value="" name="isEnabled" id="isEnabled" style="position: inherit;margin-left: 0px;margin-top: 6px;width: 20px; height: 18px;">
-                                            <label class="form-check-label" style="margin-left: 10px;margin-top: 7px;">
-                                                isEnabled
-                                                <span class="form-check-sign"><span class="check"></span></span>
-                                            </label>
+                                            <label for="quantity">isEnabled</label>
                                         </div>
                                     </div>
+                                    <input class="form-check-input" type="checkbox" value="" name="isEnabled" id="isEnabled" style="position: inherit;margin-left: 0px;margin-top: 6px;width: 20px; height: 18px;">
                                 </div>
                             </div>
 
@@ -182,6 +176,7 @@
 <script id="productsTemplate" type="text/x-jquery-tmpl">
 <tr>
     <td><a category-id="${id}">${id}</a></td>
+    <td style='display:none;position:absolute'>${categoryId.id}</td>
     <td>${categoryId.name}</td>
     <td>${name}</td>
     <td class='text-right'>${point}</td>
@@ -216,7 +211,18 @@
 </li>
 </script>
 <script id="categoriesSelectTemplate" type="text/x-jquery-tmpl">
-    <option>${name}</option>
+    <option value=${id}>${name}</option>
+</script>
+<script>
+    var messages = {
+        "info.search.no.data": "{{#messages}}info.search.no.data{{/messages}}"
+        , "alert.update.success": "{{#messages}}alert.update.success{{/messages}}"
+        , "alert.update.fail": "{{#messages}}alert.update.fail{{/messages}}"
+        , "alert.insert.success": "{{#messages}}alert.insert.success{{/messages}}"
+        , "alert.insert.fail": "{{#messages}}alert.insert.fail{{/messages}}"
+        , "alert.delete.success": "{{#messages}}alert.delete.success{{/messages}}"
+        , "alert.delete.fail": "{{#messages}}alert.delete.fail{{/messages}}"
+    };
 </script>
 <script src="/js/jquery.scannerdetection.js"></script>
 <script type="text/javascript" src="/js/plugins/jquery.tmpl.js"></script>

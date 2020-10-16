@@ -4,6 +4,7 @@ import com.alliex.cvs.domain.product.Product;
 import com.alliex.cvs.domain.product.ProductRepository;
 import com.alliex.cvs.domain.product.ProductSpecs;
 import com.alliex.cvs.domain.product.category.ProductCategoryRepository;
+import com.alliex.cvs.exception.ProductAlreadyExistsException;
 import com.alliex.cvs.exception.ProductAmountLimitExcessException;
 import com.alliex.cvs.exception.ProductNotFoundException;
 import com.alliex.cvs.web.dto.*;
@@ -18,7 +19,7 @@ import java.util.*;
 
 @RequiredArgsConstructor
 @Service
-public class ProductsService {
+public class ProductService {
 
     private final ProductRepository productRepository;
     private final ProductCategoryRepository productCategoryRepository;
@@ -51,7 +52,10 @@ public class ProductsService {
 
     @Transactional
     public Long save(ProductSaveRequest productSaveRequest) {
-        productSaveRequest.setCategoryId(productCategoryRepository.findByName(productSaveRequest.getCategoryName()).get().getId());
+        productRepository.findByName(productSaveRequest.getName()).ifPresent(product -> {
+            throw new ProductAlreadyExistsException(productSaveRequest.getName());
+        });
+
         return productRepository.save(productSaveRequest.toEntity()).getId();
     }
 
@@ -59,7 +63,6 @@ public class ProductsService {
     public Long update(Long id, ProductUpdateRequest productUpdateRequest) {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new ProductNotFoundException("not found product. id: " + id));
-        productUpdateRequest.setCategoryId(productCategoryRepository.findByName(productUpdateRequest.getCategoryName()).get().getId());
         product.update(productUpdateRequest);
 
         return id;
