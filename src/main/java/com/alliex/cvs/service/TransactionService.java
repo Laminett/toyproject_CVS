@@ -113,11 +113,6 @@ public class TransactionService {
                 .orElseThrow(() -> new TransactionNotFoundException("Not found transaction : barcode" + barcode));
 
         List<TransactionDetailResponse> transactionDetail = transactionDetailService.getDetails(transaction.getId());
-        if (transaction.getRequestId().isEmpty()) {
-            update(transaction.getId(), TransactionState.FAIL, paymentType);
-            transactionDetailService.update(transaction.getId(), TransactionState.FAIL);
-            throw new TransactionNotFoundException("Invalid BARCODE");
-        }
 
         if (!TransactionState.WAIT.equals(transaction.getState())) {
             throw new TransactionNotFoundException("trans_state error");

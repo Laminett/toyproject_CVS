@@ -71,6 +71,7 @@ public class TransactionSaveRequest {
                 .point(point)
                 .transactionState(state)
                 .transactionType(type)
+                .paymentType(paymentType)
                 .requestId(requestId)
                 .build();
     }
