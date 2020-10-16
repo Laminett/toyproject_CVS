@@ -117,7 +117,7 @@ public class TransactionService {
         List<TransactionDetailResponse> transactionDetail = transactionDetailService.getDetails(transaction.getId());
 
         if (TransactionState.WAIT != transaction.getState()) {
-            throw new TransactionNotFoundException("trans_state error");
+            throw new TransactionStateException("PAYMENT is possible only TransactionState=WAIT and TransactionType=PAYMENT");
         }
 
         pointService.updatePointMinus(transaction.getUser().getId(), transaction.getPoint());
