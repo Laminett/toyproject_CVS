@@ -96,6 +96,11 @@ var main = {
         var k, v;
         k = _this.SEARCH_KEY;
         v = $("#searchValue").val();
+
+        if (_this.SEARCH_KEY == 'isEnabled') {
+            (v == 'Y') ? v = true : v = false;
+        }
+
         param[k] = v;
 
         $.ajax({
@@ -177,7 +182,7 @@ var main = {
         }).fail(function (error) {
             if (error.responseJSON.code == 'PRODUCT_CATEGORY_ALREADY_EXISTS') {
                 alert('동일한 카테고리명이 존재합니다.');
-            } else if(error.responseJSON.code == 'PRODUCT_CATEGORY_NOT_FOUND') {
+            } else if (error.responseJSON.code == 'PRODUCT_CATEGORY_NOT_FOUND') {
                 alert('해당 카테고리가 존재하지 않습니다.');
             } else {
                 console.log(error);

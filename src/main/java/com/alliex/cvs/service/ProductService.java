@@ -45,7 +45,7 @@ public class ProductService {
     @Transactional
     public ProductAppResponse scanProducts(String barcode) {
         Product product = productRepository.findByBarcode(barcode)
-                .orElseThrow(() -> new ProductNotFoundException("not found Products. barcode: " + barcode));
+                .orElseThrow(() -> new ProductNotFoundException(barcode));
 
         return new ProductAppResponse(product);
     }
@@ -53,7 +53,7 @@ public class ProductService {
     @Transactional
     public Long save(ProductSaveRequest productSaveRequest) {
         productRepository.findByName(productSaveRequest.getName()).ifPresent(product -> {
-            throw new ProductAlreadyExistsException(productSaveRequest.getName());
+            throw new ProductAlreadyExistsException(product.getName());
         });
 
         return productRepository.save(productSaveRequest.toEntity()).getId();
@@ -62,7 +62,8 @@ public class ProductService {
     @Transactional
     public Long update(Long id, ProductUpdateRequest productUpdateRequest) {
         Product product = productRepository.findById(id)
-                .orElseThrow(() -> new ProductNotFoundException("not found product. id: " + id));
+                .orElseThrow(() -> new ProductNotFoundException(id));
+
         product.update(productUpdateRequest);
 
         return id;
@@ -71,7 +72,7 @@ public class ProductService {
     @Transactional
     public void delete(Long id) {
         Product product = productRepository.findById(id)
-                .orElseThrow(() -> new ProductNotFoundException("not found product. id:" + id));
+                .orElseThrow(() -> new ProductNotFoundException(id));
 
         productRepository.delete(product);
     }
@@ -79,7 +80,7 @@ public class ProductService {
     @Transactional
     public Long updateAmountPlus(Long productId, int quantity) {
         Product productEntity = productRepository.findById(productId)
-                .orElseThrow(() -> new ProductNotFoundException("Not Found product. productId : " + productId));
+                .orElseThrow(() -> new ProductNotFoundException(productId));
 
         productEntity.updateQuantity(productEntity.getQuantity() + quantity);
 
@@ -89,11 +90,11 @@ public class ProductService {
     @Transactional
     public Long updateAmountMinus(Long productId, int quantity) {
         Product productEntity = productRepository.findById(productId)
-                .orElseThrow(() -> new ProductNotFoundException("Not Found product. productId : " + productId));
+                .orElseThrow(() -> new ProductNotFoundException(productId));
 
         int _quantity = productEntity.getQuantity() - quantity;
         if (_quantity < 0) {
-            throw new ProductAmountLimitExcessException("Not enough Product amount. amount :" + _quantity);
+            throw new ProductAmountLimitExcessException(_quantity);
         }
 
         productEntity.updateQuantity(_quantity);

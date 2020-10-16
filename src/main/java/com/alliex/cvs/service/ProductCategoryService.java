@@ -7,7 +7,6 @@ import com.alliex.cvs.exception.*;
 import com.alliex.cvs.web.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -74,24 +73,37 @@ public class ProductCategoryService {
     }
 
 
-    private Specification<ProductCategory> searchWith(Map<ProductCategorySearchType, String> predicateData) {
+    private Specification<ProductCategory> searchWith(Map<ProductCategorySearchType, Object> predicateData) {
         return (Specification<ProductCategory>) ((root, query, builder) -> {
             List<Predicate> predicate = new ArrayList<>();
-            for (Map.Entry<ProductCategorySearchType, String> entry : predicateData.entrySet()) {
-                predicate.add(builder.like(
-                        root.get(entry.getKey().name().toLowerCase()), "%" + entry.getValue() + "%"
-                ));
+            for (Map.Entry<ProductCategorySearchType, Object> entry : predicateData.entrySet()) {
+                switch (entry.getKey()) {
+                    case NAME:
+                        predicate.add(builder.like(
+                                root.get(entry.getKey().getField()), "%" + entry.getValue() + "%"));
+                        break;
+                    case IS_ENABLED:
+                        predicate.add(builder.equal(
+                                root.get(entry.getKey().getField()), entry.getValue()));
+                        break;
+                    default:
+                        break;
+                }
             }
 
             return builder.and(predicate.toArray(new Predicate[0]));
         });
     }
 
-    private Map<ProductCategorySearchType, String> getPredicateData(ProductCategoryRequest productCategoryRequest) {
-        Map<ProductCategorySearchType, String> predicateData = new HashMap<>();
+    private Map<ProductCategorySearchType, Object> getPredicateData(ProductCategoryRequest productCategoryRequest) {
+        Map<ProductCategorySearchType, Object> predicateData = new HashMap<>();
 
         if (StringUtils.isNotBlank(productCategoryRequest.getCategoryName())) {
             predicateData.put(ProductCategorySearchType.NAME, productCategoryRequest.getCategoryName());
+        }
+
+        if (productCategoryRequest.getIsEnabled() != null) {
+            predicateData.put(ProductCategorySearchType.IS_ENABLED, productCategoryRequest.getIsEnabled());
         }
 
         return predicateData;

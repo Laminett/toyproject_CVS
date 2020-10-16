@@ -20,8 +20,8 @@ public class ProductAmountLimitExcessException extends InternalException {
         return errorCode;
     }
 
-    public ProductAmountLimitExcessException(String message) {
-        super(message);
+    public ProductAmountLimitExcessException(int quantity) {
+        super("Not enough Product amount. amount :" + quantity);
     }
 
 }

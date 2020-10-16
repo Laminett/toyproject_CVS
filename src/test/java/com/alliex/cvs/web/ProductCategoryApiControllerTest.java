@@ -2,7 +2,6 @@ package com.alliex.cvs.web;
 
 import com.alliex.cvs.web.dto.ProductCategorySaveRequest;
 import com.alliex.cvs.web.dto.ProductCategoryUpdateRequest;
-import com.alliex.cvs.web.dto.ProductUpdateRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,16 +15,13 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlGroup;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.hamcrest.CoreMatchers.is;
-//import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
@@ -42,11 +38,6 @@ public class ProductCategoryApiControllerTest {
 
     @Autowired
     protected ObjectMapper objectMapper;
-
-    private final Long testId = 500L;
-    private final String testCategoryName = "categorytest";
-    private final Boolean testIsEnabled = true;
-    private final String testAdminId = "testid";
 
     @WithMockUser(roles = "ADMIN")
     @Test
@@ -89,6 +80,7 @@ public class ProductCategoryApiControllerTest {
     @WithMockUser(roles = "ADMIN")
     @Test
     public void updateProductCategory() throws Exception {
+        final Long testId = 500L;
         // Given
         ProductCategoryUpdateRequest productCategoryUpdateRequest = new ProductCategoryUpdateRequest();
         String categoryName = "categoryName updated";
@@ -109,6 +101,7 @@ public class ProductCategoryApiControllerTest {
     @WithMockUser(roles = "ADMIN")
     @Test
     public void updateProductCategory_ProductCategoryNotFound() throws Exception {
+        final Long testId = 500L;
         // Given
         ProductCategoryUpdateRequest productCategoryUpdateRequest = new ProductCategoryUpdateRequest();
         String categoryName = "categoryName updated";
@@ -141,6 +134,9 @@ public class ProductCategoryApiControllerTest {
     @WithMockUser(roles = "ADMIN")
     @Test
     public void getProductCategoryById() throws Exception {
+        final Long testId = 500L;
+        final String testCategoryName = "categorytest";
+
         mvc.perform(get("/web-api/v1/products-categories/{id}", testId))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -159,6 +155,15 @@ public class ProductCategoryApiControllerTest {
     @WithMockUser(roles = "ADMIN")
     @Test
     public void getProductCategoryByIsEnabled() throws Exception {
+        Boolean testIsEnabled = true;
+
+        mvc.perform(get("/web-api/v1/products-categories").param("isEnabled", String.valueOf(testIsEnabled)))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.content[0].isEnabled").value(testIsEnabled));
+
+        testIsEnabled = false;
+
         mvc.perform(get("/web-api/v1/products-categories").param("isEnabled", String.valueOf(testIsEnabled)))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -168,6 +173,8 @@ public class ProductCategoryApiControllerTest {
     @WithMockUser(roles = "ADMIN")
     @Test
     public void getProductCategoryByAdminId() throws Exception {
+        final String testAdminId = "testid";
+
         mvc.perform(get("/web-api/v1/products-categories").param("adminId", testAdminId))
                 .andDo(print())
                 .andExpect(status().isOk())

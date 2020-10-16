@@ -21,7 +21,7 @@ public class ProductAlreadyExistsException extends InternalException {
     }
 
     public ProductAlreadyExistsException(String productName) {
-        super("Product name: " + productName + " is already exists.");
+        super("Product name " + productName + " is already exists.");
     }
 
 }
