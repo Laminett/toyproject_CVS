@@ -25,17 +25,13 @@ import java.util.Map;
 @Service
 public class TransactionService {
 
-    @Autowired
-    private TransactionRepository transactionRepository;
+    private final TransactionRepository transactionRepository;
 
-    @Autowired
-    private TransactionDetailService transactionDetailService;
+    private final TransactionDetailService transactionDetailService;
 
-    @Autowired
-    private PointService pointService;
+    private final PointService pointService;
 
-    @Autowired
-    private ProductService productService;
+    private final ProductService productService;
 
     @Transactional(readOnly = true)
     public Page<Transaction> getTransactions(Pageable pageable, TransactionRequest searchRequest) {
@@ -116,7 +112,7 @@ public class TransactionService {
 
         List<TransactionDetailResponse> transactionDetail = transactionDetailService.getDetails(transaction.getId());
 
-        if (TransactionState.WAIT != transaction.getState()) {
+        if (transaction.getState() != TransactionState.WAIT) {
             throw new TransactionStateException("PAYMENT is possible only TransactionState=WAIT and TransactionType=PAYMENT");
         }
 
@@ -140,7 +136,7 @@ public class TransactionService {
         Transaction transaction = transactionRepository.findById(transId).orElseThrow(()
                 -> new TransactionNotFoundException(transId));
 
-        if (TransactionState.SUCCESS != transaction.getState() || TransactionType.PAYMENT != transaction.getType()) {
+        if (transaction.getState() != TransactionState.SUCCESS || transaction.getType() != TransactionType.PAYMENT) {
             // FIXME
             throw new TransactionStateException("REFUND is possible only TransactionState=SUCCESS and TransactionType=PAYMENT");
         }

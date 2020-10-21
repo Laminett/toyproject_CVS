@@ -94,7 +94,7 @@ public class ProductService {
 
         int _quantity = productEntity.getQuantity() - quantity;
         if (_quantity < 0) {
-            throw new ProductQuantityLimitExcessException(_quantity);
+            throw new ProductQuantityLimitExcessException(productEntity.getQuantity(), quantity);
         }
 
         productEntity.updateQuantity(_quantity);

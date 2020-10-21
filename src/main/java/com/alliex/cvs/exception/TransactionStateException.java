@@ -8,7 +8,7 @@ public class TransactionStateException extends InternalException {
 
     private static final HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
 
-    private static final ErrorCode errorCode = ErrorCode.TRANSACTION_DETAIL_NOT_FOUND;
+    private static final ErrorCode errorCode = ErrorCode.TRANSACTION_STATE_ERROR;
 
     @Override
     public HttpStatus getHttpStatus() {

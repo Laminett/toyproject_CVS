@@ -20,8 +20,8 @@ public class ProductQuantityLimitExcessException extends InternalException {
         return errorCode;
     }
 
-    public ProductQuantityLimitExcessException(int quantity) {
-        super("Not enough Product quantity. quantity :" + quantity);
+    public ProductQuantityLimitExcessException(int productQuantity, int requiredQuantity) {
+        super("Not enough Product quantity. Product quantity : " + productQuantity + " Required quantity : " + requiredQuantity);
     }
 
 }

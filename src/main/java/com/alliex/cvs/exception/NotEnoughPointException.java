@@ -8,7 +8,7 @@ public class NotEnoughPointException extends InternalException {
 
     private static final HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
 
-    private static final ErrorCode errorCode = ErrorCode.TRANSACTION_REFUND_STATE_ERROR;
+    private static final ErrorCode errorCode = ErrorCode.NOT_ENOUGH_POINT;
 
     @Override
     public HttpStatus getHttpStatus() {
