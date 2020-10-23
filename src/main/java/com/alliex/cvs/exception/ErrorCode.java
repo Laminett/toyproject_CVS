@@ -17,7 +17,7 @@ public enum ErrorCode {
     // Transaction.
     TRANSACTION_NOT_FOUND,
     TRANSACTION_ALREADY_EXISTS,
-    TRANSACTION_STATE_ERROR,
+    INVALID_TRANSACTION_STATE,
     NOT_ENOUGH_POINT,
 
     // Transaction Detail
