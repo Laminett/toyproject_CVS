@@ -1,0 +1,156 @@
+{{>layout/header}}
+<div class="content" id="context">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header card-header-primary">
+                        <div style="float: left">
+                            <h4 class="card-title ">{{#messages}}menu.product.category{{/messages}}</h4>
+                            <p class="card-category"> Category management</p>
+                        </div>
+                        <div style="float: right">
+                            <form class="form-inline ml-auto" id="categorySearchForm" action="" onsubmit="return false;">
+                                <input type="hidden" id="adminId" name="adminId" value={{loginUser}}>
+                                <input type="hidden" name="searchKey" value=""/>
+                                <div class="dropdown" style="margin-right: 10px;">
+                                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton-category-search" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        카테고리명
+                                    </button>
+                                    <div id="category-search-field" class="dropdown-menu" aria-labelledby="dropdownMenuButton-category-search">
+                                        <a class="dropdown-item" href="#none" searchKey="categoryName">카테고리명</a>
+                                        <a class="dropdown-item" href="#none" searchKey="isEnabled">사용여부</a>
+                                    </div>
+                                </div>
+                                <div class="form-group has-white">
+                                    <input id="searchValue" name="searchValue" type="text" value="" class="form-control" style="color: whitesmoke" placeholder="">
+                                </div>
+                                <button type="button" class="btn btn-white btn-round btn-just-icon" id="category-search-btn">
+                                    <i class="material-icons">search</i>
+                                    <div class="ripple-container"></div>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive" id="result1">
+                            <table class="table" id="templ1">
+                                <thead class="text-primary text-center">
+                                <th>NO</th>
+                                <th>카테고리명</th>
+                                <th>사용여부</th>
+                                <th>수정자</th>
+                                <th>수정일시</th>
+                                <th>동작</th>
+                                </thead>
+                                <tbody id="categoriesArea" class="text-center"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <nav aria-label="Page navigation">
+                        <ul id="categoriesPagingArea" class="pagination justify-content-center"></ul>
+                    </nav>
+                </div>
+                <div>
+                    <button class="btn btn-round" data-toggle="modal" data-target="#createCategoryModal">
+                        <i class="material-icons">assignment</i>&nbsp;{{#messages}}button.create{{/messages}}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="createCategoryModal" tabindex="-1" role="">
+    <div class="modal-dialog modal-login" role="document" style="margin-top: 160px;">
+        <div class="modal-content">
+            <div class="card card-signup card-plain" style="margin-top: 0;margin-bottom: 0">
+                <div class="modal-header" style="padding-top: 0;">
+                    <div class="card-header card-header-primary text-center" style="width:100%">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                            <i class="material-icons">clear</i>
+                        </button>
+                        <h4 class="card-title">Category Information</h4>
+                        <input type="hidden" id="id" name="id">
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <form id="createCategoryForm" class="form" method="" action="">
+                        <input type="hidden" id="categoryId" value=""/>
+                        <div class="card-body">
+                            <div class="form-group bmd-form-group">
+                                <div class="input-group">
+                                    <div class="input-group-prepend" style="width:100px;">
+                                        <div class="input-group-text">카테고리</div>
+                                    </div>
+                                    <input type="text" id="categoryName" name="categoryName" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group bmd-form-group">
+                                <div class="input-group">
+                                    <div class="input-group-prepend" style="width:100px;">
+                                        <div class="input-group-text">사용여부</div>
+                                    </div>
+                                    <input class="form-check-input" type="checkbox" value="" name="isEnabled" id="isEnabled" style="position: inherit;margin-left: 0px;margin-top: 6px;width: 20px; height: 18px;">
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <a href="#none" id="createCategoryBtn" class="btn btn-primary btn-round">Regist</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script id="categoriesTemplate" type="text/x-jquery-tmpl">
+<tr>
+    <td><a category-id="${id}">${id}</a></td>
+    <td>${name}</td>
+  {%if isEnabled == true%}
+    <td>Y</td>
+  {%else%}
+    <td>N</td>
+  {%/if%}
+    <td>${adminId}</td>
+    <td>${modifiedDate}</td>
+    <td class='td-actions text-center'>
+        <button type='button' rel='tooltip' class='btn btn-success' name='details'>
+            <i class='material-icons' data-toggle='modal'>edit</i>
+        </button>
+        <button type='button' rel='tooltip' class='btn btn-danger' name='delete'>
+             <i class='material-icons'>close</i>
+         </button>
+    </td>
+</tr>
+
+</script>
+<script id="categoriesNoDataTemplate" type="text/x-jquery-tmpl">
+<tr>
+    <td colspan="6">No Data.</td>
+</tr>
+
+</script>
+<script id="categoriesPagingTemplate" type="text/x-jquery-tmpl">
+<li class="page-item">
+    <a class="page-link" href="#none">${page}</a>
+</li>
+
+</script>
+<script>
+    var messages = {
+        "info.search.no.data": "{{#messages}}info.search.no.data{{/messages}}"
+        , "alert.update.success": "{{#messages}}alert.update.success{{/messages}}"
+        , "alert.update.fail": "{{#messages}}alert.update.fail{{/messages}}"
+        , "alert.insert.success": "{{#messages}}alert.insert.success{{/messages}}"
+        , "alert.insert.fail": "{{#messages}}alert.insert.fail{{/messages}}"
+        , "alert.delete.success": "{{#messages}}alert.delete.success{{/messages}}"
+        , "alert.delete.fail": "{{#messages}}alert.delete.fail{{/messages}}"
+    };
+</script>
+<script type="text/javascript" src="/js/plugins/jquery.tmpl.js"></script>
+<script type="text/javascript" src="/js/product-category.js"></script>
+{{>layout/footer}}

@@ -20,8 +20,12 @@ public class ProductNotFoundException extends InternalException {
         return errorCode;
     }
 
-    public ProductNotFoundException(String message) {
-        super(message);
+    public ProductNotFoundException(Long id) {
+        super("Product id " + id + " does not exist.");
+    }
+
+    public ProductNotFoundException(String barcode) {
+        super("Product barcode" + barcode + " does not exitst.");
     }
 
 }

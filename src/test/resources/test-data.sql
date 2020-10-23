@@ -11,3 +11,8 @@ VALUES (90, '2020-10-05 13:21:51', 500, 400);
 
 INSERT INTO settle (id, created_date, aggregated_at, approval_amount, approval_count, cancel_amount, cancel_count, total_amount, total_count, user_id)
 VALUES (90, '2020-10-05 13:21:51', '202009',  8500, 12, 1200, 2, 7300, 14, 400);
+
+INSERT INTO product_category(id, name, is_enabled, admin_id, created_date, modified_date)
+VALUES (500, 'categorytest', true, 'testid', '2020-10-15 16:00:00', '2020-10-16 16:00:00');
+
+

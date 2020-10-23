@@ -2,7 +2,7 @@ package com.alliex.cvs.exception;
 
 import org.springframework.http.HttpStatus;
 
-public class ProductAmountLimitExcessException extends InternalException {
+public class ProductQuantityLimitExcessException extends InternalException {
 
     private static final long serialVersionUID = 2862231333608260345L;
 
@@ -20,8 +20,8 @@ public class ProductAmountLimitExcessException extends InternalException {
         return errorCode;
     }
 
-    public ProductAmountLimitExcessException(String message) {
-        super(message);
+    public ProductQuantityLimitExcessException(int productQuantity, int requiredQuantity) {
+        super("Not enough Product quantity. Product quantity : " + productQuantity + " Required quantity : " + requiredQuantity);
     }
 
 }

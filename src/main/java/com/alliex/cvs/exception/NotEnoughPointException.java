@@ -1,17 +1,27 @@
 package com.alliex.cvs.exception;
 
-public class NotEnoughPointException extends RuntimeException {
+import org.springframework.http.HttpStatus;
 
-    public NotEnoughPointException(String message) {
-        super(message);
+public class NotEnoughPointException extends InternalException {
+
+    private static final long serialVersionUID = -5184025018275659022L;
+
+    private static final HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
+
+    private static final ErrorCode errorCode = ErrorCode.NOT_ENOUGH_POINT;
+
+    @Override
+    public HttpStatus getHttpStatus() {
+        return httpStatus;
     }
 
-    public NotEnoughPointException(Throwable cause) {
-        super("Not Enough Point.", cause);
+    @Override
+    public ErrorCode getErrorCode() {
+        return errorCode;
     }
 
-    public NotEnoughPointException(String message, Throwable cause) {
-        super(message, cause);
+    public NotEnoughPointException(Integer userPoint, Integer requiredPoint) {
+        super("Not Enough point : have point " + userPoint + " required point " + requiredPoint);
     }
 
 }

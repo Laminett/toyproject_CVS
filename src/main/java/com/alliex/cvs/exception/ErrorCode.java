@@ -17,13 +17,23 @@ public enum ErrorCode {
     // Transaction.
     TRANSACTION_NOT_FOUND,
     TRANSACTION_ALREADY_EXISTS,
+    INVALID_TRANSACTION_STATE,
+    NOT_ENOUGH_POINT,
+
+    // Transaction Detail
+    TRANSACTION_DETAIL_NOT_FOUND,
 
     // Settle.
     SETTLE_NOT_FOUND,
 
     // Product.
     PRODUCT_NOT_FOUND,
+    PRODUCT_ALREADY_EXISTS,
     PRODUCT_AMOUNT_LIMIT_EXCESS,
+
+    // Product Category
+    PRODUCT_CATEGORY_ALREADY_EXISTS,
+    PRODUCT_CATEGORY_NOT_FOUND,
 
     // Point.
     POINT_LIMIT_EXCESS,

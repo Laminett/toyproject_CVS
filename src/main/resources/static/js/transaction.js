@@ -118,7 +118,7 @@ var main = {
                         + "<td>" + element.modifiedDate.replace('T', ' ') + "</td>"
                         + "<td class='td-actions text-center'>"
                         + "    <button type='button' rel='tooltip' class='btn btn-success' name='details'>"
-                        + "     <i class='material-icons' data-toggle='modal' data-target='#addUpdateModal'>details</i>"
+                        + "     <i class='material-icons' data-toggle='modal' data-target='#addUpdateModal'>find_in_page</i>"
                         + "    </button>"
                         + str
                         + "</td>"
