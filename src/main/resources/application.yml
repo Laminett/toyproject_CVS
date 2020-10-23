@@ -37,8 +37,7 @@ jwt:
 spring:
   profiles: local
   datasource:
-#    url: jdbc:mysql://localhost:3306/db_cvs?serverTimezone=UTC&characterEncoding=UTF-8
-    url: jdbc:mysql://192.168.0.95:3306/db_cvs?serverTimezone=UTC&characterEncoding=UTF-8
+    url: jdbc:mysql://localhost:3306/db_cvs?serverTimezone=UTC&characterEncoding=UTF-8
 logging:
   level:
     org:

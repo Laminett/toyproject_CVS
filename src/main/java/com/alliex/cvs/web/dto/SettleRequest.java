@@ -7,13 +7,11 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class PointHistoryRequest {
+public class SettleRequest {
 
     private int page;
 
-    private String startDate;
-
-    private String endDate;
+    private String aggregatedAt;
 
     private String status;
 

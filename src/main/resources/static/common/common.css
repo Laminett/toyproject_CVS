@@ -1,3 +1,4 @@
 span{margin-right: 10px;}
 
-input.datepicker{color: white; width: 90px!important;}
+input.datepicker{color: white; width: 80px!important; margin-right: 10px!important;}
+input.monthpicker{color: white; width: 65px!important; margin-right: 10px!important;}

@@ -10,7 +10,7 @@ public class SettleSpecification {
     public static Specification<Settle> withSearchData(String searchField, String searchData) {
         if ("aggregatedAt".equals(searchField)) {
             return (root, query, builder) -> builder.equal(root.get(searchField), searchData);
-        } else if ("username".equals(searchField)) {
+        } else if ("fullName".equals(searchField)) {
             return new Specification<Settle>() {
                 @Override
                 public Predicate toPredicate(Root<Settle> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {

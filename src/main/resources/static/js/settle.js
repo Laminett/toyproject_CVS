@@ -2,13 +2,18 @@ var main = {
     init: function () {
         var _this = this;
 
-        _this.dataLoad(1);
+        _this.getSettles(1);
 
-        $('.monthpicker').bootstrapMonthpicker({});
+        $('.monthpicker').bootstrapMonthpicker({}).val(moment(new Date().getTime()).format("YYYY-MM"));
+
+        // 페이징
+        $(document).on('click', '.page-link', function () {
+            _this.getSettles(this.text);
+        });
 
         // 검색 이벤트
         $('#btn_search').click(function() {
-            _this.dataLoad(1);
+            _this.getSettles(1);
         });
 
         // 상태 업데이트
@@ -19,71 +24,39 @@ var main = {
                 _this.update(id, status);
             }
         });
-
-        // 페이징
-        $(document).on('click', '.page-link', function () {
-            _this.dataLoad(this.text);
-        });
     },
-    dataLoad: function(pageNum) {
-        var search_date = $('#search_date').val();
-        var search_username = $('#search_username').val();
-        var data = "page=" + pageNum + "&searchDate=" + search_date.replace(/[^0-9]/g,"")+"&searchUsername="+search_username;
+    getSettles: function (page) {
+        console.log(moment(new Date().getTime()).format("YYYYMM"));
+        var param = {
+            page: page,
+            aggregatedAt: $("#search_date").val() == "" ? moment(new Date().getTime()).format("YYYYMM") : $("#search_date").val().replace(/[^0-9]/g,""),
+            fullName: $('#search_fullName').val()
+        };
 
         $.ajax({
             type: 'GET',
             url: '/web-api/v1/settle',
-            dataType: 'JSON',
-            data: data
+            dataType: 'json',
+            data: param,
+            contentType: 'application/json; charset=utf-8'
         }).done(function (data) {
-            $('#search_date').val(search_date);
-            $('#search_username').val(search_username);
-
-            $('tbody').empty();
-            if (data == "") {
-                $('tbody').append(" <tr class='text-center'> "
+            $("#settleArea").html(null);
+            if(data.content == ""){
+                $("#settleArea").append(" <tr class='text-center'> "
                     + "<td colspan='11'>" + messages["info.search.no.data"] +"</td>  "
                     + "</tr>");
             } else {
-                data.content.forEach(function (element) {
-                    var _html = "<tr id='" + element.id + "'>"
-                        + "<td class='text-center'>" + element.id + "</td> "
-                        + "<td class='text-left'>" + element.username + "</td>"
-                        + "<td class='text-center'>" + element.aggregatedAt + "</td>"
-                        + "<td class='text-center'>" + element.approvalCount + "</td>"
-                        + "<td class='text-right'>" + element.approvalAmount + "</td>"
-                        + "<td class='text-center'>" + element.cancelCount + "</td>"
-                        + "<td class='text-right'>" + element.cancelAmount + "</td>"
-                        + "<td class='text-center'>" + element.totalCount + "</td>"
-                        + "<td class='text-right'>" + element.totalAmount + "</td>";
-                    if(element.status == null){
-                        _html+=  "<td></td>"
-                            + "<td class='td-actions text-center'>"
-                            + "<button type='button' class='btn btn-info' name='btn_approve' value='Y'>"
-                            + "<i class='material-icons'>done</i>"
-                            + "</button>&nbsp;"
-                            + "<button type='button' class='btn btn-danger' name='btn_deny' value='N'>"
-                            + "<i class='material-icons'>clear</i>"
-                            + "</button>"
-                            + "</td>";
-                    }else{
-                        _html+= "<td class='text-center'>" + element.modifiedDate + "</td>";
-                        if(element.status == "Y"){
-                            _html+= "<td class='text-left'>Arrpoved by " + element.adminId + "</td>";
-                        }else {
-                            _html+= "<td class='text-left'>Denied by " + element.adminId + "</td>";
-                        }
-                    }
-                    $('tbody').append(_html);
-                });
-
-                $('.pagination').empty();
-                for (var i = 1; i <= data.totalPages; i++) {
-                    $('.pagination').append('<li class="page-item"><a class="page-link" id="paging">' + i + '</a><li>');
-                }
+                $("#settleTemplate").tmpl(data.content).appendTo("#settleArea");
             }
+
+            $('.pagination').empty();
+            for (var i = 1; i <= data.totalPages; i++) {
+                $('.pagination').append('<li class="page-item"><a class="page-link" id="paging">' + i + '</a><li>');
+            }
+
         }).fail(function (error) {
-            alert(JSON.stringify(error));
+            console.log(JSON.stringify(error));
+            alert(messages["alert.load.fail"]);
         });
     },
     update: function (id, status) {

@@ -18,7 +18,13 @@ public class SettleResponse {
 
     private String username;
 
+    private String fullName;
+
     private String aggregatedAt;
+
+    public String getAggregatedAt() {
+        return aggregatedAt.substring(0, 4) + "-" + aggregatedAt.substring(4, 6);
+    }
 
     private Integer approvalCount;
 
@@ -48,6 +54,7 @@ public class SettleResponse {
     public SettleResponse(Settle settle) {
         this.id = settle.getId();
         this.username = settle.getUser().getUsername();
+        this.fullName = settle.getUser().getFullName();
         this.aggregatedAt = settle.getAggregatedAt();
         this.approvalCount = settle.getApprovalCount();
         this.approvalAmount = settle.getApprovalAmount();
