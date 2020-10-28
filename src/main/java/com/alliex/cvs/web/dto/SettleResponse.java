@@ -50,6 +50,27 @@ public class SettleResponse {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime modifiedDate;
 
+    @Override
+    public String toString() {
+        return "SettleResponse{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", fullName='" + fullName + '\'' +
+                ", aggregatedAt='" + aggregatedAt + '\'' +
+                ", approvalCount=" + approvalCount +
+                ", approvalAmount=" + approvalAmount +
+                ", cancelCount=" + cancelCount +
+                ", cancelAmount=" + cancelAmount +
+                ", totalCount=" + totalCount +
+                ", totalAmount=" + totalAmount +
+                ", status='" + status + '\'' +
+                ", isApproved=" + isApproved +
+                ", adminId='" + adminId + '\'' +
+                ", createdDate=" + createdDate +
+                ", modifiedDate=" + modifiedDate +
+                '}';
+    }
+
     @Builder
     public SettleResponse(Settle settle) {
         this.id = settle.getId();
