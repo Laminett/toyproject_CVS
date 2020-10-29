@@ -29,7 +29,7 @@ public class SettleBatchService {
 
     private final SettleRepository settleRepository;
 
-    @Scheduled(cron = "0 0 7 1 * * *")
+    @Scheduled(cron = "0 0 7 1 * *")
     public void settleBatch() {
 
         LocalDateTime today = LocalDateTime.now();

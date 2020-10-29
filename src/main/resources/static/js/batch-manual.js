@@ -5,7 +5,7 @@ var main = {
         $('.batch-monthpicker').bootstrapMonthpicker({});
 
         $('#btn_settle_month').click(function () {
-            if($("#settle_month").val() == ""){
+            if ($("#settle_month").val() == "") {
                 alert(messages["alert.select.month"]);
                 return false;
             }
@@ -31,10 +31,9 @@ var main = {
             if (data == 0) {
                 alert(messages["alert.batch.settle.no.data"]);
             } else {
-                alert("배치 완료");
+                alert(messages["alert.batch.settle.success"] + data);
             }
         }).fail(function (error) {
-            console.log(JSON.stringify(error));
             alert(JSON.stringify(error));
         });
     }
