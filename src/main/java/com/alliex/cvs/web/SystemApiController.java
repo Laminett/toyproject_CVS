@@ -5,7 +5,6 @@ import com.alliex.cvs.util.DateTimeUtils;
 import com.alliex.cvs.web.dto.SystemBatchRequest;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;

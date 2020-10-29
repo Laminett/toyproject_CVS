@@ -8,6 +8,7 @@ import com.alliex.cvs.web.dto.SettleTransMonthlySumRequest;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,6 +19,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
+@EnableScheduling
 @RequiredArgsConstructor
 public class SettleBatchService {
 
@@ -27,12 +29,12 @@ public class SettleBatchService {
 
     private final SettleRepository settleRepository;
 
-    @Scheduled(cron = "0 0 7 1 *")
+    @Scheduled(cron = "0 0 7 1 * * *")
     public void settleBatch() {
 
         LocalDateTime today = LocalDateTime.now();
         int batchSize = this.transactionMonthlySum(DateTimeUtils.getFirstDayOfPrevMonth(today), DateTimeUtils.getFirstDayOfMonth(today));
-        logger.info("Insert success. total: " + batchSize);
+        logger.info("Settle batch insert success. total: " + batchSize);
     }
 
     @Transactional
