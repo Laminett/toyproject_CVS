@@ -12,6 +12,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import java.time.LocalDateTime;
 
@@ -29,9 +30,9 @@ public class SettleBatchService {
 
     private final SettleRepository settleRepository;
 
-    @Scheduled(cron = "0 0 7 1 * *")
+    // 매달 1일 00시 10분
+    @Scheduled(cron = "0 10 0 1 * *")
     public void settleBatch() {
-
         LocalDateTime today = LocalDateTime.now();
         int batchSize = this.transactionMonthlySum(DateTimeUtils.getFirstDayOfPrevMonth(today), DateTimeUtils.getFirstDayOfMonth(today));
         logger.info("Settle batch insert success. total: " + batchSize);
@@ -43,9 +44,8 @@ public class SettleBatchService {
         String aggregatedAt = fromDate.format(DateTimeFormatter.ofPattern("yyyyMM"));
 
         List<SettleTransMonthlySumRequest> transMonthlySumList = transactionRepository.findByCreatedDate(fromDate, toDate);
-        int listSize = transMonthlySumList.size();
-        if (listSize == 0) {
-            return listSize;
+        if (CollectionUtils.isEmpty(transMonthlySumList)) {
+            return 0;
         }
 
         SettleBatchRequest settleBatchRequest = new SettleBatchRequest();
@@ -59,13 +59,9 @@ public class SettleBatchService {
             settleBatchRequest.setTotalCount(obj.getTotalCount().intValue());
             settleBatchRequest.setTotalAmount(obj.getTotalAmount());
 
-            try {
-                settleRepository.save(settleBatchRequest.toEntity());
-            } catch (Exception e) {
-                logger.error("User Id: " + obj.getUserId() + " is not inserted in settle table.");
-            }
+            settleRepository.save(settleBatchRequest.toEntity());
         }
 
-        return listSize;
+        return transMonthlySumList.size();
     }
 }

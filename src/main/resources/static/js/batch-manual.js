@@ -17,22 +17,16 @@ var main = {
 
     },
     exeSettleBatch: function () {
-        var data = {
-            aggregatedAt: $("#settle_month").val().replace(/[^0-9]/g, "") + "01"
-        };
+        var aggregatedAt = $("#settle_month").val().replace(/[^0-9]/g, "") + "01";
 
         $.ajax({
-            type: 'PUT',
+            type: 'POST',
             url: '/web-api/v1/system/batch/manual/settle',
             dataType: 'json',
             contentType: 'application/json; charset=utf-8',
-            data: JSON.stringify(data)
+            data: aggregatedAt
         }).done(function (data) {
-            if (data == 0) {
-                alert(messages["alert.batch.settle.no.data"]);
-            } else {
-                alert(messages["alert.batch.settle.success"] + data);
-            }
+            alert(messages["alert.batch.settle.success"] + data);
         }).fail(function (error) {
             alert(JSON.stringify(error));
         });

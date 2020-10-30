@@ -24,7 +24,7 @@ public class SettleTransMonthlySumRequest {
     }
 
     public Long getTotalAmount() {
-        return approvalAmount + cancelAmount;
+        return approvalAmount - cancelAmount;
     }
 
 }

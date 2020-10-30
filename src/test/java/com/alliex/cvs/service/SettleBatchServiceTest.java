@@ -48,7 +48,6 @@ public class SettleBatchServiceTest {
 
     @Test
     public void dateTimeUtilsTest() {
-
         LocalDateTime dateTime = LocalDateTime.now();
         //LocalDateTime dateTime = LocalDateTime.of(LocalDate.parse("20200922", DateTimeFormatter.ofPattern("yyyyMMdd")), LocalTime.of(0,0,0));
 
@@ -63,7 +62,6 @@ public class SettleBatchServiceTest {
 
         String stringDate = dateTime.format(DateTimeFormatter.ofPattern("yyyyMM"));
         System.out.println("stringDate: " + stringDate);
-
     }
 
 }

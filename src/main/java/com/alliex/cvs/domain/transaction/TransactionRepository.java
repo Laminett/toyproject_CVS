@@ -24,7 +24,7 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long>,
             ", sum(case when (t.type = 'PAYMENT') then 1 else 0 end)" +
             ", sum(case when (t.type = 'PAYMENT') then t.point else 0 end)" +
             ", sum(case when (t.type = 'REFUND') then 1 else 0 end)" +
-            ", sum(case when (t.type = 'REFUND') then (t.point * -1) else 0 end))" +
+            ", sum(case when (t.type = 'REFUND') then t.point else 0 end))" +
             "from Transaction t " +
             "where t.createdDate >= :fromDate " +
             "and t.createdDate < :toDate " +

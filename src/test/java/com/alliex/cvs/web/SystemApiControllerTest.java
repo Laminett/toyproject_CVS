@@ -2,7 +2,6 @@ package com.alliex.cvs.web;
 
 import com.alliex.cvs.domain.settle.Settle;
 import com.alliex.cvs.domain.settle.SettleRepository;
-import com.alliex.cvs.web.dto.SystemBatchRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,10 +15,12 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlGroup;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -43,33 +44,27 @@ public class SystemApiControllerTest {
     @Autowired
     private SettleRepository settleRepository;
 
+    private final String aggregatedAt = "20200912";
+
     @WithMockUser(roles = "ADMIN")
     @Test
     public void runSettleBatch() throws Exception {
         List<Settle> settleListBefore = settleRepository.findAll();
-        System.out.println("settleListBefore : ");
-        for (Settle obj : settleListBefore) {
-            System.out.println(obj.getId());
-        }
+        int listCount = settleListBefore.size();
 
-        mvc.perform(put("/web-api/v1/system/batch/manual/settle")
+        MvcResult result = this.mvc.perform(post("/web-api/v1/system/batch/manual/settle")
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(getSystemBatchRequest())))
+                .content(aggregatedAt))
                 .andDo(print())
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andReturn();
+
+        String content = result.getResponse().getContentAsString();
+        int insertedListCount = Integer.parseInt(content);
 
         List<Settle> settleListAfter = settleRepository.findAll();
-        System.out.println("settleListAfter : ");
-        for (Settle obj : settleListAfter) {
-            System.out.println(obj.getId());
-        }
-    }
-
-    private SystemBatchRequest getSystemBatchRequest() {
-        return SystemBatchRequest.builder()
-                .aggregatedAt("20200912")
-                .build();
+        assertThat(settleListAfter.size()).isEqualTo(listCount + insertedListCount);
     }
 
 }
