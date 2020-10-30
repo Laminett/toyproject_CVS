@@ -1,0 +1,38 @@
+{{>layout/header}}
+<div class="content" id="context">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header card-header-primary">
+                        <div style="float: left">
+                            <h4 class="card-title">{{#messages}}title.system.batch.manual{{/messages}}</h4>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <!-- 사용자별 거래 월 정산 SettleBatchService -->
+                        <form class="form-inline">
+                            <span>{{#messages}}batch.manual.settle.monthly{{/messages}}</span>
+                            <span><i class="material-icons" style="font-size: 35px">date_range</i></span>
+                            <div class="form-group">
+                                <input type="text" class="form-control batch-monthpicker" id="settle_month">
+                            </div>
+                            <button type="button" class="btn btn-primary" id="btn_settle_month">{{#messages}}btn.execute{{/messages}}</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    var messages = {
+        "alert.select.month" : "{{#messages}}alert.select.month{{/messages}}"
+        ,"confirm.batch.settle": "{{#messages}}confirm.batch.settle{{/messages}}"
+        ,"alert.batch.settle.success": "{{#messages}}alert.batch.settle.success{{/messages}}"
+    }
+</script>
+<link rel="stylesheet" href="/datepicker/bootstrap-monthpicker.css">
+<script type="text/javascript" src="/datepicker/bootstrap-monthpicker.js"></script>
+<script type="text/javascript" src="/js/batch-manual.js"></script>
+{{>layout/footer}}
