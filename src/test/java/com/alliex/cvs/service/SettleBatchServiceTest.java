@@ -1,6 +1,5 @@
 package com.alliex.cvs.service;
 
-import com.alliex.cvs.batch.SettleBatchService;
 import com.alliex.cvs.domain.transaction.TransactionRepository;
 import com.alliex.cvs.util.DateTimeUtils;
 import com.alliex.cvs.web.dto.SettleTransMonthlySumRequest;
@@ -31,9 +30,6 @@ public class SettleBatchServiceTest {
 
     @Autowired
     TransactionRepository transactionRepository;
-
-    @Autowired
-    SettleBatchService settleBatchService;
 
     @Test
     public void queryTest() {

@@ -33,7 +33,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SqlGroup({
         @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = "classpath:test-data.sql"),
 })
-public class SystemApiControllerTest {
+public class BatchControllerTest {
 
     @Autowired
     private MockMvc mvc;
