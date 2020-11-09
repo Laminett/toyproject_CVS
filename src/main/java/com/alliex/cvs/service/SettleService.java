@@ -4,6 +4,7 @@ import com.alliex.cvs.domain.settle.Settle;
 import com.alliex.cvs.domain.settle.SettleRepository;
 import com.alliex.cvs.domain.settle.SettleSpecification;
 import com.alliex.cvs.domain.transaction.TransactionRepository;
+import com.alliex.cvs.domain.user.User;
 import com.alliex.cvs.exception.SettleNotFoundException;
 import com.alliex.cvs.web.dto.*;
 import lombok.RequiredArgsConstructor;
@@ -47,29 +48,30 @@ public class SettleService {
 
     @Transactional
     public Integer transactionMonthlySum(LocalDateTime fromDate, LocalDateTime toDate) {
-
         String aggregatedAt = fromDate.format(DateTimeFormatter.ofPattern("yyyyMM"));
 
         List<SettleTransMonthlySumRequest> transMonthlySumList = transactionRepository.findByCreatedDate(fromDate, toDate);
-        if (CollectionUtils.isEmpty(transMonthlySumList)) {
-            return 0;
-        }
-
-        SettleBatchRequest settleBatchRequest = new SettleBatchRequest();
         for (SettleTransMonthlySumRequest obj : transMonthlySumList) {
-            settleBatchRequest.setUserId(obj.getUserId());
-            settleBatchRequest.setAggregatedAt(aggregatedAt);
-            settleBatchRequest.setApprovalCount(obj.getApprovalCount().intValue());
-            settleBatchRequest.setApprovalAmount(obj.getApprovalAmount());
-            settleBatchRequest.setCancelCount(obj.getCancelCount().intValue());
-            settleBatchRequest.setCancelAmount(obj.getCancelAmount());
-            settleBatchRequest.setTotalCount(obj.getTotalCount().intValue());
-            settleBatchRequest.setTotalAmount(obj.getTotalAmount());
-
-            settleRepository.save(settleBatchRequest.toEntity());
+            settleRepository.save(toEntity(obj, aggregatedAt));
         }
 
         return transMonthlySumList.size();
+    }
+
+    private Settle toEntity(SettleTransMonthlySumRequest obj, String aggregatedAt) {
+        User setUser = new User();
+        setUser.setId(obj.getUserId());
+
+        return Settle.builder()
+                .user(setUser)
+                .aggregatedAt(aggregatedAt)
+                .approvalCount(obj.getApprovalCount().intValue())
+                .approvalAmount(obj.getApprovalAmount())
+                .cancelCount(obj.getCancelCount().intValue())
+                .cancelAmount(obj.getCancelAmount())
+                .totalCount(obj.getTotalCount().intValue())
+                .totalAmount(obj.getTotalAmount())
+                .build();
     }
 
 }
