@@ -7,7 +7,9 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Getter
 @Setter
@@ -20,10 +22,10 @@ public class SettleResponse {
 
     private String fullName;
 
-    private String aggregatedAt;
+    private LocalDate aggregatedAt;
 
     public String getAggregatedAt() {
-        return aggregatedAt.substring(0, 4) + "-" + aggregatedAt.substring(4, 6);
+        return aggregatedAt.format(DateTimeFormatter.ofPattern("yyyy-MM"));
     }
 
     private Integer approvalCount;

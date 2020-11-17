@@ -30,6 +30,3 @@ INSERT INTO transaction (created_date, modified_date, merchant_id, origin_id, pa
 INSERT INTO transaction (created_date, modified_date, merchant_id, origin_id, payment_type, point, request_id, state, type, user_id) VALUES ('2020-09-23 05:42:03', '2020-09-23 05:42:03', 123, 8, null, 100, 'z19TFGc5boG78fjmRHQH', 'REFUND', 'REFUND', 400);
 INSERT INTO transaction (created_date, modified_date, merchant_id, origin_id, payment_type, point, request_id, state, type, user_id) VALUES ('2020-09-23 05:42:07', '2020-09-23 05:42:07', 123, 11, null, 100, 'iLbYero0fFDmYnm1aNW5', 'REFUND', 'REFUND', 400);
 INSERT INTO transaction (created_date, modified_date, merchant_id, origin_id, payment_type, point, request_id, state, type, user_id) VALUES ('2020-09-23 05:42:15', '2020-09-23 05:42:18', 123, null, 'BARCODE', 100, 'cpGuLRPe3NqLuwIu3mJy', 'SUCCESS', 'PAYMENT', 400);
-
-
-

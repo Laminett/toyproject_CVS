@@ -6,14 +6,12 @@ import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.temporal.TemporalAdjusters;
 
 @EnableScheduling
@@ -28,16 +26,14 @@ public class BatchController {
     // 매달 1일 00시 10분
     @Scheduled(cron = "0 10 0 1 * *")
     public void settleBatch() {
-        LocalDate batchDate = LocalDate.now();
-        int batchSize = settleBatchManual(batchDate.toString());
+        int batchSize = settleBatchManual(LocalDate.now().minusMonths(1L));
         logger.info("Settle batch insert success. total: " + batchSize);
     }
 
     @ApiOperation(value = "Manual Settle Batch", notes = "수동 정산 배치")
     @PostMapping("/web-api/v1/system/batch/manual/settle")
-    public Integer settleBatchManual(@RequestBody String aggregatedAt) {
-        LocalDateTime batchDate = DateTimeUtils.stringToLocalDateTime(aggregatedAt);
-        int batchSize = settleService.transactionMonthlySum(DateTimeUtils.getFirstDayOfMonth(batchDate), batchDate.with(TemporalAdjusters.firstDayOfNextMonth()));
+    public Integer settleBatchManual(@DateTimeFormat(pattern = "yyyyMMdd") LocalDate aggregatedAt) {
+        int batchSize = settleService.transactionMonthlySum(DateTimeUtils.getFirstDayOfMonth(aggregatedAt.atTime(0, 0, 0)), aggregatedAt.atTime(0, 0, 0).with(TemporalAdjusters.firstDayOfNextMonth()));
 
         return batchSize;
     }
