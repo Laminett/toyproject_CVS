@@ -9,7 +9,6 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 @Getter
 @Setter
@@ -22,11 +21,8 @@ public class SettleResponse {
 
     private String fullName;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM")
     private LocalDate aggregatedAt;
-
-    public String getAggregatedAt() {
-        return aggregatedAt.format(DateTimeFormatter.ofPattern("yyyy-MM"));
-    }
 
     private Integer approvalCount;
 

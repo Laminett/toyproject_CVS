@@ -21,7 +21,7 @@ var main = {
 
         $.ajax({
             type: 'POST',
-            url: '/web-api/v1/system/batch/manual/settle?aggregatedAt='+aggregatedAt,
+            url: '/web-api/v1/system/batch/manual/settle/'+aggregatedAt,
             dataType: 'text',
             contentType: 'application/json; charset=utf-8'
         }).done(function (data) {
