@@ -21,10 +21,9 @@ var main = {
 
         $.ajax({
             type: 'POST',
-            url: '/web-api/v1/system/batch/manual/settle',
-            dataType: 'json',
-            contentType: 'application/json; charset=utf-8',
-            data: aggregatedAt
+            url: '/web-api/v1/system/batch/manual/settle/'+aggregatedAt,
+            dataType: 'text',
+            contentType: 'application/json; charset=utf-8'
         }).done(function (data) {
             alert(messages["alert.batch.settle.success"] + data);
         }).fail(function (error) {

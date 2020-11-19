@@ -14,10 +14,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.CollectionUtils;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -31,7 +30,7 @@ public class SettleService {
     @Transactional(readOnly = true)
     public Page<SettleResponse> getSettleList(Pageable pageable, SettleRequest settleRequest) {
         return settleRepository.findAll(Specification
-                .where(StringUtils.isBlank(settleRequest.getAggregatedAt()) ? null : SettleSpecification.withSearchData("aggregatedAt", settleRequest.getAggregatedAt()))
+                .where(SettleSpecification.withSearchDate(settleRequest.getAggregatedAt()))
                 .and(StringUtils.isBlank(settleRequest.getFullName()) ? null : SettleSpecification.withSearchData("fullName", settleRequest.getFullName())), pageable)
                 .map(SettleResponse::new);
     }
@@ -48,17 +47,15 @@ public class SettleService {
 
     @Transactional
     public Integer transactionMonthlySum(LocalDateTime fromDate, LocalDateTime toDate) {
-        String aggregatedAt = fromDate.format(DateTimeFormatter.ofPattern("yyyyMM"));
-
         List<SettleTransMonthlySumRequest> transMonthlySumList = transactionRepository.findByCreatedDate(fromDate, toDate);
         for (SettleTransMonthlySumRequest obj : transMonthlySumList) {
-            settleRepository.save(toEntity(obj, aggregatedAt));
+            settleRepository.save(toEntity(obj, fromDate.toLocalDate()));
         }
 
         return transMonthlySumList.size();
     }
 
-    private Settle toEntity(SettleTransMonthlySumRequest obj, String aggregatedAt) {
+    private Settle toEntity(SettleTransMonthlySumRequest obj, LocalDate aggregatedAt) {
         User setUser = new User();
         setUser.setId(obj.getUserId());
 
