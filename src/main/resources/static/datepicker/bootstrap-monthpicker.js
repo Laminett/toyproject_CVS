@@ -75,7 +75,8 @@
                 //this.$el.prop('readonly', true);
             }
 
-            this.$document = $(document);
+            // this.$document = $(document);
+            this.$document = $('#context');
 
             this.$dialog = $([
                 '<div class="mp-dialog">',
