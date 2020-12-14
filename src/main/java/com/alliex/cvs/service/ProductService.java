@@ -48,7 +48,7 @@ public class ProductService {
         Product product = productRepository.findByBarcode(barcode)
                 .orElseThrow(() -> new ProductNotFoundException(barcode));
 
-        return new ProductResponse(product.getBarcode(), product.getName(), product.getPoint());
+        return new ProductResponse(product);
     }
 
     @Transactional
