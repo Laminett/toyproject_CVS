@@ -43,11 +43,12 @@ public class ProductService {
     }
 
     @Transactional
-    public ProductAppResponse scanProducts(String barcode) {
+    public ProductResponse scanProducts(String barcode) {
+        // 상품정보조회 name, point
         Product product = productRepository.findByBarcode(barcode)
                 .orElseThrow(() -> new ProductNotFoundException(barcode));
 
-        return new ProductAppResponse(product);
+        return new ProductResponse(product.getBarcode(), product.getName(), product.getPoint());
     }
 
     @Transactional

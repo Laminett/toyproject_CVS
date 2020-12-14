@@ -4,11 +4,12 @@ import com.alliex.cvs.domain.product.Product;
 import com.alliex.cvs.domain.product.category.ProductCategory;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
+import lombok.Setter;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Getter
+@Setter
 public class ProductResponse {
 
     private Long id;
@@ -46,4 +47,9 @@ public class ProductResponse {
         this.modifiedDate = entity.getModifiedDate();
     }
 
+    public ProductResponse(String barcode, String name, Long point) {
+        this.barcode = barcode;
+        this.name = name;
+        this.point = point;
+    }
 }

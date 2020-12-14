@@ -15,4 +15,7 @@ VALUES (90, '2020-10-05 13:21:51', '202009',  8500, 12, 1200, 2, 7300, 14, 400);
 INSERT INTO product_category(id, name, is_enabled, admin_id, created_date, modified_date)
 VALUES (500, 'categorytest', true, 'testid', '2020-10-15 16:00:00', '2020-10-16 16:00:00');
 
+INSERT INTO product_purchase(id, product_id, category_id, purchase_amount, purchase_quantity, purchase_date, created_date, modified_date, admin_id)
+VALUES (500, 1, 1, 500, 50, '2020-12-03', '2020-12-03 12:12:12', '2020-12-03 12:12:12', 'testid');
+
 

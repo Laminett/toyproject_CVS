@@ -111,7 +111,7 @@ var main = {
                 }).done(function (data) {
                     alert("this barcode already added \nname:" + data.name + ", point:" + data.point);
                 }).fail(function (error) {
-                    if (error.responseJSON.message.indexOf("not found Products.") > -1) {
+                    if (error.responseJSON.message.indexOf("does not exitst") > -1) {
                         _this.barcodeScan(barcode, qty);
                         _this.addFormVisible(true);
                         $('.description').text('Input Product Content');
