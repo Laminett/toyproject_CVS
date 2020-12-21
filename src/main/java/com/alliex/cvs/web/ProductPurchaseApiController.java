@@ -1,5 +1,6 @@
 package com.alliex.cvs.web;
 
+import com.alliex.cvs.domain.user.LoginUser;
 import com.alliex.cvs.service.ProductPurchaseService;
 import com.alliex.cvs.web.dto.*;
 import io.swagger.annotations.ApiOperation;
@@ -8,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
@@ -31,13 +33,17 @@ public class ProductPurchaseApiController {
     @ApiOperation(value = "Create Purchase")
     @PostMapping({"api/v1/products-purchases", "web-api/v1/products-purchases"})
     @ResponseStatus(HttpStatus.CREATED)
-    public Long save(@RequestBody ProductPurchaseSaveRequest productPurchaseSaveRequest) {
+    public Long save(@RequestBody ProductPurchaseSaveRequest productPurchaseSaveRequest, @AuthenticationPrincipal LoginUser loginUser) {
+        productPurchaseSaveRequest.setAdminId(loginUser.getUsername());
+
         return productPurchaseService.save(productPurchaseSaveRequest);
     }
 
     @ApiOperation(value = "Update Purchase")
     @PostMapping({"api/v1/products-purchases/{id}", "web-api/v1/products-purchases/{id}"})
-    public Long update(@PathVariable Long id, @RequestBody ProductPurchaseUpdateRequest productPurchaseUpdateRequest) {
+    public Long update(@PathVariable Long id, @RequestBody ProductPurchaseUpdateRequest productPurchaseUpdateRequest, @AuthenticationPrincipal LoginUser loginUser) {
+        productPurchaseUpdateRequest.setAdminId(loginUser.getUsername());
+
         return productPurchaseService.update(id, productPurchaseUpdateRequest);
     }
 
