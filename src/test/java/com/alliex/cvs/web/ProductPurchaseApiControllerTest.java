@@ -59,7 +59,7 @@ public class ProductPurchaseApiControllerTest {
                 .andExpect(status().isCreated());
     }
 
-    @WithMockCustomUser
+    @WithMockCustomUser(username = "adminId Updated")
     @Test
     public void updateProductPurchase() throws Exception {
         final Long testId = 500L;
@@ -156,8 +156,8 @@ public class ProductPurchaseApiControllerTest {
     @WithMockCustomUser
     @Test
     public void getProductPurchaseByProductName() throws Exception {
-        String testProductName = "CRISP CREPES";    //  productId:1 = CRISP CREPES
-        String testSearchByProductNameLike = "%RI%";
+        String testProductName = "testProduct";    //  productId:1 = testProduct
+        String testSearchByProductNameLike = "tp";
 
         mvc.perform(get("/web-api/v1/products-purchases").param("productName", testSearchByProductNameLike))
                 .andDo(print())
@@ -168,8 +168,8 @@ public class ProductPurchaseApiControllerTest {
     @WithMockUser(roles = "ADMIN")
     @Test
     public void getProductPurchaseByCategoryName() throws Exception {
-        String testCategoryName = "test";
-        String testSearchByCategoryNameLike = "%es%";
+        String testCategoryName = "categorytest";   //  categoryId:1 = categorytest
+        String testSearchByCategoryNameLike = "es";
 
         mvc.perform(get("/web-api/v1/products-purchases").param("categoryName", testSearchByCategoryNameLike))
                 .andDo(print())
