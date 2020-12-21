@@ -23,6 +23,10 @@ INSERT INTO transaction (created_date, modified_date, merchant_id, origin_id, pa
 INSERT INTO transaction (created_date, modified_date, merchant_id, origin_id, payment_type, point, request_id, state, type, user_id) VALUES ('2020-09-22 08:27:13', '2020-09-22 08:27:13', 123, 3, null, 100, 'JQ83PpkZa8jz5Cl1E4ZR', 'REFUND', 'REFUND', 400);
 INSERT INTO transaction (created_date, modified_date, merchant_id, origin_id, payment_type, point, request_id, state, type, user_id) VALUES ('2020-09-22 08:35:57', '2020-09-22 08:42:58', 123, null, 'BARCODE', 100, 'twFXwz7KPBvs5wC2HKkQ', 'SUCCESS', 'PAYMENT', 400);
 INSERT INTO transaction (created_date, modified_date, merchant_id, origin_id, payment_type, point, request_id, state, type, user_id) VALUES ('2020-09-23 02:34:29', '2020-09-23 02:34:43', 123, null, 'BARCODE', 100, 'z19TFGc5boG78fjmRHQH', 'SUCCESS', 'PAYMENT', 400);
+
+INSERT INTO product_category(id, name, is_enabled, admin_id, created_date, modified_date)
+VALUES (500, 'categorytest', true, 'testid', '2020-10-15 16:00:00', '2020-10-16 16:00:00');
+
 INSERT INTO transaction (created_date, modified_date, merchant_id, origin_id, payment_type, point, request_id, state, type, user_id) VALUES ('2020-09-23 05:31:36', '2020-09-23 05:33:44', 123, null, 'BARCODE', 100, 'JV3C3ULGDnuCLBY1qgMi', 'SUCCESS', 'PAYMENT', 400);
 INSERT INTO transaction (created_date, modified_date, merchant_id, origin_id, payment_type, point, request_id, state, type, user_id) VALUES ('2020-09-23 05:36:11', '2020-09-23 05:36:15', 123, null, 'BARCODE', 100, 'cwBlMGB6k9ctoRVgpQoF', 'SUCCESS', 'PAYMENT', 400);
 INSERT INTO transaction (created_date, modified_date, merchant_id, origin_id, payment_type, point, request_id, state, type, user_id) VALUES ('2020-09-23 05:37:13', '2020-09-23 05:37:17', 123, null, 'BARCODE', 100, 'iLbYero0fFDmYnm1aNW5', 'SUCCESS', 'PAYMENT', 400);
