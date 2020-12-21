@@ -2,12 +2,11 @@ package com.alliex.cvs.domain.settle;
 
 import com.alliex.cvs.domain.BaseTimeEntity;
 import com.alliex.cvs.domain.user.User;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
 @Getter
 @Entity
@@ -23,7 +22,7 @@ public class Settle extends BaseTimeEntity {
     private User user;
 
     @Column(nullable = false)
-    private String aggregatedAt;
+    private LocalDate aggregatedAt;
 
     @Column(nullable = false)
     @ColumnDefault("0")
@@ -56,7 +55,7 @@ public class Settle extends BaseTimeEntity {
     private String adminId;
 
     @Builder
-    public Settle(Long id, User user, String aggregatedAt, Integer approvalCount, Long approvalAmount, Integer cancelCount, Long cancelAmount, Integer totalCount, Long totalAmount, String status, String adminId) {
+    public Settle(Long id, User user, LocalDate aggregatedAt, Integer approvalCount, Long approvalAmount, Integer cancelCount, Long cancelAmount, Integer totalCount, Long totalAmount, String status, String adminId) {
         this.id = id;
         this.user = user;
         this.aggregatedAt = aggregatedAt;

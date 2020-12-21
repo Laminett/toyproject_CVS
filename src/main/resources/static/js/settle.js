@@ -26,10 +26,9 @@ var main = {
         });
     },
     getSettles: function (page) {
-        console.log(moment(new Date().getTime()).format("YYYYMM"));
         var param = {
             page: page,
-            aggregatedAt: $("#search_date").val() == "" ? moment(new Date().getTime()).format("YYYYMM") : $("#search_date").val().replace(/[^0-9]/g,""),
+            aggregatedAt: $("#search_date").val() == "" ? moment(new Date().getTime()).format("YYYYMM")+"01" : $("#search_date").val().replace(/[^0-9]/g,"")+"01",
             fullName: $('#search_fullName').val()
         };
 
