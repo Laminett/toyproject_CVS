@@ -1,7 +1,12 @@
 package com.alliex.cvs.web;
 
-import com.alliex.cvs.web.dto.*;
+import com.alliex.cvs.domain.product.purchase.ProductPurchase;
+import com.alliex.cvs.web.dto.ProductCategorySaveRequest;
+import com.alliex.cvs.web.dto.ProductCategoryUpdateRequest;
+import com.alliex.cvs.web.dto.ProductPurchaseSaveRequest;
+import com.alliex.cvs.web.dto.ProductPurchaseUpdateRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.tomcat.jni.Local;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,14 +20,19 @@ import org.springframework.test.context.jdbc.SqlGroup;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.persistence.criteria.CriteriaBuilder;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
@@ -154,7 +164,7 @@ public class ProductPurchaseApiControllerTest {
         String testProductName = "CRISP CREPES";    //  productId:1 = CRISP CREPES
         String testSearchByProductNameLike = "%RI%";
 
-        mvc.perform(get("/web-api/v1/products-purchases").param("productName",testSearchByProductNameLike))
+        mvc.perform(get("/web-api/v1/products-purchases").param("productName",String.valueOf(testSearchByProductNameLike)))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.content[0].product.name").value(testProductName));
@@ -166,7 +176,7 @@ public class ProductPurchaseApiControllerTest {
         String testCategoryName ="test";
         String testSearchByCategoryNameLike = "%es%";
 
-        mvc.perform(get("/web-api/v1/products-purchases").param("categoryName",testSearchByCategoryNameLike))
+        mvc.perform(get("/web-api/v1/products-purchases").param("categoryName",String.valueOf(testSearchByCategoryNameLike)))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.content[0].product.productCategory.name").value(testCategoryName));
@@ -177,20 +187,21 @@ public class ProductPurchaseApiControllerTest {
     public void getProductPurchaseByPurchaseDate() throws Exception {
         String testPurchaseDate ="2020-12-03";
 
-        mvc.perform(get("/web-api/v1/products-purchases").param("purchaseDate",testPurchaseDate))
+        mvc.perform(get("/web-api/v1/products-purchases").param("purchaseDate",String.valueOf(testPurchaseDate)))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.content[0].purchaseDate").value(testPurchaseDate));
     }
 
     private ProductPurchaseSaveRequest getProductPurchaseRequest() {
-        Long categoryId = 500L;
-        Long productId = 500L;
+        Long categoryId = 1L;
+        Long productId = 1L;
         Long purchaseAmount = 100L;
         Integer purchaseQuantity = 10;
         String adminId = "testtest";
         LocalDate eight_format = LocalDate.now();
         LocalDateTime fourteen_format = LocalDateTime.now();
+
 
         // Create ProductCategory
         return ProductPurchaseSaveRequest.builder()

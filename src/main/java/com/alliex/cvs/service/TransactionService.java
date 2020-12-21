@@ -118,7 +118,7 @@ public class TransactionService {
 
         pointService.updatePointMinus(transaction.getUser().getId(), transaction.getPoint());
         for (TransactionDetailResponse product : transactionDetail) {
-            productService.decreaseQuantity(product.getProductId(), product.getProductQuantity());
+            productService.updateQuantityMinus(product.getProductId(), product.getProductQuantity());
         }
         update(transaction.getId(), TransactionState.SUCCESS, paymentType);
         transactionDetailService.update(transaction.getId(), TransactionState.SUCCESS);
@@ -144,7 +144,7 @@ public class TransactionService {
         List<TransactionDetailResponse> transactionDetail = transactionDetailService.getDetails(transaction.getId());
         pointService.updatePointPlus(transaction.getUser().getId(), transaction.getPoint());
         for (TransactionDetailResponse product : transactionDetail) {
-            productService.increaseQuantity(product.getProductId(), product.getProductQuantity());
+            productService.updateQuantityPlus(product.getProductId(), product.getProductQuantity());
         }
         transactionDetailService.update(transId, TransactionState.REFUND);
         TransactionSaveRequest transactionRefundRequest = new TransactionSaveRequest(transaction.getUser().getId(), transaction.getMerchantId(), transaction.getId(),

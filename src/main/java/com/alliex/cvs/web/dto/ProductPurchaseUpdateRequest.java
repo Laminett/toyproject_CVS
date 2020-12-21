@@ -12,13 +12,13 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class ProductPurchaseUpdateRequest {
 
-    private Integer purchaseQuantity;
+    Integer purchaseQuantity;
 
-    private Long purchaseAmount;
+    Long purchaseAmount;
 
-    private String adminId;
+    String adminId;
 
-    private LocalDate purchaseDate;
+    LocalDate purchaseDate;
 
     public ProductPurchase toEntity() {
         return ProductPurchase.builder()
@@ -28,5 +28,4 @@ public class ProductPurchaseUpdateRequest {
                 .adminId(adminId)
                 .build();
     }
-
 }

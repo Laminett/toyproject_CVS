@@ -7,29 +7,27 @@ import com.alliex.cvs.domain.product.purchase.ProductPurchase;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
-@Setter
 @NoArgsConstructor
 public class ProductPurchaseSaveRequest {
 
-    private Long categoryId;
+    Long categoryId;
 
-    private Long productId;
+    Long productId;
 
-    private String adminId;
+    String adminId;
 
-    private Integer purchaseQuantity;
+    Integer purchaseQuantity;
 
-    private Long purchaseAmount;
+    Long purchaseAmount;
 
-    private LocalDate purchaseDate;
+    LocalDate purchaseDate;
 
-    private LocalDateTime createdDate;
+    LocalDateTime createdDate;
 
     @Builder
     public ProductPurchaseSaveRequest(Long categoryId, Long productId, Integer purchaseQuantity, Long purchaseAmount, LocalDate purchaseDate, String adminId, LocalDateTime createdDate) {
