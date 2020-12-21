@@ -1,6 +1,7 @@
 package com.alliex.cvs.web;
 
 
+import com.alliex.cvs.testsupport.WithMockCustomUser;
 import com.alliex.cvs.web.dto.ProductPurchaseSaveRequest;
 import com.alliex.cvs.web.dto.ProductPurchaseUpdateRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -22,8 +23,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -44,7 +45,7 @@ public class ProductPurchaseApiControllerTest {
     @Autowired
     protected ObjectMapper objectMapper;
 
-    @WithMockUser(roles = "ADMIN")
+    @WithMockCustomUser
     @Test
     public void createProductPurchase() throws Exception {
         // Given
@@ -58,7 +59,7 @@ public class ProductPurchaseApiControllerTest {
                 .andExpect(status().isCreated());
     }
 
-    @WithMockUser(roles = "ADMIN")
+    @WithMockCustomUser
     @Test
     public void updateProductPurchase() throws Exception {
         final Long testId = 500L;
@@ -89,7 +90,7 @@ public class ProductPurchaseApiControllerTest {
                 .andExpect(jsonPath("$.purchaseDate").value(purchaseDate.toString()));
     }
 
-    @WithMockUser(roles = "ADMIN")
+    @WithMockCustomUser
     @Test
     public void updateProductPurchase_ProductCategoryNotFound() throws Exception {
         final Long testId = 500L;
@@ -152,7 +153,7 @@ public class ProductPurchaseApiControllerTest {
                 .andExpect(jsonPath("$.code", is("PRODUCT_PURCHASE_NOT_FOUND")));
     }
 
-    @WithMockUser(roles = "ADMIN")
+    @WithMockCustomUser
     @Test
     public void getProductPurchaseByProductName() throws Exception {
         String testProductName = "CRISP CREPES";    //  productId:1 = CRISP CREPES
