@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
@@ -20,11 +21,8 @@ public class SettleResponse {
 
     private String fullName;
 
-    private String aggregatedAt;
-
-    public String getAggregatedAt() {
-        return aggregatedAt.substring(0, 4) + "-" + aggregatedAt.substring(4, 6);
-    }
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM")
+    private LocalDate aggregatedAt;
 
     private Integer approvalCount;
 
@@ -49,6 +47,27 @@ public class SettleResponse {
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime modifiedDate;
+
+    @Override
+    public String toString() {
+        return "SettleResponse{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", fullName='" + fullName + '\'' +
+                ", aggregatedAt='" + aggregatedAt + '\'' +
+                ", approvalCount=" + approvalCount +
+                ", approvalAmount=" + approvalAmount +
+                ", cancelCount=" + cancelCount +
+                ", cancelAmount=" + cancelAmount +
+                ", totalCount=" + totalCount +
+                ", totalAmount=" + totalAmount +
+                ", status='" + status + '\'' +
+                ", isApproved=" + isApproved +
+                ", adminId='" + adminId + '\'' +
+                ", createdDate=" + createdDate +
+                ", modifiedDate=" + modifiedDate +
+                '}';
+    }
 
     @Builder
     public SettleResponse(Settle settle) {
