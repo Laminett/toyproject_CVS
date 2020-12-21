@@ -2,7 +2,6 @@ package com.alliex.cvs.service;
 
 
 import com.alliex.cvs.domain.product.Product;
-import com.alliex.cvs.domain.product.ProductRepository;
 import com.alliex.cvs.domain.product.purchase.ProductPurchase;
 import com.alliex.cvs.domain.product.purchase.ProductPurchaseRepository;
 import com.alliex.cvs.domain.type.ProductPurchaseSearchType;
@@ -26,6 +25,7 @@ import javax.persistence.criteria.Predicate;
 public class ProductPurchaseService {
 
     private final ProductPurchaseRepository productPurchaseRepository;
+
     private final ProductService productService;
 
     public Page<ProductPurchaseResponse> getPurchases(Pageable pageable, ProductPurchaseRequest productPurchaseRequest) {
@@ -40,8 +40,10 @@ public class ProductPurchaseService {
         return new ProductPurchaseResponse(productPurchase);
     }
 
+    @Transactional
     public Long save(ProductPurchaseSaveRequest productPurchaseSaveRequest) {
-        productService.updateQuantityPlus(productPurchaseSaveRequest.getProductId(), productPurchaseSaveRequest.getPurchaseQuantity());
+        productService.increaseQuantity(productPurchaseSaveRequest.getProductId(), productPurchaseSaveRequest.getPurchaseQuantity());
+
         return productPurchaseRepository.save(productPurchaseSaveRequest.toEntity()).getId();
     }
 
@@ -51,9 +53,9 @@ public class ProductPurchaseService {
                 .orElseThrow(() -> new ProductPurchaseNotFoundException(id));
 
         int _qunatity = productPurchaseUpdateRequest.getPurchaseQuantity() - productPurchase.getPurchaseQuantity();
-        if (_qunatity != 0) {
-            productService.updateQuantityPlus(productPurchase.getProduct().getId(), _qunatity);
-        }
+
+        productService.increaseQuantity(productPurchase.getProduct().getId(), _qunatity);
+
         productPurchase.update(productPurchaseUpdateRequest);
 
         return productPurchase.getId();
@@ -63,7 +65,8 @@ public class ProductPurchaseService {
     public void delete(Long id) {
         ProductPurchase productPurchase = productPurchaseRepository.findById(id)
                 .orElseThrow(() -> new ProductPurchaseNotFoundException(id));
-        productService.updateQuantityMinus(productPurchase.getProduct().getId(), productPurchase.getPurchaseQuantity());
+        productService.decreaseQuantity(productPurchase.getProduct().getId(), productPurchase.getPurchaseQuantity());
+
         productPurchaseRepository.delete(productPurchase);
     }
 

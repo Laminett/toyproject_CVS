@@ -42,7 +42,6 @@ var main = {
             _this.createPurchase();
         });
 
-
         $(document).on('click', '[data-toggle=modal]', function () {
             if ($(this).text() == "edit") {
                 var purchaseId = $(this).closest('tr').find('td').eq(0).text();
@@ -51,7 +50,6 @@ var main = {
                 _this.addFormVisible(false);
                 $('.description').text('Input Purchase Data');
             }
-
         });
 
         // delete purchase
@@ -142,7 +140,7 @@ var main = {
             $("#createPurchaseModal").modal("show");
         }).fail(function (error) {
             if (error.responseJSON.code == 'PRODUCT_PURCHASE_NOT_FOUND') {
-                alert('해당 카테고리가 존재하지 않습니다.');
+                alert('해당 구매내역이 존재하지 않습니다.');
             } else {
                 console.log(error);
                 var responseJSON = '';
@@ -216,7 +214,6 @@ var main = {
         var data = {
             purchaseAmount: $("#purchaseAmount").val(),
             purchaseQuantity: $("#purchaseQuantity").val(),
-            adminId: $("#adminId").val(),
             purchaseDate: $("#purchaseDate").val(),
             categoryId: $("#categoryId").val(),
             productId: $("#productId").val()

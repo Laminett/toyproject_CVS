@@ -12,9 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class ProductPurchaseController {
 
     @GetMapping("products-purchases")
-    public String getProductPurchases(Model model, @AuthenticationPrincipal LoginUser loginUser) {
-        model.addAttribute("loginUser", loginUser.getUsername());
-
+    public String getProductPurchases() {
         return "product-purchase";
     }
 

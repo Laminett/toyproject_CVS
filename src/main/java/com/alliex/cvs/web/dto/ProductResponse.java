@@ -47,9 +47,4 @@ public class ProductResponse {
         this.modifiedDate = entity.getModifiedDate();
     }
 
-    public ProductResponse(String barcode, String name, Long point) {
-        this.barcode = barcode;
-        this.name = name;
-        this.point = point;
-    }
 }

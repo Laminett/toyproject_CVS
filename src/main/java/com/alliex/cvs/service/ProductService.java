@@ -79,7 +79,7 @@ public class ProductService {
     }
 
     @Transactional
-    public Long updateQuantityPlus(Long productId, int quantity) {
+    public Long increaseQuantity(Long productId, int quantity) {
         Product productEntity = productRepository.findById(productId)
                 .orElseThrow(() -> new ProductNotFoundException(productId));
 
@@ -89,7 +89,7 @@ public class ProductService {
     }
 
     @Transactional
-    public Long updateQuantityMinus(Long productId, int quantity) {
+    public Long decreaseQuantity(Long productId, int quantity) {
         Product productEntity = productRepository.findById(productId)
                 .orElseThrow(() -> new ProductNotFoundException(productId));
 
