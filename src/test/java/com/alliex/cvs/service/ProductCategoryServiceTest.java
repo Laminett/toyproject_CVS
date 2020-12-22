@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.test.annotation.Rollback;
+import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.context.jdbc.SqlGroup;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -17,6 +19,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest
 @Transactional()
 @Rollback()
+@SqlGroup({
+        @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = "classpath:test-data.sql"),
+})
 public class ProductCategoryServiceTest {
 
     @Autowired
@@ -37,7 +42,7 @@ public class ProductCategoryServiceTest {
         productCategoryUpdateRequest.setCategoryName("categoryName updated");
         productCategoryUpdateRequest.setIsEnabled(true);
         productCategoryUpdateRequest.setAdminId("modifiedId updated");
-        Long updatedId = productCategoryService.update(2L, productCategoryUpdateRequest);
+        Long updatedId = productCategoryService.update(500L, productCategoryUpdateRequest);
 
         // Get category
         ProductCategoryResponse productCategoryResponse = productCategoryService.getCategoryById(updatedId);

@@ -107,7 +107,7 @@ public class ProductCategoryApiControllerTest {
         String categoryName = "categoryName updated";
         productCategoryUpdateRequest.setCategoryName(categoryName);
 
-        mvc.perform(put("/web-api/v1/products-categories/{id}", testId + 1L)
+        mvc.perform(put("/web-api/v1/products-categories/{id}", testId + 10L)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(productCategoryUpdateRequest)))
                 .andDo(print())
