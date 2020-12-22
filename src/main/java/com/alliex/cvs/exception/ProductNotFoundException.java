@@ -25,7 +25,7 @@ public class ProductNotFoundException extends InternalException {
     }
 
     public ProductNotFoundException(String barcode) {
-        super("Product barcode" + barcode + " does not exitst.");
+        super("Product barcode " + barcode + " does not exist.");
     }
 
 }

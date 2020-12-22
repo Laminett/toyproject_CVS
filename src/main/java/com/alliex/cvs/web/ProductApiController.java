@@ -22,7 +22,7 @@ public class ProductApiController {
 
     @ApiOperation(value = "Get Product by Barcode", notes = "상품 바코드 스캔")
     @GetMapping({"/api/v1/barcodescan/{barcode}", "/web-api/v1/barcodescan/{barcode}"})
-    public ProductAppResponse scanProducts(@PathVariable String barcode) {
+    public ProductResponse scanProducts(@PathVariable String barcode) {
         return productService.scanProducts(barcode);
     }
 

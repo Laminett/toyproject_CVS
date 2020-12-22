@@ -2,7 +2,7 @@ package com.alliex.cvs.domain.product.category;
 
 import com.alliex.cvs.domain.BaseTimeEntity;
 import com.alliex.cvs.domain.product.Product;
-import com.alliex.cvs.domain.transactionDetail.TransactionDetail;
+import com.alliex.cvs.domain.product.purchase.ProductPurchase;
 import com.alliex.cvs.web.dto.ProductCategoryUpdateRequest;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
@@ -33,6 +33,10 @@ public class ProductCategory extends BaseTimeEntity {
     @OneToMany(mappedBy = "productCategory", cascade = CascadeType.ALL)
     @JsonIgnore
     private Collection<Product> productId;
+
+    @OneToMany(mappedBy = "productCategory", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private Collection<ProductPurchase> productPurchaseId;
 
     @Builder
     public ProductCategory(Long id, String name, Boolean isEnabled, String adminId) {

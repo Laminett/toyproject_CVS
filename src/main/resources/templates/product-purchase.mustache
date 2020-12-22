@@ -1,0 +1,211 @@
+{{>layout/header}}
+<div class="content" id="context">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header card-header-primary">
+                        <div style="float: left">
+                            <h4 class="card-title ">{{#messages}}menu.product.purchase{{/messages}}</h4>
+                            <p class="card-category"> Purchase management</p>
+                        </div>
+                        <div style="float: right">
+                            <form class="form-inline ml-auto" id="purchaseSearchForm" action="" onsubmit="return false;">
+                                <input type="hidden" name="searchKey" value=""/>
+                                <div class="dropdown" style="margin-right: 10px;">
+                                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton-purchase-search" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        상품명
+                                    </button>
+                                    <div id="purchase-search-field" class="dropdown-menu" aria-labelledby="dropdownMenuButton-purchase-search">
+                                        <a class="dropdown-item" href="#none" searchKey="productName">상품명</a>
+                                        <a class="dropdown-item" href="#none" searchKey="categoryName">카테고리명</a>
+                                        <a class="dropdown-item" href="#none" searchKey="purchaseDate">구매일자</a>
+                                    </div>
+                                </div>
+                                <div class="form-group has-white">
+                                    <input id="searchValue" name="searchValue" type="text" value="" class="form-control" style="color: whitesmoke" placeholder="">
+                                    <input type="text" id="purchaseDateParent" name="purchaseDateParent" class="form-control datepicker_local" style="color:whitesmoke">
+                                </div>
+                                <button type="button" class="btn btn-white btn-round btn-just-icon" id="purchase-search-btn">
+                                    <i class="material-icons">search</i>
+                                    <div class="ripple-container"></div>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive" id="result1">
+                            <table class="table" id="templ1">
+                                <thead class="text-primary text-center">
+                                <th>NO</th>
+                                <th>카테고리명</th>
+                                <th>상품명</th>
+                                <th>구매수량</th>
+                                <th>구매금액</th>
+                                <th>등록자</th>
+                                <th>구매일자</th>
+                                <th>등록일자</th>
+                                <th>동작</th>
+                                </thead>
+                                <tbody id="purchasesArea" class="text-center"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <nav aria-label="Page navigation">
+                        <ul id="purchasesPagingArea" class="pagination justify-content-center"></ul>
+                    </nav>
+                </div>
+                <div>
+                    <button class="btn btn-round" data-toggle="modal" data-target="#createPurchaseModal">
+                        <i class="material-icons">assignment</i>&nbsp;{{#messages}}button.create{{/messages}}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="createPurchaseModal" tabindex="-1" role="">
+    <div class="modal-dialog modal-login" role="document" style="margin-top: 160px;">
+        <div class="modal-content">
+            <div class="card card-signup card-plain" style="margin-top: 0;margin-bottom: 0">
+                <div class="modal-header" style="padding-top: 0;">
+                    <div class="card-header card-header-primary text-center" style="width:100%">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                            <i class="material-icons">clear</i>
+                        </button>
+                        <h4 class="card-title">Purchase Information</h4>
+                        <input type="hidden" id="id" name="id">
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <form id="createPurchaseForm" class="form" method="" action="">
+                        <input type="hidden" id="purchaseId" value=""/>
+                        <p class="description text-center">Scan the barcode first</p>
+                        <div class="card-body">
+                            <div class="form-group bmd-form-group">
+                                <div class="input-group">
+                                    <div class="input-group-prepend" style="width:100px;">
+                                        <div class="input-group-text">바코드</div>
+                                    </div>
+                                    <input type="text" id="barcode" name="barcode" class="form-control" READONLY>
+                                </div>
+                            </div>
+                            <div class="form-group bmd-form-group" id="div_categoryName">
+                                <div class="input-group">
+                                    <div class="input-group-prepend" style="width:100px;">
+                                        <div class="input-group-text">카테고리</div>
+                                    </div>
+                                    <input type="text" id="categoryName" name="categoryName" class="form-control" disabled>
+                                    <input type="hidden" id="categoryId" name="categoryId">
+                                </div>
+                            </div>
+                            <div class="form-group bmd-form-group" id="div_productName">
+                                <div class="input-group">
+                                    <div class="input-group-prepend" style="width:100px;">
+                                        <div class="input-group-text">상품명</div>
+                                    </div>
+                                    <input type="text" id="productName" name="productName" class="form-control" disabled>
+                                    <input type="hidden" id="productId" name="productId">
+                                </div>
+                            </div>
+                            <div class="form-group bmd-form-group" id="div_quantity">
+                                <div class="input-group">
+                                    <div class="input-group-prepend" style="width:100px;">
+                                        <div class="input-group-text">수량</div>
+                                    </div>
+                                    <input type="text" id="quantity" name="quantity" class="form-control" disabled>
+                                </div>
+                            </div>
+                            <div class="form-group bmd-form-group" id="div_checkbox">
+                                <div class="input-group">
+                                    <div class="input-group-prepend" style="width:100px;">
+                                        <div class="input-group-text">사용여부</div>
+                                    </div>
+                                    <input class="form-check-input" type="checkbox" value="" name="isEnabled" id="isEnabled" style="position: inherit;margin-left: 0px;margin-top: 6px;width: 20px; height: 18px;" disabled>
+                                </div>
+                            </div>
+                            <div class="form-group bmd-form-group" id="div_purchaseQuantity">
+                                <div class="input-group">
+                                    <div class="input-group-prepend" style="width:100px;">
+                                        <div class="input-group-text">구매수량</div>
+                                    </div>
+                                    <input type="text" id="purchaseQuantity" name="purchaseQuantity" class="form-control" >
+                                </div>
+                            </div>
+                            <div class="form-group bmd-form-group" id="div_purchaseAmount">
+                                <div class="input-group">
+                                    <div class="input-group-prepend" style="width:100px;">
+                                        <div class="input-group-text">구매금액</div>
+                                    </div>
+                                    <input type="text" id="purchaseAmount" name="purchaseAmount" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group bmd-form-group" id="div_purchaseDate">
+                                <div class="input-group">
+                                    <div class="input-group-prepend" style="width:100px;">
+                                        <div class="input-group-text">구매날짜</div>
+                                    </div>
+                                    <input type="text" id="purchaseDate" name="purchaseDate" class="form-control datepicker_local">
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <a href="#none" id="createPurchaseBtn" class="btn btn-primary btn-round">Regist</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script id="purchasesTemplate" type="text/x-jquery-tmpl">
+<tr>
+    <td><a purchase-id="${id}">${id}</a></td>
+    <td>${product.productCategory.name}</td>
+    <td>${product.name}</td>
+    <td>${purchaseQuantity}</td>
+    <td>${purchaseAmount}</td>
+    <td>${adminId}</td>
+    <td>${purchaseDate}</td>
+    <td>${createdDate}</td>
+    <td class='td-actions text-center'>
+        <button type='button' rel='tooltip' class='btn btn-success' name='details'>
+            <i class='material-icons' data-toggle='modal'>edit</i>
+        </button>
+        <button type='button' rel='tooltip' class='btn btn-danger' name='delete'>
+             <i class='material-icons'>close</i>
+         </button>
+    </td>
+</tr>
+
+</script>
+<script id="purchasesNoDataTemplate" type="text/x-jquery-tmpl">
+<tr>
+    <td colspan="9">No Data.</td>
+</tr>
+
+</script>
+<script id="purchasesPagingTemplate" type="text/x-jquery-tmpl">
+<li class="page-item">
+    <a class="page-link" href="#none">${page}</a>
+</li>
+
+</script>
+<script>
+    var messages = {
+        "info.search.no.data": "{{#messages}}info.search.no.data{{/messages}}"
+        , "alert.update.success": "{{#messages}}alert.update.success{{/messages}}"
+        , "alert.update.fail": "{{#messages}}alert.update.fail{{/messages}}"
+        , "alert.insert.success": "{{#messages}}alert.insert.success{{/messages}}"
+        , "alert.insert.fail": "{{#messages}}alert.insert.fail{{/messages}}"
+        , "alert.delete.success": "{{#messages}}alert.delete.success{{/messages}}"
+        , "alert.delete.fail": "{{#messages}}alert.delete.fail{{/messages}}"
+    };
+</script>
+<script type="text/javascript" src="/js/jquery.scannerdetection.js"></script>
+<script type="text/javascript" src="/js/plugins/jquery.tmpl.js"></script>
+<script type="text/javascript" src="/js/product-purchase.js"></script>
+{{>layout/footer}}

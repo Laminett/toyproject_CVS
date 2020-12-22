@@ -43,11 +43,12 @@ public class ProductService {
     }
 
     @Transactional
-    public ProductAppResponse scanProducts(String barcode) {
+    public ProductResponse scanProducts(String barcode) {
+        // 상품정보조회 name, point
         Product product = productRepository.findByBarcode(barcode)
                 .orElseThrow(() -> new ProductNotFoundException(barcode));
 
-        return new ProductAppResponse(product);
+        return new ProductResponse(product);
     }
 
     @Transactional
@@ -78,7 +79,7 @@ public class ProductService {
     }
 
     @Transactional
-    public Long updateQuantityPlus(Long productId, int quantity) {
+    public Long increaseQuantity(Long productId, int quantity) {
         Product productEntity = productRepository.findById(productId)
                 .orElseThrow(() -> new ProductNotFoundException(productId));
 
@@ -88,7 +89,7 @@ public class ProductService {
     }
 
     @Transactional
-    public Long updateQuantityMinus(Long productId, int quantity) {
+    public Long decreaseQuantity(Long productId, int quantity) {
         Product productEntity = productRepository.findById(productId)
                 .orElseThrow(() -> new ProductNotFoundException(productId));
 

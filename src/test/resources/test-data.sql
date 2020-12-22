@@ -1,7 +1,9 @@
 INSERT INTO user (id, username, password, department, full_name, email, phone_number, role, created_date, modified_date)
 VALUES
 (400, 'testtest100', '9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08', 'Mobile Div', '400_fullName', '400@test.com', null, 'ADMIN', null, null),
-(401, 'testtest200', '9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08', 'Mobile Div', '401_fullName', '401@test.com', null, 'ADMIN', null, null);
+(401, 'testtest200', '9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08', 'Mobile Div', '401_fullName', '401@test.com', null, 'ADMIN', null, null),
+(999, 'forUnitTest', '9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08', 'Mobile Div', '999_fullName', '999@test.com', null, 'ADMIN', null, null)
+;
 
 INSERT INTO point (id, created_date, modified_date, point, user_id)
 VALUES (400, '2020-09-25 04:21:51', '2020-09-25 04:21:51', 120, 400);
@@ -14,6 +16,12 @@ VALUES (90, '2020-10-05 13:21:51', '2020-10-01',  8500, 12, 1200, 2, 7300, 14, 4
 
 INSERT INTO product_category(id, name, is_enabled, admin_id, created_date, modified_date)
 VALUES (500, 'categorytest', true, 'testid', '2020-10-15 16:00:00', '2020-10-16 16:00:00');
+
+INSERT INTO product(id, name, barcode, is_enabled, point, quantity, category_id, admin_id, created_date, modified_date)
+VALUES (500, 'testProduct', '123123123123', true, 100, 200, 500, 'testAdmin', '2020-12-20 12:12:12', '2020-12-20 12:12:12');
+
+INSERT INTO product_purchase(id, product_id, category_id, purchase_amount, purchase_quantity, purchase_date, created_date, modified_date, admin_id)
+VALUES (500, 500, 500, 500, 50, '2020-12-03', '2020-12-03 12:12:12', '2020-12-03 12:12:12', 'testid');
 
 INSERT INTO transaction (created_date, modified_date, merchant_id, origin_id, payment_type, point, request_id, state, type, user_id) VALUES ('2020-09-22 07:42:51', '2020-09-22 08:18:29', 123, 1, null, 100, 'jgGZRQuJZubGGIx5thwO', 'SUCCESS', 'PAYMENT', 400);
 INSERT INTO transaction (created_date, modified_date, merchant_id, origin_id, payment_type, point, request_id, state, type, user_id) VALUES ('2020-09-22 07:46:55', '2020-09-22 08:26:03', 123, 2, null, 100, 'jLVLNV6rCIzcO0Gb0OVw', 'SUCCESS', 'PAYMENT', 400);
