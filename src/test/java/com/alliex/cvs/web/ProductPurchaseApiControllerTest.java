@@ -70,7 +70,6 @@ public class ProductPurchaseApiControllerTest {
         final String adminId = "adminId Updated";
         final LocalDate purchaseDate = LocalDate.now();
 
-        productPurchaseUpdateRequest.setAdminId(adminId);
         productPurchaseUpdateRequest.setPurchaseAmount(purchaseAmount);
         productPurchaseUpdateRequest.setPurchaseQuantity(purchaseQuantity);
         productPurchaseUpdateRequest.setPurchaseDate(purchaseDate);
