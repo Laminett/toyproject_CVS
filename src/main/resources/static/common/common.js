@@ -9,6 +9,6 @@ $(document).on('click', '.language-select', function () {
     }).done(function (data) {
         location.reload();
     }).fail(function (error) {
-        console.log(error);
+        alert("fail to language load.");
     });
 });

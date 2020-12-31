@@ -15,10 +15,12 @@ public class ChangeLangController {
     @GetMapping("/web-api/v1/language/{lang}")
     @ResponseBody
     public ApiResult ChangeLanguage(@PathVariable String lang, HttpServletRequest request) {
-        Locale locale = Locale.ENGLISH;
-        if ("vi".equalsIgnoreCase(lang)) {
+        Locale locale = null;
+        if (lang.equalsIgnoreCase("en")) {
+            locale = Locale.ENGLISH;
+        }else if (lang.equalsIgnoreCase("vi")) {
             locale = new Locale("vi", "VN");
-        } else if ("ko".equalsIgnoreCase(lang)) {
+        } else if (lang.equalsIgnoreCase("ko")) {
             locale = Locale.KOREAN;
         }
 
