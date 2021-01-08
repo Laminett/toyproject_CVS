@@ -36,6 +36,9 @@ public class UserService implements UserDetailsService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private PointService pointService;
+
     public Optional<User> findByUsername(String username) {
         return userRepository.findByUsername(username);
     }
@@ -64,7 +67,7 @@ public class UserService implements UserDetailsService {
     }
 
     public Long save(UserSaveRequest userSaveRequest) {
-        // Check existence of an user.
+        // Check existence of a user.
         userRepository.findByUsername(userSaveRequest.getUsername()).ifPresent(user -> {
             throw new UserAlreadyExistsException(user.getUsername());
         });
@@ -73,8 +76,13 @@ public class UserService implements UserDetailsService {
         User user = userSaveRequest.toEntity();
         user.setPassword(encoder.encode(user.getPassword()));
 
-        // Create user.
-        return userRepository.save(user).getId();
+        // Create a user.
+        Long userId =  userRepository.save(user).getId();
+
+        // Create a point.
+        pointService.save(userId, 0);
+
+        return userId;
     }
 
     @Transactional

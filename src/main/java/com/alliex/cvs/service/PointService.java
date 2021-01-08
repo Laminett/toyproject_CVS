@@ -20,6 +20,16 @@ public class PointService {
         return pointRepository.save(pointRequest.toEntity()).getUserId();
     }
 
+    @Transactional
+    public Long save(Long userId, int point) {
+        Point _point = Point.builder()
+                .userId(userId)
+                .point(point)
+                .build();
+
+        return pointRepository.save(_point).getUserId();
+    }
+
     @Transactional(readOnly = true)
     public PointResponse findByUserId(Long userId) {
         Point entity = pointRepository.findByUserId(userId)
@@ -35,7 +45,7 @@ public class PointService {
         int originPoint = pointEntity.getPoint();
         int resultPoint = originPoint + point;
         // 충전한도는 정해지는 대로 변경
-        if(resultPoint > 2000000) {
+        if (resultPoint > 2000000) {
             throw new PointLimitExcessException("The point is too much to charge. point : " + point);
         }
 
@@ -52,7 +62,7 @@ public class PointService {
 
         int originPoint = pointEntity.getPoint();
         int resultPoint = originPoint - point;
-        if(resultPoint < 0) {
+        if (resultPoint < 0) {
             throw new PointLimitExcessException("The point is not enough to pay. point : " + point);
         }
 
