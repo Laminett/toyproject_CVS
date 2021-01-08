@@ -48,7 +48,13 @@ var main = {
                 var purchaseId = $(this).closest('tr').find('td').eq(0).text();
                 _this.getPurchase(purchaseId);
             } else {
-                _this.addFormVisible(false);
+                if (location.hostname == "localhost" || location.hostname == _this.DEV) {
+                    $("#barcode").attr('readOnly', false);
+                    _this.addFormVisible(true);
+                } else {
+                    _this.addFormVisible(false);
+                }
+
                 $('.description').text('Input Purchase Data');
             }
         });

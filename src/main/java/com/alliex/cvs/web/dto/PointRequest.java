@@ -11,11 +11,11 @@ public class PointRequest {
 
     private Long userId;
 
-    private Integer point;
+    private Long point;
 
     @Builder
-    public PointRequest(Long userId, Integer point) {
-        this.userId=userId;
+    public PointRequest(Long userId, Long point) {
+        this.userId = userId;
         this.point = point;
     }
 

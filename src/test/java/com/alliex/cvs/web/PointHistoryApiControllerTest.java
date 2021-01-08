@@ -46,7 +46,7 @@ public class PointHistoryApiControllerTest {
     @Test
     public void chargeRequest() throws Exception {
 
-        PointHistorySaveRequest pointHistorySaveRequest = getPointHistorySaveRequest(10000);
+        PointHistorySaveRequest pointHistorySaveRequest = getPointHistorySaveRequest(10000L);
 
         mvc.perform(post("/api/v1/point/history/save")
                 .accept(MediaType.APPLICATION_JSON)
@@ -60,7 +60,7 @@ public class PointHistoryApiControllerTest {
     @Test
     public void chargeRequest_PointTooMuch() throws Exception {
 
-        PointHistorySaveRequest pointHistorySaveRequest = getPointHistorySaveRequest(999999999);
+        PointHistorySaveRequest pointHistorySaveRequest = getPointHistorySaveRequest(999999999L);
 
         mvc.perform(post("/api/v1/point/history/save")
                 .accept(MediaType.APPLICATION_JSON)
@@ -70,7 +70,7 @@ public class PointHistoryApiControllerTest {
                 .andExpect(jsonPath("$.code", is("POINT_LIMIT_EXCESS")));
     }
 
-    private PointHistorySaveRequest getPointHistorySaveRequest(Integer point) {
+    private PointHistorySaveRequest getPointHistorySaveRequest(Long point) {
         return PointHistorySaveRequest.builder()
                 .userId(testUserId)
                 .point(point)

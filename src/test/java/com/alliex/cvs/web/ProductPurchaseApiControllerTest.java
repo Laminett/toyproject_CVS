@@ -91,7 +91,7 @@ public class ProductPurchaseApiControllerTest {
 
     @WithMockCustomUser
     @Test
-    public void updateProductPurchase_ProductCategoryNotFound() throws Exception {
+    public void updateProductPurchase_ProductPurchaseNotFound() throws Exception {
         final Long testId = 500L;
         // Given
         ProductPurchaseUpdateRequest productPurchaseUpdateRequest = new ProductPurchaseUpdateRequest();

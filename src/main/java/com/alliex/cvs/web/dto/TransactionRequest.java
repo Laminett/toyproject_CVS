@@ -2,18 +2,24 @@ package com.alliex.cvs.web.dto;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
+@Setter
+@NoArgsConstructor
 public class TransactionRequest {
 
-    private String searchField;
+    private String userId;
 
-    private String searchValue;
+    private String merchantId;
 
-    @Builder
-    public TransactionRequest(String searchField, String searchValue) {
-        this.searchField = searchField;
-        this.searchValue = searchValue;
-    }
+    private String paymentType;
+
+    private Long point;
+
+    private String state;
+
+    private String type;
 
 }

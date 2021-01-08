@@ -24,7 +24,7 @@ public class TransactionSaveRequest {
 
     private Long originId;
 
-    private Integer point;
+    private Long point;
 
     private PaymentType paymentType;
 
@@ -37,7 +37,7 @@ public class TransactionSaveRequest {
     private List<Map<String, String>> transProduct;
 
     @Builder
-    public TransactionSaveRequest(Long userId, Long merchantId, Long originId, Integer point, TransactionState transactionState, TransactionType transactionType, String requestId, List<Map<String, String>> transProduct) {
+    public TransactionSaveRequest(Long userId, Long merchantId, Long originId, Long point, TransactionState transactionState, TransactionType transactionType, String requestId, List<Map<String, String>> transProduct) {
         this.userId = userId;
         this.merchantId = merchantId;
         this.originId = originId;
@@ -49,7 +49,7 @@ public class TransactionSaveRequest {
     }
 
     @Builder
-    public TransactionSaveRequest(Long userId, Long merchantId, Long originId, Integer point, TransactionState transactionState, TransactionType transactionType, String requestId, PaymentType paymentType) {
+    public TransactionSaveRequest(Long userId, Long merchantId, Long originId, Long point, TransactionState transactionState, TransactionType transactionType, String requestId, PaymentType paymentType) {
         this.userId = userId;
         this.merchantId = merchantId;
         this.originId = originId;
@@ -61,11 +61,14 @@ public class TransactionSaveRequest {
     }
 
     public Transaction toEntity() {
-        User setUserId = new User();
-        setUserId.setId(userId);
+        // User -> Transaction 관계 임시 해제를 위한 주석
+//        User setUserId = new User();
+//        setUserId.setId(userId);
 
         return Transaction.builder()
-                .user(setUserId)
+                // User -> Transaction 관계 임시 해제를 위한 주석
+//                .user(setUserId)
+                .userId(userId)
                 .merchantId(merchantId)
                 .originId(originId)
                 .point(point)

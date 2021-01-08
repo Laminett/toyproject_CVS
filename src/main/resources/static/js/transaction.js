@@ -1,142 +1,225 @@
 var main = {
+    SEARCH_KEY: "userId",
+    DEV: "192.168.0.95",
     init: function () {
         var _this = this;
 
-        _this.dataLoad(1);
+        _this.getTransactions();
+
+        $("#transaction-search-field a").click(function () {
+            let searchKey = $(this).attr("searchKey");
+            let searchKeyLabel = $(this).text();
+
+            _this.SEARCH_KEY = searchKey;
+            $("#dropdownMenuButton-transaction-search").text(searchKeyLabel);
+        });
 
         $(document).on('click', '.page-link', function () {
-            _this.dataLoad(this.text);
+            _this.getTransactions(this.text);
         });
 
         // refund
         $(document).on('click', 'button[name=refund]', function () {
             if (confirm('Really want to REFUND?')) {
-                var transId = $(this).closest('tr').find('td').eq(0).text();
-                _this.refund(transId);
+                var transactionId = $(this).closest('tr').find('td').eq(0).text();
+                _this.refund(transactionId);
             }
         });
 
         // 검색 이벤트
         $('#search').on('click', function () {
-            if ($('#searchField').val() == 'Choose...') {
-                alert('Please select search category');
-                return false;
-            }
-            _this.dataLoad(1);
+            _this.getTransactions();
         });
 
         $(document).on('click', '[data-toggle=modal]', function () {
-            $('#TransactionId').val($(this).closest('tr').find('td').eq(1).text());
-            $('#BuyerId').val($(this).closest('tr').find('td').eq(2).text());
-            $('#MerchantId').val($(this).closest('tr').find('td').eq(3).text());
-            $('#PaymentType').val($(this).closest('tr').find('td').eq(4).text());
-            $('#TransactionPoint').val($(this).closest('tr').find('td').eq(5).text());
-            $('#TransactionState').val($(this).closest('tr').find('td').eq(6).text());
-            $('#TransactionType').val($(this).closest('tr').find('td').eq(7).text());
-            $('#barcode').val($(this).closest('tr').find('td').eq(8).text());
+            let transactionId = $(this).closest('tr').find('td').eq(0).text();
+            _this.getTransaction(transactionId);
+        });
 
-            // 상세 데이터 ajax call
-            var transId = $('#TransactionId').val();
+/////////////////////////Local/ Dev Transaction TEST 용 //////////////////////////////////
+
+        if (location.hostname == "localhost" || location.hostname == _this.DEV) {
+            $('#setp1').css('display', 'block');
+            $('#setp2').css('display', 'block');
+            $('#setp3').css('display', 'block');
+            $('#setp4').css('display', 'block');
+        } else {
+            $('#setp1').css('display', 'none');
+            $('#setp2').css('display', 'none');
+            $('#setp3').css('display', 'none');
+            $('#setp4').css('display', 'none');
+        }
+
+        $('#step1').on('click', function () {
+            var data = {
+                merchantId: 123,
+                state: 'WAIT',
+                transProduct: [
+                    {
+                        productId: 1,
+                        productAmount: 1,
+                        productPoint: 11
+                    },
+                    {
+                        productId: 3,
+                        productAmount: 2,
+                        productPoint: 12
+                    },
+                    {
+                        productId: 4,
+                        productAmount: 3,
+                        productPoint: 13
+                    },
+                ],
+                point: 100
+            };
+
+            $.ajax({
+                type: 'POST',
+                url: '/web-api/v1/transactions/payment/QRstep1',
+                data: JSON.stringify(data),
+                dataType: 'TEXT',
+                contentType: 'application/json'
+            }).done(function (data) {
+                alert(data);
+            }).fail(function (error) {
+                alert(JSON.stringify(error));
+            });
+        });
+
+        $('#step2').on('click', function () {
+            var barcode = prompt("input barcode");
 
             $.ajax({
                 type: 'GET',
-                url: '/web-api/v1/transactions/' + transId,
+                url: '/web-api/v1/transactions/state/' + barcode,
+                // data:JSON.stringify(data),
+                dataType: 'TEXT'
+                // contentType: 'application/json'
+            }).done(function (data) {
+                alert(data);
+            }).fail(function (error) {
+                alert(JSON.stringify(error));
+            });
+        });
+
+        $('#step3').on('click', function () {
+            var barcode = prompt("input barcode");
+            let data = {
+                paymentType: 1,
+                userId: 403
+            };
+            $.ajax({
+                type: 'PUT',
+                url: '/web-api/v1/transactions/payment/QRstep2/' + barcode,
+                // data:"barcode=9aLdIvsYFFy7",
+                dataType: 'TEXT',
+                contentType: 'application/json',
+                data: JSON.stringify(data)
+            }).done(function (data) {
+                alert(data);
+            }).fail(function (error) {
+                alert(JSON.stringify(error));
+            });
+        });
+////////////////////////////////////////////////////////////////////////////////////////////////
+    },
+    getTransaction: function (id) {
+        $.ajax({
+            type: 'GET',
+            url: 'web-api/v1/transactions/' + id,
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8'
+        }).done(function (data) {
+            $('#TransactionId').val(data.id);
+            // User -> Transaction 관계 임시 해제를 위한 주석
+            // $('#BuyerId').val(data.user.username);
+            $('#BuyerId').val(data.userId);
+            $('#MerchantId').val(data.merchantId);
+            $('#PaymentType').val(data.paymentType);
+            $('#TransactionPoint').val(data.point);
+            $('#TransactionState').val(data.state);
+            $('#TransactionType').val(data.type);
+            $('#barcode').val(data.requestId);
+
+            $("#transactionDetailModal").modal("show");
+
+            $.ajax({
+                type: 'GET',
+                url: 'web-api/v1/transactions/items/' + id,
                 dataType: 'json'
             }).done(function (data) {
-                $('#transactionDetail').empty();
-                $('#detailsum').empty();
-                if (data.content == "") {
-                    $('#transactionDetail').append(" <tr> "
-                        + "<td> 조회 결과가 없습니다. </td>  "
-                        + "</tr>");
+                $('#transactionItems').empty();
+                $('#totalPoint').empty();
+
+                let totalPoint = [];
+                if (data.length == 0) {
+                    $("#transactionsItemsNoDataTemplate").tmpl().appendTo("#transactionItems");
+                    $("#transactionsItemsTotalPointTemplate").tmpl(0).appendTo("#totalPoint");
                 } else {
-                    let summerize = 0;
+                    data.totalPoint = 0;
                     data.forEach(function (element) {
-                        summerize += element.productPoint;
-                        $('#transactionDetail').append(" <tr> "
-                            + "<td>" + element.productName + "</td>"
-                            + "<td>" + element.productQuantity + "</td>"
-                            + "<td class='text-right'>" + element.productPoint + "</td>"
-                            + "</tr>"
-                        );
+                        data.totalPoint += element.productPoint;
                     });
 
-                    $('#detailsum').append(" <tr class='popthead' style='border: #9e9e9e 1px solid'> "
-                        + "<td> SUMMERIZE :</td>"
-                        + "<td colspan=2 class='text-right'>" + summerize + "</td>"
-                        + "</tr>"
-                    );
+                    totalPoint.push({"totalPoint": data.totalPoint});
 
-                    for (var i = 1; i <= data.totalPages; i++) {
-                        $('.pagination').append('<li class="page-item"><a class="page-link" id="paging">' + i + '</a><li>');
-                    }
+                    $("#transactionsItemsTemplate").tmpl(data).appendTo("#transactionItems")
+                    $("#transactionsItemsTotalPointTemplate").tmpl(totalPoint).appendTo("#totalPoint");
                 }
+
             }).fail(function (error) {
                 alert(JSON.stringify(error.responseJSON.message));
             });
-        });
+        })
     },
-    dataLoad: function (pageNum) {
-        var searchData;
-        if ($('#searchField').val() == "Choose...") {
-            searchData = "page=" + pageNum + "&searchField=&searchValue=" + $('#searchValue').val();
-        } else {
-            searchData = "page=" + pageNum + "&searchField=" + $('#searchField').val() + "&searchValue=" + $('#searchValue').val();
-        }
+    getTransactions: function (page) {
+        let _this = this;
+
+        let param = {
+            page: page || 1,
+        };
+
+        let k, v;
+        k = _this.SEARCH_KEY;
+        v = $("#searchValue").val();
+
+        param[k] = v;
 
         $.ajax({
             type: 'GET',
             url: '/web-api/v1/transactions',
-            data: searchData
+            data: param
         }).done(function (data) {
             $('#transactions').empty();
             $('.pagination').empty();
-            if (data.content == "") {
-                $('#transactions').append(" <tr> "
-                    + "<td> 조회 결과가 없습니다. </td>  "
-                    + "</tr>");
+            if (data.content.length == 0) {
+                $("#transactionsNoDataTemplate").tmpl().appendTo("#transactions");
             } else {
                 let number = data.totalElements - (data.number * 10);
                 data.content.forEach(function (element) {
-                    var str = "";
-                    if (element.state == "SUCCESS") {
-                        str = "    <button type='button' rel='tooltip' class='btn btn-danger' name='refund'>"
-                            + "     <i class='material-icons'>close</i>"
-                            + "    </button>";
+                    element.number = number--;
+                    if (element.user == null) {
+                        element.user = "";
                     }
-                    $('#transactions').append(" <tr> "
-                        + "<td>" + number-- + "</td>  "
-                        + "<td style='display: none'>" + element.id + "</td>  "
-                        + "<td>" + element.user.username + "</td> "
-                        + "<td>" + element.merchantId + "</td>"
-                        + "<td>" + element.paymentType + "</td>"
-                        + "<td class='text-right'>" + element.point + "</td>"
-                        + "<td>" + element.state + "</td>"
-                        + "<td>" + element.type + "</td>"
-                        + "<td style='display:none;position:absolute'>" + element.requestId + "</td>"
-                        + "<td>" + element.createdDate.replace('T', ' ') + "</td>"
-                        + "<td>" + element.modifiedDate.replace('T', ' ') + "</td>"
-                        + "<td class='td-actions text-center'>"
-                        + "    <button type='button' rel='tooltip' class='btn btn-success' name='details'>"
-                        + "     <i class='material-icons' data-toggle='modal' data-target='#addUpdateModal'>find_in_page</i>"
-                        + "    </button>"
-                        + str
-                        + "</td>"
-                        + "</tr>");
                 });
 
-                for (var i = 1; i <= data.totalPages; i++) {
-                    $('.pagination').append('<li class="page-item"><a class="page-link" id="paging">' + i + '</a><li>');
+                $("#transactionsTemplate").tmpl(data.content).appendTo("#transactions");
+
+                let pages = [];
+                for (let i = 1; i < data.totalPages; i++) {
+                    pages.push({"page": i + 1});
                 }
+                $("#transactionsPagingTemplate").tmpl(pages).appendTo(".pagination");
             }
         }).fail(function (error) {
             alert(JSON.stringify(error.responseJSON.message));
         });
     },
-    refund: function (transId) {
+    refund: function (id) {
         $.ajax({
             type: 'POST',
-            url: '/web-api/v1/transactions/refund/' + transId,
+            url: '/web-api/v1/transactions/refund/' + id,
             contentType: 'application/json; charset=utf-8',
         }).done(function () {
             alert('취소 처리 되었습니다.');

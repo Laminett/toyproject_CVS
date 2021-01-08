@@ -13,7 +13,7 @@ public class PointResponse {
 
     private Long userId;
 
-    private Integer point;
+    private Long point;
 
     @Builder
     public PointResponse(Point entity) {

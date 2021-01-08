@@ -1,28 +1,27 @@
-var main = {
-    SEARCH_KEY: "category",
+let main = {
+    SEARCH_KEY: "name",
+    DEV: "192.168.0.95",
     init: function () {
-        var addOrUpdate = 0;
+        let _this = this;
 
-        var _this = this;
-
-        _this.dataLoad(1);
+        _this.getProducts();
 
         $("#product-search-field a").click(function () {
-            var searchKey = $(this).attr("searchKey");
-            var searchKeyLabel = $(this).text();
+            let searchKey = $(this).attr("searchKey");
+            let searchKeyLabel = $(this).text();
 
             _this.SEARCH_KEY = searchKey;
             $("#dropdownMenuButton-product-search").text(searchKeyLabel);
         });
 
         $(document).on('click', '.page-link', function () {
-            _this.dataLoad(this.text);
+            _this.getProducts(this.text);
         });
 
         // delete
         $(document).on('click', 'button[name=delete]', function () {
             if (confirm('Really want to DELETE?')) {
-                var productId = $(this).closest('tr').find('td').eq(0).text();
+                let productId = $(this).closest('tr').find('td').eq(0).text();
                 _this.delete(productId);
             }
         });
@@ -33,63 +32,28 @@ var main = {
                 return false;
             }
 
-            if (addOrUpdate == 0) {
-                _this.save();
-            } else {
-                _this.update();
-            }
+            _this.createProduct();
         });
 
         // 검색 이벤트
         $('#search').on('click', function () {
-            if ($('#searchField').val() == 'Choose...') {
-                alert('Please select search category');
-
-                return false;
-            }
-
-            _this.dataLoad(1);
+            _this.getProducts(1);
         });
 
-        // category선택시 categoryId 값 전달
-        $('#categoryName').change(function () {
-            $('#categoryId').val(this.value);
-        });
         // 상품 추가와 업데이트 창 데이터 전달
         $(document).on('click', '[data-toggle=modal]', function () {
             if ($(this).text() == "edit") {
-                addOrUpdate = 1;
-                $('#id').val($(this).closest('tr').find('td').eq(0).text());
-                $('#categoryId').val($(this).closest('tr').find('td').eq(1).text());
-                $('#categoryName').val($(this).closest('tr').find('td').eq(1).text());
-                $('#name').val($(this).closest('tr').find('td').eq(3).text());
-                $('#point').val($(this).closest('tr').find('td').eq(4).text());
-                $('#quantity').val($(this).closest('tr').find('td').eq(5).text());
-                $('#barcode').val($(this).closest('tr').find('td').eq(6).text());
-                if ($(this).closest('tr').find('td').eq(7).text() == "Y") {
-                    $('#isEnabled').prop('checked', true);
-                } else {
-                    $('#isEnabled').prop('checked', false);
-                }
-                $('#addProuct').text('MODIFY Product');
-                $('#modalTitle').text('Modify Product')
-                $('.description').text('Modify Product Detail');
-                _this.addFormVisible(true);
+                let productId = $(this).closest('tr').find('td').eq(0).text();
+                _this.getProduct(productId);
             } else {
-                addOrUpdate = 0;
-                $('#id').val('');
-                $('#name').val('');
-                $('#point').val('');
-                $('#quantity').val('');
-                $('#barcode').val('');
-                $('#categoryId').val('');
-                $('#isEnabled').prop('checked', false);
-                $('#addProuct').text('ADD Product');
-                $('#modalTitle').text('Add Product');
-                $('.description').text('Please scan barcode first');
-                $('#categoryName option:eq(0)').prop('selected', 'selected');
-                // 상품 추가시 바코드 스캔 이후 상품정보 입력 가능하게 함.
-                _this.addFormVisible(false);
+                if (location.hostname == "localhost" || location.hostname == _this.DEV) {
+                    $("#barcode").attr('readOnly', false);
+                    _this.addFormVisible(true);
+                } else {
+                    _this.addFormVisible(false);
+                }
+
+                $('.description').text('First scan the Product barcode please');
             }
         });
 
@@ -120,77 +84,66 @@ var main = {
             }
         });
     },
-    save: function () {
-        var data = {
+    createProduct: function () {
+        let _this = this;
+        let isUpdate;
+
+        let productId = $("#productId").val();
+        if (productId) {
+            isUpdate = true;
+        }
+
+        let data = {
             barcode: $('#barcode').val(),
-            categoryId: $('#categoryId').val(),
+            categoryId: $('#categoryName').val(),
             id: $('#id').val(),
-            adminId: $('#adminId').val(),
             name: $('#name').val(),
             point: $('#point').val(),
             quantity: $('#quantity').val(),
             isEnabled: $('#isEnabled').val()
         };
+
+        let apiEndPoint;
+        if (productId) {
+            apiEndPoint = "web-api/v1/products/" + productId;
+        } else {
+            apiEndPoint = "web-api/v1/products";
+        }
 
         $.ajax({
             type: 'POST',
-            url: '/web-api/v1/products',
-            dataType: 'json',
+            url: apiEndPoint,
             contentType: 'application/json; charset=utf-8',
             data: JSON.stringify(data)
         }).done(function () {
-            alert(messages["alert.insert.success"]);
-            window.location.href = '/products?searchField=&searchValue=';
-        }).fail(function (error) {
-            if (error.responseJSON.code == 'PRODUCT_ALREADY_EXISTS') {
-                alert('동일한 상품명이 존재합니다.');
+            $("#createProductModal").modal("hide");
+            if (isUpdate) {
+                alert(messages["alert.update.success"]);
             } else {
-                console.log(error);
-                var responseJSON = '';
-                if (error.responseJSON) {
-                    responseJSON = '\n' + error.responseJSON;
-                }
-
-                alert('오류가 발생했습니다. 관리자에게 문의해 주세요.' + responseJSON);
+                alert(messages["alert.insert.success"]);
             }
-        });
-    },
-    update: function () {
-        var data = {
-            barcode: $('#barcode').val(),
-            categoryId: $('#categoryId').val(),
-            id: $('#id').val(),
-            adminId: $('#adminId').val(),
-            name: $('#name').val(),
-            point: $('#point').val(),
-            quantity: $('#quantity').val(),
-            isEnabled: $('#isEnabled').val()
-        };
 
-        var id = $('#id').val();
-
-        $.ajax({
-            type: 'PUT',
-            url: '/web-api/v1/products/' + id,
-            dataType: 'json',
-            contentType: 'application/json; charset=utf-8',
-            data: JSON.stringify(data)
-        }).done(function () {
-            alert(messages["alert.update.success"]);
-            window.location.href = '/products';
+            _this.getProducts();
         }).fail(function (error) {
             if (error.responseJSON.code == 'PRODUCT_NOT_FOUND') {
                 alert('해당 상품이 존재하지 않습니다.');
-            } else {
-                console.log(error);
-                var responseJSON = '';
-                if (error.responseJSON) {
-                    responseJSON = '\n' + error.responseJSON;
-                }
+                return;
+            }
+
+            if (error.responseJSON.code == 'PRODUCT_ALREADY_EXISTS') {
+                alert('해당 상품명이 이미 존재합니다.');
+                return;
+            }
+
+            console.log(error);
+            let responseJSON = '';
+            if (error.responseJSON) {
+                responseJSON = '\n' + error.responseJSON.message;
             }
 
             alert('오류가 발생했습니다. 관리자에게 문의해 주세요.' + responseJSON);
         });
+
     },
     delete: function (productId) {
         $.ajax({
@@ -206,7 +159,7 @@ var main = {
                 alert('해당 상품이 존재하지 않습니다.');
             } else {
                 console.log(error);
-                var responseJSON = '';
+                let responseJSON = '';
                 if (error.responseJSON) {
                     responseJSON = '\n' + error.responseJSON;
                 }
@@ -264,27 +217,79 @@ var main = {
     },
     addFormVisible: function (visibility) {
         if (visibility) {
-            $('#categoryName').css('display', 'block');
-            $('#name').css('display', 'block');
-            $('#point').css('display', 'block');
-            $('#quantity').css('display', 'block');
-            $('#checkbox_div').css('display', 'block');
+            $('#div_categoryName').css('display', 'block');
+            $('#div_name').css('display', 'block');
+            $('#div_point').css('display', 'block');
+            $('#div_quantity').css('display', 'block');
+            $('#div_checkbox').css('display', 'block');
         } else {
-            $('#categoryName').css('display', 'none');
-            $('#name').css('display', 'none');
-            $('#point').css('display', 'none');
-            $('#quantity').css('display', 'none');
-            $('#checkbox_div').css('display', 'none');
+            $('#div_categoryName').css('display', 'none');
+            $('#div_name').css('display', 'none');
+            $('#div_point').css('display', 'none');
+            $('#div_quantity').css('display', 'none');
+            $('#div_checkbox').css('display', 'none');
         }
     },
-    dataLoad: function (page) {
-        let searchData;
-        searchData = "page=" + page + "&searchField=" + $('#dropdownMenuButton-product-search').text().trim() + "&searchValue=" + $('#searchValue').val();
+    getProduct: function (id) {
+        $.ajax({
+            type: 'GET',
+            url: 'web-api/v1/products/' + id,
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8'
+        }).done(function (data) {
+            $("#productId").val(data.id);
+            $("#categoryName").val(data.categoryId.id);
+            $("#name").val(data.name);
+            $("#point").val(data.point);
+            $("#barcode").val(data.barcode);
+            $("#quantity").val(data.quantity);
+            $('.description').text('Modify Purchase Data');
+
+            if (data.isEnabled) {
+                $('#isEnabled').prop('checked', true);
+            } else {
+                $('#isEnabled').prop('checked', false);
+            }
+
+            $("#createProductModal").modal("show");
+        }).fail(function (error) {
+            if (error.responseJSON.code == 'PRODUCT_NOT_FOUND') {
+                alert('해당 상품이 존재하지 않습니다.');
+            } else {
+                console.log(error);
+                let responseJSON = '';
+                if (error.responseJSON) {
+                    responseJSON = '\n' + error.responseJSON.message;
+                }
+
+                alert('오류가 발생했습니다. 관리자에게 문의해 주세요.' + responseJSON);
+            }
+        });
+
+    },
+    getProducts: function (page) {
+        let _this = this;
+
+        let param = {
+            page: page || 1,
+        };
+
+        let k, v;
+        k = _this.SEARCH_KEY;
+        v = $("#searchValue").val();
+
+        if (_this.SEARCH_KEY == 'isEnabled') {
+            v = v.toUpperCase();
+            (v == 'Y') ? v = true : v = false;
+        }
+
+        param[k] = v;
 
         $.ajax({
             type: 'GET',
             url: '/web-api/v1/products',
-            data: searchData,
+            dataType: 'json',
+            data: param,
             contentType: 'application/json; charset=utf-8'
         }).done(function (data) {
             $('#products').html(null);

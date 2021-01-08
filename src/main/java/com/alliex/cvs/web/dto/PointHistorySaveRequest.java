@@ -12,10 +12,10 @@ public class PointHistorySaveRequest {
 
     private Long userId;
 
-    private int point;
+    private Long point;
 
     @Builder
-    public PointHistorySaveRequest(Long userId, Integer point) {
+    public PointHistorySaveRequest(Long userId, Long point) {
         this.userId = userId;
         this.point = point;
     }

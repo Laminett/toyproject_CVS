@@ -20,7 +20,7 @@ public class NotEnoughPointException extends InternalException {
         return errorCode;
     }
 
-    public NotEnoughPointException(Integer userPoint, Integer requiredPoint) {
+    public NotEnoughPointException(Long userPoint, Long requiredPoint) {
         super("Not Enough point : have point " + userPoint + " required point " + requiredPoint);
     }
 

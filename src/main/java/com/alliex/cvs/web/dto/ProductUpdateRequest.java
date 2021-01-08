@@ -12,8 +12,6 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class ProductUpdateRequest {
 
-    private Long id;
-
     private Long categoryId;
 
     private String name;

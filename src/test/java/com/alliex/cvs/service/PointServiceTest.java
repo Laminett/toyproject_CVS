@@ -25,13 +25,13 @@ public class PointServiceTest {
 
     @Test
     public void updatePointPlus() {
-        long result = pointService.updatePointPlus(testId, 30);
+        long result = pointService.updatePointPlus(testId, 30L);
         assertThat(result).isEqualTo(testId);
     }
 
     @Test
     public void updatePointMinus() {
-        long result = pointService.updatePointMinus(testId, 30);
+        long result = pointService.updatePointMinus(testId, 30L);
         assertThat(result).isEqualTo(testId);
     }
 
