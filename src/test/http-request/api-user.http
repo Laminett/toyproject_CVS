@@ -1,0 +1,30 @@
+### Authorization by token, part 1. Retrieve and save token.
+POST http://{{host}}:{{port}}/api/login
+content-type: application/json
+
+{
+  "username": "test",
+  "password": "test"
+}
+
+> {% client.global.set("auth_token", response.body.token); %}
+
+### Authorization by token, part 2. Use token to authorize.
+GET http://{{host}}:{{port}}/api/v1/posts
+content-type: application/json
+Authorization: Bearer {{auth_token}}
+
+### 회원 가입
+POST http://{{host}}:{{port}}/api/v1/users
+content-type: application/json
+Authorization: Bearer {{auth_token}}
+
+{
+  "username": "user1",
+  "password": "1111",
+  "email": "shkim@alli-ex.com",
+  "fullName": "fullName",
+  "phoneNumber": "010-1111-2222",
+  "department": "dev",
+  "role": "USER"
+}

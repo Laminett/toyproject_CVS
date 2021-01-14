@@ -3,7 +3,6 @@ package com.alliex.cvs.service;
 import com.alliex.cvs.domain.point.Point;
 import com.alliex.cvs.domain.point.PointRepository;
 import com.alliex.cvs.exception.PointLimitExcessException;
-import com.alliex.cvs.web.dto.PointRequest;
 import com.alliex.cvs.web.dto.PointResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,8 +15,13 @@ public class PointService {
     private final PointRepository pointRepository;
 
     @Transactional
-    public Long save(PointRequest pointRequest) {
-        return pointRepository.save(pointRequest.toEntity()).getUserId();
+    public Long save(Long userId, Long point) {
+        Point _point = Point.builder()
+                .userId(userId)
+                .point(point)
+                .build();
+
+        return pointRepository.save(_point).getUserId();
     }
 
     @Transactional(readOnly = true)
@@ -34,6 +38,7 @@ public class PointService {
 
         Long originPoint = pointEntity.getPoint();
         Long resultPoint = originPoint + point;
+
         // 충전한도는 정해지는 대로 변경
         if (resultPoint > 2000000) {
             throw new PointLimitExcessException("The point is too much to charge. point : " + point);
@@ -52,6 +57,7 @@ public class PointService {
 
         Long originPoint = pointEntity.getPoint();
         Long resultPoint = originPoint - point;
+
         if (resultPoint < 0) {
             throw new PointLimitExcessException("The point is not enough to pay. point : " + point);
         }
