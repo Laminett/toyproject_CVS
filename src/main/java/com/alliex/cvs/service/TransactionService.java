@@ -81,7 +81,6 @@ public class TransactionService {
         transactionSaveRequest.setState(TransactionState.WAIT);
         Long transId = save(transactionSaveRequest);
 
-
         for (Map<String, String> tMap : transactionSaveRequest.getTransProduct()) {
             TransactionDetailSaveRequest saveRequest = new TransactionDetailSaveRequest(Integer.parseInt(tMap.get("productAmount")),
                     Long.parseLong(tMap.get("productId")), TransactionState.WAIT, transId);
