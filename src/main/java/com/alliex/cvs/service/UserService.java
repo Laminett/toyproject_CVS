@@ -80,7 +80,7 @@ public class UserService implements UserDetailsService {
         Long userId =  userRepository.save(user).getId();
 
         // Create a point.
-        pointService.save(userId, 0);
+        pointService.save(userId, 0L);
 
         return userId;
     }
