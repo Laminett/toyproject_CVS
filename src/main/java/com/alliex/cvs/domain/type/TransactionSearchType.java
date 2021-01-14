@@ -19,8 +19,4 @@ public enum TransactionSearchType {
         this.value = value;
     }
 
-    public String getValue() {
-        return value;
-    }
-
 }

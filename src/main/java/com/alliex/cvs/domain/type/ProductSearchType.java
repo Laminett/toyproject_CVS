@@ -15,7 +15,4 @@ public enum ProductSearchType {
         this.value = value;
     }
 
-    public String getValue() {
-        return value;
-    }
 }

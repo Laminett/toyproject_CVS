@@ -45,7 +45,6 @@ public class PointHistoryApiControllerTest {
     @WithMockUser(roles = "USER")
     @Test
     public void chargeRequest() throws Exception {
-
         PointHistorySaveRequest pointHistorySaveRequest = getPointHistorySaveRequest(10000L);
 
         mvc.perform(post("/api/v1/point/history/save")
@@ -59,7 +58,6 @@ public class PointHistoryApiControllerTest {
     @WithMockUser(roles = "USER")
     @Test
     public void chargeRequest_PointTooMuch() throws Exception {
-
         PointHistorySaveRequest pointHistorySaveRequest = getPointHistorySaveRequest(999999999L);
 
         mvc.perform(post("/api/v1/point/history/save")
@@ -80,7 +78,6 @@ public class PointHistoryApiControllerTest {
     @WithMockUser(roles = "ADMIN")
     @Test
     public void getPointHistoryWithPage() throws Exception {
-
         mvc.perform(get("/web-api/v1/point/history").param("page", "2"))
                 .andDo(print())
                 .andExpect(status().isOk());

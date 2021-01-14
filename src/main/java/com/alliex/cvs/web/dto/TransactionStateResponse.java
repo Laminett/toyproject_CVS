@@ -22,6 +22,6 @@ public class TransactionStateResponse {
     public TransactionStateResponse(Transaction entity) {
         this.requestId = entity.getRequestId();
         this.transactionState = entity.getState();
-
     }
+
 }

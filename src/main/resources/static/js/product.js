@@ -1,6 +1,6 @@
 let main = {
     SEARCH_KEY: "name",
-    DEV: "192.168.0.95",
+    PROD_DOMAIN: "cvs.alli-ex.com",
     init: function () {
         let _this = this;
 
@@ -46,7 +46,7 @@ let main = {
                 let productId = $(this).closest('tr').find('td').eq(0).text();
                 _this.getProduct(productId);
             } else {
-                if (location.hostname == "localhost" || location.hostname == _this.DEV) {
+                if (location.hostname != _this.PROD_DOMAIN) {
                     $("#barcode").attr('readOnly', false);
                     _this.addFormVisible(true);
                 } else {

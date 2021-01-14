@@ -1,5 +1,6 @@
 var main = {
     SEARCH_KEY: "productName",
+    PROD_DOMAIN: "cvs.alli-ex.com",
     init: function () {
         var _this = this;
 
@@ -48,7 +49,7 @@ var main = {
                 var purchaseId = $(this).closest('tr').find('td').eq(0).text();
                 _this.getPurchase(purchaseId);
             } else {
-                if (location.hostname == "localhost" || location.hostname == _this.DEV) {
+                if (location.hostname != _this.PROD_DOMAIN) {
                     $("#barcode").attr('readOnly', false);
                     _this.addFormVisible(true);
                 } else {

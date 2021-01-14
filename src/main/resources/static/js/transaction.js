@@ -1,6 +1,6 @@
 var main = {
     SEARCH_KEY: "userId",
-    DEV: "192.168.0.95",
+    PROD_DOMAIN: "cvs.alli-ex.com",
     init: function () {
         var _this = this;
 
@@ -38,7 +38,7 @@ var main = {
 
 /////////////////////////Local/ Dev Transaction TEST 용 //////////////////////////////////
 
-        if (location.hostname == "localhost" || location.hostname == _this.DEV) {
+        if (location.hostname != _this.PROD_DOMAIN) {
             $('#setp1').css('display', 'block');
             $('#setp2').css('display', 'block');
             $('#setp3').css('display', 'block');
