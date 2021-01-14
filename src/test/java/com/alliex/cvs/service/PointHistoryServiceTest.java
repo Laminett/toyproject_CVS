@@ -24,7 +24,7 @@ public class PointHistoryServiceTest {
     @Test
     public void savePointHistory() {
         long userId = 400L;
-        int point = 230;
+        Long point = 230L;
 
         PointHistorySaveRequest pointHistorySaveRequest = PointHistorySaveRequest.builder()
                 .userId(userId)

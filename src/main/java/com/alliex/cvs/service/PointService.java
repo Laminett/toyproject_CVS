@@ -15,7 +15,7 @@ public class PointService {
     private final PointRepository pointRepository;
 
     @Transactional
-    public Long save(Long userId, int point) {
+    public Long save(Long userId, Long point) {
         Point _point = Point.builder()
                 .userId(userId)
                 .point(point)
@@ -32,12 +32,12 @@ public class PointService {
     }
 
     @Transactional
-    public Long updatePointPlus(Long userId, int point) {
+    public Long updatePointPlus(Long userId, Long point) {
         Point pointEntity = pointRepository.findByUserId(userId)
                 .orElseThrow(() -> new IllegalArgumentException("Not found point data. user id : " + userId));
 
-        int originPoint = pointEntity.getPoint();
-        int resultPoint = originPoint + point;
+        Long originPoint = pointEntity.getPoint();
+        Long resultPoint = originPoint + point;
 
         // 충전한도는 정해지는 대로 변경
         if (resultPoint > 2000000) {
@@ -51,12 +51,13 @@ public class PointService {
     }
 
     @Transactional
-    public Long updatePointMinus(Long userId, int point) {
+    public Long updatePointMinus(Long userId, Long point) {
         Point pointEntity = pointRepository.findByUserId(userId)
                 .orElseThrow(() -> new IllegalArgumentException("Not found point data. user id : " + userId));
 
-        int originPoint = pointEntity.getPoint();
-        int resultPoint = originPoint - point;
+        Long originPoint = pointEntity.getPoint();
+        Long resultPoint = originPoint - point;
+
         if (resultPoint < 0) {
             throw new PointLimitExcessException("The point is not enough to pay. point : " + point);
         }

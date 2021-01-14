@@ -1,19 +1,18 @@
 package com.alliex.cvs.web.dto;
 
-import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
+@Setter
+@NoArgsConstructor
 public class ProductRequest {
 
-    private String searchField;
+    private String name;
 
-    private String searchValue;
+    private String categoryName;
 
-    @Builder
-    public ProductRequest(String searchField, String searchValue) {
-        this.searchField = searchField;
-        this.searchValue = searchValue;
-    }
+    private Boolean isEnabled;
 
 }

@@ -24,7 +24,7 @@ public class ProductCategoryApiController {
     }
 
     @ApiOperation(value = "Update Category")
-    @PutMapping({"api/v1/products-categories/{id}", "web-api/v1/products-categories/{id}"})
+    @PostMapping({"api/v1/products-categories/{id}", "web-api/v1/products-categories/{id}"})
     public Long update(@PathVariable Long id, @RequestBody ProductCategoryUpdateRequest productCategoryUpdateRequest) {
         return productCategoryService.update(id, productCategoryUpdateRequest);
     }

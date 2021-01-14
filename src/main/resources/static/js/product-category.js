@@ -98,6 +98,7 @@ var main = {
         v = $("#searchValue").val();
 
         if (_this.SEARCH_KEY == 'isEnabled') {
+            v = v.toUpperCase();
             (v == 'Y') ? v = true : v = false;
         }
 

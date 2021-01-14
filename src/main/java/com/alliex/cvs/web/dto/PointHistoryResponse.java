@@ -20,7 +20,7 @@ public class PointHistoryResponse {
 
     private String fullName;
 
-    private Integer point;
+    private Long point;
 
     private String status;
 

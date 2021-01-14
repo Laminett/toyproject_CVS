@@ -66,7 +66,6 @@ public class Product extends BaseTimeEntity {
     }
 
     public void update(ProductUpdateRequest entity) {
-        this.id = entity.getId();
         this.productCategory = entity.toEntity().productCategory;
         this.name = entity.getName();
         this.point = entity.getPoint();

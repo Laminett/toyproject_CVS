@@ -24,9 +24,10 @@ public class Transaction extends BaseTimeEntity {
     @Column(nullable = false)
     private TransactionState state;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private User user;
+    // User -> Transaction 관계 임시 해제를 위한 주석
+//    @ManyToOne(cascade = CascadeType.ALL)
+//    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private Long userId;
 
     @Column(nullable = false)
     private Long merchantId;
@@ -34,7 +35,7 @@ public class Transaction extends BaseTimeEntity {
     private Long originId;
 
     @Column(nullable = false)
-    private Integer point;
+    private Long point;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -46,10 +47,10 @@ public class Transaction extends BaseTimeEntity {
     private PaymentType paymentType;
 
     @Builder
-    public Transaction(Long id, TransactionState transactionState, User user, Long merchantId, Long originId, Integer point, TransactionType transactionType, String requestId, PaymentType paymentType) {
+    public Transaction(Long id, TransactionState transactionState, Long userId, Long merchantId, Long originId, Long point, TransactionType transactionType, String requestId, PaymentType paymentType) {
         this.id = id;
         this.state = transactionState;
-        this.user = user;
+        this.userId = userId;
         this.merchantId = merchantId;
         this.point = point;
         this.type = transactionType;
@@ -58,9 +59,9 @@ public class Transaction extends BaseTimeEntity {
         this.paymentType = paymentType;
     }
 
-    public void update(TransactionState transactionState, PaymentType paymentType) {
+    public void update(Long userId, TransactionState transactionState) {
+        this.userId = userId;
         this.state = transactionState;
-        this.paymentType = paymentType;
     }
 
 }

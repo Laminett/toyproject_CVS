@@ -22,15 +22,15 @@ public class Point extends BaseTimeEntity {
     private Long userId;
 
     @Column(nullable = false)
-    private Integer point;
+    private Long point;
 
     @Builder
-    public Point(Long userId, Integer point) {
+    public Point(Long userId, Long point) {
         this.userId = userId;
         this.point = point;
     }
 
-    public void update(Integer point) {
+    public void update(Long point) {
         this.point = point;
     }
 

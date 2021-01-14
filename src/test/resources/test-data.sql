@@ -20,10 +20,21 @@ VALUES
 (501, 'categorytest1', false, 'testid', '2020-10-15 16:00:00', '2020-10-16 16:00:00');
 
 INSERT INTO product(id, name, barcode, is_enabled, point, quantity, category_id, admin_id, created_date, modified_date)
-VALUES (500, 'testProduct', '123123123123', true, 100, 200, 500, 'testAdmin', '2020-12-20 12:12:12', '2020-12-20 12:12:12');
+VALUES (500, 'testProduct', '123123123123', true, 100, 200, 500, 'testAdmin', '2020-12-20 12:12:12', '2020-12-20 12:12:12'),
+       (501, 'testProduct1', '123123123124', true, 200, 20, 500, 'testAdmin', '2020-12-20 12:12:12', '2020-12-20 12:12:12'),
+       (502, 'testProduct2', '123123123125', true, 300, 30, 500, 'testAdmin', '2020-12-20 12:12:12', '2020-12-20 12:12:12');
 
 INSERT INTO product_purchase(id, product_id, category_id, purchase_amount, purchase_quantity, purchase_date, created_date, modified_date, admin_id)
 VALUES (500, 500, 500, 500, 50, '2020-12-03', '2020-12-03 12:12:12', '2020-12-03 12:12:12', 'testid');
+
+INSERT INTO transaction (id, created_date, modified_date, merchant_id, origin_id, payment_type, point, request_id, state, type, user_id)
+VALUES (500, '2021-01-08 08:08:08', '2021-01-08 08:08:08', 123, null, 'QR', 100, 'AAAAAAAAAAaaaaaaaaaa', 'SUCCESS', 'PAYMENT', 400),
+       (550, '2021-01-08 08:08:08', '2021-01-08 08:08:08', 123, null, 'QR', 100, 'BBBBBBBBBBbbbbbbbbbb', 'WAIT', 'PAYMENT', 400);
+
+INSERT INTO transaction_detail (id, transaction_state, product_id, product_quantity, transaction_id, created_date, modified_date)
+VALUES (500, 'SUCCESS', 500, 10, 500, '2021-01-8 09:09:09', '2021-01-8 09:09:09'),
+       (501, 'SUCCESS', 501, 10, 500, '2021-01-8 09:09:09', '2021-01-8 09:09:09'),
+       (502, 'SUCCESS', 502, 10, 500, '2021-01-8 09:09:09', '2021-01-8 09:09:09');
 
 INSERT INTO transaction (created_date, modified_date, merchant_id, origin_id, payment_type, point, request_id, state, type, user_id) VALUES ('2020-09-22 07:42:51', '2020-09-22 08:18:29', 123, 1, null, 100, 'jgGZRQuJZubGGIx5thwO', 'SUCCESS', 'PAYMENT', 400);
 INSERT INTO transaction (created_date, modified_date, merchant_id, origin_id, payment_type, point, request_id, state, type, user_id) VALUES ('2020-09-22 07:46:55', '2020-09-22 08:26:03', 123, 2, null, 100, 'jLVLNV6rCIzcO0Gb0OVw', 'SUCCESS', 'PAYMENT', 400);
