@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 
 
 @Service
@@ -33,27 +34,23 @@ public class TransactionDetailService {
     }
 
     @Transactional
-    public Long update(Long transid, TransactionState transactionState) {
-        List<TransactionDetailResponse> transactionDetailResponses = transactionDetailRepository.findByTransactionId(transid);
+    public String update(String requestId, TransactionState transactionState) {
+        List<TransactionDetailResponse> transactionDetailResponses = transactionDetailRepository.findByRequestId(requestId);
         for (TransactionDetailResponse transDetail : transactionDetailResponses) {
             TransactionDetail transactionDetail = transactionDetailRepository.findById(transDetail.getId()).orElseThrow(()
                     -> new TransactionDetailNotFoundException(transDetail.getId()));
             transactionDetail.update(transactionState);
         }
 
-        return transid;
+        return requestId;
     }
 
     @Transactional(readOnly = true)
-    public List<TransactionDetailResponse> getDetails(Long transId) {
-        Transaction transaction = transactionRepository.findById(transId).orElseThrow(()
-                -> new TransactionNotFoundException(transId));
+    public List<TransactionDetailResponse> getDetails(String requestId) {
+        transactionRepository.findByRequestId(requestId).orElseThrow(()
+                -> new TransactionNotFoundException(requestId));
 
-        if (transaction.getOriginId() != null) {
-            return transactionDetailRepository.findByTransactionId(transaction.getOriginId());
-        }
-
-        return transactionDetailRepository.findByTransactionId(transId);
+        return transactionDetailRepository.findByRequestId(requestId);
     }
 
 }

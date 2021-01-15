@@ -146,7 +146,7 @@ var main = {
 
             $.ajax({
                 type: 'GET',
-                url: 'web-api/v1/transactions/items/' + id,
+                url: 'web-api/v1/transactions/items/' + data.requestId,
                 dataType: 'json'
             }).done(function (data) {
                 $('#transactionItems').empty();
@@ -157,12 +157,7 @@ var main = {
                     $("#transactionsItemsNoDataTemplate").tmpl().appendTo("#transactionItems");
                     $("#transactionsItemsTotalPointTemplate").tmpl(0).appendTo("#totalPoint");
                 } else {
-                    data.totalPoint = 0;
-                    data.forEach(function (element) {
-                        data.totalPoint += element.productPoint;
-                    });
-
-                    totalPoint.push({"totalPoint": data.totalPoint});
+                    totalPoint.push({"totalPoint": $('#TransactionPoint').val()});
 
                     $("#transactionsItemsTemplate").tmpl(data).appendTo("#transactionItems")
                     $("#transactionsItemsTotalPointTemplate").tmpl(totalPoint).appendTo("#totalPoint");

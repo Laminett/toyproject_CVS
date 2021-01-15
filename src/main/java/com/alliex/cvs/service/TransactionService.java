@@ -1,5 +1,6 @@
 package com.alliex.cvs.service;
 
+import com.alliex.cvs.domain.product.Product;
 import com.alliex.cvs.domain.transaction.*;
 import com.alliex.cvs.domain.type.PaymentType;
 import com.alliex.cvs.domain.type.TransactionSearchType;
@@ -37,6 +38,8 @@ public class TransactionService {
     private final PointService pointService;
 
     private final ProductService productService;
+
+    private final UserService userService;
 
     @Transactional(readOnly = true)
     public Page<TransactionResponse> getTransactions(Pageable pageable, TransactionRequest transactionRequest) {
@@ -117,6 +120,42 @@ public class TransactionService {
         transactionDetailService.update(transaction.getId(), TransactionState.SUCCESS);
 
         return new TransactionStateResponse(transaction.getState(), transaction.getRequestId());
+    }
+
+    @Transactional
+    public TransactionStateResponse appPayment(TransactionSaveRequest transactionSaveRequest) {
+        UserResponse userResponse = userService.getUserByUsername(transactionSaveRequest.getUsername());
+        transactionSaveRequest.setUserId(userResponse.getId());
+        PointResponse point = pointService.findByUserId(userResponse.getId());
+        Long _point = 0L;
+
+        for(Map<String, String> DetailMap : transactionSaveRequest.getTransProduct()) {
+            TransactionDetailSaveRequest saveRequest = new TransactionDetailSaveRequest(Integer.parseInt(DetailMap.get("productQuantity")),
+                    Long.parseLong(DetailMap.get("productId")), TransactionState.SUCCESS, transactionSaveRequest.getRequestId());
+            transactionDetailService.save(saveRequest);
+
+            Long _productId = Long.parseLong(DetailMap.get("productId"));
+            int _productQuantity = Integer.parseInt(DetailMap.get("productQuantity"));
+            ProductResponse _product = productService.getProductById(_productId);
+
+            productService.decreaseQuantity(_product.getId(), _productQuantity);
+
+            _point += _productQuantity * _product.getPoint();
+        }
+
+        if (point.getPoint() < _point) {
+            throw new NotEnoughPointException(point.getPoint(), transactionSaveRequest.getPoint());
+        }
+
+        transactionSaveRequest.setPaymentType(PaymentType.MOBILE);
+        transactionSaveRequest.setType(TransactionType.PAYMENT);
+        transactionSaveRequest.setState(TransactionState.SUCCESS);
+        transactionSaveRequest.setPoint(_point);
+        save(transactionSaveRequest);
+
+        pointService.updatePointMinus(transactionSaveRequest.getUserId(), _point);
+
+        return new TransactionStateResponse(TransactionState.SUCCESS, transactionSaveRequest.getRequestId());
     }
 
     @Transactional

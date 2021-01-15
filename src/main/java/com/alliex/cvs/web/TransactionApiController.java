@@ -47,6 +47,12 @@ public class TransactionApiController {
         return transactionService.QRPaymentStep2(requestId, transactionSaveRequest);
     }
 
+    @ApiOperation(value = "Transaction APP Payment", notes = "APP 을 사용하여 거래")
+    @PostMapping({"/api/v1/transactions/payment/app", "/web-api/v1/transactions/payment/app"})
+    public TransactionStateResponse appPayment(@RequestBody TransactionSaveRequest transactionSaveRequest) {
+        return transactionService.appPayment(transactionSaveRequest);
+    }
+
     @ApiOperation(value = "Transaction refund", notes = "거래 취소")
     @PostMapping({"/api/v1/transactions/refund/{transId}", "/web-api/v1/transactions/refund/{transId}"})
     public Long TransactionRefund(@PathVariable Long transId) {
@@ -61,8 +67,8 @@ public class TransactionApiController {
 
     @ApiOperation(value = "get Transaction detail", notes = "거래 상세정보 조회")
     @GetMapping({"/api/v1/transactions/items/{transId}", "/web-api/v1/transactions/items/{transId}"})
-    public List<TransactionDetailResponse> getTransactionDetailById(@PathVariable Long transId) {
-        return transactionDetailService.getDetails(transId);
+    public List<TransactionDetailResponse> getTransactionDetailById(@PathVariable String requestId) {
+        return transactionDetailService.getDetails(requestId);
     }
 
 }

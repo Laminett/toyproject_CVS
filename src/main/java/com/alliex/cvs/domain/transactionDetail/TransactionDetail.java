@@ -19,7 +19,7 @@ public class TransactionDetail extends BaseTimeEntity {
     private Long id;
 
     @Column(nullable = false)
-    private Long transactionId;
+    private String requestId;
 
     @Column(nullable = false)
     private Integer productQuantity;
@@ -33,9 +33,9 @@ public class TransactionDetail extends BaseTimeEntity {
     private Product product;
 
     @Builder
-    public TransactionDetail(Long id, Long transactionId, Integer productQuantity, TransactionState transactionState, Product product) {
+    public TransactionDetail(Long id, String requestId, Integer productQuantity, TransactionState transactionState, Product product) {
         this.id = id;
-        this.transactionId = transactionId;
+        this.requestId = requestId;
         this.productQuantity = productQuantity;
         this.transactionState = transactionState;
         this.product = product;

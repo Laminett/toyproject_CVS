@@ -1,5 +1,6 @@
 package com.alliex.cvs.web.dto;
 
+import com.alliex.cvs.domain.product.Product;
 import com.alliex.cvs.domain.type.PaymentType;
 import com.alliex.cvs.domain.type.TransactionState;
 import com.alliex.cvs.domain.type.TransactionType;
@@ -19,6 +20,8 @@ import java.util.Map;
 public class TransactionSaveRequest {
 
     private Long userId;
+
+    private String username;
 
     private Long merchantId;
 

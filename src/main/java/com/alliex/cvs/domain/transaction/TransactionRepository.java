@@ -15,7 +15,7 @@ import java.util.Optional;
 @Repository
 public interface TransactionRepository extends JpaRepository<Transaction, Long>, JpaSpecificationExecutor<Transaction> {
 
-    Optional<Transaction> findByRequestId(String transNumber);
+    Optional<Transaction> findByRequestId(String requestId);
 
     List<Transaction> findByOriginId(Long transId);
 
