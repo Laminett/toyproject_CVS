@@ -22,7 +22,7 @@ public class UserApiController {
     @ApiOperation(value = "Create User")
     @PostMapping({"api/v1/users", "web-api/v1/users"})
     @ResponseStatus(HttpStatus.CREATED)
-    public Long save(@RequestBody UserSaveRequest userSaveRequest) {
+    public UserResponse save(@RequestBody UserSaveRequest userSaveRequest) {
         return userService.save(userSaveRequest);
     }
 

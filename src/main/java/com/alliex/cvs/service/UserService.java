@@ -66,7 +66,7 @@ public class UserService implements UserDetailsService {
         return new UserResponse(user);
     }
 
-    public Long save(UserSaveRequest userSaveRequest) {
+    public UserResponse save(UserSaveRequest userSaveRequest) {
         // Check existence of a user.
         userRepository.findByUsername(userSaveRequest.getUsername()).ifPresent(user -> {
             throw new UserAlreadyExistsException(user.getUsername());
@@ -77,12 +77,12 @@ public class UserService implements UserDetailsService {
         user.setPassword(encoder.encode(user.getPassword()));
 
         // Create a user.
-        Long userId =  userRepository.save(user).getId();
+        Long id = userRepository.save(user).getId();
 
         // Create a point.
-        pointService.save(userId, 0L);
+        pointService.save(id, 0L);
 
-        return userId;
+        return new UserResponse(id, user.getUsername());
     }
 
     @Transactional

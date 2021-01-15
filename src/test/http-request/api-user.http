@@ -28,3 +28,9 @@ Authorization: Bearer {{auth_token}}
   "department": "dev",
   "role": "USER"
 }
+
+### 회원 조회
+GET http://{{host}}:{{port}}/api/v1/users/3
+content-type: application/json
+Authorization: Bearer {{auth_token}}
+

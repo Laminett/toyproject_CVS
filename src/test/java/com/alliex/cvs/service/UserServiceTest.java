@@ -59,11 +59,11 @@ public class UserServiceTest {
                 .role(role)
                 .build();
 
-        Long savedId = userService.save(userSaveRequest);
-        assertThat(savedId).isNotNull();
+        UserResponse savedUserResponse = userService.save(userSaveRequest);
+        assertThat(savedUserResponse.getId()).isNotNull();
 
         // Get user.
-        UserResponse userResponse = userService.getUserById(savedId);
+        UserResponse userResponse = userService.getUserById(savedUserResponse.getId());
         assertThat(userResponse.getUsername()).isEqualTo(username);
         assertThat(userResponse.getDepartment()).isEqualTo(department);
         assertThat(userResponse.getFullName()).isEqualTo(fullName);
