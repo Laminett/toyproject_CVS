@@ -1,4 +1,10 @@
 span{margin-right: 10px;}
 
+/* font */
+.big-font{font-size: large;}
+.italic{font-style: italic;}
+
 input.datepicker{color: white; width: 80px!important; margin-right: 10px!important;}
 input.monthpicker{color: white; width: 65px!important; margin-right: 10px!important;}
+
+.card-center {width: 70%!important; margin: 50px auto 50px!important;}
