@@ -52,7 +52,9 @@ public class PointHistoryApiControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(pointHistorySaveRequest)))
                 .andDo(print())
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.userId").value(400))
+                .andExpect(jsonPath("$.point").value(10000));
     }
 
     @WithMockUser(roles = "USER")
