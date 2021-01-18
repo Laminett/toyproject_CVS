@@ -1,18 +1,13 @@
 package com.alliex.cvs.web;
 
 import com.alliex.cvs.service.PointHistoryService;
-import com.alliex.cvs.web.dto.PointHisotryUpdateRequest;
-import com.alliex.cvs.web.dto.PointHistoryRequest;
-import com.alliex.cvs.web.dto.PointHistorySaveRequest;
-import com.alliex.cvs.web.dto.PointHistoryResponse;
+import com.alliex.cvs.web.dto.*;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 public class PointHistoryApiController {
@@ -33,7 +28,7 @@ public class PointHistoryApiController {
     }
 
     @PostMapping("/api/v1/point/history/save")
-    public Long PointHistorySave(@RequestBody PointHistorySaveRequest pointHistorySaveRequest) {
+    public PointHistorySaveResponse PointHistorySave(@RequestBody PointHistorySaveRequest pointHistorySaveRequest) {
         return pointHistoryService.save(pointHistorySaveRequest);
     }
 
