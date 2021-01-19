@@ -29,9 +29,6 @@ public class Transaction extends BaseTimeEntity {
 //    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private Long userId;
 
-    @Column(nullable = false)
-    private Long merchantId;
-
     private Long originId;
 
     @Column(nullable = false)
@@ -47,11 +44,10 @@ public class Transaction extends BaseTimeEntity {
     private PaymentType paymentType;
 
     @Builder
-    public Transaction(Long id, TransactionState transactionState, Long userId, Long merchantId, Long originId, Long point, TransactionType transactionType, String requestId, PaymentType paymentType) {
+    public Transaction(Long id, TransactionState transactionState, Long userId, Long originId, Long point, TransactionType transactionType, String requestId, PaymentType paymentType) {
         this.id = id;
         this.state = transactionState;
         this.userId = userId;
-        this.merchantId = merchantId;
         this.point = point;
         this.type = transactionType;
         this.originId = originId;

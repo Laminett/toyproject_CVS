@@ -45,7 +45,6 @@ public class TransactionResponse {
         // User -> Transaction 관계 임시 해제를 위한 주석
 //        this.user = entity.getUser();
         this.userId = entity.getUserId();
-        this.merchantId = entity.getMerchantId();
         this.originId = entity.getOriginId();
         this.point = entity.getPoint();
         this.type = entity.getType();

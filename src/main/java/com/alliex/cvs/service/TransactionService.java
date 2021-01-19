@@ -1,15 +1,13 @@
 package com.alliex.cvs.service;
 
-import com.alliex.cvs.domain.product.Product;
 import com.alliex.cvs.domain.transaction.*;
-import com.alliex.cvs.domain.type.PaymentType;
 import com.alliex.cvs.domain.type.TransactionSearchType;
 import com.alliex.cvs.domain.type.TransactionState;
 import com.alliex.cvs.domain.type.TransactionType;
+import com.alliex.cvs.domain.user.LoginUser;
 import com.alliex.cvs.domain.user.User;
 import com.alliex.cvs.exception.NotEnoughPointException;
 import com.alliex.cvs.exception.TransactionNotFoundException;
-import com.alliex.cvs.exception.TransactionStateException;
 import com.alliex.cvs.web.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -123,19 +121,18 @@ public class TransactionService {
     }
 
     @Transactional
-    public TransactionStateResponse appPayment(TransactionSaveRequest transactionSaveRequest) {
-        UserResponse userResponse = userService.getUserByUsername(transactionSaveRequest.getUsername());
-        transactionSaveRequest.setUserId(userResponse.getId());
+    public TransactionStateResponse appPayment(TransactionSaveRequest transactionSaveRequest, LoginUser loginUser) {
+        UserResponse userResponse = userService.getUserByUsername(loginUser.getUsername());
         PointResponse point = pointService.findByUserId(userResponse.getId());
         Long _point = 0L;
 
-        for(Map<String, String> DetailMap : transactionSaveRequest.getTransProduct()) {
-            TransactionDetailSaveRequest saveRequest = new TransactionDetailSaveRequest(Integer.parseInt(DetailMap.get("productQuantity")),
+        for (Map<String, String> DetailMap : transactionSaveRequest.getTransProduct()) {
+            TransactionDetailSaveRequest saveRequest = new TransactionDetailSaveRequest(Integer.parseInt(DetailMap.get("quantity")),
                     Long.parseLong(DetailMap.get("productId")), TransactionState.SUCCESS, transactionSaveRequest.getRequestId());
             transactionDetailService.save(saveRequest);
 
             Long _productId = Long.parseLong(DetailMap.get("productId"));
-            int _productQuantity = Integer.parseInt(DetailMap.get("productQuantity"));
+            int _productQuantity = Integer.parseInt(DetailMap.get("quantity"));
             ProductResponse _product = productService.getProductById(_productId);
 
             productService.decreaseQuantity(_product.getId(), _productQuantity);
@@ -144,16 +141,19 @@ public class TransactionService {
         }
 
         if (point.getPoint() < _point) {
-            throw new NotEnoughPointException(point.getPoint(), transactionSaveRequest.getPoint());
+            throw new NotEnoughPointException(point.getPoint(), _point);
         }
 
-        transactionSaveRequest.setPaymentType(PaymentType.MOBILE);
-        transactionSaveRequest.setType(TransactionType.PAYMENT);
-        transactionSaveRequest.setState(TransactionState.SUCCESS);
-        transactionSaveRequest.setPoint(_point);
-        save(transactionSaveRequest);
+        TransactionSave transactionSave = new TransactionSave();
+        transactionSave.setPaymentType(transactionSaveRequest.getPaymentType());
+        transactionSave.setPoint(_point);
+        transactionSave.setState(TransactionState.SUCCESS);
+        transactionSave.setUserId(userResponse.getId());
+        transactionSave.setType(TransactionType.PAYMENT);
+        transactionSave.setRequestId(transactionSaveRequest.getRequestId());
+        save(transactionSave);
 
-        pointService.updatePointMinus(transactionSaveRequest.getUserId(), _point);
+        pointService.updatePointMinus(userResponse.getId(), _point);
 
         return new TransactionStateResponse(TransactionState.SUCCESS, transactionSaveRequest.getRequestId());
     }

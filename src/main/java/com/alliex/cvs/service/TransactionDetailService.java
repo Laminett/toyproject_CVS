@@ -46,7 +46,7 @@ public class TransactionDetailService {
     }
 
     @Transactional(readOnly = true)
-    public List<TransactionDetailResponse> getDetails(String requestId) {
+    public List<TransactionDetailResponse> getDetailByRequestId(String requestId) {
         transactionRepository.findByRequestId(requestId).orElseThrow(()
                 -> new TransactionNotFoundException(requestId));
 

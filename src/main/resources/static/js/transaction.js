@@ -51,33 +51,27 @@ var main = {
         }
 
         $('#step1').on('click', function () {
-            var data = {
-                merchantId: 123,
-                state: 'WAIT',
-                transProduct: [
+            var data =
+                [
                     {
                         productId: 1,
-                        productAmount: 1,
-                        productPoint: 11
+                        productQuantity: 1
                     },
                     {
                         productId: 3,
-                        productAmount: 2,
-                        productPoint: 12
+                        productQuantity: 2
                     },
                     {
                         productId: 4,
-                        productAmount: 3,
-                        productPoint: 13
-                    },
-                ],
-                point: 100
-            };
+                        productQuantity: 3
+                    }
+                ];
 
             $.ajax({
                 type: 'POST',
                 url: '/web-api/v1/transactions/payment/QRstep1',
                 data: JSON.stringify(data),
+                // data: data,
                 dataType: 'TEXT',
                 contentType: 'application/json'
             }).done(function (data) {
@@ -122,6 +116,41 @@ var main = {
                 alert(JSON.stringify(error));
             });
         });
+
+        $('#step4').on('click', function () {
+            var data = {
+                requestId: Math.random().toString().substr(2,20)
+                ,paymentType: 'MOBILE'
+                ,transProduct:[
+
+
+                    {
+                        productId: 1,
+                        productQuantity: 1
+                    },
+                    {
+                        productId: 3,
+                        productQuantity: 2
+                    },
+                    {
+                        productId: 4,
+                        productQuantity: 3
+                    }
+
+            ]};
+
+            $.ajax({
+                type: 'POST',
+                url: 'web-api/v1/transactions/payment/app',
+                data: JSON.stringify(data),
+                dataType: 'text',
+                contentType: 'application/json'
+            }).done(function (data) {
+                alert(data);
+            }).fail(function (error) {
+                alert(JSON.stringify(error));
+            });
+        });
 ////////////////////////////////////////////////////////////////////////////////////////////////
     },
     getTransaction: function (id) {
@@ -154,8 +183,10 @@ var main = {
 
                 let totalPoint = [];
                 if (data.length == 0) {
+                    totalPoint.push({"totalPoint": 0});
+
                     $("#transactionsItemsNoDataTemplate").tmpl().appendTo("#transactionItems");
-                    $("#transactionsItemsTotalPointTemplate").tmpl(0).appendTo("#totalPoint");
+                    $("#transactionsItemsTotalPointTemplate").tmpl(totalPoint).appendTo("#totalPoint");
                 } else {
                     totalPoint.push({"totalPoint": $('#TransactionPoint').val()});
 
