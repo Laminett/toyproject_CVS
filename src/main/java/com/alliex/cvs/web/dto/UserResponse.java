@@ -29,6 +29,10 @@ public class UserResponse {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdDate;
 
+    public UserResponse(String username) {
+        this.username = username;
+    }
+
     public UserResponse(Long id, String username) {
         this.id = id;
         this.username = username;
