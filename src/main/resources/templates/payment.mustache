@@ -1,0 +1,84 @@
+{{>layout/header-info}}
+<div class="content" id="context">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-center">
+                    <div class="card-header card-header-primary">
+                        <div class="text-center">
+                            <h4 class="card-title">{{#messages}}payment.product.list{{/messages}}</h4>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <colgroup>
+                                    <col width="45%">
+                                    <col width="15%">
+                                    <col width="15%">
+                                    <col width="15%">
+                                    <col width="10%">
+                                </colgroup>
+                                <thead class="text-center text-primary">
+                                    <th>{{#messages}}product.name{{/messages}}</th>
+                                    <th>{{#messages}}price{{/messages}}</th>
+                                    <th colspan="2">{{#messages}}quantity{{/messages}}</th>
+                                    <th>{{#messages}}delete{{/messages}}</th>
+                                </thead>
+                                <tbody id="productList">
+                                    <tr id="noData">
+                                        <td colspan="5" class="text-center"><h3 style="margin-top: 30px; margin-bottom: 30px;">{{#messages}}info.scan.product{{/messages}}</h3></td>
+                                    </tr>
+                                    <tr id="totalRow" class="big-font">
+                                        <th class="text-right">{{#messages}}total.price{{/messages}}</th>
+                                        <td class="text-right italic"><span id="totalPrice">0</span></td>
+                                        <th class="text-right">{{#messages}}total.quantity{{/messages}}</th>
+                                        <td class="text-left italic"><span id="totalQty" class="italic">0</span></td>
+                                        <td class="text-center">
+                                            <button type="button" id="btnDeleteAll" rel="tooltip" data-placement="left" title="Remove All item" class="btn btn-danger btn-just-icon">
+                                            <i class="material-icons">close</i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center">
+                    <button id="btnQR" class="btn btn-primary" data-toggle="modal">{{#messages}}btn.qr.payment{{/messages}}</button>
+                    <button type="button" id="btnCreditCard" class="btn btn-primary">{{#messages}}btn.credit.payment{{/messages}}</button>
+                </div>
+                <div class="text-left">
+                    <button type="button" id="barcodeInput" class="btn btn-simple btn-round btn-just-icon"><i class="material-icons">keyboard</i></button>
+                    <input type="input" id="barcodeNumber">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- QR pop-up -->
+<div class="modal fade" id="paymentQR" tabindex="-1" role="">
+    <div class="modal-dialog modal-login" role="document" style="margin-top: 160px;">
+        <div class="modal-content">
+            <div class="card card-signup card-plain" style="margin-top: 0;margin-bottom: 0">
+                <div class="modal-body text-center">
+                    <canvas id="qr-code"></canvas>
+                    <div class="justify-content-center">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal" aria-hidden="true">{{#messages}}btn.cancel{{/messages}}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    var messages = {
+        "alert.scan.product": "{{#messages}}alert.scan.product{{/messages}}",
+        "alert.payment.timeover": "{{#messages}}alert.payment.timeover{{/messages}}"
+    };
+</script>
+<script src="/js/jquery.scannerdetection.js"></script>
+<script type="text/javascript" src="/js/payment.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
+{{>layout/footer}}
