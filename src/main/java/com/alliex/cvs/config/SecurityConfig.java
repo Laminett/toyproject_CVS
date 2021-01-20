@@ -49,20 +49,23 @@ public class SecurityConfig {
         @Override
         protected void configure(HttpSecurity http) throws Exception {
             http
-                .antMatcher("/api/**")
-                .authorizeRequests()
-                .antMatchers("/api/login/**").permitAll()
-                .antMatchers("/api/**").hasRole(Role.USER.name());
+                    .antMatcher("/api/**")
+                    .authorizeRequests()
+                    .antMatchers("/api/login/**").permitAll()
+                    .antMatchers("/api/**/create-users").permitAll()
+                    .antMatchers("/api/**/users/verify/pw/**").permitAll()
+                    .antMatchers("/api/**/users/verify/id/**").permitAll()
+                    .antMatchers("/api/**").hasRole(Role.USER.name());
 
             http
-                .csrf()
+                    .csrf()
                     .disable()
-                .sessionManagement()
+                    .sessionManagement()
                     .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
             // JWT based authentication
             http
-                .addFilterBefore(jwtAuthenticationTokenFilterBean(), UsernamePasswordAuthenticationFilter.class);
+                    .addFilterBefore(jwtAuthenticationTokenFilterBean(), UsernamePasswordAuthenticationFilter.class);
         }
     }
 
@@ -70,7 +73,6 @@ public class SecurityConfig {
     @Component
     @Order(2)
     public static class FormLoginWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
-
         @Autowired
         private CustomUserAuthenticationProvider customUserAuthenticationProvider;
 

@@ -167,4 +167,20 @@ public class UserService implements UserDetailsService {
         return predicateData;
     }
 
+    public boolean isValidPassword(String password) {
+        if (StringUtils.isBlank(password)) {
+            return false;
+        }
+
+        if (password.length() < 5) {
+            return false;
+        }
+
+        if (password.length() > 20) {
+            return false;
+        }
+
+        return true;
+    }
+
 }

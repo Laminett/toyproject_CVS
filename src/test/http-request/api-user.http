@@ -15,18 +15,16 @@ content-type: application/json
 Authorization: Bearer {{auth_token}}
 
 ### 회원 가입
-POST http://{{host}}:{{port}}/api/v1/users
+POST http://{{host}}:{{port}}/api/v1/create-users
 content-type: application/json
-Authorization: Bearer {{auth_token}}
 
 {
-  "username": "user1",
+  "username": "user12232",
   "password": "1111",
   "email": "shkim@alli-ex.com",
   "fullName": "fullName",
   "phoneNumber": "010-1111-2222",
-  "department": "dev",
-  "role": "USER"
+  "department": "dev"
 }
 
 ### 회원 조회
@@ -34,3 +32,10 @@ GET http://{{host}}:{{port}}/api/v1/users/3
 content-type: application/json
 Authorization: Bearer {{auth_token}}
 
+### 회원 조회 (Login ID 중복 검사)
+GET http://{{host}}:{{port}}/api/v1/users/verify/id/test4
+content-type: application/json
+
+### Password 유효성 검사
+GET http://{{host}}:{{port}}/api/v1/users/verify/pw/1231
+content-type: application/json

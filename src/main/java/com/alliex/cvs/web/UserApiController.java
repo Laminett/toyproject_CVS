@@ -1,10 +1,9 @@
 package com.alliex.cvs.web;
 
+import com.alliex.cvs.domain.user.User;
+import com.alliex.cvs.exception.UserNotFoundException;
 import com.alliex.cvs.service.UserService;
-import com.alliex.cvs.web.dto.UserRequest;
-import com.alliex.cvs.web.dto.UserResponse;
-import com.alliex.cvs.web.dto.UserSaveRequest;
-import com.alliex.cvs.web.dto.UserUpdateRequest;
+import com.alliex.cvs.web.dto.*;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -20,7 +19,7 @@ public class UserApiController {
     private final UserService userService;
 
     @ApiOperation(value = "Create User")
-    @PostMapping({"api/v1/users", "web-api/v1/users"})
+    @PostMapping({"api/v1/create-users", "web-api/v1/users"})
     @ResponseStatus(HttpStatus.CREATED)
     public UserResponse save(@RequestBody UserSaveRequest userSaveRequest) {
         return userService.save(userSaveRequest);
@@ -50,6 +49,23 @@ public class UserApiController {
         userService.delete(id);
 
         return id;
+    }
+
+    @ApiOperation(value = "Verify Password")
+    @GetMapping("/api/v1/users/verify/pw/{password}")
+    public VerifyPasswordResponse isValidPassword(@PathVariable String password) {
+        boolean isValid = userService.isValidPassword(password);
+
+        return new VerifyPasswordResponse(password, isValid);
+    }
+
+    @ApiOperation(value = "Verify Login ID")
+    @GetMapping("/api/v1/users/verify/id/{username}")
+    public UserResponse findByUsername(@PathVariable String username) {
+        User user = userService.findByUsername(username)
+                .orElseThrow(() -> new UserNotFoundException("User " + username + " not found."));
+
+        return new UserResponse(user.getUsername());
     }
 
 }

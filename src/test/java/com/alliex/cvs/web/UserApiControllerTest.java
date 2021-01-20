@@ -1,6 +1,5 @@
 package com.alliex.cvs.web;
 
-import com.alliex.cvs.domain.type.Role;
 import com.alliex.cvs.web.dto.UserSaveRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -42,17 +41,28 @@ public class UserApiControllerTest {
     protected ObjectMapper objectMapper;
 
     private final Long testId = 400L;
-    private final String testUsername = "testtest100";
-    private final String testEmail = "400@test.com";
     private final String testFullName = "400_fullName";
 
     @WithMockUser(roles = "ADMIN")
     @Test
-    public void createUser() throws Exception {
+    public void createUser_WEB() throws Exception {
         // given
         UserSaveRequest userSaveRequest = getUserSaveRequest(RandomStringUtils.randomAlphanumeric(5));
 
         mvc.perform(post("/web-api/v1/users")
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(userSaveRequest)))
+                .andDo(print())
+                .andExpect(status().isCreated());
+    }
+
+    @Test
+    public void createUser_APP() throws Exception {
+        // given
+        UserSaveRequest userSaveRequest = getUserSaveRequest(RandomStringUtils.randomAlphanumeric(5));
+
+        mvc.perform(post("/api/v1/create-users")
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(userSaveRequest)))
@@ -91,7 +101,6 @@ public class UserApiControllerTest {
         String fullName = "fullName " + RandomStringUtils.randomAlphanumeric(5);
         String email = RandomStringUtils.randomAlphanumeric(5) + "@email.com";
         String phoneNumber = "010-1111-2222";
-        Role role = Role.ADMIN;
 
         // Create user.
         return UserSaveRequest.builder()
@@ -101,7 +110,6 @@ public class UserApiControllerTest {
                 .fullName(fullName)
                 .email(email)
                 .phoneNumber(phoneNumber)
-                .role(role)
                 .build();
     }
 
@@ -154,6 +162,36 @@ public class UserApiControllerTest {
         long notExistsId = 9999L;
 
         mvc.perform(get("/web-api/v1/users/{id}", notExistsId))
+                .andDo(print())
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.code", is("USER_NOT_FOUND")));
+    }
+
+    @Test
+    public void verifyPassword() throws Exception {
+        String validPassword = "12345";
+        mvc.perform(get("/api/v1/users/verify/pw/{password}", validPassword))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.valid", is(true)));
+
+        String invalidPassword = "1234";
+        mvc.perform(get("/api/v1/users/verify/pw/{password}", invalidPassword))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.valid", is(false)));
+    }
+
+    @Test
+    public void verifyLoginId() throws Exception {
+        String existLoginId = "test";
+        mvc.perform(get("/api/v1/users/verify/id/{username}", existLoginId))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.username", is("test")));
+
+        String notExistLoginId = "oops";
+        mvc.perform(get("/api/v1/users/verify/id/{username}", notExistLoginId))
                 .andDo(print())
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.code", is("USER_NOT_FOUND")));
