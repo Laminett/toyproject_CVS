@@ -24,8 +24,7 @@ content-type: application/json
   "email": "shkim@alli-ex.com",
   "fullName": "fullName",
   "phoneNumber": "010-1111-2222",
-  "department": "dev",
-  "role": "USER"
+  "department": "dev"
 }
 
 ### 회원 조회

@@ -1,6 +1,5 @@
 package com.alliex.cvs.web;
 
-import com.alliex.cvs.domain.type.Role;
 import com.alliex.cvs.web.dto.UserSaveRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -42,8 +41,6 @@ public class UserApiControllerTest {
     protected ObjectMapper objectMapper;
 
     private final Long testId = 400L;
-    private final String testUsername = "testtest100";
-    private final String testEmail = "400@test.com";
     private final String testFullName = "400_fullName";
 
     @WithMockUser(roles = "ADMIN")
@@ -104,7 +101,6 @@ public class UserApiControllerTest {
         String fullName = "fullName " + RandomStringUtils.randomAlphanumeric(5);
         String email = RandomStringUtils.randomAlphanumeric(5) + "@email.com";
         String phoneNumber = "010-1111-2222";
-        Role role = Role.ADMIN;
 
         // Create user.
         return UserSaveRequest.builder()
@@ -114,7 +110,6 @@ public class UserApiControllerTest {
                 .fullName(fullName)
                 .email(email)
                 .phoneNumber(phoneNumber)
-                .role(role)
                 .build();
     }
 

@@ -22,7 +22,7 @@ public class UserSaveRequest {
 
     private String phoneNumber;
 
-    private Role role;
+    private Role role = Role.USER;
 
     @Builder
     public UserSaveRequest(String username, String password, String department, String fullName, String email, String phoneNumber, Role role) {
