@@ -188,7 +188,7 @@ public class UserApiControllerTest {
         mvc.perform(get("/api/v1/users/verify/id/{username}", existLoginId))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.username", is("test")));
+                .andExpect(jsonPath("$.username", is(existLoginId)));
 
         String notExistLoginId = "oops";
         mvc.perform(get("/api/v1/users/verify/id/{username}", notExistLoginId))
