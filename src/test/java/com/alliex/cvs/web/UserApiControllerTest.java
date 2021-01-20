@@ -184,7 +184,7 @@ public class UserApiControllerTest {
 
     @Test
     public void verifyLoginId() throws Exception {
-        String existLoginId = "test";
+        String existLoginId = "forUnitTest";
         mvc.perform(get("/api/v1/users/verify/id/{username}", existLoginId))
                 .andDo(print())
                 .andExpect(status().isOk())
