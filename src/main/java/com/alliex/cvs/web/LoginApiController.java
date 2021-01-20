@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+
 @RestController
 public class LoginApiController {
 
@@ -23,7 +25,7 @@ public class LoginApiController {
 
     @ApiOperation(value = "Authentication For API", notes = "앱 로그인")
     @PostMapping("api/login")
-    public LoginResponse authentication(@RequestBody LoginRequest authRequest) {
+    public LoginResponse authentication(@RequestBody @Valid LoginRequest authRequest) {
         try {
             // Login.
             Authentication authentication = new ApiUserAuthenticationToken(authRequest.getUsername(), authRequest.getPassword());
