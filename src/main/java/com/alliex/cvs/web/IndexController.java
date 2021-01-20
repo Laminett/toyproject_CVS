@@ -20,12 +20,8 @@ public class IndexController {
         return "index";
     }
 
-    @GetMapping("/login/form")
-    public String loginPage(String error) {
-        if (error != null && error.equals("e")) {
-            System.out.println("login failure.");
-        }
-
+    @GetMapping("/login-form")
+    public String loginPage() {
         return "login";
     }
 
