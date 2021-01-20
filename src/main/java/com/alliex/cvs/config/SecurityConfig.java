@@ -1,4 +1,3 @@
-
 package com.alliex.cvs.config;
 
 import com.alliex.cvs.domain.type.Role;
@@ -82,20 +81,22 @@ public class SecurityConfig {
         @Override
         protected void configure(HttpSecurity http) throws Exception {
             http.authorizeRequests()
-                    .antMatchers("/css/**", "/js/**", "/img/**", "/material-dashboard/**").permitAll()
-                    .antMatchers("/login/**", "/logout/**").permitAll()
+                    .antMatchers("/common/**", "/css/**", "/js/**", "/img/**", "/material-dashboard/**").permitAll()
+                    .antMatchers("/login-form/**", "/logout/**").permitAll()
+                    .antMatchers("/payment/**").permitAll()
                     .antMatchers("/ping").permitAll()
                     .antMatchers("/**").hasRole(Role.ADMIN.name());
 
             http.formLogin()
                     .defaultSuccessUrl("/")
+                    .loginPage("/login-form")
                     .usernameParameter("username")
                     .passwordParameter("password")
                     .permitAll();
 
             http.logout()
                     .logoutUrl("/logout") // default
-                    .logoutSuccessUrl("/login")
+                    .logoutSuccessUrl("/login-form")
                     .permitAll();
 
             http.csrf().disable();
