@@ -33,5 +33,6 @@ public class TransactionRefundResponse {
         this.originRequestId = entity.getOriginRequestId();
         this.type = entity.getType();
         this.requestId = entity.getRequestId();
+        this.createdDate = entity.getCreatedDate();
     }
 }
