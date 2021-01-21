@@ -14,21 +14,6 @@ GET http://{{host}}:{{port}}/api/v1/posts
 content-type: application/json
 Authorization: Bearer {{auth_token}}
 
-### 회원 가입
-POST http://{{host}}:{{port}}/api/v1/users
-content-type: application/json
-Authorization: Bearer {{auth_token}}
-
-{
-  "username": "user1",
-  "password": "1111",
-  "email": "shkim@alli-ex.com",
-  "fullName": "fullName",
-  "phoneNumber": "010-1111-2222",
-  "department": "dev",
-  "role": "USER"
-}
-
 ### APP결제
 POST http://{{host}}:{{port}}/api/v1/transactions/payment/app
 content-type: application/json
