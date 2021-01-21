@@ -16,7 +16,7 @@ public class TransactionSave {
 
     private Long userId;
 
-    private Long originId;
+    private String originRequestId;
 
     private Long point;
 

@@ -38,33 +38,33 @@ public class TransactionApiController {
     }
 
     @ApiOperation(value = "get Transaction", notes = "거래 화면 데이터, 거래 화면 검색")
-    @GetMapping({"/api/v1/transactions/{id}", "/web-api/v1/transactions/{id}"})
-    public TransactionResponse getTransaction(@PathVariable Long id) {
-        return transactionService.getTransactionById(id);
+    @GetMapping({"/api/v1/transactions/{requestId}", "/web-api/v1/transactions/{requestId}"})
+    public TransactionResponse getTransaction(@PathVariable String requestId) {
+        return transactionService.getTransactionByRequestId(requestId);
     }
 
     @ApiOperation(value = "Transaction QRPay Step1", notes = "거래 QR스트링 전송")
     @PostMapping({"/api/v1/transactions/payment/pos/step1", "/web-api/v1/transactions/payment/pos/step1"})
     public TransactionStateResponse paymentFromPosStep1(@RequestBody List<TransactionDetailSaveRequest> transactionDetailSaveRequests) {
-        return transactionService.QRPaymentStep1(transactionDetailSaveRequests);
+        return transactionService.paymentFromPosStep1(transactionDetailSaveRequests);
     }
 
     @ApiOperation(value = "Transaction QRPay Step2", notes = "QR 조회 거래 승인/거절")
-    @PutMapping({"/api/v1/transactions/payment/pos/step2/{requestId}", "/web-api/v1/transactions/payment/pos/step2/{requestId}"})
-    public TransactionStateResponse paymentFromPosStep2(@RequestBody TransactionSaveRequest transactionSaveRequest) {
-        return transactionService.QRPaymentStep2(transactionSaveRequest);
+    @PutMapping({"/api/v1/transactions/payment/pos/step2", "/web-api/v1/transactions/payment/pos/step2"})
+    public TransactionStateResponse paymentFromPosStep2(@RequestBody TransactionSaveRequest transactionSaveRequest, @AuthenticationPrincipal LoginUser loginUser) {
+        return transactionService.paymentFromPosStep2(transactionSaveRequest, loginUser);
     }
 
     @ApiOperation(value = "Transaction APP Payment", notes = "APP 을 사용하여 거래")
     @PostMapping({"/api/v1/transactions/payment/app", "/web-api/v1/transactions/payment/app"})
-    public TransactionStateResponse paymentFromApp(@RequestBody TransactionSaveRequest transactionSaveRequest,  @AuthenticationPrincipal LoginUser loginUser) {
+    public TransactionStateResponse paymentFromApp(@RequestBody TransactionSaveRequest transactionSaveRequest, @AuthenticationPrincipal LoginUser loginUser) {
         return transactionService.appPayment(transactionSaveRequest, loginUser);
     }
 
     @ApiOperation(value = "Transaction refund", notes = "거래 취소")
-    @PostMapping({"/api/v1/transactions/refund/{transId}", "/web-api/v1/transactions/refund/{transId}"})
-    public Long TransactionRefund(@PathVariable Long transId) {
-        return transactionService.transactionRefund(transId);
+    @PostMapping({"/api/v1/transactions/refund/{requestId}", "/web-api/v1/transactions/refund/{requestId}"})
+    public TransactionRefundResponse TransactionRefund(@PathVariable String requestId) {
+        return transactionService.transactionRefund(requestId);
     }
 
     @ApiOperation(value = "get Transaction Status", notes = "거래상태 조회")

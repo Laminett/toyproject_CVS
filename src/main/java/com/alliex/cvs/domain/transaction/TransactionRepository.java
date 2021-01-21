@@ -17,13 +17,11 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long>,
 
     Optional<Transaction> findByRequestId(String requestId);
 
-    List<Transaction> findByOriginId(Long transId);
+    Optional<Transaction> findByOriginRequestId(String requestId);
 
     @Query(value = "select " +
             "new com.alliex.cvs.web.dto.SettleTransMonthlySumRequest(" +
-            // User -> Transaction 관계 임시 해제를 위한 주석
-//            "t.user.id" +
-            "t.userId" +
+            "t.user.id" +
             ", sum(case when (t.type = 'PAYMENT') then 1 else 0 end)" +
             ", sum(case when (t.type = 'PAYMENT') then t.point else 0 end)" +
             ", sum(case when (t.type = 'REFUND') then 1 else 0 end)" +
@@ -31,9 +29,7 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long>,
             "from Transaction t " +
             "where t.createdDate >= :fromDate " +
             "and t.createdDate < :toDate " +
-            // User -> Transaction 관계 임시 해제를 위한 주석
-//            "group by t.user.id")
-            "group by t.userId")
+            "group by t.user.id")
     List<SettleTransMonthlySumRequest> findByCreatedDate(@Param("fromDate") LocalDateTime fromDate, @Param("toDate") LocalDateTime toDate);
 
 }

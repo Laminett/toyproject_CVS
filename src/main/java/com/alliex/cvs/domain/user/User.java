@@ -49,10 +49,9 @@ public class User extends BaseTimeEntity {
     @Column(nullable = false)
     private Role role;
 
-    // User -> Transaction 관계 임시 해제를 위한 주석
-//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-//    @JsonIgnore
-//    private Collection<Transaction> transactionId;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private Collection<Transaction> transactionId;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonIgnore

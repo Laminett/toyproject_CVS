@@ -9,24 +9,20 @@ import com.alliex.cvs.exception.TransactionDetailNotFoundException;
 import com.alliex.cvs.exception.TransactionNotFoundException;
 import com.alliex.cvs.web.dto.TransactionDetailResponse;
 import com.alliex.cvs.web.dto.TransactionDetailSaveRequest;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-
+import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class TransactionDetailService {
 
     private final TransactionDetailRepository transactionDetailRepository;
-
-    private final TransactionRepository transactionRepository;
-
-    public TransactionDetailService(TransactionDetailRepository transactionDetailRepository, TransactionRepository transactionRepository) {
-        this.transactionDetailRepository = transactionDetailRepository;
-        this.transactionRepository = transactionRepository;
-    }
 
     @Transactional
     public Long save(TransactionDetailSaveRequest transactionDetailSaveRequest) {
@@ -47,10 +43,12 @@ public class TransactionDetailService {
 
     @Transactional(readOnly = true)
     public List<TransactionDetailResponse> getDetailByRequestId(String requestId) {
-        transactionRepository.findByRequestId(requestId).orElseThrow(()
-                -> new TransactionNotFoundException(requestId));
+        List<TransactionDetailResponse> transactionDetailResponses = transactionDetailRepository.findByRequestId(requestId);
+        if (transactionDetailResponses.isEmpty()) {
+            throw new TransactionNotFoundException(requestId);
+        }
 
-        return transactionDetailRepository.findByRequestId(requestId);
+        return transactionDetailResponses;
     }
 
 }
