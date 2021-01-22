@@ -71,7 +71,6 @@ var main = {
                 type: 'POST',
                 url: '/web-api/v1/transactions/payment/pos/step1',
                 data: JSON.stringify(data),
-                // data: data,
                 dataType: 'TEXT',
                 contentType: 'application/json'
             }).done(function (data) {
@@ -87,9 +86,8 @@ var main = {
             $.ajax({
                 type: 'GET',
                 url: '/web-api/v1/transactions/state/' + barcode,
-                // data:JSON.stringify(data),
-                dataType: 'TEXT'
-                // contentType: 'application/json'
+                dataType: 'TEXT',
+                contentType: 'application/json'
             }).done(function (data) {
                 alert(data);
             }).fail(function (error) {
@@ -100,13 +98,12 @@ var main = {
         $('#step3').on('click', function () {
             var barcode = prompt("input barcode");
             let data = {
-                paymentType: "QR",
+                paymentType: "POS_QR",
                 requestId: barcode
             };
             $.ajax({
                 type: 'PUT',
                 url: '/web-api/v1/transactions/payment/pos/step2',
-                // data:"barcode=9aLdIvsYFFy7",
                 dataType: 'TEXT',
                 contentType: 'application/json',
                 data: JSON.stringify(data)
@@ -122,8 +119,6 @@ var main = {
                 requestId: Math.random().toString().substr(2, 20)
                 , paymentType: 'MOBILE'
                 , transProduct: [
-
-
                     {
                         productId: 1,
                         quantity: 1
@@ -136,7 +131,6 @@ var main = {
                         productId: 4,
                         quantity: 3
                     }
-
                 ]
             };
 

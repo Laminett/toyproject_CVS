@@ -15,15 +15,12 @@ public class TransactionDetailSaveRequest {
 
     private Long productId;
 
-    private TransactionState transactionState;
-
     private String requestId;
 
     @Builder
-    public TransactionDetailSaveRequest(Integer quantity, Long productId, TransactionState transactionState, String requestId) {
+    public TransactionDetailSaveRequest(Integer quantity, Long productId, String requestId) {
         this.quantity = quantity;
         this.productId = productId;
-        this.transactionState = transactionState;
         this.requestId = requestId;
     }
 
@@ -34,7 +31,6 @@ public class TransactionDetailSaveRequest {
         return TransactionDetail.builder()
                 .productQuantity(quantity)
                 .requestId(requestId)
-                .transactionState(transactionState)
                 .product(setProductId)
                 .build();
     }

@@ -135,6 +135,7 @@ public class UserService implements UserDetailsService {
     private Specification<User> searchWith(Map<UserSearchType, String> predicateData) {
         return (Specification<User>) ((root, query, builder) -> {
             List<Predicate> predicate = new ArrayList<>();
+
             for (Map.Entry<UserSearchType, String> entry : predicateData.entrySet()) {
                 predicate.add(builder.like(
                         root.get(entry.getKey().getField()), "%" + entry.getValue() + "%"

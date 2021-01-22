@@ -24,25 +24,16 @@ public class TransactionDetail extends BaseTimeEntity {
     @Column(nullable = false)
     private Integer productQuantity;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private TransactionState transactionState;
-
     @ManyToOne
     @JoinColumn(name = "product_id", referencedColumnName = "id")
     private Product product;
 
     @Builder
-    public TransactionDetail(Long id, String requestId, Integer productQuantity, TransactionState transactionState, Product product) {
+    public TransactionDetail(Long id, String requestId, Integer productQuantity, Product product) {
         this.id = id;
         this.requestId = requestId;
         this.productQuantity = productQuantity;
-        this.transactionState = transactionState;
         this.product = product;
-    }
-
-    public void update(TransactionState transactionState) {
-        this.transactionState = transactionState;
     }
 
 }

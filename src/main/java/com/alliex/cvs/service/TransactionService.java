@@ -7,7 +7,7 @@ import com.alliex.cvs.domain.type.TransactionType;
 import com.alliex.cvs.domain.user.LoginUser;
 import com.alliex.cvs.domain.user.User;
 import com.alliex.cvs.exception.NotEnoughPointException;
-import com.alliex.cvs.exception.TransactionAlreadyRefundException;
+import com.alliex.cvs.exception.TransactionAlreadyRefundedException;
 import com.alliex.cvs.exception.TransactionNotFoundException;
 import com.alliex.cvs.exception.TransactionStateException;
 import com.alliex.cvs.web.dto.*;
@@ -56,7 +56,6 @@ public class TransactionService {
 
     @Transactional
     public Long save(TransactionSave transactionSave) {
-
         User setUserId = new User();
         setUserId.setId(transactionSave.getUserId());
 
@@ -84,41 +83,41 @@ public class TransactionService {
     public TransactionStateResponse paymentFromPosStep1(List<TransactionDetailSaveRequest> transactionDetailSaveRequests) {
         String requestId = RandomStringUtils.randomAlphanumeric(20);
 
-        for (TransactionDetailSaveRequest detailMap : transactionDetailSaveRequests) {
-            TransactionDetailSaveRequest saveRequest = new TransactionDetailSaveRequest(detailMap.getQuantity(),
-                    detailMap.getProductId(), TransactionState.WAIT, requestId);
-            transactionDetailService.save(saveRequest);
+        for (TransactionDetailSaveRequest item : transactionDetailSaveRequests) {
+            TransactionDetailSaveRequest saveRequest = new TransactionDetailSaveRequest(item.getQuantity(),
+                    item.getProductId(), requestId);
+            transactionDetailService.save(saveRequest.toEntity());
         }
 
         return new TransactionStateResponse(TransactionState.WAIT, requestId);
     }
 
+    /**
+     * APP에서 QR코드를 읽을 때 호출된다.
+     */
     @Transactional
     public TransactionStateResponse paymentFromPosStep2(TransactionSaveRequest transactionSaveRequest, LoginUser loginUser) {
         UserResponse userResponse = userService.getUserByUsername(loginUser.getUsername());
         PointResponse point = pointService.findByUserId(userResponse.getId());
         Long _point = 0L;
 
+        // 차감할 포인트 계산
         List<TransactionDetailResponse> transactionDetailResponses = transactionDetailService.getDetailByRequestId(transactionSaveRequest.getRequestId());
 
-        for (TransactionDetailResponse detailMap : transactionDetailResponses) {
-            if (detailMap.getTransactionState() != TransactionState.WAIT) {
-                throw new TransactionStateException("PAYMENT is possible only TransactionState=WAIT and TransactionType=PAYMENT");
-            }
-
-            productService.getProductById(detailMap.getProductId());
-            int _productQuantity = detailMap.getProductQuantity();
-            ProductResponse _product = productService.getProductById(detailMap.getProductId());
-
-            productService.decreaseQuantity(_product.getId(), _productQuantity);
-
+        for (TransactionDetailResponse item : transactionDetailResponses) {
+            int _productQuantity = item.getProductQuantity();
+            ProductResponse _product = productService.getProductById(item.getProductId());
             _point += _productQuantity * _product.getPoint();
+
+            // 상품 수량 차감 처리
+            productService.decreaseQuantity(_product.getId(), _productQuantity);
         }
 
         if (point.getPoint() < _point) {
             throw new NotEnoughPointException(point.getPoint(), _point);
         }
 
+        // 포인트 차감 처리
         pointService.updatePointMinus(userResponse.getId(), _point);
 
         TransactionSave transactionSave = new TransactionSave();
@@ -129,8 +128,6 @@ public class TransactionService {
         transactionSave.setUserId(userResponse.getId());
         transactionSave.setPoint(_point);
         Long transId = save(transactionSave);
-
-        transactionDetailService.update(transactionSaveRequest.getRequestId(), TransactionState.SUCCESS);
 
         Transaction transaction = transactionRepository.findById(transId)
                 .orElseThrow(() -> new TransactionNotFoundException(transactionSaveRequest.getRequestId()));
@@ -138,21 +135,26 @@ public class TransactionService {
         return new TransactionStateResponse(transaction);
     }
 
+    /**
+     * APP에서 직접 결제할 때 호출 된다.
+     */
     @Transactional
     public TransactionStateResponse appPayment(TransactionSaveRequest transactionSaveRequest, LoginUser loginUser) {
         UserResponse userResponse = userService.getUserByUsername(loginUser.getUsername());
         PointResponse point = pointService.findByUserId(userResponse.getId());
         Long _point = 0L;
 
-        for (TransactionDetailSaveRequest DetailMap : transactionSaveRequest.getTransProduct()) {
-            TransactionDetailSaveRequest saveRequest = new TransactionDetailSaveRequest(DetailMap.getQuantity(),
-                    DetailMap.getProductId(), TransactionState.SUCCESS, transactionSaveRequest.getRequestId());
-            transactionDetailService.save(saveRequest);
+        // 차감할 포인트 계산 및 상품 수량 차감
+        for (TransactionDetailSaveRequest item : transactionSaveRequest.getTransProduct()) {
+            TransactionDetailSaveRequest saveRequest = new TransactionDetailSaveRequest(item.getQuantity(),
+                    item.getProductId(), transactionSaveRequest.getRequestId());
+            transactionDetailService.save(saveRequest.toEntity());
 
-            Long _productId = DetailMap.getProductId();
-            int _productQuantity = DetailMap.getQuantity();
+            Long _productId = item.getProductId();
+            int _productQuantity = item.getQuantity();
             ProductResponse _product = productService.getProductById(_productId);
 
+            // 상품 수량 차감
             productService.decreaseQuantity(_product.getId(), _productQuantity);
 
             _point += _productQuantity * _product.getPoint();
@@ -161,6 +163,9 @@ public class TransactionService {
         if (point.getPoint() < _point) {
             throw new NotEnoughPointException(point.getPoint(), _point);
         }
+
+        // 포인트 차감 처리
+        pointService.updatePointMinus(userResponse.getId(), _point);
 
         TransactionSave transactionSave = new TransactionSave();
         transactionSave.setPaymentType(transactionSaveRequest.getPaymentType());
@@ -171,18 +176,19 @@ public class TransactionService {
         transactionSave.setRequestId(transactionSaveRequest.getRequestId());
         Long transId = save(transactionSave);
 
-        pointService.updatePointMinus(userResponse.getId(), _point);
-
         Transaction transaction = transactionRepository.findById(transId)
                 .orElseThrow(() -> new TransactionNotFoundException(transId));
 
         return new TransactionStateResponse(transaction);
     }
 
+    /**
+     * 거래를 반품할때 호출 된다.
+     */
     @Transactional
     public TransactionRefundResponse transactionRefund(String requestId) {
         transactionRepository.findByOriginRequestId(requestId).ifPresent(transaction -> {
-            throw new TransactionAlreadyRefundException(requestId);
+            throw new TransactionAlreadyRefundedException(requestId);
         });
 
         Transaction transaction = transactionRepository.findByRequestId(requestId).orElseThrow(()
@@ -192,13 +198,14 @@ public class TransactionService {
             throw new TransactionStateException("REFUND is possible only TransactionState=SUCCESS and TransactionType=PAYMENT");
         }
 
+        // 차감된 상품 수량 원복
         List<TransactionDetailResponse> transactionDetail = transactionDetailService.getDetailByRequestId(transaction.getRequestId());
-        pointService.updatePointPlus(transaction.getUser().getId(), transaction.getPoint());
         for (TransactionDetailResponse productDetail : transactionDetail) {
             productService.increaseQuantity(productDetail.getProductId(), productDetail.getProductQuantity());
         }
 
-        transactionDetailService.update(transaction.getRequestId(), TransactionState.REFUND);
+        // 차감된 포인트 원복
+        pointService.updatePointPlus(transaction.getUser().getId(), transaction.getPoint());
 
         TransactionSave transactionSave = new TransactionSave();
         String refundRequestId = RandomStringUtils.randomAlphanumeric(20);

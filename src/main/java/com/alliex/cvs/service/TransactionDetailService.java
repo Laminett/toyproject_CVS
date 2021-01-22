@@ -25,20 +25,8 @@ public class TransactionDetailService {
     private final TransactionDetailRepository transactionDetailRepository;
 
     @Transactional
-    public Long save(TransactionDetailSaveRequest transactionDetailSaveRequest) {
-        return transactionDetailRepository.save(transactionDetailSaveRequest.toEntity()).getId();
-    }
-
-    @Transactional
-    public String update(String requestId, TransactionState transactionState) {
-        List<TransactionDetailResponse> transactionDetailResponses = transactionDetailRepository.findByRequestId(requestId);
-        for (TransactionDetailResponse transDetail : transactionDetailResponses) {
-            TransactionDetail transactionDetail = transactionDetailRepository.findById(transDetail.getId()).orElseThrow(()
-                    -> new TransactionDetailNotFoundException(transDetail.getId()));
-            transactionDetail.update(transactionState);
-        }
-
-        return requestId;
+    public Long save(TransactionDetail transactionDetail) {
+        return transactionDetailRepository.save(transactionDetail).getId();
     }
 
     @Transactional(readOnly = true)

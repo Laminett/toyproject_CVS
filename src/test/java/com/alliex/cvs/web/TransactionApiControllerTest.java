@@ -88,7 +88,7 @@ public class TransactionApiControllerTest {
 
         for (int i = 0; i < 3; i++) {
             TransactionDetailSaveRequest transactionDetail =
-                    new TransactionDetailSaveRequest(10 + i, 500L + i, null, null);
+                    new TransactionDetailSaveRequest(10 + i, 500L + i, null);
 
             detailList.add(transactionDetail);
         }
@@ -108,15 +108,12 @@ public class TransactionApiControllerTest {
         mvc.perform(get("/web-api/v1/transactions/items/{requestIdTest}", requestIdTest))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].transactionState").value(String.valueOf(TransactionState.WAIT)))
                 .andExpect(jsonPath("$[0].requestId").value(requestIdTest))
-                .andExpect(jsonPath("$[1].transactionState").value(String.valueOf(TransactionState.WAIT)))
                 .andExpect(jsonPath("$[1].requestId").value(requestIdTest))
-                .andExpect(jsonPath("$[2].transactionState").value(String.valueOf(TransactionState.WAIT)))
                 .andExpect(jsonPath("$[2].requestId").value(requestIdTest));
 
         TransactionSaveRequest transactionSaveRequest = new TransactionSaveRequest();
-        transactionSaveRequest.setPaymentType(PaymentType.QR);
+        transactionSaveRequest.setPaymentType(PaymentType.POS_QR);
         transactionSaveRequest.setRequestId(requestIdTest);
 
         mvc.perform(put("/web-api/v1/transactions/payment/pos/step2")
@@ -128,7 +125,6 @@ public class TransactionApiControllerTest {
         mvc.perform(get("/web-api/v1/transactions/state/{requestId}", requestIdTest))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.transactionState").value(String.valueOf(TransactionState.SUCCESS)))
                 .andExpect(jsonPath("$.requestId").value(requestIdTest));
     }
 
@@ -139,7 +135,7 @@ public class TransactionApiControllerTest {
 
         for (int i = 0; i < 3; i++) {
             TransactionDetailSaveRequest transactionDetail =
-                    new TransactionDetailSaveRequest(10 + i, 500L + i, null, null);
+                    new TransactionDetailSaveRequest(10 + i, 500L + i, null);
 
             detailList.add(transactionDetail);
         }
@@ -157,7 +153,7 @@ public class TransactionApiControllerTest {
         String requestIdTest = transactionStateResponse.getRequestId();
 
         TransactionSaveRequest transactionSaveRequest = new TransactionSaveRequest();
-        transactionSaveRequest.setPaymentType(PaymentType.QR);
+        transactionSaveRequest.setPaymentType(PaymentType.POS_QR);
         transactionSaveRequest.setRequestId(requestIdTest);
 
         mvc.perform(put("/web-api/v1/transactions/payment/pos/step2")
@@ -175,7 +171,7 @@ public class TransactionApiControllerTest {
 
         for (int i = 0; i < 3; i++) {
             TransactionDetailSaveRequest transactionDetail =
-                    new TransactionDetailSaveRequest(10 + i, 500L + i, null, null);
+                    new TransactionDetailSaveRequest(10 + i, 500L + i, null);
 
             detailList.add(transactionDetail);
         }
@@ -193,7 +189,7 @@ public class TransactionApiControllerTest {
         String requestIdTest = transactionStateResponse.getRequestId();
 
         TransactionSaveRequest transactionSaveRequest = new TransactionSaveRequest();
-        transactionSaveRequest.setPaymentType(PaymentType.QR);
+        transactionSaveRequest.setPaymentType(PaymentType.POS_QR);
         transactionSaveRequest.setRequestId(requestIdTest);
 
         mvc.perform(put("/web-api/v1/transactions/payment/pos/step2")
@@ -215,7 +211,7 @@ public class TransactionApiControllerTest {
 
         for (int i = 0; i < 3; i++) {
             TransactionDetailSaveRequest transactionDetail =
-                    new TransactionDetailSaveRequest(10 + i, 500L + i, null, null);
+                    new TransactionDetailSaveRequest(10 + i, 500L + i, null);
 
             detailList.add(transactionDetail);
         }
@@ -242,7 +238,7 @@ public class TransactionApiControllerTest {
 
         for (int i = 0; i < 3; i++) {
             TransactionDetailSaveRequest transactionDetail =
-                    new TransactionDetailSaveRequest(10 + i, 500L + i, null, null);
+                    new TransactionDetailSaveRequest(10 + i, 500L + i, null);
 
             detailList.add(transactionDetail);
         }
@@ -268,7 +264,7 @@ public class TransactionApiControllerTest {
 
         for (int i = 0; i < 3; i++) {
             TransactionDetailSaveRequest transactionDetail =
-                    new TransactionDetailSaveRequest(10 + i, 500L + i, null, null);
+                    new TransactionDetailSaveRequest(10 + i, 500L + i, null);
 
             detailList.add(transactionDetail);
         }
@@ -330,7 +326,7 @@ public class TransactionApiControllerTest {
         mvc.perform(post("/web-api/v1/transactions/refund/{requestId}", requestId))
                 .andDo(print())
                 .andExpect(status().isConflict())
-                .andExpect(jsonPath("$.code").value("TRANSACTION_ALREADY_REFUND"));
+                .andExpect(jsonPath("$.code").value("TRANSACTION_ALREADY_REFUNDED"));
     }
 
     @WithMockUser(roles = "ADMIN")
