@@ -5,6 +5,7 @@ import com.alliex.cvs.domain.type.TransactionState;
 import com.alliex.cvs.domain.type.TransactionType;
 import com.alliex.cvs.testsupport.WithMockCustomUser;
 import com.alliex.cvs.web.dto.TransactionDetailSaveRequest;
+import com.alliex.cvs.web.dto.TransactionRefundResponse;
 import com.alliex.cvs.web.dto.TransactionSaveRequest;
 import com.alliex.cvs.web.dto.TransactionStateResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -302,7 +303,7 @@ public class TransactionApiControllerTest {
                         .andReturn();
 
         String content = result.getResponse().getContentAsString();
-        TransactionStateResponse resultTransactionId = objectMapper.readValue(content, TransactionStateResponse.class);
+        TransactionRefundResponse resultTransactionId = objectMapper.readValue(content, TransactionRefundResponse.class);
 
         mvc.perform(get("/web-api/v1/transactions/{requestId}", resultTransactionId.getRequestId()))
                 .andDo(print())
