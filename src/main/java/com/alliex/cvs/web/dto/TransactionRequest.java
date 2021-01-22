@@ -1,6 +1,5 @@
 package com.alliex.cvs.web.dto;
 
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,8 +10,6 @@ import lombok.Setter;
 public class TransactionRequest {
 
     private String userId;
-
-    private String merchantId;
 
     private String paymentType;
 

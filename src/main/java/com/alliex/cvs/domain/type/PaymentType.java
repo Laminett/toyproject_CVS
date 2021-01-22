@@ -2,7 +2,7 @@ package com.alliex.cvs.domain.type;
 
 public enum PaymentType {
 
-    QR,
-    BARCODE
+    POS_QR,
+    MOBILE
 
 }

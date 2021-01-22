@@ -1,10 +1,15 @@
 package com.alliex.cvs.web;
 
+import com.alliex.cvs.domain.type.PaymentType;
 import com.alliex.cvs.domain.type.TransactionState;
 import com.alliex.cvs.domain.type.TransactionType;
+import com.alliex.cvs.testsupport.WithMockCustomUser;
+import com.alliex.cvs.web.dto.TransactionDetailSaveRequest;
 import com.alliex.cvs.web.dto.TransactionSaveRequest;
 import com.alliex.cvs.web.dto.TransactionStateResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.lang3.RandomStringUtils;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,11 +53,6 @@ public class TransactionApiControllerTest {
     @Autowired
     protected ObjectMapper objectMapper;
 
-    @Autowired
-    private TestRestTemplate testRestTemplate;
-
-    private String requestIdTest;
-
     @WithMockUser(roles = "ADMIN")
     @Test
     public void getTransactions() throws Exception {
@@ -66,7 +66,7 @@ public class TransactionApiControllerTest {
     public void getTransactionById() throws Exception {
         final long testId = 500L;
         String requestId = "AAAAAAAAAAaaaaaaaaaa";
-        mvc.perform(get("/web-api/v1/transactions/{id}", testId))
+        mvc.perform(get("/web-api/v1/transactions/{requestId}", requestId))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.requestId").value(requestId));
@@ -81,67 +81,202 @@ public class TransactionApiControllerTest {
                 .andExpect(jsonPath("$.code").value("TRANSACTION_NOT_FOUND"));
     }
 
-    @WithMockUser(roles = "ADMIN")
+    @WithMockCustomUser
     @Test
-    public void QRPaymentStep1() throws Exception {
-        TransactionSaveRequest transactionSaveRequest = new TransactionSaveRequest();
-        Long merchantId = 123L;
-        Long point = 333L;
+    public void paymentFromPos() throws Exception {
+        List<TransactionDetailSaveRequest> detailList = new ArrayList<>();
 
-        List<Map<String, String>> detailList = new ArrayList<>();
-
-        for(int i = 0; i < 3; i++) {
-            Map<String, String> transactionDetail = new HashMap<>();
-            transactionDetail.put("productId", "50"+i);
-            transactionDetail.put("productAmount", "10"+i);
-            transactionDetail.put("productPoint", "20"+i);
+        for (int i = 0; i < 3; i++) {
+            TransactionDetailSaveRequest transactionDetail =
+                    new TransactionDetailSaveRequest(10 + i, 500L + i, null);
 
             detailList.add(transactionDetail);
         }
 
-        transactionSaveRequest.setMerchantId(merchantId);
-        transactionSaveRequest.setPoint(point);
-        transactionSaveRequest.setTransProduct(detailList);
-
         MvcResult result =
-        mvc.perform(post("/web-api/v1/transactions/payment/QRstep1")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(transactionSaveRequest)))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andReturn();
+                mvc.perform(post("/web-api/v1/transactions/payment/pos/step1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(detailList)))
+                        .andDo(print())
+                        .andExpect(status().isOk())
+                        .andReturn();
 
         String content = result.getResponse().getContentAsString();
         TransactionStateResponse transactionStateResponse = objectMapper.readValue(content, TransactionStateResponse.class);
-        requestIdTest = transactionStateResponse.getRequestId();
+        String requestIdTest = transactionStateResponse.getRequestId();
 
-        mvc.perform(get("/web-api/v1/transactions/state/{requestId}", requestIdTest))
+        mvc.perform(get("/web-api/v1/transactions/items/{requestIdTest}", requestIdTest))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.transactionState").value(String.valueOf(TransactionState.WAIT)))
-                .andExpect(jsonPath("$.requestId").value(requestIdTest));
-    }
+                .andExpect(jsonPath("$[0].requestId").value(requestIdTest))
+                .andExpect(jsonPath("$[1].requestId").value(requestIdTest))
+                .andExpect(jsonPath("$[2].requestId").value(requestIdTest));
 
-    @WithMockUser(roles = "ADMIN")
-    @Test
-    public void QRPaymentStep2() throws Exception {
         TransactionSaveRequest transactionSaveRequest = new TransactionSaveRequest();
-        Long userId = 400L;
-        String requestId = "BBBBBBBBBBbbbbbbbbbb";
+        transactionSaveRequest.setPaymentType(PaymentType.POS_QR);
+        transactionSaveRequest.setRequestId(requestIdTest);
 
-        transactionSaveRequest.setUserId(userId);
-
-        mvc.perform(put("/web-api/v1/transactions/payment/QRstep2/{requestId}", requestId)
+        mvc.perform(put("/web-api/v1/transactions/payment/pos/step2")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(transactionSaveRequest)))
                 .andDo(print())
                 .andExpect(status().isOk());
 
-        mvc.perform(get("/web-api/v1/transactions/state/{requestId}", requestId))
+        mvc.perform(get("/web-api/v1/transactions/state/{requestId}", requestIdTest))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.transactionState").value(String.valueOf(TransactionState.SUCCESS)))
-                .andExpect(jsonPath("$.requestId").value(requestId));
+                .andExpect(jsonPath("$.requestId").value(requestIdTest));
+    }
+
+    @WithMockCustomUser(username = "testtest100")
+    @Test
+    public void paymentFromPos_NotEnoughPoint() throws Exception {
+        List<TransactionDetailSaveRequest> detailList = new ArrayList<>();
+
+        for (int i = 0; i < 3; i++) {
+            TransactionDetailSaveRequest transactionDetail =
+                    new TransactionDetailSaveRequest(10 + i, 500L + i, null);
+
+            detailList.add(transactionDetail);
+        }
+
+        MvcResult result =
+                mvc.perform(post("/web-api/v1/transactions/payment/pos/step1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(detailList)))
+                        .andDo(print())
+                        .andExpect(status().isOk())
+                        .andReturn();
+
+        String content = result.getResponse().getContentAsString();
+        TransactionStateResponse transactionStateResponse = objectMapper.readValue(content, TransactionStateResponse.class);
+        String requestIdTest = transactionStateResponse.getRequestId();
+
+        TransactionSaveRequest transactionSaveRequest = new TransactionSaveRequest();
+        transactionSaveRequest.setPaymentType(PaymentType.POS_QR);
+        transactionSaveRequest.setRequestId(requestIdTest);
+
+        mvc.perform(put("/web-api/v1/transactions/payment/pos/step2")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(transactionSaveRequest)))
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.code").value("NOT_ENOUGH_POINT"));
+    }
+
+    @WithMockCustomUser(username = "cvstest")
+    @Test
+    public void paymentFromPos_AccessDenied() throws Exception {
+        List<TransactionDetailSaveRequest> detailList = new ArrayList<>();
+
+        for (int i = 0; i < 3; i++) {
+            TransactionDetailSaveRequest transactionDetail =
+                    new TransactionDetailSaveRequest(10 + i, 500L + i, null);
+
+            detailList.add(transactionDetail);
+        }
+
+        MvcResult result =
+                mvc.perform(post("/web-api/v1/transactions/payment/pos/step1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(detailList)))
+                        .andDo(print())
+                        .andExpect(status().isOk())
+                        .andReturn();
+
+        String content = result.getResponse().getContentAsString();
+        TransactionStateResponse transactionStateResponse = objectMapper.readValue(content, TransactionStateResponse.class);
+        String requestIdTest = transactionStateResponse.getRequestId();
+
+        TransactionSaveRequest transactionSaveRequest = new TransactionSaveRequest();
+        transactionSaveRequest.setPaymentType(PaymentType.POS_QR);
+        transactionSaveRequest.setRequestId(requestIdTest);
+
+        mvc.perform(put("/web-api/v1/transactions/payment/pos/step2")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(transactionSaveRequest)))
+                .andDo(print())
+                .andExpect(status().isUnauthorized())
+                .andExpect(jsonPath("$.code").value("ACCESS_DENIED"));
+    }
+
+    @WithMockCustomUser
+    @Test
+    public void paymentFromApp() throws Exception {
+        String requestId = RandomStringUtils.randomAlphanumeric(20);
+        TransactionSaveRequest transactionSaveRequest = new TransactionSaveRequest();
+        transactionSaveRequest.setPaymentType(PaymentType.MOBILE);
+        transactionSaveRequest.setRequestId(requestId);
+        List<TransactionDetailSaveRequest> detailList = new ArrayList<>();
+
+        for (int i = 0; i < 3; i++) {
+            TransactionDetailSaveRequest transactionDetail =
+                    new TransactionDetailSaveRequest(10 + i, 500L + i, null);
+
+            detailList.add(transactionDetail);
+        }
+
+        transactionSaveRequest.setTransProduct(detailList);
+
+        mvc.perform(post("/web-api/v1/transactions/payment/app")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(transactionSaveRequest)))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.requestId").value(requestId))
+                .andExpect(jsonPath("$.transactionState").value(String.valueOf(TransactionState.SUCCESS)));
+    }
+
+    @WithMockCustomUser(username = "testtest100")
+    @Test
+    public void paymentFromApp_NotEnoughPoint() throws Exception {
+        String requestId = RandomStringUtils.randomAlphanumeric(20);
+        TransactionSaveRequest transactionSaveRequest = new TransactionSaveRequest();
+        transactionSaveRequest.setPaymentType(PaymentType.MOBILE);
+        transactionSaveRequest.setRequestId(requestId);
+        List<TransactionDetailSaveRequest> detailList = new ArrayList<>();
+
+        for (int i = 0; i < 3; i++) {
+            TransactionDetailSaveRequest transactionDetail =
+                    new TransactionDetailSaveRequest(10 + i, 500L + i, null);
+
+            detailList.add(transactionDetail);
+        }
+
+        transactionSaveRequest.setTransProduct(detailList);
+
+        mvc.perform(post("/web-api/v1/transactions/payment/app")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(transactionSaveRequest)))
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.code").value("NOT_ENOUGH_POINT"));
+    }
+
+    @WithMockCustomUser(username = "cvstest")
+    @Test
+    public void paymentFromApp_AccessDenied() throws Exception {
+        String requestId = RandomStringUtils.randomAlphanumeric(20);
+        TransactionSaveRequest transactionSaveRequest = new TransactionSaveRequest();
+        transactionSaveRequest.setPaymentType(PaymentType.MOBILE);
+        transactionSaveRequest.setRequestId(requestId);
+        List<TransactionDetailSaveRequest> detailList = new ArrayList<>();
+
+        for (int i = 0; i < 3; i++) {
+            TransactionDetailSaveRequest transactionDetail =
+                    new TransactionDetailSaveRequest(10 + i, 500L + i, null);
+
+            detailList.add(transactionDetail);
+        }
+
+        transactionSaveRequest.setTransProduct(detailList);
+
+        mvc.perform(post("/web-api/v1/transactions/payment/app")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(transactionSaveRequest)))
+                .andDo(print())
+                .andExpect(status().isUnauthorized())
+                .andExpect(jsonPath("$.code").value("ACCESS_DENIED"));
     }
 
     @WithMockUser(roles = "ADMIN")
@@ -158,32 +293,47 @@ public class TransactionApiControllerTest {
     @WithMockUser(roles = "ADMIN")
     @Test
     public void TransactionRefund() throws Exception {
-        final long testId = 500L;
         String requestId = "AAAAAAAAAAaaaaaaaaaa";
 
         MvcResult result =
-        mvc.perform(post("/web-api/v1/transactions/refund/{transId}", testId))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andReturn();
+                mvc.perform(post("/web-api/v1/transactions/refund/{requestId}", requestId))
+                        .andDo(print())
+                        .andExpect(status().isOk())
+                        .andReturn();
 
         String content = result.getResponse().getContentAsString();
-        Long resultTransactionId = objectMapper.readValue(content, Long.class);
+        TransactionStateResponse resultTransactionId = objectMapper.readValue(content, TransactionStateResponse.class);
 
-        mvc.perform(get("/web-api/v1/transactions/{id}", resultTransactionId))
+        mvc.perform(get("/web-api/v1/transactions/{requestId}", resultTransactionId.getRequestId()))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.state").value(String.valueOf(TransactionState.REFUND)))
                 .andExpect(jsonPath("$.type").value(String.valueOf(TransactionType.REFUND)))
-                .andExpect(jsonPath("$.originId").value(testId))
-                .andExpect(jsonPath("$.requestId").value(requestId));
+                .andExpect(jsonPath("$.originRequestId").value(requestId))
+                .andExpect(jsonPath("$.requestId").value(resultTransactionId.getRequestId()));
     }
 
     @WithMockUser(roles = "ADMIN")
     @Test
-    public void getTransactionDetailById() throws Exception{
-        final long testId = 500L;
-        mvc.perform(get("/web-api/v1/transactions/items/{transId}", testId))
+    public void TransactionRefund_AlreadyRefund() throws Exception {
+        String requestId = "AAAAAAAAAAaaaaaaaaaa";
+
+        mvc.perform(post("/web-api/v1/transactions/refund/{requestId}", requestId))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andReturn();
+
+        mvc.perform(post("/web-api/v1/transactions/refund/{requestId}", requestId))
+                .andDo(print())
+                .andExpect(status().isConflict())
+                .andExpect(jsonPath("$.code").value("TRANSACTION_ALREADY_REFUNDED"));
+    }
+
+    @WithMockUser(roles = "ADMIN")
+    @Test
+    public void getTransactionDetailById() throws Exception {
+        final String requestId = "AAAAAAAAAAaaaaaaaaaa";
+        mvc.perform(get("/web-api/v1/transactions/items/{requestId}", requestId))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].productId").value(500))

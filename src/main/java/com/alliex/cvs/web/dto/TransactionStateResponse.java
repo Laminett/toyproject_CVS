@@ -1,8 +1,10 @@
 package com.alliex.cvs.web.dto;
 
 import com.alliex.cvs.domain.transaction.Transaction;
+import com.alliex.cvs.domain.transactionDetail.TransactionDetail;
 import com.alliex.cvs.domain.type.TransactionState;
 import com.alliex.cvs.domain.type.TransactionType;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
@@ -14,6 +16,9 @@ public class TransactionStateResponse {
 
     private String requestId;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime createdDate;
+
     public TransactionStateResponse(TransactionState transactionState, String requestId) {
         this.requestId = requestId;
         this.transactionState = transactionState;
@@ -22,6 +27,7 @@ public class TransactionStateResponse {
     public TransactionStateResponse(Transaction entity) {
         this.requestId = entity.getRequestId();
         this.transactionState = entity.getState();
+        this.createdDate = entity.getCreatedDate();
     }
 
 }

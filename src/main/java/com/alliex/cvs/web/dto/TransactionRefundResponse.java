@@ -8,46 +8,31 @@ import com.alliex.cvs.domain.user.User;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
 @Getter
+@Setter
 @NoArgsConstructor
-public class TransactionResponse {
-
-    private Long id;
+public class TransactionRefundResponse {
 
     private TransactionState state;
 
-    private User user;
-
     private String originRequestId;
-
-    private Long point;
 
     private TransactionType type;
 
     private String requestId;
 
-    private PaymentType paymentType;
-
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdDate;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime modifiedDate;
-
-    public TransactionResponse(Transaction entity) {
-        this.id = entity.getId();
+    public TransactionRefundResponse(Transaction entity) {
         this.state = entity.getState();
-        this.user = entity.getUser();
         this.originRequestId = entity.getOriginRequestId();
-        this.point = entity.getPoint();
         this.type = entity.getType();
         this.requestId = entity.getRequestId();
-        this.paymentType = entity.getPaymentType();
         this.createdDate = entity.getCreatedDate();
-        this.modifiedDate = entity.getModifiedDate();
     }
-
 }

@@ -25,7 +25,7 @@ public class TransactionNotFoundException extends InternalException {
     }
 
     public TransactionNotFoundException(String requestId) {
-        super("Transaction barcode " + requestId + " does not exist.");
+        super("Transaction QR " + requestId + " does not exist.");
     }
 
 }

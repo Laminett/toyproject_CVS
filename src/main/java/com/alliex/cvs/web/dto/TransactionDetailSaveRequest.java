@@ -11,20 +11,17 @@ import lombok.Setter;
 @Setter
 public class TransactionDetailSaveRequest {
 
-    private Integer productQuantity;
+    private Integer quantity;
 
     private Long productId;
 
-    private TransactionState transactionState;
-
-    private Long transactionId;
+    private String requestId;
 
     @Builder
-    public TransactionDetailSaveRequest(Integer productQuantity, Long productId, TransactionState transactionState, Long transactionId) {
-        this.productQuantity = productQuantity;
+    public TransactionDetailSaveRequest(Integer quantity, Long productId, String requestId) {
+        this.quantity = quantity;
         this.productId = productId;
-        this.transactionState = transactionState;
-        this.transactionId = transactionId;
+        this.requestId = requestId;
     }
 
     public TransactionDetail toEntity() {
@@ -32,9 +29,8 @@ public class TransactionDetailSaveRequest {
         setProductId.setId(productId);
 
         return TransactionDetail.builder()
-                .productQuantity(productQuantity)
-                .transactionId(transactionId)
-                .transactionState(transactionState)
+                .productQuantity(quantity)
+                .requestId(requestId)
                 .product(setProductId)
                 .build();
     }

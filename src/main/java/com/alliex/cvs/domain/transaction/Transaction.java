@@ -24,15 +24,11 @@ public class Transaction extends BaseTimeEntity {
     @Column(nullable = false)
     private TransactionState state;
 
-    // User -> Transaction 관계 임시 해제를 위한 주석
-//    @ManyToOne(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private Long userId;
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User user;
 
-    @Column(nullable = false)
-    private Long merchantId;
-
-    private Long originId;
+    private String originRequestId;
 
     @Column(nullable = false)
     private Long point;
@@ -47,21 +43,15 @@ public class Transaction extends BaseTimeEntity {
     private PaymentType paymentType;
 
     @Builder
-    public Transaction(Long id, TransactionState transactionState, Long userId, Long merchantId, Long originId, Long point, TransactionType transactionType, String requestId, PaymentType paymentType) {
+    public Transaction(Long id, TransactionState transactionState, User user, String originRequestId, Long point, TransactionType transactionType, String requestId, PaymentType paymentType) {
         this.id = id;
         this.state = transactionState;
-        this.userId = userId;
-        this.merchantId = merchantId;
+        this.user = user;
         this.point = point;
         this.type = transactionType;
-        this.originId = originId;
+        this.originRequestId = originRequestId;
         this.requestId = requestId;
         this.paymentType = paymentType;
-    }
-
-    public void update(Long userId, TransactionState transactionState) {
-        this.userId = userId;
-        this.state = transactionState;
     }
 
 }

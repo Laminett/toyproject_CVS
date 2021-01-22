@@ -1,12 +1,13 @@
 package com.alliex.cvs.service;
 
 import com.alliex.cvs.domain.transaction.*;
-import com.alliex.cvs.domain.type.PaymentType;
 import com.alliex.cvs.domain.type.TransactionSearchType;
 import com.alliex.cvs.domain.type.TransactionState;
 import com.alliex.cvs.domain.type.TransactionType;
+import com.alliex.cvs.domain.user.LoginUser;
 import com.alliex.cvs.domain.user.User;
 import com.alliex.cvs.exception.NotEnoughPointException;
+import com.alliex.cvs.exception.TransactionAlreadyRefundedException;
 import com.alliex.cvs.exception.TransactionNotFoundException;
 import com.alliex.cvs.exception.TransactionStateException;
 import com.alliex.cvs.web.dto.*;
@@ -38,31 +39,37 @@ public class TransactionService {
 
     private final ProductService productService;
 
+    private final UserService userService;
+
     @Transactional(readOnly = true)
     public Page<TransactionResponse> getTransactions(Pageable pageable, TransactionRequest transactionRequest) {
         return transactionRepository.findAll(searchWith(getPredicateData(transactionRequest)), pageable).map(TransactionResponse::new);
     }
 
     @Transactional(readOnly = true)
-    public TransactionResponse getTransactionById(Long id) {
-        Transaction transaction = transactionRepository.findById(id)
-                .orElseThrow(() -> new TransactionNotFoundException(id));
+    public TransactionResponse getTransactionByRequestId(String requestId) {
+        Transaction transaction = transactionRepository.findByRequestId(requestId)
+                .orElseThrow(() -> new TransactionNotFoundException(requestId));
 
         return new TransactionResponse(transaction);
     }
 
     @Transactional
-    public Long save(TransactionSaveRequest transactionSaveRequest) {
-        return transactionRepository.save(transactionSaveRequest.toEntity()).getId();
-    }
+    public Long save(TransactionSave transactionSave) {
+        User setUserId = new User();
+        setUserId.setId(transactionSave.getUserId());
 
-    @Transactional
-    public Long update(Long transId, Long userId, TransactionState transactionState) {
-        Transaction transaction = transactionRepository.findById(transId).orElseThrow(()
-                -> new TransactionNotFoundException(transId));
-        transaction.update(userId, transactionState);
+        Transaction transaction = Transaction.builder()
+                .user(setUserId)
+                .originRequestId(transactionSave.getOriginRequestId())
+                .point(transactionSave.getPoint())
+                .transactionState(transactionSave.getState())
+                .transactionType(transactionSave.getType())
+                .paymentType(transactionSave.getPaymentType())
+                .requestId(transactionSave.getRequestId())
+                .build();
 
-        return transaction.getId();
+        return transactionRepository.save(transaction).getId();
     }
 
     @Transactional
@@ -73,81 +80,148 @@ public class TransactionService {
     }
 
     @Transactional
-    public TransactionStateResponse QRPaymentStep1(TransactionSaveRequest transactionSaveRequest) {
+    public TransactionStateResponse paymentFromPosStep1(List<TransactionDetailSaveRequest> transactionDetailSaveRequests) {
         String requestId = RandomStringUtils.randomAlphanumeric(20);
-        transactionSaveRequest.setRequestId(requestId);
-        transactionSaveRequest.setPaymentType(PaymentType.QR);
-        transactionSaveRequest.setType(TransactionType.PAYMENT);
-        transactionSaveRequest.setState(TransactionState.WAIT);
-        Long transId = save(transactionSaveRequest);
 
-        for (Map<String, String> tMap : transactionSaveRequest.getTransProduct()) {
-            TransactionDetailSaveRequest saveRequest = new TransactionDetailSaveRequest(Integer.parseInt(tMap.get("productAmount")),
-                    Long.parseLong(tMap.get("productId")), TransactionState.WAIT, transId);
-            transactionDetailService.save(saveRequest);
+        for (TransactionDetailSaveRequest item : transactionDetailSaveRequests) {
+            TransactionDetailSaveRequest saveRequest = new TransactionDetailSaveRequest(item.getQuantity(),
+                    item.getProductId(), requestId);
+            transactionDetailService.save(saveRequest.toEntity());
         }
 
         return new TransactionStateResponse(TransactionState.WAIT, requestId);
     }
 
+    /**
+     * APP에서 QR코드를 읽을 때 호출된다.
+     */
     @Transactional
-    public TransactionStateResponse QRPaymentStep2(String requestId, TransactionSaveRequest transactionSaveRequest) {
-        Transaction transaction = transactionRepository.findByRequestId(requestId)
-                .orElseThrow(() -> new TransactionNotFoundException(requestId));
+    public TransactionStateResponse paymentFromPosStep2(TransactionSaveRequest transactionSaveRequest, LoginUser loginUser) {
+        UserResponse userResponse = userService.getUserByUsername(loginUser.getUsername());
+        PointResponse point = pointService.findByUserId(userResponse.getId());
+        Long _point = 0L;
 
-        // user point 조회 후 거래금액보다 작을시 false
-        PointResponse point = pointService.findByUserId(transactionSaveRequest.getUserId());
-        if (point.getPoint() < transaction.getPoint()) {
-            throw new NotEnoughPointException(point.getPoint(), transactionSaveRequest.getPoint());
+        // 차감할 포인트 계산
+        List<TransactionDetailResponse> transactionDetailResponses = transactionDetailService.getDetailByRequestId(transactionSaveRequest.getRequestId());
+
+        for (TransactionDetailResponse item : transactionDetailResponses) {
+            int _productQuantity = item.getProductQuantity();
+            ProductResponse _product = productService.getProductById(item.getProductId());
+            _point += _productQuantity * _product.getPoint();
+
+            // 상품 수량 차감 처리
+            productService.decreaseQuantity(_product.getId(), _productQuantity);
         }
 
-        List<TransactionDetailResponse> transactionDetail = transactionDetailService.getDetails(transaction.getId());
-
-        if (transaction.getState() != TransactionState.WAIT) {
-            throw new TransactionStateException("PAYMENT is possible only TransactionState=WAIT and TransactionType=PAYMENT");
+        if (point.getPoint() < _point) {
+            throw new NotEnoughPointException(point.getPoint(), _point);
         }
 
-        // User -> Transaction 관계 임시 해제를 위한 주석
-//        pointService.updatePointMinus(transaction.getUser().getId(), transaction.getPoint());
-        pointService.updatePointMinus(transactionSaveRequest.getUserId(), transaction.getPoint());
-        for (TransactionDetailResponse product : transactionDetail) {
-            productService.decreaseQuantity(product.getProductId(), product.getProductQuantity());
-        }
-        update(transaction.getId(), transactionSaveRequest.getUserId(), TransactionState.SUCCESS);
-        transactionDetailService.update(transaction.getId(), TransactionState.SUCCESS);
+        // 포인트 차감 처리
+        pointService.updatePointMinus(userResponse.getId(), _point);
 
-        return new TransactionStateResponse(transaction.getState(), transaction.getRequestId());
+        TransactionSave transactionSave = new TransactionSave();
+        transactionSave.setRequestId(transactionSaveRequest.getRequestId());
+        transactionSave.setPaymentType(transactionSaveRequest.getPaymentType());
+        transactionSave.setType(TransactionType.PAYMENT);
+        transactionSave.setState(TransactionState.SUCCESS);
+        transactionSave.setUserId(userResponse.getId());
+        transactionSave.setPoint(_point);
+        Long transId = save(transactionSave);
+
+        Transaction transaction = transactionRepository.findById(transId)
+                .orElseThrow(() -> new TransactionNotFoundException(transactionSaveRequest.getRequestId()));
+
+        return new TransactionStateResponse(transaction);
     }
 
+    /**
+     * APP에서 직접 결제할 때 호출 된다.
+     */
     @Transactional
-    public Long transactionRefund(Long transId) {
-        List<Transaction> originTransactionIdCheck = transactionRepository.findByOriginId(transId);
-        if (!originTransactionIdCheck.isEmpty()) {
-            throw new TransactionNotFoundException(transId);
+    public TransactionStateResponse appPayment(TransactionSaveRequest transactionSaveRequest, LoginUser loginUser) {
+        UserResponse userResponse = userService.getUserByUsername(loginUser.getUsername());
+        PointResponse point = pointService.findByUserId(userResponse.getId());
+        Long _point = 0L;
+
+        // 차감할 포인트 계산 및 상품 수량 차감
+        for (TransactionDetailSaveRequest item : transactionSaveRequest.getTransProduct()) {
+            TransactionDetailSaveRequest saveRequest = new TransactionDetailSaveRequest(item.getQuantity(),
+                    item.getProductId(), transactionSaveRequest.getRequestId());
+            transactionDetailService.save(saveRequest.toEntity());
+
+            Long _productId = item.getProductId();
+            int _productQuantity = item.getQuantity();
+            ProductResponse _product = productService.getProductById(_productId);
+
+            // 상품 수량 차감
+            productService.decreaseQuantity(_product.getId(), _productQuantity);
+
+            _point += _productQuantity * _product.getPoint();
         }
 
-        Transaction transaction = transactionRepository.findById(transId).orElseThrow(()
-                -> new TransactionNotFoundException(transId));
+        if (point.getPoint() < _point) {
+            throw new NotEnoughPointException(point.getPoint(), _point);
+        }
+
+        // 포인트 차감 처리
+        pointService.updatePointMinus(userResponse.getId(), _point);
+
+        TransactionSave transactionSave = new TransactionSave();
+        transactionSave.setPaymentType(transactionSaveRequest.getPaymentType());
+        transactionSave.setPoint(_point);
+        transactionSave.setState(TransactionState.SUCCESS);
+        transactionSave.setUserId(userResponse.getId());
+        transactionSave.setType(TransactionType.PAYMENT);
+        transactionSave.setRequestId(transactionSaveRequest.getRequestId());
+        Long transId = save(transactionSave);
+
+        Transaction transaction = transactionRepository.findById(transId)
+                .orElseThrow(() -> new TransactionNotFoundException(transId));
+
+        return new TransactionStateResponse(transaction);
+    }
+
+    /**
+     * 거래를 반품할때 호출 된다.
+     */
+    @Transactional
+    public TransactionRefundResponse transactionRefund(String requestId) {
+        transactionRepository.findByOriginRequestId(requestId).ifPresent(transaction -> {
+            throw new TransactionAlreadyRefundedException(requestId);
+        });
+
+        Transaction transaction = transactionRepository.findByRequestId(requestId).orElseThrow(()
+                -> new TransactionNotFoundException(requestId));
 
         if (transaction.getState() != TransactionState.SUCCESS || transaction.getType() != TransactionType.PAYMENT) {
-            // FIXME
             throw new TransactionStateException("REFUND is possible only TransactionState=SUCCESS and TransactionType=PAYMENT");
         }
 
-        List<TransactionDetailResponse> transactionDetail = transactionDetailService.getDetails(transaction.getId());
-        // User -> Transaction 관계 임시 해제를 위한 주석
-//        pointService.updatePointPlus(transaction.getUser().getId(), transaction.getPoint());
-        pointService.updatePointPlus(transaction.getUserId(), transaction.getPoint());
-        for (TransactionDetailResponse product : transactionDetail) {
-            productService.increaseQuantity(product.getProductId(), product.getProductQuantity());
+        // 차감된 상품 수량 원복
+        List<TransactionDetailResponse> transactionDetail = transactionDetailService.getDetailByRequestId(transaction.getRequestId());
+        for (TransactionDetailResponse productDetail : transactionDetail) {
+            productService.increaseQuantity(productDetail.getProductId(), productDetail.getProductQuantity());
         }
-        transactionDetailService.update(transId, TransactionState.REFUND);
-        // User -> Transaction 관계 임시 해제를 위한 주석
-//        TransactionSaveRequest transactionRefundRequest = new TransactionSaveRequest(transaction.getUser().getId(), transaction.getMerchantId(), transaction.getId(),
-        TransactionSaveRequest transactionRefundRequest = new TransactionSaveRequest(transaction.getUserId(), transaction.getMerchantId(), transaction.getId(),
-                transaction.getPoint(), TransactionState.REFUND, TransactionType.REFUND, transaction.getRequestId(), transaction.getPaymentType());
 
-        return transactionRepository.save(transactionRefundRequest.toEntity()).getId();
+        // 차감된 포인트 원복
+        pointService.updatePointPlus(transaction.getUser().getId(), transaction.getPoint());
+
+        TransactionSave transactionSave = new TransactionSave();
+        String refundRequestId = RandomStringUtils.randomAlphanumeric(20);
+        transactionSave.setUserId(transaction.getUser().getId());
+        transactionSave.setOriginRequestId(transaction.getRequestId());
+        transactionSave.setRequestId(refundRequestId);
+        transactionSave.setPoint(transaction.getPoint());
+        transactionSave.setState(TransactionState.REFUND);
+        transactionSave.setType(TransactionType.REFUND);
+        transactionSave.setPaymentType(transaction.getPaymentType());
+        Long transId = save(transactionSave);
+
+        Transaction refundTransaction = transactionRepository.findById(transId).orElseThrow(()
+                -> new TransactionNotFoundException(refundRequestId));
+
+        return new TransactionRefundResponse(refundTransaction);
     }
 
     private Specification<Transaction> searchWith(Map<TransactionSearchType, Object> predicateData) {
@@ -159,7 +233,6 @@ public class TransactionService {
                         Join<Transaction, User> userJoin = root.join(entry.getKey().getValue());
                         predicate.add(builder.like(userJoin.get("username"), "%" + entry.getValue() + "%"));
                         break;
-                    case MERCHANTID:
                     case TYPE:
                     case POINT:
                     case STATE:
@@ -177,10 +250,6 @@ public class TransactionService {
 
     private Map<TransactionSearchType, Object> getPredicateData(TransactionRequest transactionRequest) {
         Map<TransactionSearchType, Object> predicateData = new HashMap<>();
-
-        if (StringUtils.isNotBlank(transactionRequest.getMerchantId())) {
-            predicateData.put(TransactionSearchType.MERCHANTID, transactionRequest.getMerchantId());
-        }
 
         if (StringUtils.isNotBlank(transactionRequest.getUserId())) {
             predicateData.put(TransactionSearchType.USERID, transactionRequest.getUserId());

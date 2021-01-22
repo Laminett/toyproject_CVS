@@ -50,7 +50,6 @@
                                     <div id="transaction-search-field" class="dropdown-menu"
                                          aria-labelledby="dropdownMenuButton-transaction-search">
                                         <a class="dropdown-item" href="#none" searchKey="userId">userId</a>
-                                        <a class="dropdown-item" href="#none" searchKey="merchantId">merchantId</a>
                                         <a class="dropdown-item" href="#none" searchKey="paymentType">paymentType</a>
                                         <a class="dropdown-item" href="#none" searchKey="point">point</a>
                                         <a class="dropdown-item" href="#none" searchKey="state">state</a>
@@ -77,7 +76,6 @@
                                 <thead class=" text-primary text-center">
                                 <th>NO</th>
                                 <th>USERID</th>
-                                <th>MERCHANTID</th>
                                 <th>PAYMENTTYPE</th>
                                 <th>POINT</th>
                                 <th>STATE</th>
@@ -120,45 +118,45 @@
                                 <div class="form-group col-md-3">
                                     <label for="inputTransactionId">NO</label>
                                     <input type="text" class="form-control text-center" id="TransactionId"
-                                           name="TransactionId" placeholder="ex> TransactionId" disabled>
+                                           name="TransactionId" disabled>
                                 </div>
                                 <div class="form-group col-md-3">
                                     <label for="inputUserId">userId</label>
                                     <input type="text" class="form-control text-center" id="BuyerId" name="BuyerId"
-                                           placeholder="ex> BuyerId" disabled>
+                                           disabled>
                                 </div>
                                 <div class="form-group col-md-3">
-                                    <label for="inputMerchantId">MerchantId</label>
-                                    <input type="text" class="form-control text-center" id="MerchantId"
-                                           name="MerchantId" placeholder="ex> MerchantId" disabled>
+                                    <label for="inputPoint">TransactionPoint</label>
+                                    <input type="text" class="form-control text-right" id="TransactionPoint"
+                                           name="TransactionPoint" disabled>
                                 </div>
                                 <div class="form-group col-md-3">
                                     <label for="inputPaymentType">PaymentType</label>
                                     <input type="text" class="form-control text-center" id="PaymentType"
-                                           name="PaymentType" placeholder="ex> TransactionId" disabled>
+                                           name="PaymentType" disabled>
                                 </div>
                             </div>
 
                             <div class="form-row text-center">
                                 <div class="form-group col-md-3">
-                                    <label for="inputPoint">TransactionPoint</label>
-                                    <input type="text" class="form-control text-right" id="TransactionPoint"
-                                           name="TransactionPoint" placeholder="ex> BuyerId" disabled>
+                                    <label for="inputCity">requestId</label>
+                                    <input type="text" class="form-control text-center" id="barcode" name="barcode"
+                                           disabled>
+                                </div>
+                                <div class="form-group col-md-3" id="div_paymentBarcode">
+                                    <label for="inputCity">paymentRequestId</label>
+                                    <input type="text" class="form-control text-center" id="paymentBarcode"
+                                           name="paymentBarcode" disabled>
                                 </div>
                                 <div class="form-group col-md-3">
                                     <label for="inputState">TransactionState</label>
                                     <input type="text" class="form-control text-center" id="TransactionState"
-                                           name="TransactionState" placeholder="ex> MerchantId" disabled>
+                                           name="TransactionState" disabled>
                                 </div>
                                 <div class="form-group col-md-3">
                                     <label for="inputType">TransactionType</label>
                                     <input type="text" class="form-control text-center" id="TransactionType"
-                                           name="TransactionType" placeholder="ex> MerchantId" disabled>
-                                </div>
-                                <div class="form-group col-md-3">
-                                    <label for="inputCity">Barcode</label>
-                                    <input type="text" class="form-control text-center" id="barcode" name="barcode"
-                                           placeholder="ex> MerchantId" disabled>
+                                           name="TransactionType" disabled>
                                 </div>
                             </div>
 
@@ -182,13 +180,10 @@
 </div>
 <script id="transactionsTemplate" type="text/x-jquery-tmpl">
 <tr>
-   <td style='display:none;position:absolute'>${id}</td>
+   <td style='display:none;position:absolute'>${requestId}</td>
    <td>${number}</td>
    <td style='display: none'>${id}</td>
-   // User -> Transaction 관계 임시 해제를 위한 주석
-<!--   <td>${user.username}</td>-->
-   <td>${userId}</td>
-   <td>${merchantId}</td>
+   <td>${user.username}</td>
    <td>${paymentType}</td>
    <td class='text-right'>${point}</td>
    <td>${state}</td>
@@ -206,40 +201,34 @@
    {%/if%}
    </td>
 </tr>
-
 </script>
 <script id="transactionsNoDataTemplate" type="text/x-jquery-tmpl">
 <tr>
     <td colspan="10">No Data.</td>
 </tr>
-
 </script>
 <script id="transactionsItemsTemplate" type="text/x-jquery-tmpl">
 <tr>
     <td>${productName}</td>
-    <td>${productQuantity}</td>
+    <td class='text-right'>${productQuantity}</td>
     <td class='text-right'>${productPoint}</td>
 </tr>
-
 </script>
 <script id="transactionsItemsNoDataTemplate" type="text/x-jquery-tmpl">
 <tr>
     <td colspan="3">No Data.</td>
 </tr>
-
 </script>
 <script id="transactionsItemsTotalPointTemplate" type="text/x-jquery-tmpl">
 <tr class='popthead' style='border: #9e9e9e 1px solid'>
-    <td> SUMMERIZE :</td>
+    <td style='width:300px'> SUMMERIZE :</td>
     <td colspan=2 class='text-right'>${totalPoint}</td>
 </tr>
-
 </script>
 <script id="transactionsPagingTemplate" type="text/x-jquery-tmpl">
 <li class="page-item">
     <a class="page-link" href="#none">${page}</a>
 </li>
-
 </script>
 
 <script type="text/javascript" src="/js/plugins/jquery.tmpl.js"></script>

@@ -1,0 +1,93 @@
+### Authorization by token, part 1. Retrieve and save token.
+POST http://{{host}}:{{port}}/api/login
+content-type: application/json
+
+{
+  "username": "test",
+  "password": "test"
+}
+
+> {% client.global.set("auth_token", response.body.token); %}
+
+### Authorization by token, part 2. Use token to authorize.
+GET http://{{host}}:{{port}}/api/v1/posts
+content-type: application/json
+Authorization: Bearer {{auth_token}}
+
+### APP결제
+POST http://{{host}}:{{port}}/api/v1/transactions/payment/app
+content-type: application/json
+Authorization: Bearer {{auth_token}}
+
+{
+  "requestId": "abcdeabcdeabcdeabcde",
+  "paymentType": "MOBILE",
+  "transProduct": [
+    {
+      "productId": 1,
+      "quantity": 1
+    },
+    {
+      "productId": 3,
+      "quantity": 2
+    },
+    {
+      "productId": 4,
+      "quantity": 3
+    }
+  ]
+}
+
+> {% client.global.set("app_request_id", response.body.requestId); %}
+
+### APP결제 거래조회
+GET http://{{host}}:{{port}}/api/v1/transactions/{{app_request_id}}
+content-type: application/json
+Authorization: Bearer {{auth_token}}
+
+### QR결제 STEP1
+POST http://{{host}}:{{port}}/api/v1/transactions/payment/pos/step1
+content-type: application/json
+Authorization: Bearer {{auth_token}}
+
+[
+    {
+      "productId": 1,
+      "quantity": 1
+    },
+    {
+      "productId": 3,
+      "quantity": 2
+    },
+    {
+      "productId": 4,
+      "quantity": 3
+    }
+]
+
+> {% client.global.set("pos_request_id", response.body.requestId); %}
+
+### QR결제 STEP2
+PUT http://{{host}}:{{port}}/api/v1/transactions/payment/pos/step2
+content-type: application/json
+Authorization: Bearer {{auth_token}}
+
+{
+  "paymentType": "QR",
+  "requestId": "{{pos_request_id}}"
+}
+
+### 결제 거래상태 조회
+GET http://{{host}}:{{port}}/api/v1/transactions/state/{{pos_request_id}}
+content-type: application/json
+Authorization: Bearer {{auth_token}}
+
+### 결제 상세정보 조회
+GET http://{{host}}:{{port}}/api/v1/transactions/items/{{pos_request_id}}
+content-type: application/json
+Authorization: Bearer {{auth_token}}
+
+### 거래 취소
+POST http://{{host}}:{{port}}/api/v1/transactions/refund/{{pos_request_id}}
+content-type: application/json
+Authorization: Bearer {{auth_token}}
