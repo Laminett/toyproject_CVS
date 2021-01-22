@@ -1,6 +1,7 @@
 package com.alliex.cvs.domain.point;
 
 import com.alliex.cvs.domain.BaseTimeEntity;
+import com.alliex.cvs.domain.user.User;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,15 +19,19 @@ public class Point extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private Long userId;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User user;
 
     @Column(nullable = false)
     private Long point;
 
     @Builder
     public Point(Long userId, Long point) {
-        this.userId = userId;
+        User _user = new User();
+        _user.setId(userId);
+
+        this.user = _user;
         this.point = point;
     }
 
