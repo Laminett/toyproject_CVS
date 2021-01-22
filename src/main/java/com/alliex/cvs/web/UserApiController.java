@@ -19,14 +19,14 @@ public class UserApiController {
     private final UserService userService;
 
     @ApiOperation(value = "Create User")
-    @PostMapping({"api/v1/create-users", "web-api/v1/users"})
+    @PostMapping({"/api/v1/create-users", "/web-api/v1/users"})
     @ResponseStatus(HttpStatus.CREATED)
     public UserResponse save(@RequestBody UserSaveRequest userSaveRequest) {
         return userService.save(userSaveRequest);
     }
 
     @ApiOperation(value = "Update User")
-    @PostMapping({"api/v1/users/{id}", "web-api/v1/users/{id}"})
+    @PostMapping({"/api/v1/users/{id}", "/web-api/v1/users/{id}"})
     public Long update(@PathVariable Long id, @RequestBody UserUpdateRequest userUpdateRequest) {
         return userService.update(id, userUpdateRequest);
     }
@@ -38,13 +38,13 @@ public class UserApiController {
     }
 
     @ApiOperation(value = "Get User")
-    @GetMapping({"api/v1/users/{id}", "web-api/v1/users/{id}"})
+    @GetMapping({"/api/v1/users/{id}", "/web-api/v1/users/{id}"})
     public UserResponse getUserById(@PathVariable Long id) {
         return userService.getUserById(id);
     }
 
     @ApiOperation(value = "Delete User")
-    @DeleteMapping("api/v1/users/{id}")
+    @DeleteMapping("/api/v1/users/{id}")
     public Long delete(@PathVariable Long id) {
         userService.delete(id);
 

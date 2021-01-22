@@ -14,7 +14,7 @@ import java.util.stream.Stream;
 @Controller
 public class UserController {
 
-    @GetMapping("users")
+    @GetMapping("/users")
     public String getUsers(Model model) {
         List<String> roleNames = Stream.of(Role.values())
                 .map(Enum::name)

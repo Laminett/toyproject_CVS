@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class ProductCategoryController {
 
-    @GetMapping("products-categories")
+    @GetMapping("/products-categories")
     public String getProductCategories(Model model, @AuthenticationPrincipal LoginUser loginUser) {
         model.addAttribute("loginUser", loginUser.getUsername());
 
