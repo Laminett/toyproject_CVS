@@ -53,7 +53,7 @@ public class UserApiController {
 
     @ApiOperation(value = "Verify Password")
     @GetMapping("/api/v1/users/verify/pw/{password}")
-    public VerifyPasswordResponse isValidPassword(@PathVariable String password) {
+    public VerifyPasswordResponse verifyPassword(@PathVariable String password) {
         boolean isValid = userService.isValidPassword(password);
 
         return new VerifyPasswordResponse(password, isValid);
@@ -61,7 +61,7 @@ public class UserApiController {
 
     @ApiOperation(value = "Verify Login ID")
     @GetMapping("/api/v1/users/verify/id/{username}")
-    public UserResponse findByUsername(@PathVariable String username) {
+    public UserResponse verifyUsername(@PathVariable String username) {
         User user = userService.findByUsername(username)
                 .orElseThrow(() -> new UserNotFoundException("User " + username + " not found."));
 
