@@ -26,6 +26,8 @@ public class UserResponse {
 
     private Role role;
 
+    private Long point;
+
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdDate;
 
@@ -47,6 +49,10 @@ public class UserResponse {
         this.phoneNumber = entity.getPhoneNumber();
         this.role = entity.getRole();
         this.createdDate = entity.getCreatedDate();
+
+        if (entity.getPoint() != null) {
+            this.point = entity.getPoint().getPoint();
+        }
     }
 
 }

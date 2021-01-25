@@ -18,7 +18,7 @@ public class PointResponse {
     @Builder
     public PointResponse(Point entity) {
         this.id = entity.getId();
-        this.userId = entity.getUserId();
+        this.userId = entity.getUser().getId();
         this.point = entity.getPoint();
     }
 
