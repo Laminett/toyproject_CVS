@@ -21,15 +21,13 @@ public class IndexController {
     }
 
     @GetMapping("/login-form")
-    public String loginPage() {
-        return "login";
+    public String loginForm() {
+        return "login-form";
     }
 
     @GetMapping("/logout/success")
     public String logoutSuccess() {
-        System.out.println("logout success.");
-
-        return "redirect:/";
+        return "redirect:/login-form";
     }
 
 }
