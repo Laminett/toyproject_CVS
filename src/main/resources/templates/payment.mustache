@@ -6,11 +6,12 @@
                 <div class="card card-center">
                     <div class="card-header card-header-primary">
                         <div class="text-center">
-                            <h4 class="card-title">{{#messages}}payment.product.list{{/messages}}</h4>
+                            <h4 id="paymentTitle" class="card-title">{{#messages}}payment.product.list{{/messages}}</h4>
+                            <h4 id="resultTitle" class="card-title" style="display: none;">{{#messages}}payment.complete{{/messages}}</h4>
                         </div>
                     </div>
                     <div class="card-body">
-                        <div class="table-responsive">
+                        <div id="scanArea" class="table-responsive">
                             <table class="table">
                                 <colgroup>
                                     <col width="45%">
@@ -25,7 +26,7 @@
                                     <th colspan="2">{{#messages}}quantity{{/messages}}</th>
                                     <th>{{#messages}}delete{{/messages}}</th>
                                 </thead>
-                                <tbody id="productList">
+                                <tbody id="products">
                                     <tr id="noData">
                                         <td colspan="5" class="text-center"><h3 style="margin-top: 30px; margin-bottom: 30px;">{{#messages}}info.scan.product{{/messages}}</h3></td>
                                     </tr>
@@ -43,14 +44,23 @@
                                 </tbody>
                             </table>
                         </div>
+                        <div id="successArea" class="text-center" style="margin-top: 50px; margin-bottom: 50px; display: none;">
+                            <h3 class="card-title" style="font-weight: bold; color: #9c27b0;">{{#messages}}payment.success{{/messages}}</h3>
+                            <h4 class="card-title" style="margin-top: 20px; font-weight: bold;">{{#messages}}info.price{{/messages}}<span id="paymentSuccess"></span></h4>
+                        </div>
+                        <div id="failArea" class="text-center" style="margin-top: 50px; margin-bottom: 50px; display: none;">
+                            <h3 class="card-title" style="font-weight: bold; color: #9c27b0; margin-bottom: 15px !important;">{{#messages}}payment.fail{{/messages}}</h3>
+                            <h4 class="card-title" style="margin-top: 20px; font-weight: bold;"><span id="paymentFail"></span></h4>
+                        </div>
                     </div>
                 </div>
                 <div class="text-center">
                     <button id="btnQR" class="btn btn-primary" data-toggle="modal">{{#messages}}btn.qr.payment{{/messages}}</button>
-                    <button type="button" id="btnCreditCard" class="btn btn-primary">{{#messages}}btn.credit.payment{{/messages}}</button>
+                    <button id="btnCreditCard" class="btn btn-primary">{{#messages}}btn.credit.payment{{/messages}}</button>
+                    <button id="btnReset" class="btn btn-primary" style="display: none;">{{#messages}}btn.back.payment{{/messages}}</button>
                 </div>
-                <div class="text-left">
-                    <button type="button" id="barcodeInput" class="btn btn-simple btn-round btn-just-icon"><i class="material-icons">keyboard</i></button>
+                <div id="barcodeInputArea" class="text-left" style="display: none;">
+                    <button type="button" id="btnKeyboard" class="btn btn-simple btn-round btn-just-icon"><i class="material-icons">keyboard</i></button>
                     <input type="input" id="barcodeNumber">
                 </div>
             </div>
@@ -75,7 +85,8 @@
 <script>
     var messages = {
         "alert.scan.product": "{{#messages}}alert.scan.product{{/messages}}",
-        "alert.payment.timeover": "{{#messages}}alert.payment.timeover{{/messages}}"
+        "alert.payment.timeover": "{{#messages}}alert.payment.timeover{{/messages}}",
+        "alert.fail.to.make.qr": "{{#messages}}alert.fail.to.make.qr{{/messages}}"
     };
 </script>
 <script src="/js/jquery.scannerdetection.js"></script>
