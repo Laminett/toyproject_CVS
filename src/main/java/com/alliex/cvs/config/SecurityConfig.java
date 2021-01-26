@@ -85,6 +85,7 @@ public class SecurityConfig {
             http.authorizeRequests()
                     .antMatchers("/common/**", "/css/**", "/js/**", "/img/**", "/material-dashboard/**").permitAll()
                     .antMatchers("/login-form/**", "/logout/**").permitAll()
+                    .antMatchers("/messages/**").permitAll()
                     .antMatchers("/payment/**").permitAll()
                     .antMatchers("/ping").permitAll()
                     .antMatchers("/**").hasRole(Role.ADMIN.name());

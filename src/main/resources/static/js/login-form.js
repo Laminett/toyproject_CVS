@@ -1,14 +1,20 @@
 var main = {
-    init : function () {
+    init: function () {
         var _this = this;
         if (!_this.storageAvailable('localStorage')) {
             alert('This browser is not supported. \nThe site is optimized for Chrome browser.');
             $("#signInBtn, #pcPaymentBtn").attr('disabled', true);
         } else {
-            $("#pcPaymentBtn").click(function(){
+            $("#pcPaymentBtn").click(function () {
                 location.href = '/payment';
             });
         }
+
+        $(document).ajaxError(function (event, jqxhr, settings, thrownError) {
+            alert('Exception occurred.\n' + jqxhr.status + ', ' + jqxhr.statusText);
+        });
+
+        _this.loadMessages();
     },
     storageAvailable(type) {
         var storage;
@@ -18,9 +24,9 @@ var main = {
             storage.setItem(x, x);
             storage.removeItem(x);
             return true;
-        } catch(e) {
+        } catch (e) {
             return e instanceof DOMException && (
-                // Firefox를 제외한 모든 브라우저
+                    // Firefox를 제외한 모든 브라우저
                 e.code === 22 ||
                 // Firefox
                 e.code === 1014 ||
@@ -32,9 +38,15 @@ var main = {
                 // 이미 저장된 것이있는 경우에만 QuotaExceededError를 확인하십시오.
                 (storage && storage.length !== 0);
         }
+    },
+    loadMessages() {
+        $.get("/messages", function (data) {
+            // WIP
+            console.log(data);
+        }, "json");
     }
 };
 
-$(function() {
+$(function () {
     main.init();
 });
