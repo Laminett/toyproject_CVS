@@ -54,7 +54,7 @@ public class UserService implements UserDetailsService {
     }
 
     public List<UserResponse> getUsers(Pageable pageable) {
-        return userRepository.findAll(pageable).stream()
+        return userRepository.findAllWithFetchJoin(pageable).stream()
                 .map(UserResponse::new)
                 .collect(Collectors.toList());
     }

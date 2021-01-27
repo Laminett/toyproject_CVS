@@ -14,12 +14,12 @@
                                 <input type="hidden" name="searchKey" value=""/>
                                 <div class="dropdown" style="margin-right: 10px;">
                                     <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton-purchase-search" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        상품명
+                                        {{#messages}}product.name{{/messages}}
                                     </button>
                                     <div id="purchase-search-field" class="dropdown-menu" aria-labelledby="dropdownMenuButton-purchase-search">
-                                        <a class="dropdown-item" href="#none" searchKey="productName">상품명</a>
-                                        <a class="dropdown-item" href="#none" searchKey="categoryName">카테고리명</a>
-                                        <a class="dropdown-item" href="#none" searchKey="purchaseDate">구매일자</a>
+                                        <a class="dropdown-item" href="#none" searchKey="productName">{{#messages}}product.name{{/messages}}</a>
+                                        <a class="dropdown-item" href="#none" searchKey="categoryName">{{#messages}}category{{/messages}}</a>
+                                        <a class="dropdown-item" href="#none" searchKey="purchaseDate">{{#messages}}purchase.date{{/messages}}</a>
                                     </div>
                                 </div>
                                 <div class="form-group has-white">
@@ -38,14 +38,14 @@
                             <table class="table" id="templ1">
                                 <thead class="text-primary text-center">
                                 <th>NO</th>
-                                <th>카테고리명</th>
-                                <th>상품명</th>
-                                <th>구매수량</th>
-                                <th>구매금액</th>
-                                <th>등록자</th>
-                                <th>구매일자</th>
-                                <th>등록일자</th>
-                                <th>동작</th>
+                                <th>{{#messages}}category{{/messages}}</th>
+                                <th>{{#messages}}product.name{{/messages}}</th>
+                                <th>{{#messages}}quantity{{/messages}}</th>
+                                <th>{{#messages}}amount{{/messages}}</th>
+                                <th>{{#messages}}create.by{{/messages}}</th>
+                                <th>{{#messages}}purchase.date{{/messages}}</th>
+                                <th>{{#messages}}created.date{{/messages}}</th>
+                                <th>{{#messages}}action{{/messages}}</th>
                                 </thead>
                                 <tbody id="purchasesArea" class="text-center"></tbody>
                             </table>
@@ -59,7 +59,7 @@
                 </div>
                 <div>
                     <button class="btn btn-round" data-toggle="modal" data-target="#createPurchaseModal">
-                        <i class="material-icons">assignment</i>&nbsp;{{#messages}}button.create{{/messages}}
+                        <i class="material-icons">assignment</i>&nbsp;{{#messages}}btn.create{{/messages}}
                     </button>
                 </div>
             </div>
@@ -76,19 +76,19 @@
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
                             <i class="material-icons">clear</i>
                         </button>
-                        <h4 class="card-title">Purchase Information</h4>
+                        <h4 class="card-title">{{#messages}}purchase.info{{/messages}}</h4>
                         <input type="hidden" id="id" name="id">
                     </div>
                 </div>
                 <div class="modal-body">
                     <form id="createPurchaseForm" class="form" method="" action="">
                         <input type="hidden" id="purchaseId" value=""/>
-                        <p class="description text-center">Scan the barcode first</p>
+                        <p class="description text-center">{{#messages}}info.scan.product{{/messages}}</p>
                         <div class="card-body">
                             <div class="form-group bmd-form-group">
                                 <div class="input-group">
                                     <div class="input-group-prepend" style="width:100px;">
-                                        <div class="input-group-text">바코드</div>
+                                        <div class="input-group-text">{{#messages}}barcode{{/messages}}</div>
                                     </div>
                                     <input type="text" id="barcode" name="barcode" class="form-control" READONLY>
                                 </div>
@@ -96,7 +96,7 @@
                             <div class="form-group bmd-form-group" id="div_categoryName">
                                 <div class="input-group">
                                     <div class="input-group-prepend" style="width:100px;">
-                                        <div class="input-group-text">카테고리</div>
+                                        <div class="input-group-text">{{#messages}}category{{/messages}}</div>
                                     </div>
                                     <input type="text" id="categoryName" name="categoryName" class="form-control" disabled>
                                     <input type="hidden" id="categoryId" name="categoryId">
@@ -105,7 +105,7 @@
                             <div class="form-group bmd-form-group" id="div_productName">
                                 <div class="input-group">
                                     <div class="input-group-prepend" style="width:100px;">
-                                        <div class="input-group-text">상품명</div>
+                                        <div class="input-group-text">{{#messages}}product.name{{/messages}}</div>
                                     </div>
                                     <input type="text" id="productName" name="productName" class="form-control" disabled>
                                     <input type="hidden" id="productId" name="productId">
@@ -114,7 +114,7 @@
                             <div class="form-group bmd-form-group" id="div_quantity">
                                 <div class="input-group">
                                     <div class="input-group-prepend" style="width:100px;">
-                                        <div class="input-group-text">수량</div>
+                                        <div class="input-group-text">{{#messages}}quantity{{/messages}}</div>
                                     </div>
                                     <input type="text" id="quantity" name="quantity" class="form-control" disabled>
                                 </div>
@@ -122,7 +122,7 @@
                             <div class="form-group bmd-form-group" id="div_checkbox">
                                 <div class="input-group">
                                     <div class="input-group-prepend" style="width:100px;">
-                                        <div class="input-group-text">사용여부</div>
+                                        <div class="input-group-text">{{#messages}}use.yn{{/messages}}</div>
                                     </div>
                                     <input class="form-check-input" type="checkbox" value="" name="isEnabled" id="isEnabled" style="position: inherit;margin-left: 0px;margin-top: 6px;width: 20px; height: 18px;" disabled>
                                 </div>
@@ -130,7 +130,7 @@
                             <div class="form-group bmd-form-group" id="div_purchaseQuantity">
                                 <div class="input-group">
                                     <div class="input-group-prepend" style="width:100px;">
-                                        <div class="input-group-text">구매수량</div>
+                                        <div class="input-group-text">{{#messages}}purchase.quantity{{/messages}}</div>
                                     </div>
                                     <input type="text" id="purchaseQuantity" name="purchaseQuantity" class="form-control" >
                                 </div>
@@ -138,7 +138,7 @@
                             <div class="form-group bmd-form-group" id="div_purchaseAmount">
                                 <div class="input-group">
                                     <div class="input-group-prepend" style="width:100px;">
-                                        <div class="input-group-text">구매금액</div>
+                                        <div class="input-group-text">{{#messages}}purchase.amount{{/messages}}</div>
                                     </div>
                                     <input type="text" id="purchaseAmount" name="purchaseAmount" class="form-control">
                                 </div>
@@ -146,7 +146,7 @@
                             <div class="form-group bmd-form-group" id="div_purchaseDate">
                                 <div class="input-group">
                                     <div class="input-group-prepend" style="width:100px;">
-                                        <div class="input-group-text">구매날짜</div>
+                                        <div class="input-group-text">{{#messages}}purchase.date{{/messages}}</div>
                                     </div>
                                     <input type="text" id="purchaseDate" name="purchaseDate" class="form-control datepicker_local">
                                 </div>
@@ -155,7 +155,7 @@
                     </form>
                 </div>
                 <div class="modal-footer justify-content-center">
-                    <a href="#none" id="createPurchaseBtn" class="btn btn-primary btn-round">Regist</a>
+                    <a href="#none" id="createPurchaseBtn" class="btn btn-primary btn-round">{{#messages}}btn.create{{/messages}}</a>
                 </div>
             </div>
         </div>
@@ -183,7 +183,7 @@
 </script>
 <script id="purchasesNoDataTemplate" type="text/x-jquery-tmpl">
 <tr>
-    <td colspan="9">No Data.</td>
+    <td colspan="9">{{#messages}}info.search.no.data{{/messages}}</td>
 </tr>
 </script>
 <script id="purchasesPagingTemplate" type="text/x-jquery-tmpl">

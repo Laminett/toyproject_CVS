@@ -17,9 +17,9 @@
                                         name
                                     </button>
                                     <div id="product-search-field" class="dropdown-menu" aria-labelledby="dropdownMenuButton-product-search">
-                                        <a class="dropdown-item" href="#none" searchKey="name">name</a>
-                                        <a class="dropdown-item" href="#none" searchKey="categoryName">category</a>
-                                        <a class="dropdown-item" href="#none" searchKey="isEnabled">enabled</a>
+                                        <a class="dropdown-item" href="#none" searchKey="name">{{#messages}}product.name{{/messages}}</a>
+                                        <a class="dropdown-item" href="#none" searchKey="categoryName">{{#messages}}category{{/messages}}</a>
+                                        <a class="dropdown-item" href="#none" searchKey="isEnabled">{{#messages}}use.yn{{/messages}}</a>
                                     </div>
                                 </div>
                                 <div class="form-group has-white">
@@ -38,15 +38,15 @@
                             <table class="table" id="templ1">
                                 <thead class="text-primary text-center">
                                 <th>NO</th>
-                                <th>CATEGORY</th>
-                                <th>NAME</th>
-                                <th>POINT</th>
-                                <th>QUANTITY</th>
-                                <th>USEYN</th>
-                                <th>ADMIN_ID</th>
-                                <th>CREATED_DATE</th>
-                                <th>MODIFIED_DATE</th>
-                                <th>ACTIONS</th>
+                                <th>{{#messages}}category{{/messages}}</th>
+                                <th>{{#messages}}product.name{{/messages}}</th>
+                                <th>{{#messages}}point{{/messages}}</th>
+                                <th>{{#messages}}quantity{{/messages}}</th>
+                                <th>{{#messages}}use.yn{{/messages}}</th>
+                                <th>{{#messages}}admin.id{{/messages}}</th>
+                                <th>{{#messages}}created.date{{/messages}}</th>
+                                <th>{{#messages}}modified.date{{/messages}}</th>
+                                <th>{{#messages}}action{{/messages}}</th>
                                 </thead>
                                 <tbody id="products" class="text-center"></tbody>
                             </table>
@@ -60,7 +60,7 @@
                 </div>
                 <div>
                     <button class="btn btn-round" data-toggle="modal" data-target="#createProductModal">
-                        <i class="material-icons">assignment</i>&nbsp;{{#messages}}button.create{{/messages}}
+                        <i class="material-icons">assignment</i>&nbsp;{{#messages}}btn.create{{/messages}}
                     </button>
                 </div>
             </div>
@@ -78,7 +78,7 @@
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
                             <i class="material-icons">clear</i>
                         </button>
-                        <h4 class="card-title" id="modalTitle">Product Detail</h4>
+                        <h4 class="card-title" id="modalTitle">{{#messages}}product.detail{{/messages}}</h4>
                         <input type="hidden" id="productId" name="productId">
                     </div>
                 </div>
@@ -92,7 +92,7 @@
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">
                                             <i class="material-icons">qr_code_scanner</i>
-                                            <label for="barcode">barcode</label>
+                                            <label for="barcode">{{#messages}}barcode{{/messages}}</label>
                                         </div>
                                     </div>
                                     <input type="text" class="form-control" id="barcode" name="barcode" value="" placeholder="Scan Product Barcode" readonly>
@@ -104,11 +104,11 @@
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">
                                             <i class="material-icons">format_list_bulleted</i>
-                                            <label for="category">category</label>
+                                            <label for="category">{{#messages}}category{{/messages}}</label>
                                         </div>
                                     </div>
                                     <select id="categoryName" class="form-control" data-style="btn btn-link" name="categoryName" >
-                                        <option value="0" selected>Choose Product Category</option>
+                                        <option value="0" selected>{{#messages}}info.choose.product.category{{/messages}}</option>
                                     </select>
                                 </div>
                             </div>
@@ -118,7 +118,7 @@
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">
                                             <i class="material-icons">local_offer</i>
-                                            <label for="name" style="margin-right: 1.2em">name</label>
+                                            <label for="name" style="margin-right: 1.2em">{{#messages}}product.name{{/messages}}</label>
                                         </div>
                                     </div>
                                     <input type="text" class="form-control" id="name" name="name" placeholder="ex> Product Name" maxlength="100">
@@ -130,7 +130,7 @@
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">
                                             <i class="material-icons">money</i>
-                                            <label for="amount">amount</label>
+                                            <label for="amount">{{#messages}}amount{{/messages}}</label>
                                         </div>
                                     </div>
                                     <input type="text" class="form-control" id="point" name="point" placeholder="ex> Product Price" maxlength="17">
@@ -142,7 +142,7 @@
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">
                                             <i class="material-icons">local_grocery_store</i>
-                                            <label for="quantity">quantity</label>
+                                            <label for="quantity">{{#messages}}quantity{{/messages}}</label>
                                         </div>
                                     </div>
                                     <input type="text" class="form-control selectpicker" id="quantity" name="quantity" placeholder="Product Quantity" maxlength="5">
@@ -154,7 +154,7 @@
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">
                                             <i id="check_icon" class="material-icons">check_box</i>
-                                            <label for="quantity">isEnabled</label>
+                                            <label for="quantity">{{#messages}}use.yn{{/messages}}</label>
                                         </div>
                                     </div>
                                     <input class="form-check-input" type="checkbox" value="" name="isEnabled" id="isEnabled" style="position: inherit;margin-left: 0px;margin-top: 6px;width: 20px; height: 18px;" checked="checked">
@@ -165,7 +165,7 @@
                     </form>
                 </div>
                 <div class="modal-footer justify-content-center">
-                    <button type="submit" class="btn btn-primary" id="addProuct" style="float:right">Regist</button>
+                    <button type="submit" class="btn btn-primary" id="addProuct" style="float:right">{{#messages}}btn.create{{/messages}}</button>
                 </div>
             </div>
         </div>
@@ -199,7 +199,7 @@
 </script>
 <script id="productsNoDataTemplate" type="text/x-jquery-tmpl">
 <tr>
-    <td colspan="10">No Data.</td>
+    <td colspan="10">{{#messages}}info.search.no.data{{/messages}}</td>
 </tr>
 </script>
 <script id="productsPagingTemplate" type="text/x-jquery-tmpl">

@@ -15,13 +15,13 @@ public class PointService {
     private final PointRepository pointRepository;
 
     @Transactional
-    public Long save(Long userId, Long point) {
+    public void save(Long userId, Long point) {
         Point _point = Point.builder()
                 .userId(userId)
                 .point(point)
                 .build();
 
-        return pointRepository.save(_point).getUserId();
+        pointRepository.save(_point);
     }
 
     @Transactional(readOnly = true)

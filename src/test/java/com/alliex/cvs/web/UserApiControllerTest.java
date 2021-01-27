@@ -18,6 +18,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -153,7 +154,8 @@ public class UserApiControllerTest {
         mvc.perform(get("/web-api/v1/users/{id}", testId))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.fullName").value(testFullName));
+                .andExpect(jsonPath("$.fullName").value(testFullName))
+                .andExpect(jsonPath("$.point", is(notNullValue())));
     }
 
     @WithMockUser(roles = "ADMIN")
