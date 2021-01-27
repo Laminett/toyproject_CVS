@@ -6,19 +6,19 @@ var main = {
 
         $('.monthpicker').bootstrapMonthpicker({}).val(moment(new Date().getTime()).format("YYYY-MM"));
 
-        // 페이징
+        // Paging.
         $(document).on('click', '.page-link', function () {
             _this.getSettles(this.text);
         });
 
-        // 검색 이벤트
-        $('#btn_search').click(function() {
+        // Search.
+        $('#btn_search').click(function () {
             _this.getSettles(1);
         });
 
-        // 상태 업데이트
-        $(document).on('click', "[name='btn_approve'],[name='btn_deny']", function() {
-            if(confirm(messages["alert.settle.confirm"])){
+        // Update status.
+        $(document).on('click', "[name='btn_approve'],[name='btn_deny']", function () {
+            if (confirm(getMessage("alert.settle.confirm"))) {
                 var id = $(this).parent().parent().attr('id');
                 var status = $(this).val();
                 _this.update(id, status);
@@ -28,7 +28,7 @@ var main = {
     getSettles: function (page) {
         var param = {
             page: page,
-            aggregatedAt: $("#search_date").val() == "" ? moment(new Date().getTime()).format("YYYYMM")+"01" : $("#search_date").val().replace(/[^0-9]/g,"")+"01",
+            aggregatedAt: $("#search_date").val() == "" ? moment(new Date().getTime()).format("YYYYMM") + "01" : $("#search_date").val().replace(/[^0-9]/g, "") + "01",
             fullName: $('#search_fullName').val()
         };
 
@@ -40,9 +40,9 @@ var main = {
             contentType: 'application/json; charset=utf-8'
         }).done(function (data) {
             $("#settleArea").html(null);
-            if(data.content == ""){
+            if (data.content == "") {
                 $("#settleArea").append(" <tr class='text-center'> "
-                    + "<td colspan='11'>" + messages["info.search.no.data"] +"</td>  "
+                    + "<td colspan='11'>" + getMessage("info.search.no.data") + "</td>  "
                     + "</tr>");
             } else {
                 $("#settleTemplate").tmpl(data.content).appendTo("#settleArea");
@@ -55,27 +55,27 @@ var main = {
 
         }).fail(function (error) {
             console.log(JSON.stringify(error));
-            alert(messages["alert.load.fail"]);
+            alert(getMessage("alert.load.fail"));
         });
     },
     update: function (id, status) {
         var data = {
             id: id,
-            status : status,
+            status: status,
             adminId: $('#loginUser').val()
         };
 
         $.ajax({
             type: 'PUT',
-            url: '/web-api/v1/settle/'+id,
+            url: '/web-api/v1/settle/' + id,
             dataType: 'json',
             contentType: 'application/json; charset=utf-8',
             data: JSON.stringify(data)
         }).done(function () {
-            alert(messages["alert.update.success"]);
+            alert(getMessage("alert.update.success"));
             window.location.href = '/settle';
         }).fail(function () {
-            alert(messages["alert.update.fail"]);
+            alert(getMessage("alert.update.fail"));
         });
     }
 };

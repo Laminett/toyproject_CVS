@@ -118,9 +118,9 @@ let main = {
         }).done(function () {
             $("#createProductModal").modal("hide");
             if (isUpdate) {
-                alert(messages["alert.update.success"]);
+                alert(getMessage("alert.update.success"));
             } else {
-                alert(messages["alert.insert.success"]);
+                alert(getMessage("alert.insert.success"));
             }
 
             _this.getProducts();
@@ -143,7 +143,6 @@ let main = {
 
             alert('오류가 발생했습니다. 관리자에게 문의해 주세요.' + responseJSON);
         });
-
     },
     delete: function (productId) {
         $.ajax({
@@ -152,7 +151,7 @@ let main = {
             dataType: 'json',
             contentType: 'application/json; charset=utf-8'
         }).done(function () {
-            alert(messages["alert.delete.success"]);
+            alert(getMessage("alert.delete.success"));
             window.location.href = '/products';
         }).fail(function (error) {
             if (error.responseJSON.code == 'PRODUCT_NOT_FOUND') {

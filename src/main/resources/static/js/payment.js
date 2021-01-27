@@ -99,6 +99,7 @@ var main = {
                 }).fail(function (error) {
                     if(error.responseJSON.code != 'TRANSACTION_NOT_FOUND') {
                         clearInterval(playCheckState);
+                        
                         $("#paymentFail").text(error.responseJSON.code);
                         showResultArea("fail");
                         $("#paymentQR").modal("hide");
@@ -216,6 +217,7 @@ function trPrepend(productId, productName, price) {
 
 function setTotalRow(_totalPrice, _totalQty, _price) {
     $("#totalQty").text(++_totalQty);
+
     var totalPrice = Number(_totalPrice) + Number(_price);
     $("#totalPrice").text(totalPrice);
 }
