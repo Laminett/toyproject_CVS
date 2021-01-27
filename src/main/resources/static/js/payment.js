@@ -41,7 +41,7 @@ var main = {
 
         $("#btnQR").click(function() {
             if ($("#totalQty").text() == 0) {
-                alert(messages["alert.scan.product"]);
+                alert(getMessage("alert.scan.product"));
                 return;
             }
             _this.executeQRPayment();
@@ -120,13 +120,13 @@ var main = {
             setTimeout(function () {
                 if (isFail) {
                     clearInterval(playCheckState);
-                    alert(messages["alert.payment.timeover"]);
+                    alert(getMessage("alert.payment.timeover"));
                     $("#paymentQR").modal("hide");
                 }
             }, 60000);
 
         }).fail(function () {
-            alert(messages["alert.fail.to.make.qr"]);
+            alert(getMessage("alert.fail.to.make.qr"));
         });
     },
     executeCreditCard: function() {
