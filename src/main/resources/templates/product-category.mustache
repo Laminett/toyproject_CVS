@@ -15,11 +15,11 @@
                                 <input type="hidden" name="searchKey" value=""/>
                                 <div class="dropdown" style="margin-right: 10px;">
                                     <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton-category-search" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        카테고리명
+                                        {{#messages}}category{{/messages}}
                                     </button>
                                     <div id="category-search-field" class="dropdown-menu" aria-labelledby="dropdownMenuButton-category-search">
-                                        <a class="dropdown-item" href="#none" searchKey="categoryName">카테고리명</a>
-                                        <a class="dropdown-item" href="#none" searchKey="isEnabled">사용여부</a>
+                                        <a class="dropdown-item" href="#none" searchKey="categoryName">{{#messages}}category{{/messages}}</a>
+                                        <a class="dropdown-item" href="#none" searchKey="isEnabled">{{#messages}}use.yn{{/messages}}</a>
                                     </div>
                                 </div>
                                 <div class="form-group has-white">
@@ -37,11 +37,11 @@
                             <table class="table" id="templ1">
                                 <thead class="text-primary text-center">
                                 <th>NO</th>
-                                <th>카테고리명</th>
-                                <th>사용여부</th>
-                                <th>수정자</th>
-                                <th>수정일시</th>
-                                <th>동작</th>
+                                <th>{{#messages}}category{{/messages}}</th>
+                                <th>{{#messages}}use.yn{{/messages}}</th>
+                                <th>{{#messages}}modified.by{{/messages}}</th>
+                                <th>{{#messages}}modified.date{{/messages}}</th>
+                                <th>{{#messages}}action{{/messages}}</th>
                                 </thead>
                                 <tbody id="categoriesArea" class="text-center"></tbody>
                             </table>
@@ -55,7 +55,7 @@
                 </div>
                 <div>
                     <button class="btn btn-round" data-toggle="modal" data-target="#createCategoryModal">
-                        <i class="material-icons">assignment</i>&nbsp;{{#messages}}button.create{{/messages}}
+                        <i class="material-icons">assignment</i>&nbsp;{{#messages}}btn.create{{/messages}}
                     </button>
                 </div>
             </div>
@@ -72,7 +72,7 @@
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
                             <i class="material-icons">clear</i>
                         </button>
-                        <h4 class="card-title">Category Information</h4>
+                        <h4 class="card-title">{{#messages}}category.info{{/messages}}</h4>
                         <input type="hidden" id="id" name="id">
                     </div>
                 </div>
@@ -83,7 +83,7 @@
                             <div class="form-group bmd-form-group">
                                 <div class="input-group">
                                     <div class="input-group-prepend" style="width:100px;">
-                                        <div class="input-group-text">카테고리</div>
+                                        <div class="input-group-text">{{#messages}}category{{/messages}}</div>
                                     </div>
                                     <input type="text" id="categoryName" name="categoryName" class="form-control">
                                 </div>
@@ -91,7 +91,7 @@
                             <div class="form-group bmd-form-group">
                                 <div class="input-group">
                                     <div class="input-group-prepend" style="width:100px;">
-                                        <div class="input-group-text">사용여부</div>
+                                        <div class="input-group-text">{{#messages}}use.yn{{/messages}}</div>
                                     </div>
                                     <input class="form-check-input" type="checkbox" value="" name="isEnabled" id="isEnabled" style="position: inherit;margin-left: 0px;margin-top: 6px;width: 20px; height: 18px;">
                                 </div>
@@ -100,7 +100,7 @@
                     </form>
                 </div>
                 <div class="modal-footer justify-content-center">
-                    <a href="#none" id="createCategoryBtn" class="btn btn-primary btn-round">Regist</a>
+                    <a href="#none" id="createCategoryBtn" class="btn btn-primary btn-round">{{#messages}}btn.create{{/messages}}</a>
                 </div>
             </div>
         </div>
@@ -130,7 +130,7 @@
 </script>
 <script id="categoriesNoDataTemplate" type="text/x-jquery-tmpl">
 <tr>
-    <td colspan="6">No Data.</td>
+    <td colspan="6">{{#messages}}info.scan.product{{/messages}}</td>
 </tr>
 
 </script>
