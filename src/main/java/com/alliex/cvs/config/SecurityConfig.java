@@ -85,7 +85,10 @@ public class SecurityConfig {
             http.authorizeRequests()
                     .antMatchers("/common/**", "/css/**", "/js/**", "/img/**", "/material-dashboard/**").permitAll()
                     .antMatchers("/login-form/**", "/logout/**").permitAll()
-                    .antMatchers("/payment/**").permitAll()
+                    .antMatchers("/payment").permitAll()
+                    .antMatchers("/web-api/v1/barcodescan/**").permitAll()
+                    .antMatchers("/web-api/v1/transactions/**").permitAll()
+                    .antMatchers("/web-api/v1/transactions/payment/pos/step1").permitAll()
                     .antMatchers("/ping").permitAll()
                     .antMatchers("/**").hasRole(Role.ADMIN.name());
 

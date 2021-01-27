@@ -1,58 +1,17 @@
 var main = {
+    PROD_DOMAIN: "cvs.alli-ex.com",
     init: function () {
+        var _this = this;
 
-        $(document).on('click', 'button[name=add]', function () {
-            var price = $(this).parent().parent().prev().html();
-            var totalPrice = $("#totalPrice").html();
-            var quantity = $(this).prev().html();
-            var totalQty = $("#totalQty").html();
-
-            $(this).prev().html(++quantity);
-            setTotalRow(totalPrice, totalQty, price);
-        });
-
-        $(document).on('click', 'button[name=remove]', function () {
-            var price = $(this).parent().parent().prev().html();
-            var totalPrice = $("#totalPrice").html();
-            var quantity = $(this).next().html();
-            var totalQty = $("#totalQty").html();
-
-            if (quantity > 1) {
-                $(this).next().html(--quantity);
-                $("#totalQty").html(--totalQty);
-                totalPrice = Number(totalPrice) - Number(price);
-                $("#totalPrice").html(totalPrice);
-            }
-        });
-
-        $(document).on('click', 'button[name=delete]', function () {
-            var price = $(this).parent().prev().prev().text();
-            var totalPrice = $("#totalPrice").html();
-            var quantity = $(this).parent().prev().children().children().next().html();
-            var totalQty = $("#totalQty").html();
-
-            totalQty = Number(totalQty) - Number(quantity);
-            $("#totalQty").html(totalQty);
-            totalPrice = Number(totalPrice) - (Number(price) * quantity);
-            $("#totalPrice").html(totalPrice);
-            $(this).parent().parent().remove();
-
-            if (totalQty == 0) {
-                $("#noData").show();
-            }
-        });
-
-        $(document).on('click', 'button[id=btnDeleteAll]', function () {
-            $("[name=product]").remove();
-            $("#totalQty").html(0);
-            $("#totalPrice").html(0);
-            $("#noData").show();
-        });
+        // local, dev 환경에서만 수기입력 가능
+        if (location.hostname != _this.PROD_DOMAIN) {
+            $("#barcodeInputArea").show();
+        }
 
         // 바코드 수기 입력
-        $(document).on('click', 'button[id=barcodeInput]', function () {
+        $("#btnKeyboard").click(function () {
             var barcode = $("#barcodeNumber").val();
-            addProductList(barcode);
+            _this.addProducts(barcode);
         });
 
         // 바코드 스캔 탐지 이벤트
@@ -60,89 +19,162 @@ var main = {
             timeBeforeScanTest: 100,
             avgTimeByChar: 20,
             onComplete: function (barcode, qty) {
-                addProductList(barcode);
+                _this.addProducts(barcode);
             }
         });
 
-        $(document).on('click', 'button[id=btnQR]', function (event) {
-            // 8809276716699
-            // 5000168207414
-            // 2000000831060
-            // 2000000843278
+        $(document).on('click', 'button[name=add]', function () {
+            editProductQuantity($(this), "add");
+        });
 
-            if ($("#totalQty").html() == 0) {
+        $(document).on('click', 'button[name=remove]', function () {
+            editProductQuantity($(this), "remove");
+        });
+
+        $(document).on('click', 'button[name=delete]', function () {
+            editProductQuantity($(this), "delete");
+        });
+
+        $("#btnDeleteAll").click(function () {
+            clearProducts();
+        });
+
+        $("#btnQR").click(function() {
+            if ($("#totalQty").text() == 0) {
                 alert(messages["alert.scan.product"]);
-            } else {
-                var param = makeTransactionData();
+                return;
+            }
+            _this.executeQRPayment();
+        });
+
+        $("#btnReset").click(function () {
+            showPaymentArea();
+            clearProducts();
+        });
+    },
+    addProducts: function(barcode) {
+        $.ajax({
+            type: 'GET',
+            url: '/web-api/v1/barcodescan/' + barcode,
+            dataType: 'JSON',
+            contentType: 'application/json; charset=utf-8',
+        }).done(function (data) {
+            $("#noData").hide();
+            checkDuplicate(data.id, data.name, data.point);
+        }).fail(function (error) {
+            alert(error.responseJSON.code);
+        });
+    },
+    executeQRPayment: function() {
+        var param = makeTransactionData();
+        $.ajax({
+            type: 'POST',
+            url: '/web-api/v1/transactions/payment/pos/step1',
+            data: JSON.stringify(param),
+            dataType: 'JSON',
+            contentType: 'application/json; charset=utf-8'
+        }).done(function (data) {
+            var requestId = data.requestId;
+            new QRious({
+                element: document.getElementById('qr-code'),
+                foreground: 'black',
+                size: 200,
+                value: requestId
+            });
+            $("#paymentQR").modal("show");
+
+            // 2초마다 결제 결과 확인
+            var isFail = false;
+            playCheckState = setInterval(function () {
                 $.ajax({
-                    type: 'POST',
-                    url: '/web-api/v1/transactions/payment/step1',
-                    data: param,
+                    type: 'GET',
+                    url: '/web-api/v1/transactions/' + requestId,
                     dataType: 'JSON',
                     contentType: 'application/json; charset=utf-8'
                 }).done(function (data) {
-                    $("#paymentQR").modal("show");
-                    var requestId = data.id;
-                    new QRious({
-                        element: document.getElementById('qr-code'),
-                        foreground: 'black',
-                        size: 200,
-                        value: requestId
-                    });
-
-                    // 1초마다 결제 결과 확인
-                    playCheckState = setInterval(function () {
-                        $.ajax({
-                            type: 'GET',
-                            url: '/web-api/v1/transactions/state/' + requestId,
-                            dataType: 'JSON',
-                            contentType: 'application/json; charset=utf-8'
-                        }).done(function (data) {
-                            if (data.transactionState == 'success' || data.transactionState == 'fail') {
-                                clearInterval(playCheckState);
-                                location.href = '/payment/end/' + data.id;
-                            }
-                        }).fail(function (error) {
-                            console.log(error.responseJSON.message);
-                        });
-                    }, 1000);
-
-                    // 1분 후 QR팝업 닫힘
-                    setTimeout(function () {
-                        clearInterval(playCheckState);
-                        alert(messages["alert.payment.timeover"]);
-                        $("#paymentQR").modal("hide");
-                    }, 60000);
+                    clearInterval(playCheckState);
+                    $("#paymentSuccess").text(data.point);
+                    showResultArea(data.state);
+                    $("#paymentQR").modal("hide");
                 }).fail(function (error) {
-                    alert(error.responseJSON.message);
+                    if(error.responseJSON.code != 'TRANSACTION_NOT_FOUND') {
+                        clearInterval(playCheckState);
+                        $("#paymentFail").text(error.responseJSON.code);
+                        showResultArea("fail");
+                        $("#paymentQR").modal("hide");
+                    } else {
+                        isFail = true;
+                    }
                 });
-            }
+            }, 2000);
+
+            $(document).click(function(event) {
+                if($(event.target).attr("class") == "modal fade" || $(event.target).attr("class") == "btn btn-primary") {
+                    clearInterval(playCheckState);
+                    isFail = false;
+                }
+            });
+
+            // 1분 후 QR팝업 닫힘
+            setTimeout(function () {
+                if (isFail) {
+                    clearInterval(playCheckState);
+                    alert(messages["alert.payment.timeover"]);
+                    $("#paymentQR").modal("hide");
+                }
+            }, 60000);
+
+        }).fail(function () {
+            alert(messages["alert.fail.to.make.qr"]);
         });
+    },
+    executeCreditCard: function() {
+        // 신용카드 결제는 추후에 만들 예정
     }
 };
 
 main.init();
 
-function addProductList(barcode) {
-    $.ajax({
-        type: 'GET',
-        url: '/web-api/v1/barcodescan/' + barcode,
-        dataType: 'JSON',
-        contentType: 'application/json; charset=utf-8',
-    }).done(function (data) {
-        $("#noData").hide();
-        checkDuplicate(data.id, data.name, data.point);
-    }).fail(function (error) {
-        alert(error.responseJSON.message);
-    });
+function editProductQuantity($elem, _type) {
+    var price = $elem.parent().parent().prev().text();
+    var totalPrice = $("#totalPrice").text();
+    var totalQty = $("#totalQty").text();
+
+    if (_type == "add"){
+        var quantity = $elem.prev().text();
+
+        $elem.prev().text(++quantity);
+        setTotalRow(totalPrice, totalQty, price);
+    } else if (_type == "remove"){
+        var quantity = $elem.next().text();
+        if (quantity > 1) {
+            $elem.next().text(--quantity);
+            $("#totalQty").text(--totalQty);
+            totalPrice = Number(totalPrice) - Number(price);
+            $("#totalPrice").text(totalPrice);
+        }
+    } else if (_type == "delete") {
+        price = $elem.parent().prev().prev().text();
+        var quantity = $elem.parent().prev().children().children().next().text()[0];
+
+        totalQty = Number(totalQty) - Number(quantity);
+        $("#totalQty").text(totalQty);
+        totalPrice = Number(totalPrice) - (Number(price) * quantity);
+        $("#totalPrice").text(totalPrice);
+
+        $elem.parent().parent().remove();
+        if (totalQty == 0) {
+            $("#noData").show();
+        }
+    }
 }
 
 function checkDuplicate(productId, productName, price) {
-    var totalPrice = $("#totalPrice").html();
-    var totalQty = $("#totalQty").html();
+    var totalPrice = $("#totalPrice").text();
+    var totalQty = $("#totalQty").text();
 
     var count = 0;
-    var arr = $("#productList").find("tr");
+    var arr = $("#products").find("tr");
     $.each(arr, function (idx, item) {
         var $elem = item;
         if ($elem.id != 'noData' && $elem.id != 'totalRow') {
@@ -162,7 +194,7 @@ function checkDuplicate(productId, productName, price) {
 }
 
 function trPrepend(productId, productName, price) {
-    $("#productList").prepend(
+    $("#products").prepend(
         '<tr id="' + productId + '" name="product">' +
         '    <td class="text-left">' + productName + '</td>' +
         '    <td class="text-right">' + price + '</td>' +
@@ -183,24 +215,66 @@ function trPrepend(productId, productName, price) {
 }
 
 function setTotalRow(_totalPrice, _totalQty, _price) {
-    $("#totalQty").html(++_totalQty);
+    $("#totalQty").text(++_totalQty);
     var totalPrice = Number(_totalPrice) + Number(_price);
-    $("#totalPrice").html(totalPrice);
+    $("#totalPrice").text(totalPrice);
 }
 
 function makeTransactionData() {
-    var jsonList = [];
-    var arr = $("#productList").find("tr");
+    var products = [];
+    var arr = $("#products").find("tr");
     $.each(arr, function (idx, item) {
         var $elem = item;
         if ($elem.id != 'noData' && $elem.id != 'totalRow') {
             var param = {
-                productId: $elem.id,
-                quantity: $('#' + $elem.id).find('span[name=quantity]').html()
+                productId: Number($elem.id),
+                quantity: Number($('#' + $elem.id).find('span[name=quantity]').text())
             };
-            jsonList.push(param);
+            products.push(param);
         }
     });
 
-    return jsonList;
+    return products;
+}
+
+function clearProducts() {
+    $("[name=product]").remove();
+    $("#totalQty").text(0);
+    $("#totalPrice").text(0);
+    $("#noData").show();
+}
+
+function hideResultArea() {
+    $("#resultTitle").hide();
+    $("#successArea").hide();
+    $("#failArea").hide();
+    $("#btnReset").hide();
+}
+
+function hidePaymentArea() {
+    $("#paymentTitle").hide();
+    $("#scanArea").hide();
+    $("#btnQR").hide();
+    $("#btnCreditCard").hide();
+}
+
+function showResultArea(state) {
+    hidePaymentArea();
+
+    $("#resultTitle").show();
+    $("#btnReset").show();
+    if(state == "SUCCESS") {
+        $("#successArea").show();
+    } else {
+        $("#failArea").show();
+    }
+}
+
+function showPaymentArea() {
+    hideResultArea();
+
+    $("#paymentTitle").show();
+    $("#scanArea").show();
+    $("#btnQR").show();
+    $("#btnCreditCard").show();
 }
