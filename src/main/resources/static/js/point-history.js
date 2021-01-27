@@ -21,7 +21,7 @@ var main = {
 
         // 상태 업데이트
         $(document).on('click', "[name='btn_approve'],[name='btn_deny']", function () {
-            if(confirm(messages["alert.point.history.confirm"])){
+            if (confirm(getMessage("alert.point.history.confirm"))) {
                 var id = $(this).parent().parent().attr('id');
                 var status = $(this).val();
                 _this.update(id, status);
@@ -31,8 +31,8 @@ var main = {
     getPointHistories: function (page) {
         var param = {
             page: page,
-            startDate: $("#search_startDate").val() == "" ? moment(new Date().getTime()).format("YYYYMMDD") : $("#search_startDate").val().replace(/[^0-9]/g,""),
-            endDate: $("#search_endDate").val() == "" ? moment(new Date().getTime()).format("YYYYMMDD") : $("#search_endDate").val().replace(/[^0-9]/g,""),
+            startDate: $("#search_startDate").val() == "" ? moment(new Date().getTime()).format("YYYYMMDD") : $("#search_startDate").val().replace(/[^0-9]/g, ""),
+            endDate: $("#search_endDate").val() == "" ? moment(new Date().getTime()).format("YYYYMMDD") : $("#search_endDate").val().replace(/[^0-9]/g, ""),
             status: $('#search_status').val(),
             fullName: $('#search_fullName').val()
         };
@@ -45,9 +45,9 @@ var main = {
             contentType: 'application/json; charset=utf-8'
         }).done(function (data) {
             $("#pointHistoriesArea").html(null);
-            if(data.content == ""){
+            if (data.content == "") {
                 $("#pointHistoriesArea").append(" <tr class='text-center'> "
-                    + "<td colspan='7'>" + messages["info.search.no.data"] +"</td>  "
+                    + "<td colspan='7'>" + getMessage("info.search.no.data") + "</td>  "
                     + "</tr>");
             } else {
                 $("#pointHistoriesTemplate").tmpl(data.content).appendTo("#pointHistoriesArea");
@@ -59,7 +59,7 @@ var main = {
             }
         }).fail(function (error) {
             console.log(JSON.stringify(error));
-            alert(messages["alert.load.fail"]);
+            alert(getMessage("alert.load.fail"));
         });
     },
     update: function (id, status) {
@@ -76,11 +76,11 @@ var main = {
             contentType: 'application/json; charset=utf-8',
             data: JSON.stringify(data)
         }).done(function () {
-            alert(messages["alert.update.success"]);
+            alert(getMessage("alert.update.success"));
             window.location.href = '/point/history';
         }).fail(function (error) {
             console.log(JSON.stringify(error));
-            alert(messages["alert.update.fail"]);
+            alert(getMessage("alert.update.fail"));
         });
     }
 };

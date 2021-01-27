@@ -1,6 +1,5 @@
 var main = {
     init: function () {
-
         $(document).on('click', 'button[name=add]', function () {
             var price = $(this).parent().parent().prev().html();
             var totalPrice = $("#totalPrice").html();
@@ -71,7 +70,7 @@ var main = {
             // 2000000843278
 
             if ($("#totalQty").html() == 0) {
-                alert(messages["alert.scan.product"]);
+                alert(getMessage("alert.scan.product"));
             } else {
                 var param = makeTransactionData();
                 $.ajax({
@@ -110,7 +109,7 @@ var main = {
                     // 1분 후 QR팝업 닫힘
                     setTimeout(function () {
                         clearInterval(playCheckState);
-                        alert(messages["alert.payment.timeover"]);
+                        alert(getMessage("alert.payment.timeover"));
                         $("#paymentQR").modal("hide");
                     }, 60000);
                 }).fail(function (error) {
@@ -184,6 +183,7 @@ function trPrepend(productId, productName, price) {
 
 function setTotalRow(_totalPrice, _totalQty, _price) {
     $("#totalQty").html(++_totalQty);
+
     var totalPrice = Number(_totalPrice) + Number(_price);
     $("#totalPrice").html(totalPrice);
 }

@@ -254,9 +254,9 @@ var main = {
         }).done(function () {
             $("#createPurchaseModal").modal("hide");
             if (isUpdate) {
-                alert(messages["alert.update.success"]);
+                alert(getMessage("alert.update.success"));
             } else {
-                alert(messages["alert.insert.success"]);
+                alert(getMessage("alert.insert.success"));
             }
 
             _this.getPurchases();
@@ -283,7 +283,7 @@ var main = {
             dataType: 'json',
             contentType: 'application/json; charset=utf-8'
         }).done(function () {
-            alert(messages["alert.delete.success"]);
+            alert(getMessage("alert.delete.success"));
             _this.getPurchases();
         }).fail(function (error) {
             if (error.responseJSON.code == 'PRODUCT_PURCHASE_NOT_FOUND') {
