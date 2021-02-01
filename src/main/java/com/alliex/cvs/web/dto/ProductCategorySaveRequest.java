@@ -11,21 +11,17 @@ public class ProductCategorySaveRequest {
 
     private String categoryName;
 
-    private Boolean isEnabled;
-
     private String adminId;
 
     @Builder
-    public ProductCategorySaveRequest(String categoryName, Boolean isEnabled, String adminId) {
+    public ProductCategorySaveRequest(String categoryName, String adminId) {
         this.categoryName = categoryName;
-        this.isEnabled = isEnabled;
         this.adminId = adminId;
     }
 
     public ProductCategory toEntity() {
         return ProductCategory.builder()
                 .name(categoryName.toUpperCase())
-                .isEnabled(isEnabled)
                 .adminId(adminId)
                 .build();
     }
