@@ -14,7 +14,7 @@ public class ProductResponse {
 
     private Long id;
 
-    private ProductCategory categoryId;
+    private String categoryName;
 
     private String barcode;
 
@@ -36,7 +36,7 @@ public class ProductResponse {
 
     public ProductResponse(Product entity) {
         this.id = entity.getId();
-        this.categoryId = entity.getProductCategory();
+        this.categoryName = entity.getProductCategory().getName();
         this.barcode = entity.getBarcode();
         this.name = entity.getName();
         this.point = entity.getPoint();
