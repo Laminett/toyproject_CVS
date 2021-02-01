@@ -50,7 +50,10 @@ public class ProductService {
 
     @Transactional
     public Long save(ProductSaveRequest productSaveRequest) {
-        productRepository.findByName(productSaveRequest.getName()).ifPresent(product -> {
+        ProductCategory _categoryId = new ProductCategory();
+        _categoryId.setId(productSaveRequest.getCategoryId());
+
+        productRepository.findByNameAndProductCategory(productSaveRequest.getName(), _categoryId).ifPresent(product -> {
             throw new ProductAlreadyExistsException(product.getName());
         });
 
