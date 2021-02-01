@@ -17,7 +17,7 @@ public class IndexController {
             model.addAttribute("loginUser", loginUser);
         }
 
-        return "index";
+        return "transactions";
     }
 
     @GetMapping("/login-form")
