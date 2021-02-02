@@ -44,6 +44,7 @@ let main = {
         $(document).on('click', '[data-toggle=modal]', function () {
             if ($(this).text() == "edit") {
                 let productId = $(this).closest('tr').find('td').eq(0).text();
+                _this.addFormVisible(true);
                 _this.getProduct(productId);
             } else {
                 if (location.hostname != _this.PROD_DOMAIN) {
@@ -55,6 +56,11 @@ let main = {
 
                 $('.description').text('First scan the Product barcode please');
             }
+        });
+
+        $('.modal').on('hidden.bs.modal', function (e) {
+            $(this).find('form')[0].reset()
+            _this.addFormVisible(false);
         });
 
         // 바코드 스캔 탐지 이벤트
@@ -237,7 +243,9 @@ let main = {
             contentType: 'application/json; charset=utf-8'
         }).done(function (data) {
             $("#productId").val(data.id);
-            $("#categoryName").val(data.categoryId.id);
+            $("#categoryName option").filter(function () {
+                return this.text == data.categoryName;
+            }).prop("selected", true);
             $("#name").val(data.name);
             $("#point").val(data.point);
             $("#barcode").val(data.barcode);
@@ -315,6 +323,7 @@ let main = {
             dataType: 'json',
             contentType: 'application/json; charset=utf-8'
         }).done(function (data) {
+            $("#categoryName").html(null);
             $("#categoriesSelectTemplate").tmpl(data.content).appendTo("#categoryName");
         }).fail(function (error) {
             alert(JSON.stringify(error));

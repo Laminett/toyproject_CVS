@@ -1,5 +1,6 @@
 package com.alliex.cvs.domain.product;
 
+import com.alliex.cvs.domain.product.category.ProductCategory;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
@@ -9,8 +10,8 @@ public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpec
 
     Optional<Product> findById(Long id);
 
-    Optional<Product> findByName(String name);
-
     Optional<Product> findByBarcode(String barcode);
+
+    Optional<Product> findByNameAndProductCategory(String name, ProductCategory category);
 
 }

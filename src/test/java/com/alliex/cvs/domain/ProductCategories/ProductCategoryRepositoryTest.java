@@ -23,12 +23,10 @@ public class ProductCategoryRepositoryTest {
     @Test
     public void getProductCategories() {
         String name = "test category";
-        Boolean isEnabled = true;
         String createdId = "ykk";
 
         productCategoryRepository.save(ProductCategory.builder()
                 .name(name)
-                .isEnabled(isEnabled)
                 .adminId(createdId)
                 .build());
 
@@ -38,7 +36,6 @@ public class ProductCategoryRepositoryTest {
         //then
         ProductCategory productCategory = categories.get(0);
         assertThat(productCategory.getName()).isEqualTo(name);
-        assertThat(productCategory.getEnabled()).isEqualTo(isEnabled);
         assertThat(productCategory.getAdminId()).isEqualTo(createdId);
     }
 }

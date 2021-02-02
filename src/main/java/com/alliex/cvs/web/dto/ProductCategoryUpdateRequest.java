@@ -14,14 +14,11 @@ public class ProductCategoryUpdateRequest {
 
     protected String categoryName;
 
-    protected Boolean isEnabled;
-
     protected String adminId;
 
     public ProductCategory toEntity() {
         return ProductCategory.builder()
                 .name(categoryName.toUpperCase())
-                .isEnabled(isEnabled)
                 .adminId(adminId)
                 .build();
     }

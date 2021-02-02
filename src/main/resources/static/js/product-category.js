@@ -65,12 +65,6 @@ var main = {
         }).done(function (data) {
             $("#categoryId").val(data.id);
             $("#categoryName").val(data.name);
-            if (data.isEnabled) {
-                $('#isEnabled').prop('checked', true);
-            } else {
-                $('#isEnabled').prop('checked', false);
-            }
-
             $("#createCategoryModal").modal("show");
         }).fail(function (error) {
             if (error.responseJSON.code == 'PRODUCT_CATEGORY_NOT_FOUND') {
@@ -96,11 +90,6 @@ var main = {
         var k, v;
         k = _this.SEARCH_KEY;
         v = $("#searchValue").val();
-
-        if (_this.SEARCH_KEY == 'isEnabled') {
-            v = v.toUpperCase();
-            (v == 'Y') ? v = true : v = false;
-        }
 
         param[k] = v;
 

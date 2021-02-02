@@ -16,6 +16,10 @@ import java.util.Collection;
 @Setter
 @NoArgsConstructor
 @Entity
+@Table(indexes = {
+        @Index(name = "uix_barcode", columnList = "barcode", unique = true),
+        @Index(name = "ix_name", columnList = "name")
+})
 public class Product extends BaseTimeEntity {
 
     @Id

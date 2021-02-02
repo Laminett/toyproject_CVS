@@ -1,0 +1,20 @@
+### Authorization by token, part 1. Retrieve and save token.
+POST http://{{host}}:{{port}}/api/login
+content-type: application/json
+
+{
+  "username": "test",
+  "password": "test"
+}
+
+> {% client.global.set("auth_token", response.body.token); %}
+
+### Authorization by token, part 2. Use token to authorize.
+GET http://{{host}}:{{port}}/api/v1/posts
+content-type: application/json
+Authorization: Bearer {{auth_token}}
+
+### 상품 스캔
+GET http://{{host}}:{{port}}/api/v1/barcodescan/1231231
+content-type: application/json
+Authorization: Bearer {{auth_token}}

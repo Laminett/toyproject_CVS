@@ -16,8 +16,6 @@ public class ProductCategoryResponse {
 
     private String name;
 
-    private Boolean isEnabled;
-
     private String adminId;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -29,7 +27,6 @@ public class ProductCategoryResponse {
     public ProductCategoryResponse(ProductCategory entity) {
         this.id = entity.getId();
         this.name = entity.getName();
-        this.isEnabled = entity.getEnabled();
         this.adminId = entity.getAdminId();
         this.createdDate = entity.getCreatedDate();
         this.modifiedDate = entity.getModifiedDate();

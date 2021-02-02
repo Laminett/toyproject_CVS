@@ -91,11 +91,10 @@
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">
-                                            <i class="material-icons">qr_code_scanner</i>
                                             <label for="barcode">{{#messages}}barcode{{/messages}}</label>
                                         </div>
                                     </div>
-                                    <input type="text" class="form-control" id="barcode" name="barcode" value="" placeholder="Scan Product Barcode" readonly>
+                                    <input type="text" class="form-control" id="barcode" name="barcode" value="" readonly>
                                 </div>
                             </div>
 
@@ -103,7 +102,6 @@
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">
-                                            <i class="material-icons">format_list_bulleted</i>
                                             <label for="category">{{#messages}}category{{/messages}}</label>
                                         </div>
                                     </div>
@@ -117,11 +115,10 @@
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">
-                                            <i class="material-icons">local_offer</i>
                                             <label for="name" style="margin-right: 1.2em">{{#messages}}product.name{{/messages}}</label>
                                         </div>
                                     </div>
-                                    <input type="text" class="form-control" id="name" name="name" placeholder="ex> Product Name" maxlength="100">
+                                    <input type="text" class="form-control" id="name" name="name" maxlength="100">
                                 </div>
                             </div>
 
@@ -129,11 +126,10 @@
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">
-                                            <i class="material-icons">money</i>
                                             <label for="amount">{{#messages}}amount{{/messages}}</label>
                                         </div>
                                     </div>
-                                    <input type="text" class="form-control" id="point" name="point" placeholder="ex> Product Price" maxlength="17">
+                                    <input type="text" class="form-control" id="point" name="point" maxlength="17">
                                 </div>
                             </div>
 
@@ -141,11 +137,10 @@
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">
-                                            <i class="material-icons">local_grocery_store</i>
                                             <label for="quantity">{{#messages}}quantity{{/messages}}</label>
                                         </div>
                                     </div>
-                                    <input type="text" class="form-control selectpicker" id="quantity" name="quantity" placeholder="Product Quantity" maxlength="5">
+                                    <input type="text" class="form-control selectpicker" id="quantity" name="quantity" maxlength="5">
                                 </div>
                             </div>
 
@@ -153,7 +148,6 @@
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">
-                                            <i id="check_icon" class="material-icons">check_box</i>
                                             <label for="quantity">{{#messages}}use.yn{{/messages}}</label>
                                         </div>
                                     </div>
@@ -174,7 +168,7 @@
 <script id="productsTemplate" type="text/x-jquery-tmpl">
 <tr>
     <td><a product-id="${id}">${id}</a></td>
-    <td>${categoryId.name}</td>
+    <td>${categoryName}</td>
     <td>${name}</td>
     <td class='text-right'>${point}</td>
     <td class='text-right'>${quantity}</td>

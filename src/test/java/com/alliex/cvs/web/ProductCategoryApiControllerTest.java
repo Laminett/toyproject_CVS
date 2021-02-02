@@ -154,24 +154,6 @@ public class ProductCategoryApiControllerTest {
 
     @WithMockUser(roles = "ADMIN")
     @Test
-    public void getProductCategoryByIsEnabled() throws Exception {
-        Boolean testIsEnabled = true;
-
-        mvc.perform(get("/web-api/v1/products-categories").param("isEnabled", String.valueOf(testIsEnabled)))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.content[0].isEnabled").value(testIsEnabled));
-
-        testIsEnabled = false;
-
-        mvc.perform(get("/web-api/v1/products-categories").param("isEnabled", String.valueOf(testIsEnabled)))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.content[0].isEnabled").value(testIsEnabled));
-    }
-
-    @WithMockUser(roles = "ADMIN")
-    @Test
     public void getProductCategoryByAdminId() throws Exception {
         final String testAdminId = "testid";
 
@@ -183,13 +165,11 @@ public class ProductCategoryApiControllerTest {
 
     private ProductCategorySaveRequest getProductCategoryRequest() {
         String categoryName = "categoryTest_test";
-        Boolean isEnabled = false;
         String adminId = "testtest";
 
         // Create ProductCategory
         return ProductCategorySaveRequest.builder()
                 .categoryName(categoryName)
-                .isEnabled(isEnabled)
                 .adminId(adminId)
                 .build();
     }
