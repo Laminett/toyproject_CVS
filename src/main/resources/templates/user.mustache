@@ -14,13 +14,13 @@
                                 <input type="hidden" name="searchKey" value="" />
                                 <div class="dropdown" style="margin-right: 10px;">
                                     <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton-user-search" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        사번
+                                        {{#messages}}username{{/messages}}
                                     </button>
                                     <div id="user-search-field" class="dropdown-menu" aria-labelledby="dropdownMenuButton-user-search">
-                                        <a class="dropdown-item" href="#none" searchKey="username">사번</a>
-                                        <a class="dropdown-item" href="#none" searchKey="fullName">이름</a>
-                                        <a class="dropdown-item" href="#none" searchKey="email">Email</a>
-                                        <a class="dropdown-item" href="#none" searchKey="department">부서</a>
+                                        <a class="dropdown-item" href="#none" searchKey="username">{{#messages}}username{{/messages}}</a>
+                                        <a class="dropdown-item" href="#none" searchKey="fullName">{{#messages}}full.name{{/messages}}</a>
+                                        <a class="dropdown-item" href="#none" searchKey="email">{{#messages}}email{{/messages}}</a>
+                                        <a class="dropdown-item" href="#none" searchKey="department">{{#messages}}department{{/messages}}</a>
                                     </div>
                                 </div>
                                 <div class="form-group has-white">
@@ -37,12 +37,12 @@
                         <div class="table-responsive" id="result1">
                             <table class="table" id="templ1">
                                 <thead class=" text-primary">
-                                    <th>사번</th>
-                                    <th>이름</th>
-                                    <th>Email</th>
-                                    <th>부서</th>
-                                    <th>Role</th>
-                                    <th>등록일</th>
+                                    <th>{{#messages}}username{{/messages}}</th>
+                                    <th>{{#messages}}full.name{{/messages}}</th>
+                                    <th>{{#messages}}email{{/messages}}</th>
+                                    <th>{{#messages}}department{{/messages}}</th>
+                                    <th>{{#messages}}role{{/messages}}</th>
+                                    <th>{{#messages}}created.date{{/messages}}</th>
                                 </thead>
                                 <tbody id="usersArea"></tbody>
                             </table>
@@ -56,7 +56,7 @@
                 </div>
                 <div>
                     <button class="btn btn-round" data-toggle="modal" data-target="#createUserModal">
-                        <i class="material-icons">assignment</i>&nbsp;{{#messages}}button.create{{/messages}}
+                        <i class="material-icons">assignment</i>&nbsp;{{#messages}}btn.create{{/messages}}
                     </button>
                 </div>
             </div>
@@ -72,7 +72,7 @@
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
                             <i class="material-icons">clear</i>
                         </button>
-                        <h4 class="card-title">User Information</h4>
+                        <h4 class="card-title">{{#messages}}user.info{{/messages}}</h4>
                     </div>
                 </div>
                 <div class="modal-body">
@@ -82,7 +82,7 @@
                             <div class="form-group bmd-form-group">
                                 <div class="input-group">
                                     <div class="input-group-prepend" style="width:100px;">
-                                        <div class="input-group-text">사번</div>
+                                        <div class="input-group-text">{{#messages}}username{{/messages}}</div>
                                     </div>
                                     <input type="text" id="username" name="username" class="form-control">
                                 </div>
@@ -90,7 +90,7 @@
                             <div class="form-group bmd-form-group">
                                 <div class="input-group">
                                     <div class="input-group-prepend" style="width:100px;">
-                                        <div class="input-group-text">이름</div>
+                                        <div class="input-group-text">{{#messages}}full.name{{/messages}}</div>
                                     </div>
                                     <input type="text" id="fullName" name="fullName" class="form-control">
                                 </div>
@@ -98,7 +98,7 @@
                             <div class="form-group bmd-form-group">
                                 <div class="input-group">
                                     <div class="input-group-prepend" style="width:100px;">
-                                        <div class="input-group-text">Role</div>
+                                        <div class="input-group-text">{{#messages}}role{{/messages}}</div>
                                     </div>
                                     <select id="role" name="role" class="form-control">
                                         {{#roleNames}}
@@ -110,7 +110,7 @@
                             <div class="form-group bmd-form-group">
                                 <div class="input-group">
                                     <div class="input-group-prepend" style="width:100px;">
-                                        <div class="input-group-text">부서</div>
+                                        <div class="input-group-text">{{#messages}}department{{/messages}}</div>
                                     </div>
                                     <input type="text" id="department" name="department" class="form-control">
                                 </div>
@@ -118,7 +118,7 @@
                             <div class="form-group bmd-form-group">
                                 <div class="input-group">
                                     <div class="input-group-prepend" style="width:100px;">
-                                        <div class="input-group-text">Email</div>
+                                        <div class="input-group-text">{{#messages}}email{{/messages}}</div>
                                     </div>
                                     <input type="text" id="email" name="email" class="form-control">
                                 </div>
@@ -126,7 +126,7 @@
                             <div class="form-group bmd-form-group">
                                 <div class="input-group">
                                     <div class="input-group-prepend" style="width:100px;">
-                                        <div class="input-group-text">연락처</div>
+                                        <div class="input-group-text">{{#messages}}phone.number{{/messages}}</div>
                                     </div>
                                     <input type="text" id="phoneNumber" name="phoneNumber" class="form-control">
                                 </div>
@@ -134,7 +134,7 @@
                             <div class="form-group bmd-form-group">
                                 <div class="input-group">
                                     <div class="input-group-prepend" style="width:100px;">
-                                        <div class="input-group-text">암호</div>
+                                        <div class="input-group-text">{{#messages}}password{{/messages}}</div>
                                     </div>
                                     <input type="password" id="password" name="password" class="form-control">
                                 </div>
@@ -143,7 +143,7 @@
                     </form>
                 </div>
                 <div class="modal-footer justify-content-center">
-                    <a href="#none" id="createUserBtn" class="btn btn-primary btn-round">Regist</a>
+                    <a href="#none" id="createUserBtn" class="btn btn-primary btn-round">{{#messages}}btn.create{{/messages}}</a>
                 </div>
             </div>
         </div>
@@ -161,7 +161,7 @@
 </script>
 <script id="usersNoDataTemplate" type="text/x-jquery-tmpl">
 <tr>
-    <td colspan="6">No Data.</td>
+    <td colspan="6">{{#messages}}info.search.no.data{{/messages}}</td>
 </tr>
 </script>
 <script id="usersPagingTemplate" type="text/x-jquery-tmpl">

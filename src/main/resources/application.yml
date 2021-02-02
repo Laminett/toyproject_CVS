@@ -13,10 +13,10 @@ spring:
   jpa:
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     open-in-view: false
-    show-sql: true
     hibernate:
-      format_sql: true
       ddl-auto: update
+    properties:
+      hibernate.format_sql: true
   jackson:
     default-property-inclusion: non_null
 
@@ -26,6 +26,7 @@ logging:
       springframework:
         boot:
           autoconfigure: INFO
+
 
 jwt:
   token:
@@ -40,15 +41,14 @@ spring:
   profiles: local
   datasource:
     url: jdbc:mysql://localhost:3306/db_cvs?serverTimezone=UTC&characterEncoding=UTF-8
+
 logging:
   level:
     org:
       hibernate:
         SQL: DEBUG
-        type:
-          descriptor:
-            sql:
-              BasicBinder: TRACE
+#        type: trace
+
 ---
 spring:
   profiles: ci

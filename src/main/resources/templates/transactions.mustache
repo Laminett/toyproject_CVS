@@ -49,11 +49,11 @@
                                     </button>
                                     <div id="transaction-search-field" class="dropdown-menu"
                                          aria-labelledby="dropdownMenuButton-transaction-search">
-                                        <a class="dropdown-item" href="#none" searchKey="userId">userId</a>
-                                        <a class="dropdown-item" href="#none" searchKey="paymentType">paymentType</a>
-                                        <a class="dropdown-item" href="#none" searchKey="point">point</a>
-                                        <a class="dropdown-item" href="#none" searchKey="state">state</a>
-                                        <a class="dropdown-item" href="#none" searchKey="type">type</a>
+                                        <a class="dropdown-item" href="#none" searchKey="userId">{{#messages}}user.id{{/messages}}</a>
+                                        <a class="dropdown-item" href="#none" searchKey="paymentType">{{#messages}}payment.type{{/messages}}</a>
+                                        <a class="dropdown-item" href="#none" searchKey="point">{{#messages}}point{{/messages}}</a>
+                                        <a class="dropdown-item" href="#none" searchKey="state">{{#messages}}status{{/messages}}</a>
+                                        <a class="dropdown-item" href="#none" searchKey="type">{{#messages}}type{{/messages}}</a>
                                     </div>
                                 </div>
 
@@ -75,14 +75,14 @@
                             <table class="table" id="templ1">
                                 <thead class=" text-primary text-center">
                                 <th>NO</th>
-                                <th>USERID</th>
-                                <th>PAYMENTTYPE</th>
-                                <th>POINT</th>
-                                <th>STATE</th>
-                                <th>TYPE</th>
-                                <th>CREATEDDATE</th>
-                                <th>MODIFIEDDATE</th>
-                                <th>ACTIONS</th>
+                                <th>{{#messages}}user.id{{/messages}}</th>
+                                <th>{{#messages}}payment.type{{/messages}}</th>
+                                <th>{{#messages}}point{{/messages}}</th>
+                                <th>{{#messages}}status{{/messages}}</th>
+                                <th>{{#messages}}type{{/messages}}</th>
+                                <th>{{#messages}}created.date{{/messages}}</th>
+                                <th>{{#messages}}modified.date{{/messages}}</th>
+                                <th>{{#messages}}action{{/messages}}</th>
                                 </thead>
                                 <tbody id="transactions" class="text-center"></tbody>
                             </table>
@@ -108,7 +108,7 @@
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
                             <i class="material-icons">clear</i>
                         </button>
-                        <h4 class="card-title" id="modalTitle">Transaction Detail</h4>
+                        <h4 class="card-title" id="modalTitle">{{#messages}}transaction.detail{{/messages}}</h4>
                     </div>
                 </div>
                 <div class="modal-body">
@@ -121,7 +121,7 @@
                                            name="TransactionId" disabled>
                                 </div>
                                 <div class="form-group col-md-3">
-                                    <label for="inputUserId">userId</label>
+                                    <label for="inputUserId">{{#messages}}user.id{{/messages}}</label>
                                     <input type="text" class="form-control text-center" id="BuyerId" name="BuyerId"
                                            disabled>
                                 </div>
@@ -131,7 +131,7 @@
                                            name="TransactionPoint" disabled>
                                 </div>
                                 <div class="form-group col-md-3">
-                                    <label for="inputPaymentType">PaymentType</label>
+                                    <label for="inputPaymentType">{{#messages}}payment.type{{/messages}}</label>
                                     <input type="text" class="form-control text-center" id="PaymentType"
                                            name="PaymentType" disabled>
                                 </div>
@@ -149,12 +149,12 @@
                                            name="paymentBarcode" disabled>
                                 </div>
                                 <div class="form-group col-md-3">
-                                    <label for="inputState">TransactionState</label>
+                                    <label for="inputState">{{#messages}}transaction.state{{/messages}}</label>
                                     <input type="text" class="form-control text-center" id="TransactionState"
                                            name="TransactionState" disabled>
                                 </div>
                                 <div class="form-group col-md-3">
-                                    <label for="inputType">TransactionType</label>
+                                    <label for="inputType">{{#messages}}transaction.type{{/messages}}</label>
                                     <input type="text" class="form-control text-center" id="TransactionType"
                                            name="TransactionType" disabled>
                                 </div>
@@ -163,9 +163,9 @@
                             <div class="form-group"></div>
                             <table class="table" id="templ1">
                                 <thead class=" text-primary text-center popthead">
-                                <th>productName</th>
-                                <th>amount</th>
-                                <th>point</th>
+                                <th>{{#messages}}product.name{{/messages}}</th>
+                                <th>{{#messages}}amount{{/messages}}</th>
+                                <th>{{#messages}}point{{/messages}}</th>
                                 </thead>
                                 <tbody id="transactionItems" class="text-center"></tbody>
                                 <table id="totalPoint" class="table text-center"></table>
@@ -216,7 +216,7 @@
 </script>
 <script id="transactionsItemsNoDataTemplate" type="text/x-jquery-tmpl">
 <tr>
-    <td colspan="3">No Data.</td>
+    <td colspan="3">{{#messages}}info.search.no.data{{/messages}}</td>
 </tr>
 </script>
 <script id="transactionsItemsTotalPointTemplate" type="text/x-jquery-tmpl">
