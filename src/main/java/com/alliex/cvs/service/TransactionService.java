@@ -1,6 +1,7 @@
 package com.alliex.cvs.service;
 
-import com.alliex.cvs.domain.transaction.*;
+import com.alliex.cvs.domain.transaction.Transaction;
+import com.alliex.cvs.domain.transaction.TransactionRepository;
 import com.alliex.cvs.domain.type.TransactionSearchType;
 import com.alliex.cvs.domain.type.TransactionState;
 import com.alliex.cvs.domain.type.TransactionType;
@@ -43,7 +44,9 @@ public class TransactionService {
 
     @Transactional(readOnly = true)
     public Page<TransactionResponse> getTransactions(Pageable pageable, TransactionRequest transactionRequest) {
-        return transactionRepository.findAll(searchWith(getPredicateData(transactionRequest)), pageable).map(TransactionResponse::new);
+        Page<Transaction> transactions = transactionRepository.findAllWithUser(searchWith(getPredicateData(transactionRequest)), pageable);
+
+        return transactions.map(TransactionResponse::new);
     }
 
     @Transactional(readOnly = true)

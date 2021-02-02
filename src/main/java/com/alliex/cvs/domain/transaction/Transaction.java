@@ -24,7 +24,7 @@ public class Transaction extends BaseTimeEntity {
     @Column(nullable = false)
     private TransactionState state;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
