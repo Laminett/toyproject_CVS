@@ -324,6 +324,7 @@ let main = {
             dataType: 'json',
             contentType: 'application/json; charset=utf-8'
         }).done(function (data) {
+            $("#categoryName").html(null);
             $("#categoriesSelectTemplate").tmpl(data.content).appendTo("#categoryName");
         }).fail(function (error) {
             alert(JSON.stringify(error));
