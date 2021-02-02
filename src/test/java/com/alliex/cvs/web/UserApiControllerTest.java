@@ -48,7 +48,7 @@ public class UserApiControllerTest {
     @Test
     public void createUser_WEB() throws Exception {
         // given
-        UserSaveRequest userSaveRequest = getUserSaveRequest(RandomStringUtils.randomAlphanumeric(5));
+        UserSaveRequest userSaveRequest = getUserSaveRequest(RandomStringUtils.randomAlphanumeric(5), RandomStringUtils.randomAlphanumeric(5));
 
         mvc.perform(post("/web-api/v1/users")
                 .accept(MediaType.APPLICATION_JSON)
@@ -61,7 +61,7 @@ public class UserApiControllerTest {
     @Test
     public void createUser_APP() throws Exception {
         // given
-        UserSaveRequest userSaveRequest = getUserSaveRequest(RandomStringUtils.randomAlphanumeric(5));
+        UserSaveRequest userSaveRequest = getUserSaveRequest(RandomStringUtils.randomAlphanumeric(5), RandomStringUtils.randomAlphanumeric(5));
 
         mvc.perform(post("/api/v1/create-users")
                 .accept(MediaType.APPLICATION_JSON)
@@ -71,11 +71,38 @@ public class UserApiControllerTest {
                 .andExpect(status().isCreated());
     }
 
+    @Test
+    public void createUser_APP_InvalidRequest() throws Exception {
+        mvc.perform(post("/api/v1/create-users")
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(getUserSaveRequest("aabb", "password"))))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity())
+                .andExpect(jsonPath("$.code").value("INVALID_REQUEST"));
+
+        mvc.perform(post("/api/v1/create-users")
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(getUserSaveRequest("aabbc", "1234"))))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity())
+                .andExpect(jsonPath("$.code").value("INVALID_REQUEST"));
+
+        mvc.perform(post("/api/v1/create-users")
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(getUserSaveRequest("aabbc*", "1234"))))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity())
+                .andExpect(jsonPath("$.code").value("INVALID_REQUEST"));
+    }
+
     @WithMockUser(roles = "ADMIN")
     @Test
     public void createUser_UserAlreadyExists() throws Exception {
         // given
-        UserSaveRequest userSaveRequest = getUserSaveRequest(RandomStringUtils.randomAlphanumeric(5));
+        UserSaveRequest userSaveRequest = getUserSaveRequest(RandomStringUtils.randomAlphanumeric(5), RandomStringUtils.randomAlphanumeric(5));
 
         // create
         mvc.perform(post("/web-api/v1/users")
@@ -96,8 +123,7 @@ public class UserApiControllerTest {
 
     }
 
-    private UserSaveRequest getUserSaveRequest(String username) {
-        String password = "password";
+    private UserSaveRequest getUserSaveRequest(String username, String password) {
         String department = "department";
         String fullName = "fullName " + RandomStringUtils.randomAlphanumeric(5);
         String email = RandomStringUtils.randomAlphanumeric(5) + "@email.com";

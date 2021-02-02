@@ -12,6 +12,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RequiredArgsConstructor
 @RestController
 public class UserApiController {
@@ -21,7 +23,7 @@ public class UserApiController {
     @ApiOperation(value = "Create User")
     @PostMapping({"/api/v1/create-users", "/web-api/v1/users"})
     @ResponseStatus(HttpStatus.CREATED)
-    public UserResponse save(@RequestBody UserSaveRequest userSaveRequest) {
+    public UserResponse save(@RequestBody @Valid UserSaveRequest userSaveRequest) {
         return userService.save(userSaveRequest);
     }
 

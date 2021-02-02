@@ -6,20 +6,32 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+
 @Getter
 @NoArgsConstructor
 public class UserSaveRequest {
 
+    @NotBlank(message = "username may not be blank.")
+    @Size(min = 5, max = 20, message = "username must be 5-20 characters.")
+    @Pattern(regexp = "[a-zA-z0-9]+")
     private String username;
 
+    @NotBlank(message = "password may not be blank.")
+    @Size(min = 5, max = 20, message = "password must be 5-20 characters.")
     private String password;
 
     private String department;
 
+    @NotBlank(message = "fullName may not be blank.")
     private String fullName;
 
+    @NotBlank(message = "email may not be blank.")
     private String email;
 
+    @NotBlank(message = "phoneNumber may not be blank.")
     private String phoneNumber;
 
     private Role role = Role.USER;
