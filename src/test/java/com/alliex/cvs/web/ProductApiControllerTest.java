@@ -1,8 +1,10 @@
 package com.alliex.cvs.web;
 
 import com.alliex.cvs.testsupport.WithMockCustomUser;
+import com.alliex.cvs.web.dto.ProductResponse;
 import com.alliex.cvs.web.dto.ProductSaveRequest;
 import com.alliex.cvs.web.dto.ProductUpdateRequest;
+import com.alliex.cvs.web.dto.TransactionStateResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,6 +18,7 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlGroup;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -99,16 +102,20 @@ public class ProductApiControllerTest {
         productUpdateRequest.setAdminId(adminId);
         productUpdateRequest.setIsEnabled(isEnabled);
 
+        MvcResult result =
         mvc.perform(post("/web-api/v1/products/{id}", testId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(productUpdateRequest)))
                 .andDo(print())
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andReturn();
 
-        mvc.perform(get("/web-api/v1/products/{id}", testId))
+        String content = result.getResponse().getContentAsString();
+        Long productId = objectMapper.readValue(content, Long.class);
+
+        mvc.perform(get("/web-api/v1/products/{id}", productId))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.categoryId.id").value(categoryId))
                 .andExpect(jsonPath("$.name").value(name))
                 .andExpect(jsonPath("$.point").value(point))
                 .andExpect(jsonPath("$.quantity").value(quantity))
@@ -190,7 +197,7 @@ public class ProductApiControllerTest {
         final Boolean isEnabled= true;
         final Long point = 100L;
         final Integer quantity = 200;
-        final Long categoryId = 500L;
+        final String  categoryName = "categorytest";
         final String adminId = "testAdmin";
 
         mvc.perform(get("/web-api/v1/barcodescan/{barcode}", barcode))
@@ -201,7 +208,7 @@ public class ProductApiControllerTest {
                 .andExpect(jsonPath("$.isEnabled").value(isEnabled))
                 .andExpect(jsonPath("$.point").value(point))
                 .andExpect(jsonPath("$.quantity").value(quantity))
-                .andExpect(jsonPath("$.categoryId.id").value(categoryId))
+                .andExpect(jsonPath("$.categoryName").value(categoryName))
                 .andExpect(jsonPath("$.adminId").value(adminId))
                 .andExpect(jsonPath("$.barcode").value(barcode));
     }
@@ -239,7 +246,7 @@ public class ProductApiControllerTest {
         mvc.perform(get("/web-api/v1/products").param("categoryName", testSearchByCategoryNameLike))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.content[0].categoryId.name").value(testCategoyName1))
+                .andExpect(jsonPath("$.content[0].categoryName").value(testCategoyName1))
                 .andExpect(jsonPath("$.content[0].name").value(testName));
     }
 
