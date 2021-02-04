@@ -1,15 +1,15 @@
 package com.alliex.cvs.web.dto;
 
 import com.alliex.cvs.domain.transaction.Transaction;
-import com.alliex.cvs.domain.transactionDetail.TransactionDetail;
 import com.alliex.cvs.domain.type.TransactionState;
-import com.alliex.cvs.domain.type.TransactionType;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
 @Getter
+@NoArgsConstructor
 public class TransactionStateResponse {
 
     private TransactionState transactionState;

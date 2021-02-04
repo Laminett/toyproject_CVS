@@ -1,14 +1,15 @@
 package com.alliex.cvs.web.dto;
 
 import com.alliex.cvs.domain.product.Product;
-import com.alliex.cvs.domain.type.TransactionState;
 import com.alliex.cvs.domain.transactionDetail.TransactionDetail;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@NoArgsConstructor
 public class TransactionDetailSaveRequest {
 
     private Integer quantity;
