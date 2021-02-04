@@ -14,6 +14,9 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor
 @Entity
+@Table(indexes = {
+        @Index(name = "uix_requestId", columnList = "requestId", unique = true)
+})
 public class Transaction extends BaseTimeEntity {
 
     @Id
@@ -37,6 +40,7 @@ public class Transaction extends BaseTimeEntity {
     @Column(nullable = false)
     private TransactionType type;
 
+    @Column(nullable = false)
     private String requestId;
 
     @Enumerated(EnumType.STRING)

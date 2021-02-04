@@ -54,7 +54,19 @@ public class TransactionService {
         Transaction transaction = transactionRepository.findByRequestId(requestId)
                 .orElseThrow(() -> new TransactionNotFoundException(requestId));
 
-        return new TransactionResponse(transaction);
+        TransactionResponse transactionResponse = new TransactionResponse(transaction);
+
+        List<TransactionDetailResponse> transactionItems;
+
+        if (transaction.getType() == TransactionType.REFUND) {
+            transactionItems = transactionDetailService.getDetailByRequestId(transaction.getOriginRequestId());
+        } else {
+            transactionItems = transactionDetailService.getDetailByRequestId(transaction.getRequestId());
+        }
+
+        transactionResponse.setTransactionItems(transactionItems);
+
+        return transactionResponse;
     }
 
     @Transactional
@@ -234,7 +246,7 @@ public class TransactionService {
                 switch (entry.getKey()) {
                     case USERID:
                         Join<Transaction, User> userJoin = root.join(entry.getKey().getValue());
-                        predicate.add(builder.like(userJoin.get("username"), "%" + entry.getValue() + "%"));
+                        predicate.add(builder.equal(userJoin.get("username"), entry.getValue()));
                         break;
                     case TYPE:
                     case POINT:

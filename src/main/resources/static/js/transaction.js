@@ -35,118 +35,6 @@ var main = {
             let requestId = $(this).closest('tr').find('td').eq(0).text();
             _this.getTransaction(requestId);
         });
-
-/////////////////////////Local/ Dev Transaction TEST 용 //////////////////////////////////
-
-        if (location.hostname != _this.PROD_DOMAIN) {
-            $('#setp1').css('display', 'block');
-            $('#setp2').css('display', 'block');
-            $('#setp3').css('display', 'block');
-            $('#setp4').css('display', 'block');
-        } else {
-            $('#setp1').css('display', 'none');
-            $('#setp2').css('display', 'none');
-            $('#setp3').css('display', 'none');
-            $('#setp4').css('display', 'none');
-        }
-
-        $('#step1').on('click', function () {
-            var data =
-                [
-                    {
-                        productId: 1,
-                        quantity: 1
-                    },
-                    {
-                        productId: 3,
-                        quantity: 2
-                    },
-                    {
-                        productId: 4,
-                        quantity: 3
-                    }
-                ];
-
-            $.ajax({
-                type: 'POST',
-                url: '/web-api/v1/transactions/payment/pos/step1',
-                data: JSON.stringify(data),
-                dataType: 'TEXT',
-                contentType: 'application/json'
-            }).done(function (data) {
-                alert(data);
-            }).fail(function (error) {
-                alert(JSON.stringify(error));
-            });
-        });
-
-        $('#step2').on('click', function () {
-            var barcode = prompt("input barcode");
-
-            $.ajax({
-                type: 'GET',
-                url: '/web-api/v1/transactions/state/' + barcode,
-                dataType: 'TEXT',
-                contentType: 'application/json'
-            }).done(function (data) {
-                alert(data);
-            }).fail(function (error) {
-                alert(JSON.stringify(error));
-            });
-        });
-
-        $('#step3').on('click', function () {
-            var barcode = prompt("input barcode");
-            let data = {
-                paymentType: "POS_QR",
-                requestId: barcode
-            };
-            $.ajax({
-                type: 'PUT',
-                url: '/web-api/v1/transactions/payment/pos/step2',
-                dataType: 'TEXT',
-                contentType: 'application/json',
-                data: JSON.stringify(data)
-            }).done(function (data) {
-                alert(data);
-            }).fail(function (error) {
-                alert(JSON.stringify(error));
-            });
-        });
-
-        $('#step4').on('click', function () {
-            var data = {
-                requestId: Math.random().toString().substr(2, 20)
-                , paymentType: 'MOBILE'
-                , transProduct: [
-                    {
-                        productId: 1,
-                        quantity: 1
-                    },
-                    {
-                        productId: 3,
-                        quantity: 2
-                    },
-                    {
-                        productId: 4,
-                        quantity: 3
-                    }
-                ]
-            };
-
-            $.ajax({
-                type: 'POST',
-                url: 'web-api/v1/transactions/payment/app',
-                data: JSON.stringify(data),
-                dataType: 'text',
-                contentType: 'application/json'
-            }).done(function (data) {
-                alert(data);
-            }).fail(function (error) {
-                alert(JSON.stringify(error));
-            });
-        });
-////////////////////////////////////////////////////////////////////////////////////////////////
     },
     getTransaction: function (id) {
         $.ajax({
@@ -156,7 +44,7 @@ var main = {
             contentType: 'application/json; charset=utf-8'
         }).done(function (data) {
             $('#TransactionId').val(data.id);
-            $('#BuyerId').val(data.user.username);
+            $('#BuyerId').val(data.username);
             $('#PaymentType').val(data.paymentType);
             $('#TransactionPoint').val(data.point);
             $('#TransactionState').val(data.state);
@@ -165,44 +53,34 @@ var main = {
 
             $("#transactionDetailModal").modal("show");
 
-            let requestId;
             if (data.type == 'REFUND') {
-                requestId = data.originRequestId;
                 $('#paymentBarcode').val(data.originRequestId);
                 $('#div_paymentBarcode').css('display', 'block');
             } else {
-                requestId = data.requestId;
                 $('#paymentBarcode').val('');
                 $('#div_paymentBarcode').css('display', 'none');
             }
 
-            $.ajax({
-                type: 'GET',
-                url: 'web-api/v1/transactions/items/' + requestId,
-                dataType: 'json'
-            }).done(function (data) {
-                $('#transactionItems').empty();
-                $('#totalPoint').empty();
+            $('#transactionItems').empty();
+            $('#totalPoint').empty();
 
-                let totalPoint = [];
-                if (data.length == 0) {
-                    totalPoint.push({"totalPoint": 0});
+            let totalPoint = [];
+            if (data.length == 0) {
+                totalPoint.push({"totalPoint": 0});
 
-                    $("#transactionsItemsNoDataTemplate").tmpl().appendTo("#transactionItems");
-                    $("#transactionsItemsTotalPointTemplate").tmpl(totalPoint).appendTo("#totalPoint");
-                } else {
-                    totalPoint.push({"totalPoint": $('#TransactionPoint').val()});
+                $("#transactionsItemsNoDataTemplate").tmpl().appendTo("#transactionItems");
+                $("#transactionsItemsTotalPointTemplate").tmpl(totalPoint).appendTo("#totalPoint");
+            } else {
+                totalPoint.push({"totalPoint": $('#TransactionPoint').val()});
 
-                    $("#transactionsItemsTemplate").tmpl(data).appendTo("#transactionItems")
-                    $("#transactionsItemsTotalPointTemplate").tmpl(totalPoint).appendTo("#totalPoint");
-                }
-
-            }).fail(function (error) {
-                alert(JSON.stringify(error.responseJSON.message));
-                $('#transactionItems').empty();
-                $('#totalPoint').empty();
-            });
-        })
+                $("#transactionsItemsTemplate").tmpl(data.transactionItems).appendTo("#transactionItems")
+                $("#transactionsItemsTotalPointTemplate").tmpl(totalPoint).appendTo("#totalPoint");
+            }
+        }).fail(function (error) {
+            alert(JSON.stringify(error.responseJSON.message));
+            $('#transactionItems').empty();
+            $('#totalPoint').empty();
+        });
     },
     getTransactions: function (page) {
         let _this = this;
