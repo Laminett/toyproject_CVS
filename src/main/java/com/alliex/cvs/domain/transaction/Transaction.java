@@ -28,7 +28,7 @@ public class Transaction extends BaseTimeEntity {
     private TransactionState state;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @JoinColumn(name = "user_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "fk_transaction_user_id_user_id"))
     private User user;
 
     private String originRequestId;
