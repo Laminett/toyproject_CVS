@@ -38,8 +38,8 @@
     function getYM(value) {
         if ((/^\d{4}-\d{2}$/).test(value)) {
             return {
-                year: +(value.split('-')[0]),
-                month: +(value.split('-')[1]) - 1
+                year: +(value.split('-')[1]),
+                month: +(value.split('-')[0]) - 1
             };
         }
         return null;
@@ -114,8 +114,8 @@
                 this.year = date.getFullYear();
                 this.month = date.getMonth();
             } else {
-                this.year = +(this.value.split('-')[0]);
-                this.month = +(this.value.split('-')[1]) - 1;
+                this.year = +(this.value.split('-')[1]);
+                this.month = +(this.value.split('-')[0]) - 1;
             }
 
             this.$title.text(this.year);
@@ -176,7 +176,7 @@
         select: function(event) {
             if($(event.currentTarget).attr('class')!='disabled'){
                 this.month = $(event.currentTarget).data('month');
-                this.value = [this.year, (this.month + 1 < 10 ? '0' : '') + (this.month + 1)].join('-');
+                this.value = [(this.month + 1 < 10 ? '0' : '') + (this.month + 1), this.year].join('-');
                 val(this.$el, this.value);
                 this.options.onSelect(this.value);
                 this.$dialog.hide();

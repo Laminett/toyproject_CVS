@@ -14,9 +14,9 @@ import java.time.format.DateTimeFormatter;
 public class PointHistorySpecification {
 
     public static Specification<PointHistory> withSearchPeriod(String searchField, PointHistoryRequest pointHistoryRequest) {
-        if (StringUtils.isNotBlank(pointHistoryRequest.getStartDate()) && StringUtils.isNotBlank(pointHistoryRequest.getEndDate())) {
-            LocalDateTime startDate = LocalDateTime.of(LocalDate.parse(pointHistoryRequest.getStartDate(), DateTimeFormatter.ofPattern("yyyyMMdd")), LocalTime.of(0, 0, 0));
-            LocalDateTime endDate = LocalDateTime.of(LocalDate.parse(pointHistoryRequest.getEndDate(), DateTimeFormatter.ofPattern("yyyyMMdd")), LocalTime.of(23, 59, 59));
+        if (pointHistoryRequest.getStartDate() != null && pointHistoryRequest.getEndDate() != null) {
+            LocalDateTime startDate = pointHistoryRequest.getStartDate().atStartOfDay();
+            LocalDateTime endDate = pointHistoryRequest.getEndDate().atTime(23, 59, 59);
             return ((root, query, criteriaBuilder) -> criteriaBuilder.between(root.get(searchField), startDate, endDate));
         } else {
             return null;

@@ -4,7 +4,7 @@ var main = {
 
         _this.getSettles(1);
 
-        $('.monthpicker').bootstrapMonthpicker({}).val(moment(new Date().getTime()).format("YYYY-MM"));
+        $('.monthpicker').bootstrapMonthpicker({}).val(moment(new Date().getTime()).format("MM-YYYY"));
 
         // Paging.
         $(document).on('click', '.page-link', function () {
@@ -28,7 +28,7 @@ var main = {
     getSettles: function (page) {
         var param = {
             page: page,
-            aggregatedAt: $("#search_date").val() == "" ? moment(new Date().getTime()).format("YYYYMM") + "01" : $("#search_date").val().replace(/[^0-9]/g, "") + "01",
+            aggregatedAt: $("#search_date").val() == "" ? "01" + moment(new Date().getTime()).format("MMYYYY") : "01" + $("#search_date").val().replace(/[^0-9]/g, ""),
             fullName: $('#search_fullName').val()
         };
 
