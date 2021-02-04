@@ -3902,7 +3902,7 @@
         return -(wholeMonthDiff + adjust) || 0;
     }
 
-    hooks.defaultFormat = 'YYYY-MM-DDTHH:mm:ssZ';
+    hooks.defaultFormat = 'DD-MM-YYYY';
     hooks.defaultFormatUtc = 'YYYY-MM-DDTHH:mm:ss[Z]';
 
     function toString() {

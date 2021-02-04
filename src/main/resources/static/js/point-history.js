@@ -31,8 +31,8 @@ var main = {
     getPointHistories: function (page) {
         var param = {
             page: page,
-            startDate: $("#search_startDate").val() == ""? moment(new Date().getTime()).format("DD-MM-YYYY"):$("#search_startDate").val(),
-            endDate: $("#search_endDate").val() == ""? moment(new Date().getTime()).format("DD-MM-YYYY"):$("#search_endDate").val(),
+            startDate: $("#search_startDate").val() == ""? moment(new Date().getTime()).format():$("#search_startDate").val(),
+            endDate: $("#search_endDate").val() == ""? moment(new Date().getTime()).format():$("#search_endDate").val(),
             status: $('#search_status').val(),
             fullName: $('#search_fullName').val()
         };
