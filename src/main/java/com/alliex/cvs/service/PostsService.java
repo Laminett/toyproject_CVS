@@ -2,6 +2,7 @@ package com.alliex.cvs.service;
 
 import com.alliex.cvs.domain.posts.Posts;
 import com.alliex.cvs.domain.posts.PostsRepository;
+import com.alliex.cvs.domain.posts.PostsRepositorySupport;
 import com.alliex.cvs.web.dto.PostsListResponse;
 import com.alliex.cvs.web.dto.PostsResponse;
 import com.alliex.cvs.web.dto.PostsSaveRequest;
@@ -18,6 +19,8 @@ import java.util.stream.Collectors;
 public class PostsService {
 
     private final PostsRepository postsRepository;
+
+    private final PostsRepositorySupport postsRepositorySupport;
 
     @Transactional
     public Long save(PostsSaveRequest postsSaveRequest) {
@@ -55,6 +58,10 @@ public class PostsService {
         return postsRepository.findAllDesc().stream()
                 .map(PostsListResponse::new)
                 .collect(Collectors.toList());
+    }
+
+    public List<Posts> getPostsByTitle(String title) {
+        return postsRepositorySupport.findByTitle(title);
     }
 
 }
