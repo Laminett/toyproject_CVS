@@ -37,10 +37,6 @@
                             <form class="form-inline ml-auto" id="TransactionSearchForm" action=""
                                   onsubmit="return false;">
                                 <input type="hidden" name="searchKey" value=""/>
-                                <input type="button" id="step1" name="step1" value="QRstep1"/>
-                                <input type="button" id="step2" name="step2" value="check Transaction state"/>
-                                <input type="button" id="step3" name="step3" value="QRsetp2"/>
-                                <input type="button" id="step4" name="step4" value="mobileDirectPay"/>
                                 <div class="dropdown" style="margin-right: 10px;">
                                     <button class="btn btn-secondary dropdown-toggle" type="button"
                                             id="dropdownMenuButton-transaction-search" data-toggle="dropdown"
@@ -181,9 +177,12 @@
 <script id="transactionsTemplate" type="text/x-jquery-tmpl">
 <tr>
    <td style='display:none;position:absolute'>${requestId}</td>
+   {%if type == "REFUND"%}
+        <td style='display:none;position:absolute'>${originRequestId}</td>
+   {%/if%}
    <td>${number}</td>
    <td style='display: none'>${id}</td>
-   <td>${user.username}</td>
+   <td>${username}</td>
    <td>${paymentType}</td>
    <td class='text-right'>${point}</td>
    <td>${state}</td>

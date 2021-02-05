@@ -7,10 +7,13 @@ import com.alliex.cvs.domain.type.TransactionType;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
+@Setter
 @NoArgsConstructor
 public class TransactionResponse {
 
@@ -29,6 +32,8 @@ public class TransactionResponse {
     private String requestId;
 
     private PaymentType paymentType;
+
+    private List<TransactionDetailResponse> transactionItems;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdDate;
