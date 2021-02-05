@@ -15,7 +15,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Entity
 @Table(indexes = {
-        @Index(name = "uix_requestId", columnList = "requestId", unique = true)
+        @Index(name = "uix_request_id", columnList = "requestId", unique = true)
 })
 public class Transaction extends BaseTimeEntity {
 
@@ -28,7 +28,7 @@ public class Transaction extends BaseTimeEntity {
     private TransactionState state;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "fk_transaction_user_id_user_id"))
+    @JoinColumn(name = "user_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "fk_transaction_user_id"))
     private User user;
 
     private String originRequestId;
