@@ -4,12 +4,14 @@ import com.alliex.cvs.domain.BaseTimeEntity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 
+@Entity
 @Getter
 @NoArgsConstructor
-@Entity
+@ToString(of = {"id", "title", "content"})
 public class Posts extends BaseTimeEntity {
 
     @Id
@@ -23,6 +25,11 @@ public class Posts extends BaseTimeEntity {
     private String content;
 
     private String author;
+
+    public Posts(String title, String content) {
+        this.title = title;
+        this.content = content;
+    }
 
     @Builder
     public Posts(String title, String content, String author) {
