@@ -13,8 +13,6 @@ spring:
   jpa:
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     open-in-view: false
-    hibernate:
-      ddl-auto: update
     properties:
       hibernate.format_sql: true
   jackson:
@@ -41,6 +39,9 @@ spring:
   profiles: local
   datasource:
     url: jdbc:mysql://localhost:3306/db_cvs?serverTimezone=UTC&characterEncoding=UTF-8
+  jpa:
+    hibernate:
+      ddl-auto: update
 
 logging:
   level:
@@ -54,12 +55,18 @@ spring:
   profiles: ci
   datasource:
     url: jdbc:mysql://192.168.0.95:3306/db_cvs_ci?serverTimezone=UTC&characterEncoding=UTF-8
+  jpa:
+    hibernate:
+      ddl-auto: create
 
 ---
 spring:
   profiles: dev
   datasource:
     url: jdbc:mysql://192.168.0.95:3306/db_cvs?serverTimezone=UTC&characterEncoding=UTF-8
+  jpa:
+    hibernate:
+      ddl-auto: none
 logging:
   level:
     org:
@@ -74,6 +81,9 @@ spring:
   profiles: prod
   datasource:
     url: jdbc:mysql://localhost:3306/db_cvs?serverTimezone=UTC&characterEncoding=UTF-8
+  jpa:
+    hibernate:
+      ddl-auto: none
 logging:
   level:
     org:
