@@ -16,7 +16,7 @@ var main = {
         });
     },
     exeSettleBatch: function () {
-        var aggregatedAt = $("#settle_month").val().replace(/[^0-9]/g, "") + "01";
+        var aggregatedAt = "01" + $("#settle_month").val().replace(/[^0-9]/g, "");
 
         $.ajax({
             type: 'POST',

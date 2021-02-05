@@ -14,7 +14,7 @@ public class SettleRequest {
 
     private int page;
 
-    @DateTimeFormat(pattern = "yyyyMMdd")
+    @DateTimeFormat(pattern = "ddMMyyyy")
     private LocalDate aggregatedAt;
 
     private String status;

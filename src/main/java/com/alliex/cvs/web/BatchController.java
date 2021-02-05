@@ -32,8 +32,8 @@ public class BatchController {
 
     @ApiOperation(value = "Manual Settle Batch", notes = "수동 정산 배치")
     @PostMapping("/web-api/v1/system/batch/manual/settle/{aggregatedAt}")
-    public Integer settleBatchManual(@PathVariable @DateTimeFormat(pattern = "yyyyMMdd") LocalDate aggregatedAt) {
-        int batchSize = settleService.transactionMonthlySum(DateTimeUtils.getFirstDayOfMonth(aggregatedAt.atTime(0, 0, 0)), aggregatedAt.atTime(0, 0, 0).with(TemporalAdjusters.firstDayOfNextMonth()));
+    public Integer settleBatchManual(@PathVariable @DateTimeFormat(pattern = "ddMMyyyy") LocalDate aggregatedAt) {
+        int batchSize = settleService.transactionMonthlySum(DateTimeUtils.getFirstDayOfMonth(aggregatedAt.atStartOfDay()), aggregatedAt.atStartOfDay().with(TemporalAdjusters.firstDayOfNextMonth()));
 
         return batchSize;
     }

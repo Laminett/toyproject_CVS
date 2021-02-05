@@ -5,7 +5,7 @@ var main = {
         _this.getPointHistories(1);
 
         $('.datepicker').datetimepicker({
-            format: 'YYYY-MM-DD',
+            format: 'DD-MM-YYYY',
             defaultDate: new Date()
         });
 
@@ -29,10 +29,11 @@ var main = {
         });
     },
     getPointHistories: function (page) {
+        setMomentDefaultFormat();
         var param = {
             page: page,
-            startDate: $("#search_startDate").val() == "" ? moment(new Date().getTime()).format("YYYYMMDD") : $("#search_startDate").val().replace(/[^0-9]/g, ""),
-            endDate: $("#search_endDate").val() == "" ? moment(new Date().getTime()).format("YYYYMMDD") : $("#search_endDate").val().replace(/[^0-9]/g, ""),
+            startDate: $("#search_startDate").val() == ""? moment(new Date().getTime()).format():$("#search_startDate").val(),
+            endDate: $("#search_endDate").val() == ""? moment(new Date().getTime()).format():$("#search_endDate").val(),
             status: $('#search_status').val(),
             fullName: $('#search_fullName').val()
         };
