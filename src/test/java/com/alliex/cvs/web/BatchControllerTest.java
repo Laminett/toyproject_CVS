@@ -46,7 +46,7 @@ public class BatchControllerTest {
     @Autowired
     private SettleRepository settleRepository;
 
-    private final String aggregatedAt = "20200901";
+    private final String aggregatedAt = "01092020";
 
     @WithMockUser(roles = "ADMIN")
     @Test
