@@ -1,8 +1,8 @@
 $(function () {
     // Handle ajax error.
-    $(document).ajaxError(function (event, jqxhr, settings, thrownError) {
+    /* $(document).ajaxError(function (event, jqxhr, settings, thrownError) {
         alert('Exception occurred.\n' + jqxhr.status + ', ' + jqxhr.statusText);
-    });
+    });*/
 
     $("a.language-select").click(function () {
         var lang = $(this).data("value");
@@ -43,4 +43,8 @@ function loadMessages(isReload) {
             location.reload();
         }
     }, "json");
+}
+
+function setMomentDefaultFormat() {
+    moment.defaultFormat = "DD-MM-YYYY";
 }

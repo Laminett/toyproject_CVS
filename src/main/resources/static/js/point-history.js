@@ -29,6 +29,7 @@ var main = {
         });
     },
     getPointHistories: function (page) {
+        setMomentDefaultFormat();
         var param = {
             page: page,
             startDate: $("#search_startDate").val() == ""? moment(new Date().getTime()).format():$("#search_startDate").val(),
