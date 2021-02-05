@@ -45,6 +45,4 @@ function loadMessages(isReload) {
     }, "json");
 }
 
-function setMomentDefaultFormat() {
-    moment.defaultFormat = "DD-MM-YYYY";
-}
+moment.defaultFormat = "DD-MM-YYYY";
