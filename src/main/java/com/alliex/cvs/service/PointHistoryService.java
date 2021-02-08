@@ -3,6 +3,7 @@ package com.alliex.cvs.service;
 import com.alliex.cvs.domain.point.PointHistory;
 import com.alliex.cvs.domain.point.PointHistoryRepository;
 import com.alliex.cvs.domain.point.PointHistorySpecification;
+import com.alliex.cvs.exception.PointHistoryRequestAlreadyExistsException;
 import com.alliex.cvs.exception.PointHistoryNotFoundException;
 import com.alliex.cvs.exception.PointLimitExcessException;
 import com.alliex.cvs.web.dto.*;
@@ -13,6 +14,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -34,9 +38,9 @@ public class PointHistoryService {
     }
 
     @Transactional
-    public Long update(Long id, PointHisotryUpdateRequest request) {
+    public Long update(Long id, PointHistoryUpdateRequest request) {
         PointHistory pointHistory = pointHistoryRepository.findById(id)
-                .orElseThrow(() -> new PointHistoryNotFoundException("not found pointHistory. id: " + id));
+                .orElseThrow(() -> new PointHistoryNotFoundException(id));
 
         pointHistory.update(id, request.getStatus(), request.getAdminId());
 
@@ -48,10 +52,24 @@ public class PointHistoryService {
     }
 
     @Transactional
+    public PointHistoryProgressResponse progress(Long userId) {
+        PointHistory pointHistory = pointHistoryRepository.findByUserIdAndStatus(userId, null)
+                .orElseGet(PointHistory::new);
+
+        return new PointHistoryProgressResponse(userId, pointHistory.getPoint());
+    }
+
+    @Transactional
     public PointHistorySaveResponse save(PointHistorySaveRequest pointHistorySaveRequest) {
         if (pointHistorySaveRequest.getPoint() > CHARGE_LIMIT_POINT) {
-            throw new PointLimitExcessException("The point is too much to charge. point: " + pointHistorySaveRequest.getPoint());
+            throw new PointLimitExcessException(pointHistorySaveRequest.getPoint());
         }
+
+        List<PointHistory> pointHistory = pointHistoryRepository.findByUserIdAndStatus(pointHistorySaveRequest.getUserId(), null).stream().collect(Collectors.toList());
+        if (pointHistory.size() > 0) {
+            throw new PointHistoryRequestAlreadyExistsException();
+        }
+
         pointHistoryRepository.save(pointHistorySaveRequest.toEntity());
 
         return new PointHistorySaveResponse(pointHistorySaveRequest.getUserId(), pointHistorySaveRequest.getPoint());

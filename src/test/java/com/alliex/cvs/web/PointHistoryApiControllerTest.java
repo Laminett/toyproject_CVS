@@ -1,6 +1,6 @@
 package com.alliex.cvs.web;
 
-import com.alliex.cvs.web.dto.PointHisotryUpdateRequest;
+import com.alliex.cvs.web.dto.PointHistoryUpdateRequest;
 import com.alliex.cvs.web.dto.PointHistorySaveRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -47,7 +47,7 @@ public class PointHistoryApiControllerTest {
     public void chargeRequest() throws Exception {
         PointHistorySaveRequest pointHistorySaveRequest = getPointHistorySaveRequest(10000L);
 
-        mvc.perform(post("/api/v1/point/history/save")
+        mvc.perform(post("/api/v1/point/history")
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(pointHistorySaveRequest)))
@@ -62,7 +62,7 @@ public class PointHistoryApiControllerTest {
     public void chargeRequest_PointTooMuch() throws Exception {
         PointHistorySaveRequest pointHistorySaveRequest = getPointHistorySaveRequest(999999999L);
 
-        mvc.perform(post("/api/v1/point/history/save")
+        mvc.perform(post("/api/v1/point/history")
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(pointHistorySaveRequest)))
@@ -70,11 +70,57 @@ public class PointHistoryApiControllerTest {
                 .andExpect(jsonPath("$.code", is("POINT_LIMIT_EXCESS")));
     }
 
+    @WithMockUser(roles = "USER")
+    @Test
+    public void chargeRequest_AlreadyExists() throws Exception {
+        PointHistorySaveRequest pointHistorySaveRequest = getPointHistorySaveRequest(2000L);
+
+        mvc.perform(post("/api/v1/point/history")
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(pointHistorySaveRequest)));
+
+        mvc.perform(post("/api/v1/point/history")
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(pointHistorySaveRequest)))
+                .andDo(print())
+                .andExpect(jsonPath("$.code", is("POINT_HISTORY_ALREADY_EXISTS")));
+    }
+
     private PointHistorySaveRequest getPointHistorySaveRequest(Long point) {
         return PointHistorySaveRequest.builder()
                 .userId(testUserId)
                 .point(point)
                 .build();
+    }
+
+    @WithMockUser(roles = "USER")
+    @Test
+    public void searchRequest() throws Exception {
+        mvc.perform(get("/api/v1/point/history/progress").param("userId", "400"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.userId").value(400))
+                .andExpect(jsonPath("$.point").value(0));
+    }
+
+    @WithMockUser(roles = "USER")
+    @Test
+    public void searchRequest_Exists() throws Exception {
+        PointHistorySaveRequest pointHistorySaveRequest = getPointHistorySaveRequest(10000L);
+
+        mvc.perform(post("/api/v1/point/history")
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(pointHistorySaveRequest)))
+                .andDo(print());
+
+        mvc.perform(get("/api/v1/point/history/progress").param("userId", "400"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.userId").value(400))
+                .andExpect(jsonPath("$.point").value(10000));
     }
 
     @WithMockUser(roles = "ADMIN")
@@ -89,12 +135,12 @@ public class PointHistoryApiControllerTest {
     @Test
     public void updatePointHistory() throws Exception {
         // given
-        PointHisotryUpdateRequest pointHisotryUpdateRequest = getPointHistoryUpdateRequest();
+        PointHistoryUpdateRequest pointHistoryUpdateRequest = getPointHistoryUpdateRequest();
 
         mvc.perform(put("/web-api/v1/point/history/{id}", testId)
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(pointHisotryUpdateRequest)))
+                .content(objectMapper.writeValueAsString(pointHistoryUpdateRequest)))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().string(Long.toString(testId)));
@@ -104,18 +150,18 @@ public class PointHistoryApiControllerTest {
     @Test
     public void updatePointHistory_HistoryNotFound() throws Exception {
         // given
-        PointHisotryUpdateRequest pointHisotryUpdateRequest = getPointHistoryUpdateRequest();
+        PointHistoryUpdateRequest pointHistoryUpdateRequest = getPointHistoryUpdateRequest();
 
         mvc.perform(put("/web-api/v1/point/history/{id}", testNotExistId)
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(pointHisotryUpdateRequest)))
+                .content(objectMapper.writeValueAsString(pointHistoryUpdateRequest)))
                 .andDo(print())
                 .andExpect(jsonPath("$.code", is("POINT_HISTORY_NOTFOUND")));
     }
 
-    private PointHisotryUpdateRequest getPointHistoryUpdateRequest() {
-        return PointHisotryUpdateRequest.builder()
+    private PointHistoryUpdateRequest getPointHistoryUpdateRequest() {
+        return PointHistoryUpdateRequest.builder()
                 .status("Y")
                 .adminId("testAdmin")
                 .build();

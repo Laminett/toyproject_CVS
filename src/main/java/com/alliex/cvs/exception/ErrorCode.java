@@ -42,6 +42,6 @@ public enum ErrorCode {
     // Point.
     POINT_LIMIT_EXCESS,
     POINT_HISTORY_NOTFOUND,
-
-
+    POINT_HISTORY_ALREADY_EXISTS
+    
 }

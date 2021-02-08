@@ -20,8 +20,8 @@ public class PointLimitExcessException extends InternalException {
         return errorCode;
     }
 
-    public PointLimitExcessException(String message) {
-        super(message);
+    public PointLimitExcessException(Long point) {
+        super("The point is too much to charge. point: " + point);
     }
 
 }
