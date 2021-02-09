@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class PointHisotryUpdateRequest {
+public class PointHistoryUpdateRequest {
 
     private Long id;
 
@@ -16,7 +16,7 @@ public class PointHisotryUpdateRequest {
     private String adminId;
 
     @Builder
-    public PointHisotryUpdateRequest(Long id, String status, String adminId) {
+    public PointHistoryUpdateRequest(Long id, String status, String adminId) {
         this.id = id;
         this.status = status;
         this.adminId = adminId;

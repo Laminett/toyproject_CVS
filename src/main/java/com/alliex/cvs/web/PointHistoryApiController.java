@@ -23,11 +23,16 @@ public class PointHistoryApiController {
 
     @ApiOperation(value = "Update Point History", notes = "충전 요청 업데이트")
     @PutMapping("/web-api/v1/point/history/{id}")
-    public Long PointHistoryUpdate(@PathVariable Long id, @RequestBody PointHisotryUpdateRequest pointHisotryUpdateRequest) {
-        return pointHistoryService.update(id, pointHisotryUpdateRequest);
+    public Long PointHistoryUpdate(@PathVariable Long id, @RequestBody PointHistoryUpdateRequest pointHistoryUpdateRequest) {
+        return pointHistoryService.update(id, pointHistoryUpdateRequest);
     }
 
-    @PostMapping("/api/v1/point/history/save")
+    @GetMapping(value = "/api/v1/point/history/progress/users/{id}")
+    public PointHistoryProgressResponse PointHistorySearch(@PathVariable("id") Long userId) {
+        return pointHistoryService.progress(userId);
+    }
+
+    @PostMapping("/api/v1/point/history")
     public PointHistorySaveResponse PointHistorySave(@RequestBody PointHistorySaveRequest pointHistorySaveRequest) {
         return pointHistoryService.save(pointHistorySaveRequest);
     }

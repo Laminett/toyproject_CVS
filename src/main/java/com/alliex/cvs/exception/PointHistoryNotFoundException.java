@@ -20,8 +20,8 @@ public class PointHistoryNotFoundException extends InternalException {
         return errorCode;
     }
 
-    public PointHistoryNotFoundException(String message) {
-        super(message);
+    public PointHistoryNotFoundException(Long id) {
+        super("Not found pointHistory. id: " + id);
     }
 
 }

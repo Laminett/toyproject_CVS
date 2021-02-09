@@ -9,8 +9,8 @@ INSERT INTO point (id, created_date, modified_date, point, user_id)
 VALUES (400, '2020-09-25 04:21:51', '2020-09-25 04:21:51', 120, 400),
        (999, '2020-09-25 04:21:51', '2020-09-25 04:21:51', 10000, 999);
 
-INSERT INTO point_history (id, created_date, point, user_id)
-VALUES (90, '2020-10-05 13:21:51', 500, 400);
+INSERT INTO point_history (id, created_date, point, status, user_id)
+VALUES (90, '2020-10-05 13:21:51', 500, 'Y', 400);
 
 INSERT INTO settle (id, created_date, aggregated_at, approval_amount, approval_count, cancel_amount, cancel_count, total_amount, total_count, user_id)
 VALUES (90, '2020-10-05 13:21:51', '2020-10-01',  8500, 12, 1200, 2, 7300, 14, 400);

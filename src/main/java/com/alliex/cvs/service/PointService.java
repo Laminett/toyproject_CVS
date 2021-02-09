@@ -41,7 +41,7 @@ public class PointService {
 
         // 충전한도는 정해지는 대로 변경
         if (resultPoint > 2000000) {
-            throw new PointLimitExcessException("The point is too much to charge. point : " + point);
+            throw new PointLimitExcessException(point);
         }
 
         pointEntity.setPoint(resultPoint);
@@ -59,7 +59,7 @@ public class PointService {
         Long resultPoint = originPoint - point;
 
         if (resultPoint < 0) {
-            throw new PointLimitExcessException("The point is not enough to pay. point : " + point);
+            throw new PointLimitExcessException(point);
         }
 
         pointEntity.setPoint(resultPoint);
