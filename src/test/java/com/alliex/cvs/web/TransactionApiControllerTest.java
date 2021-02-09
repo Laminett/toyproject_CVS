@@ -110,7 +110,7 @@ public class TransactionApiControllerTest {
                 .andExpect(jsonPath("$[2].requestId").value(requestIdTest));
 
         TransactionSaveRequest transactionSaveRequest = new TransactionSaveRequest();
-        transactionSaveRequest.setPaymentType(PaymentType.POS_QR);
+        transactionSaveRequest.setPaymentType(PaymentType.QR);
         transactionSaveRequest.setRequestId(requestIdTest);
 
         mvc.perform(put("/web-api/v1/transactions/payment/pos/step2")
@@ -150,7 +150,7 @@ public class TransactionApiControllerTest {
         String requestIdTest = transactionStateResponse.getRequestId();
 
         TransactionSaveRequest transactionSaveRequest = new TransactionSaveRequest();
-        transactionSaveRequest.setPaymentType(PaymentType.POS_QR);
+        transactionSaveRequest.setPaymentType(PaymentType.QR);
         transactionSaveRequest.setRequestId(requestIdTest);
 
         mvc.perform(put("/web-api/v1/transactions/payment/pos/step2")
@@ -186,7 +186,7 @@ public class TransactionApiControllerTest {
         String requestIdTest = transactionStateResponse.getRequestId();
 
         TransactionSaveRequest transactionSaveRequest = new TransactionSaveRequest();
-        transactionSaveRequest.setPaymentType(PaymentType.POS_QR);
+        transactionSaveRequest.setPaymentType(PaymentType.QR);
         transactionSaveRequest.setRequestId(requestIdTest);
 
         mvc.perform(put("/web-api/v1/transactions/payment/pos/step2")
@@ -202,7 +202,7 @@ public class TransactionApiControllerTest {
     public void paymentFromApp() throws Exception {
         String requestId = RandomStringUtils.randomAlphanumeric(20);
         TransactionSaveRequest transactionSaveRequest = new TransactionSaveRequest();
-        transactionSaveRequest.setPaymentType(PaymentType.MOBILE);
+        transactionSaveRequest.setPaymentType(PaymentType.APP);
         transactionSaveRequest.setRequestId(requestId);
         List<TransactionDetailSaveRequest> detailList = new ArrayList<>();
 
@@ -229,7 +229,7 @@ public class TransactionApiControllerTest {
     public void paymentFromApp_NotEnoughPoint() throws Exception {
         String requestId = RandomStringUtils.randomAlphanumeric(20);
         TransactionSaveRequest transactionSaveRequest = new TransactionSaveRequest();
-        transactionSaveRequest.setPaymentType(PaymentType.MOBILE);
+        transactionSaveRequest.setPaymentType(PaymentType.APP);
         transactionSaveRequest.setRequestId(requestId);
         List<TransactionDetailSaveRequest> detailList = new ArrayList<>();
 
@@ -255,7 +255,7 @@ public class TransactionApiControllerTest {
     public void paymentFromApp_AccessDenied() throws Exception {
         String requestId = RandomStringUtils.randomAlphanumeric(20);
         TransactionSaveRequest transactionSaveRequest = new TransactionSaveRequest();
-        transactionSaveRequest.setPaymentType(PaymentType.MOBILE);
+        transactionSaveRequest.setPaymentType(PaymentType.APP);
         transactionSaveRequest.setRequestId(requestId);
         List<TransactionDetailSaveRequest> detailList = new ArrayList<>();
 

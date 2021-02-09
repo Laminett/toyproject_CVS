@@ -44,15 +44,15 @@ public class TransactionApiController {
     }
 
     @ApiOperation(value = "Transaction QRPay Step1", notes = "거래 QR스트링 전송")
-    @PostMapping({"/api/v1/transactions/payment/pos/step1", "/web-api/v1/transactions/payment/pos/step1"})
-    public TransactionStateResponse paymentFromPosStep1(@RequestBody List<TransactionDetailSaveRequest> transactionDetailSaveRequests) {
-        return transactionService.paymentFromPosStep1(transactionDetailSaveRequests);
+    @PostMapping({"/api/v1/transactions/payment/pos/step1", "/web-api/v1/transactions/payment/qr/step1"})
+    public TransactionStateResponse paymentFromQrStep1(@RequestBody List<TransactionDetailSaveRequest> transactionDetailSaveRequests) {
+        return transactionService.paymentFromQrStep1(transactionDetailSaveRequests);
     }
 
     @ApiOperation(value = "Transaction QRPay Step2", notes = "QR 조회 거래 승인/거절")
-    @PutMapping({"/api/v1/transactions/payment/pos/step2", "/web-api/v1/transactions/payment/pos/step2"})
-    public TransactionStateResponse paymentFromPosStep2(@RequestBody TransactionSaveRequest transactionSaveRequest, @AuthenticationPrincipal LoginUser loginUser) {
-        return transactionService.paymentFromPosStep2(transactionSaveRequest, loginUser);
+    @PutMapping({"/api/v1/transactions/payment/pos/step2", "/web-api/v1/transactions/payment/qr/step2"})
+    public TransactionStateResponse paymentFromQrStep2(@RequestBody TransactionSaveRequest transactionSaveRequest, @AuthenticationPrincipal LoginUser loginUser) {
+        return transactionService.paymentFromQrStep2(transactionSaveRequest, loginUser);
     }
 
     @ApiOperation(value = "Transaction APP Payment", notes = "APP 을 사용하여 거래")

@@ -95,7 +95,7 @@ public class TransactionService {
     }
 
     @Transactional
-    public TransactionStateResponse paymentFromPosStep1(List<TransactionDetailSaveRequest> transactionDetailSaveRequests) {
+    public TransactionStateResponse paymentFromQrStep1(List<TransactionDetailSaveRequest> transactionDetailSaveRequests) {
         String requestId = RandomStringUtils.randomAlphanumeric(20);
 
         for (TransactionDetailSaveRequest item : transactionDetailSaveRequests) {
@@ -111,7 +111,7 @@ public class TransactionService {
      * APP에서 QR코드를 읽을 때 호출된다.
      */
     @Transactional
-    public TransactionStateResponse paymentFromPosStep2(TransactionSaveRequest transactionSaveRequest, LoginUser loginUser) {
+    public TransactionStateResponse paymentFromQrStep2(TransactionSaveRequest transactionSaveRequest, LoginUser loginUser) {
         UserResponse userResponse = userService.getUserByUsername(loginUser.getUsername());
         PointResponse point = pointService.findByUserId(userResponse.getId());
         Long _point = 0L;
