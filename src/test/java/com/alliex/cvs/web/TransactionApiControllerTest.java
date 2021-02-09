@@ -91,7 +91,7 @@ public class TransactionApiControllerTest {
         }
 
         MvcResult result =
-                mvc.perform(post("/web-api/v1/transactions/payment/pos/step1")
+                mvc.perform(post("/web-api/v1/transactions/payment/qr/step1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(detailList)))
                         .andDo(print())
@@ -113,7 +113,7 @@ public class TransactionApiControllerTest {
         transactionSaveRequest.setPaymentType(PaymentType.QR);
         transactionSaveRequest.setRequestId(requestIdTest);
 
-        mvc.perform(put("/web-api/v1/transactions/payment/pos/step2")
+        mvc.perform(put("/web-api/v1/transactions/payment/qr/step2")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(transactionSaveRequest)))
                 .andDo(print())
@@ -138,7 +138,7 @@ public class TransactionApiControllerTest {
         }
 
         MvcResult result =
-                mvc.perform(post("/web-api/v1/transactions/payment/pos/step1")
+                mvc.perform(post("/web-api/v1/transactions/payment/qr/step1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(detailList)))
                         .andDo(print())
@@ -153,7 +153,7 @@ public class TransactionApiControllerTest {
         transactionSaveRequest.setPaymentType(PaymentType.QR);
         transactionSaveRequest.setRequestId(requestIdTest);
 
-        mvc.perform(put("/web-api/v1/transactions/payment/pos/step2")
+        mvc.perform(put("/web-api/v1/transactions/payment/qr/step2")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(transactionSaveRequest)))
                 .andDo(print())
@@ -174,7 +174,7 @@ public class TransactionApiControllerTest {
         }
 
         MvcResult result =
-                mvc.perform(post("/web-api/v1/transactions/payment/pos/step1")
+                mvc.perform(post("/web-api/v1/transactions/payment/qr/step1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(detailList)))
                         .andDo(print())
@@ -189,7 +189,7 @@ public class TransactionApiControllerTest {
         transactionSaveRequest.setPaymentType(PaymentType.QR);
         transactionSaveRequest.setRequestId(requestIdTest);
 
-        mvc.perform(put("/web-api/v1/transactions/payment/pos/step2")
+        mvc.perform(put("/web-api/v1/transactions/payment/qr/step2")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(transactionSaveRequest)))
                 .andDo(print())
