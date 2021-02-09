@@ -85,7 +85,7 @@ public class PointHistoryApiControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(pointHistorySaveRequest)))
                 .andDo(print())
-                .andExpect(jsonPath("$.code", is("POINT_HISTORY_ALREADY_EXISTS")));
+                .andExpect(jsonPath("$.code", is("POINT_HISTORY_PROGRESS_ALREADY_EXISTS")));
     }
 
     private PointHistorySaveRequest getPointHistorySaveRequest(Long point) {
