@@ -27,8 +27,8 @@ public class PointHistoryApiController {
         return pointHistoryService.update(id, pointHistoryUpdateRequest);
     }
 
-    @GetMapping(value = "/api/v1/point/history/progress")
-    public PointHistoryProgressResponse PointHistorySearch(@RequestParam Long userId) {
+    @GetMapping(value = "/api/v1/point/history/progress/users/{id}")
+    public PointHistoryProgressResponse PointHistorySearch(@PathVariable("id") Long userId) {
         return pointHistoryService.progress(userId);
     }
 

@@ -98,7 +98,7 @@ public class PointHistoryApiControllerTest {
     @WithMockUser(roles = "USER")
     @Test
     public void searchRequest() throws Exception {
-        mvc.perform(get("/api/v1/point/history/progress").param("userId", "400"))
+        mvc.perform(get("/api/v1/point/history/progress/users/{id}", testUserId))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.userId").value(400))
@@ -116,7 +116,7 @@ public class PointHistoryApiControllerTest {
                 .content(objectMapper.writeValueAsString(pointHistorySaveRequest)))
                 .andDo(print());
 
-        mvc.perform(get("/api/v1/point/history/progress").param("userId", "400"))
+        mvc.perform(get("/api/v1/point/history/progress/users/{id}", testUserId))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.userId").value(400))
