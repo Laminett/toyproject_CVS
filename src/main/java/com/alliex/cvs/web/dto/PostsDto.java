@@ -1,4 +1,4 @@
-package com.alliex.cvs.domain.posts;
+package com.alliex.cvs.web.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

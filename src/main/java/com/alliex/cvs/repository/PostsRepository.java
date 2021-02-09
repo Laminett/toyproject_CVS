@@ -1,5 +1,7 @@
-package com.alliex.cvs.domain.posts;
+package com.alliex.cvs.repository;
 
+import com.alliex.cvs.domain.Posts;
+import com.alliex.cvs.web.dto.PostsDto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -11,7 +13,7 @@ public interface PostsRepository extends JpaRepository<Posts, Long> {
     @Query("select p from Posts p order by p.id desc")
     List<Posts> findAllDesc();
 
-    @Query("select new com.alliex.cvs.domain.posts.PostsDto(" +
+    @Query("select new com.alliex.cvs.web.dto.PostsDto(" +
             " p.title," +
             " count(p.title)" +
             ")" +

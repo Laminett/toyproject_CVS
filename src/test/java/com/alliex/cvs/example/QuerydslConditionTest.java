@@ -1,7 +1,7 @@
 package com.alliex.cvs.example;
 
 
-import com.alliex.cvs.domain.posts.Posts;
+import com.alliex.cvs.domain.Posts;
 import com.querydsl.core.QueryResults;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.junit.jupiter.api.BeforeEach;

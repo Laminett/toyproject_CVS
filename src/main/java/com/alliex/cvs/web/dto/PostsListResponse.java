@@ -1,6 +1,6 @@
 package com.alliex.cvs.web.dto;
 
-import com.alliex.cvs.domain.posts.Posts;
+import com.alliex.cvs.domain.Posts;
 import lombok.Getter;
 
 import java.time.LocalDateTime;

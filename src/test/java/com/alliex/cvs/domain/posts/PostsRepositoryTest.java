@@ -1,5 +1,8 @@
 package com.alliex.cvs.domain.posts;
 
+import com.alliex.cvs.domain.Posts;
+import com.alliex.cvs.repository.PostsRepository;
+import com.alliex.cvs.web.dto.PostsDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

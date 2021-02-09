@@ -1,4 +1,4 @@
-package com.alliex.cvs.domain.posts;
+package com.alliex.cvs.domain;
 
 import com.alliex.cvs.domain.BaseTimeEntity;
 import lombok.Builder;
