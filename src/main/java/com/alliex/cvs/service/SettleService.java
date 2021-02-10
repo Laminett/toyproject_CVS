@@ -2,16 +2,14 @@ package com.alliex.cvs.service;
 
 import com.alliex.cvs.domain.settle.Settle;
 import com.alliex.cvs.domain.settle.SettleRepository;
-import com.alliex.cvs.domain.settle.SettleSpecification;
+import com.alliex.cvs.domain.settle.SettleRepositorySupport;
 import com.alliex.cvs.domain.transaction.TransactionRepository;
 import com.alliex.cvs.domain.user.User;
 import com.alliex.cvs.exception.SettleNotFoundException;
 import com.alliex.cvs.web.dto.*;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,12 +25,11 @@ public class SettleService {
 
     private final SettleRepository settleRepository;
 
+    private final SettleRepositorySupport settleRepositorySupport;
+
     @Transactional(readOnly = true)
     public Page<SettleResponse> getSettleList(Pageable pageable, SettleRequest settleRequest) {
-        return settleRepository.findAll(Specification
-                .where(SettleSpecification.withSearchDate(settleRequest.getAggregatedAt()))
-                .and(StringUtils.isBlank(settleRequest.getFullName()) ? null : SettleSpecification.withSearchData("fullName", settleRequest.getFullName())), pageable)
-                .map(SettleResponse::new);
+        return settleRepositorySupport.getSettles(pageable, settleRequest).map(SettleResponse::new);
     }
 
     @Transactional
