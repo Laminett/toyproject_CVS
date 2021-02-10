@@ -1,6 +1,6 @@
 package com.alliex.cvs.web.dto;
 
-import com.alliex.cvs.domain.product.category.ProductCategory;
+import com.alliex.cvs.entity.ProductCategory;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.ToString;

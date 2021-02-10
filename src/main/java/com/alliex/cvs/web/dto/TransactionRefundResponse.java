@@ -1,10 +1,8 @@
 package com.alliex.cvs.web.dto;
 
-import com.alliex.cvs.domain.transaction.Transaction;
-import com.alliex.cvs.domain.type.PaymentType;
+import com.alliex.cvs.entity.Transaction;
 import com.alliex.cvs.domain.type.TransactionState;
 import com.alliex.cvs.domain.type.TransactionType;
-import com.alliex.cvs.domain.user.User;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -1,6 +1,6 @@
 package com.alliex.cvs.web.dto;
 
-import com.alliex.cvs.domain.point.Point;
+import com.alliex.cvs.entity.Point;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

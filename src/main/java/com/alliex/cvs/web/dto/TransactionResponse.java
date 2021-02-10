@@ -1,6 +1,6 @@
 package com.alliex.cvs.web.dto;
 
-import com.alliex.cvs.domain.transaction.Transaction;
+import com.alliex.cvs.entity.Transaction;
 import com.alliex.cvs.domain.type.PaymentType;
 import com.alliex.cvs.domain.type.TransactionState;
 import com.alliex.cvs.domain.type.TransactionType;

@@ -1,15 +1,12 @@
 package com.alliex.cvs.domain.point;
 
-import com.alliex.cvs.domain.user.User;
-import org.apache.commons.lang3.StringUtils;
+import com.alliex.cvs.entity.PointHistory;
+import com.alliex.cvs.entity.User;
 import com.alliex.cvs.web.dto.PointHistoryRequest;
 import org.springframework.data.jpa.domain.Specification;
 
 import javax.persistence.criteria.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 
 public class PointHistorySpecification {
 

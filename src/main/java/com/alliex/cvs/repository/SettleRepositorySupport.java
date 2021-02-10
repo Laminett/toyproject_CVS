@@ -1,5 +1,6 @@
-package com.alliex.cvs.domain.settle;
+package com.alliex.cvs.repository;
 
+import com.alliex.cvs.entity.Settle;
 import com.alliex.cvs.web.dto.SettleRequest;
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -13,7 +14,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 
-import static com.alliex.cvs.domain.settle.QSettle.settle;
+import static com.alliex.cvs.entity.QSettle.settle;
 
 @Repository
 public class SettleRepositorySupport extends QuerydslRepositorySupport {

@@ -1,9 +1,9 @@
-package com.alliex.cvs.domain.point;
+package com.alliex.cvs.repository;
 
+import com.alliex.cvs.entity.PointHistory;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
-import java.util.List;
 import java.util.Optional;
 
 public interface PointHistoryRepository extends JpaRepository<PointHistory, Long>, JpaSpecificationExecutor<PointHistory> {

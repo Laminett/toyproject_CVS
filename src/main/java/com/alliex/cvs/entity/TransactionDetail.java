@@ -1,8 +1,7 @@
-package com.alliex.cvs.domain.transactionDetail;
+package com.alliex.cvs.entity;
 
 import com.alliex.cvs.domain.BaseTimeEntity;
-import com.alliex.cvs.domain.product.Product;
-import com.alliex.cvs.domain.type.TransactionState;
+import com.alliex.cvs.entity.Product;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -1,6 +1,6 @@
 package com.alliex.cvs.web.dto;
 
-import com.alliex.cvs.domain.user.ApiUser;
+import com.alliex.cvs.domain.ApiUser;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

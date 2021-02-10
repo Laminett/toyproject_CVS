@@ -1,10 +1,11 @@
 package com.alliex.cvs.service;
 
 import com.alliex.cvs.domain.type.UserSearchType;
-import com.alliex.cvs.domain.user.User;
-import com.alliex.cvs.domain.user.UserRepository;
+import com.alliex.cvs.entity.User;
+import com.alliex.cvs.repository.UserRepository;
 import com.alliex.cvs.exception.UserAlreadyExistsException;
 import com.alliex.cvs.exception.UserNotFoundException;
+import com.alliex.cvs.repository.UserRepositorySupport;
 import com.alliex.cvs.web.dto.UserRequest;
 import com.alliex.cvs.web.dto.UserResponse;
 import com.alliex.cvs.web.dto.UserSaveRequest;
@@ -37,6 +38,9 @@ public class UserService implements UserDetailsService {
     private UserRepository userRepository;
 
     @Autowired
+    private UserRepositorySupport userRepositorySupport;
+
+    @Autowired
     private PointService pointService;
 
     public Optional<User> findByUsername(String username) {
@@ -53,8 +57,14 @@ public class UserService implements UserDetailsService {
         return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), USER_ROLES);
     }
 
-    public List<UserResponse> getUsers(Pageable pageable) {
+    public List<UserResponse> getUsers_delete_me(Pageable pageable) {
         return userRepository.findAllWithFetchJoin(pageable).stream()
+                .map(UserResponse::new)
+                .collect(Collectors.toList());
+    }
+
+    public List<UserResponse> getUsers(Pageable pageable) {
+        return userRepositorySupport.findAllWithPoint(pageable).stream()
                 .map(UserResponse::new)
                 .collect(Collectors.toList());
     }

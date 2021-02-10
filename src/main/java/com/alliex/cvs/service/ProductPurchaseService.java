@@ -1,10 +1,9 @@
 package com.alliex.cvs.service;
 
 
-import com.alliex.cvs.domain.product.Product;
-import com.alliex.cvs.domain.product.ProductRepository;
-import com.alliex.cvs.domain.product.purchase.ProductPurchase;
-import com.alliex.cvs.domain.product.purchase.ProductPurchaseRepository;
+import com.alliex.cvs.entity.Product;
+import com.alliex.cvs.entity.ProductPurchase;
+import com.alliex.cvs.repository.ProductPurchaseRepository;
 import com.alliex.cvs.domain.type.ProductPurchaseSearchType;
 
 import com.alliex.cvs.exception.ProductPurchaseNotFoundException;

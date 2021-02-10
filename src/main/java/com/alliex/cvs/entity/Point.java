@@ -1,7 +1,7 @@
-package com.alliex.cvs.domain.point;
+package com.alliex.cvs.entity;
 
 import com.alliex.cvs.domain.BaseTimeEntity;
-import com.alliex.cvs.domain.user.User;
+import com.alliex.cvs.entity.User;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

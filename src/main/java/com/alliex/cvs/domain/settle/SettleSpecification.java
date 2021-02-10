@@ -1,6 +1,7 @@
 package com.alliex.cvs.domain.settle;
 
-import com.alliex.cvs.domain.user.User;
+import com.alliex.cvs.entity.Settle;
+import com.alliex.cvs.entity.User;
 import org.springframework.data.jpa.domain.Specification;
 
 import javax.persistence.criteria.*;

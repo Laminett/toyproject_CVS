@@ -1,6 +1,6 @@
 package com.alliex.cvs.web.dto;
 
-import com.alliex.cvs.domain.product.purchase.ProductPurchase;
+import com.alliex.cvs.entity.ProductPurchase;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

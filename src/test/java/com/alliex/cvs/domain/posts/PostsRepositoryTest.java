@@ -1,6 +1,6 @@
 package com.alliex.cvs.domain.posts;
 
-import com.alliex.cvs.domain.Posts;
+import com.alliex.cvs.entity.Posts;
 import com.alliex.cvs.repository.PostsRepository;
 import com.alliex.cvs.web.dto.PostsDto;
 import org.junit.jupiter.api.Test;

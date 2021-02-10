@@ -1,6 +1,6 @@
 package com.alliex.cvs.web.dto;
 
-import com.alliex.cvs.domain.settle.Settle;
+import com.alliex.cvs.entity.Settle;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

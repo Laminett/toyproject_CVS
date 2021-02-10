@@ -1,8 +1,6 @@
-package com.alliex.cvs.domain.product.category;
+package com.alliex.cvs.entity;
 
 import com.alliex.cvs.domain.BaseTimeEntity;
-import com.alliex.cvs.domain.product.Product;
-import com.alliex.cvs.domain.product.purchase.ProductPurchase;
 import com.alliex.cvs.web.dto.ProductCategoryUpdateRequest;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;

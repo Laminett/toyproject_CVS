@@ -1,11 +1,8 @@
 package com.alliex.cvs.web.dto;
 
-import com.alliex.cvs.domain.product.Product;
-import com.alliex.cvs.domain.product.category.ProductCategory;
+import com.alliex.cvs.entity.Product;
+import com.alliex.cvs.entity.ProductCategory;
 import lombok.*;
-
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
 
 @Getter
 @Setter

@@ -1,5 +1,6 @@
-package com.alliex.cvs.domain.settle;
+package com.alliex.cvs.repository;
 
+import com.alliex.cvs.entity.Settle;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 

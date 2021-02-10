@@ -1,7 +1,7 @@
 package com.alliex.cvs.example;
 
 
-import com.alliex.cvs.domain.Posts;
+import com.alliex.cvs.entity.Posts;
 import com.querydsl.core.QueryResults;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import java.util.List;
 
-import static com.alliex.cvs.domain.posts.QPosts.posts;
+import static com.alliex.cvs.entity.QPosts.posts;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest

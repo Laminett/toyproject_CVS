@@ -1,8 +1,10 @@
 package com.alliex.cvs.example;
 
 
-import com.alliex.cvs.domain.product.Product;
-import com.alliex.cvs.domain.product.category.ProductCategory;
+import com.alliex.cvs.entity.Product;
+import com.alliex.cvs.entity.ProductCategory;
+import com.alliex.cvs.entity.QProduct;
+import com.alliex.cvs.entity.QProductCategory;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,8 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import java.util.List;
 
-import static com.alliex.cvs.domain.product.QProduct.product;
-import static com.alliex.cvs.domain.product.category.QProductCategory.productCategory;
+import static com.alliex.cvs.entity.QProduct.product;
+import static com.alliex.cvs.entity.QProductCategory.productCategory;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest

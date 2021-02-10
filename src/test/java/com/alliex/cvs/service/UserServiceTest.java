@@ -94,6 +94,9 @@ public class UserServiceTest {
     public void getUsers() {
         List<UserResponse> users = userService.getUsers(PageRequest.of(0, 10));
         assertThat(users.size()).isGreaterThanOrEqualTo(1);
+
+
+        users.forEach(item -> System.out.println(item.getPoint()));
     }
 
     @Test

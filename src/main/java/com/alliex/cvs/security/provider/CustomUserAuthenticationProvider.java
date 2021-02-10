@@ -1,6 +1,6 @@
 package com.alliex.cvs.security.provider;
 
-import com.alliex.cvs.domain.user.LoginUser;
+import com.alliex.cvs.domain.LoginUser;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.AuthenticationProvider;

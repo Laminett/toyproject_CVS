@@ -1,5 +1,6 @@
-package com.alliex.cvs.domain.point;
+package com.alliex.cvs.repository;
 
+import com.alliex.cvs.entity.PointHistory;
 import com.alliex.cvs.web.dto.PointHistoryRequest;
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -13,7 +14,8 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 
-import static com.alliex.cvs.domain.point.QPointHistory.pointHistory;
+import static com.alliex.cvs.entity.QPointHistory.pointHistory;
+
 
 @Repository
 public class PointHistoryRepositorySupport extends QuerydslRepositorySupport {

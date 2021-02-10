@@ -1,15 +1,10 @@
 package com.alliex.cvs.web;
 
-import com.alliex.cvs.domain.transaction.Transaction;
-import com.alliex.cvs.domain.user.LoginUser;
+import com.alliex.cvs.domain.LoginUser;
 import com.alliex.cvs.service.TransactionDetailService;
 import com.alliex.cvs.service.TransactionService;
 import com.alliex.cvs.web.dto.*;
-import com.auth0.jwt.internal.com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sun.xml.bind.v2.model.core.TypeRef;
 import io.swagger.annotations.ApiOperation;
-import org.apache.tomcat.util.json.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -17,9 +12,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 
 @RestController

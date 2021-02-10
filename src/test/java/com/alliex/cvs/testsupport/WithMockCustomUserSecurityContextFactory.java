@@ -1,6 +1,6 @@
 package com.alliex.cvs.testsupport;
 
-import com.alliex.cvs.domain.user.LoginUser;
+import com.alliex.cvs.domain.LoginUser;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

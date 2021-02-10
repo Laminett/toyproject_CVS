@@ -1,10 +1,6 @@
-package com.alliex.cvs.domain.user;
+package com.alliex.cvs.entity;
 
 import com.alliex.cvs.domain.BaseTimeEntity;
-import com.alliex.cvs.domain.point.Point;
-import com.alliex.cvs.domain.point.PointHistory;
-import com.alliex.cvs.domain.settle.Settle;
-import com.alliex.cvs.domain.transaction.Transaction;
 import com.alliex.cvs.domain.type.Role;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Builder;

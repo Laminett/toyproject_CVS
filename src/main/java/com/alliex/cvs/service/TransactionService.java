@@ -1,12 +1,12 @@
 package com.alliex.cvs.service;
 
-import com.alliex.cvs.domain.transaction.Transaction;
-import com.alliex.cvs.domain.transaction.TransactionRepository;
+import com.alliex.cvs.entity.Transaction;
+import com.alliex.cvs.repository.TransactionRepository;
 import com.alliex.cvs.domain.type.TransactionSearchType;
 import com.alliex.cvs.domain.type.TransactionState;
 import com.alliex.cvs.domain.type.TransactionType;
-import com.alliex.cvs.domain.user.LoginUser;
-import com.alliex.cvs.domain.user.User;
+import com.alliex.cvs.domain.LoginUser;
+import com.alliex.cvs.entity.User;
 import com.alliex.cvs.exception.NotEnoughPointException;
 import com.alliex.cvs.exception.TransactionAlreadyRefundedException;
 import com.alliex.cvs.exception.TransactionNotFoundException;

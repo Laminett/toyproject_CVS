@@ -1,10 +1,10 @@
-package com.alliex.cvs.domain.transaction;
+package com.alliex.cvs.entity;
 
 import com.alliex.cvs.domain.BaseTimeEntity;
 import com.alliex.cvs.domain.type.PaymentType;
 import com.alliex.cvs.domain.type.TransactionState;
 import com.alliex.cvs.domain.type.TransactionType;
-import com.alliex.cvs.domain.user.User;
+import com.alliex.cvs.entity.User;
 import lombok.*;
 
 import javax.persistence.*;

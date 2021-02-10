@@ -1,6 +1,6 @@
 package com.alliex.cvs.web;
 
-import com.alliex.cvs.domain.user.LoginUser;
+import com.alliex.cvs.domain.LoginUser;
 import com.alliex.cvs.service.ProductService;
 import com.alliex.cvs.web.dto.*;
 import io.swagger.annotations.ApiOperation;

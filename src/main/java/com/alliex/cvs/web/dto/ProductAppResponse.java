@@ -1,10 +1,8 @@
 package com.alliex.cvs.web.dto;
 
-import com.alliex.cvs.domain.product.Product;
+import com.alliex.cvs.entity.Product;
 import lombok.Builder;
 import lombok.Getter;
-
-import java.math.BigDecimal;
 
 @Getter
 public class ProductAppResponse {

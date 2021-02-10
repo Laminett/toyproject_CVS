@@ -1,15 +1,11 @@
-package com.alliex.cvs.domain.product;
+package com.alliex.cvs.entity;
 
 import com.alliex.cvs.domain.BaseTimeEntity;
-import com.alliex.cvs.domain.product.category.ProductCategory;
-import com.alliex.cvs.domain.product.purchase.ProductPurchase;
-import com.alliex.cvs.domain.transactionDetail.TransactionDetail;
 import com.alliex.cvs.web.dto.ProductUpdateRequest;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
 import java.util.Collection;
 
 @Getter

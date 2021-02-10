@@ -1,7 +1,7 @@
 package com.alliex.cvs.domain.ProductCategories;
 
-import com.alliex.cvs.domain.product.category.ProductCategory;
-import com.alliex.cvs.domain.product.category.ProductCategoryRepository;
+import com.alliex.cvs.entity.ProductCategory;
+import com.alliex.cvs.repository.ProductCategoryRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

@@ -1,5 +1,6 @@
-package com.alliex.cvs.domain.point;
+package com.alliex.cvs.repository;
 
+import com.alliex.cvs.entity.Point;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

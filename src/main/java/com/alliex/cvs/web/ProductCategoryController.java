@@ -1,6 +1,6 @@
 package com.alliex.cvs.web;
 
-import com.alliex.cvs.domain.user.LoginUser;
+import com.alliex.cvs.domain.LoginUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;

@@ -1,6 +1,6 @@
 package com.alliex.cvs.repository;
 
-import com.alliex.cvs.domain.Posts;
+import com.alliex.cvs.entity.Posts;
 import com.alliex.cvs.web.dto.PostsDto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

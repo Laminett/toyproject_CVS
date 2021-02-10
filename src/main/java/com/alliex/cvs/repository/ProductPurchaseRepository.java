@@ -1,5 +1,6 @@
-package com.alliex.cvs.domain.product.purchase;
+package com.alliex.cvs.repository;
 
+import com.alliex.cvs.entity.ProductPurchase;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 

@@ -1,8 +1,8 @@
 package com.alliex.cvs.service;
 
-import com.alliex.cvs.domain.product.Product;
-import com.alliex.cvs.domain.product.ProductRepository;
-import com.alliex.cvs.domain.product.category.ProductCategory;
+import com.alliex.cvs.entity.Product;
+import com.alliex.cvs.repository.ProductRepository;
+import com.alliex.cvs.entity.ProductCategory;
 import com.alliex.cvs.domain.type.ProductSearchType;
 import com.alliex.cvs.exception.ProductAlreadyExistsException;
 import com.alliex.cvs.exception.ProductQuantityLimitExcessException;

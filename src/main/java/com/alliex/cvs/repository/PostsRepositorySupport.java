@@ -1,13 +1,14 @@
 package com.alliex.cvs.repository;
 
-import com.alliex.cvs.domain.Posts;
+import com.alliex.cvs.entity.Posts;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-import static com.alliex.cvs.domain.posts.QPosts.posts;
+import static com.alliex.cvs.entity.QPosts.posts;
+
 
 @Repository
 public class PostsRepositorySupport extends QuerydslRepositorySupport {

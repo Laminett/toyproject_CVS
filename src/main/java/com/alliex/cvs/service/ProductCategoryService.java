@@ -1,7 +1,7 @@
 package com.alliex.cvs.service;
 
-import com.alliex.cvs.domain.product.category.ProductCategory;
-import com.alliex.cvs.domain.product.category.ProductCategoryRepository;
+import com.alliex.cvs.entity.ProductCategory;
+import com.alliex.cvs.repository.ProductCategoryRepository;
 import com.alliex.cvs.domain.type.ProductCategorySearchType;
 import com.alliex.cvs.exception.*;
 import com.alliex.cvs.web.dto.*;

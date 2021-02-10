@@ -1,5 +1,6 @@
-package com.alliex.cvs.domain.transaction;
+package com.alliex.cvs.repository;
 
+import com.alliex.cvs.entity.Transaction;
 import com.alliex.cvs.web.dto.SettleTransMonthlySumRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

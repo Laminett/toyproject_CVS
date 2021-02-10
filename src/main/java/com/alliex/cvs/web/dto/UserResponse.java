@@ -1,7 +1,7 @@
 package com.alliex.cvs.web.dto;
 
 import com.alliex.cvs.domain.type.Role;
-import com.alliex.cvs.domain.user.User;
+import com.alliex.cvs.entity.User;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.ToString;

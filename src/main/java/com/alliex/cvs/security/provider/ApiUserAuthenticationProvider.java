@@ -1,6 +1,6 @@
 package com.alliex.cvs.security.provider;
 
-import com.alliex.cvs.domain.user.ApiUser;
+import com.alliex.cvs.domain.ApiUser;
 import com.alliex.cvs.exception.UserNotFoundException;
 import com.alliex.cvs.security.ApiUserAuthenticationToken;
 import com.alliex.cvs.security.JWT;

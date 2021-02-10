@@ -1,7 +1,7 @@
 package com.alliex.cvs.web;
 
-import com.alliex.cvs.domain.settle.Settle;
-import com.alliex.cvs.domain.settle.SettleRepository;
+import com.alliex.cvs.entity.Settle;
+import com.alliex.cvs.repository.SettleRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

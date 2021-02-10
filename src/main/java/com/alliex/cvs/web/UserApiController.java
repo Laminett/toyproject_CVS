@@ -1,6 +1,6 @@
 package com.alliex.cvs.web;
 
-import com.alliex.cvs.domain.user.User;
+import com.alliex.cvs.entity.User;
 import com.alliex.cvs.exception.UserNotFoundException;
 import com.alliex.cvs.service.UserService;
 import com.alliex.cvs.web.dto.*;

@@ -1,7 +1,7 @@
 package com.alliex.cvs.service;
 
-import com.alliex.cvs.domain.point.Point;
-import com.alliex.cvs.domain.point.PointRepository;
+import com.alliex.cvs.entity.Point;
+import com.alliex.cvs.repository.PointRepository;
 import com.alliex.cvs.exception.PointLimitExcessException;
 import com.alliex.cvs.web.dto.PointResponse;
 import lombok.RequiredArgsConstructor;

@@ -1,13 +1,11 @@
 package com.alliex.cvs.web.dto;
 
-import com.alliex.cvs.domain.product.Product;
-import com.alliex.cvs.domain.product.category.ProductCategory;
+import com.alliex.cvs.entity.Product;
+import com.alliex.cvs.entity.ProductCategory;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.math.BigDecimal;
 
 @Getter
 @Setter

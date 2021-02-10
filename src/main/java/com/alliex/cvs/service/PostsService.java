@@ -1,6 +1,6 @@
 package com.alliex.cvs.service;
 
-import com.alliex.cvs.domain.Posts;
+import com.alliex.cvs.entity.Posts;
 import com.alliex.cvs.repository.PostsRepository;
 import com.alliex.cvs.repository.PostsRepositorySupport;
 import com.alliex.cvs.web.dto.PostsListResponse;

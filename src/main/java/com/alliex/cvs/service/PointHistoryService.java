@@ -1,8 +1,8 @@
 package com.alliex.cvs.service;
 
-import com.alliex.cvs.domain.point.PointHistory;
-import com.alliex.cvs.domain.point.PointHistoryRepository;
-import com.alliex.cvs.domain.point.PointHistoryRepositorySupport;
+import com.alliex.cvs.entity.PointHistory;
+import com.alliex.cvs.repository.PointHistoryRepository;
+import com.alliex.cvs.repository.PointHistoryRepositorySupport;
 import com.alliex.cvs.exception.PointHistoryProgressAlreadyExistsException;
 import com.alliex.cvs.exception.PointHistoryNotFoundException;
 import com.alliex.cvs.exception.PointLimitExcessException;

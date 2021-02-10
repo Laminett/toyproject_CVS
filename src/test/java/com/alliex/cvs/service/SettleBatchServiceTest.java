@@ -1,6 +1,6 @@
 package com.alliex.cvs.service;
 
-import com.alliex.cvs.domain.transaction.TransactionRepository;
+import com.alliex.cvs.repository.TransactionRepository;
 import com.alliex.cvs.util.DateTimeUtils;
 import com.alliex.cvs.web.dto.SettleTransMonthlySumRequest;
 import org.junit.jupiter.api.Test;

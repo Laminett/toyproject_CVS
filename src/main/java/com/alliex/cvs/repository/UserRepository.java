@@ -1,5 +1,6 @@
-package com.alliex.cvs.domain.user;
+package com.alliex.cvs.repository;
 
+import com.alliex.cvs.entity.User;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
