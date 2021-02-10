@@ -14,7 +14,6 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDate;
 
 import static com.alliex.cvs.domain.point.QPointHistory.pointHistory;
-import static com.alliex.cvs.domain.user.QUser.user;
 
 @Repository
 public class PointHistorySupport extends QuerydslRepositorySupport {
@@ -29,7 +28,6 @@ public class PointHistorySupport extends QuerydslRepositorySupport {
     public Page<PointHistory> getPointHistories(Pageable pageable, PointHistoryRequest pointHistoryRequest) {
         QueryResults<PointHistory> pointHistories = queryFactory
                 .selectFrom(pointHistory)
-                .join(pointHistory.user, user)
                 .where(
                         betweenCreatedDate(pointHistoryRequest.getStartDate(), pointHistoryRequest.getEndDate()),
                         likeFullName(pointHistoryRequest.getFullName()),
