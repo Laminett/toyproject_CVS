@@ -16,11 +16,11 @@ import java.time.LocalDate;
 import static com.alliex.cvs.domain.point.QPointHistory.pointHistory;
 
 @Repository
-public class PointHistorySupport extends QuerydslRepositorySupport {
+public class PointHistoryRepositorySupport extends QuerydslRepositorySupport {
 
     private final JPAQueryFactory queryFactory;
 
-    public PointHistorySupport(JPAQueryFactory queryFactory) {
+    public PointHistoryRepositorySupport(JPAQueryFactory queryFactory) {
         super(PointHistory.class);
         this.queryFactory = queryFactory;
     }

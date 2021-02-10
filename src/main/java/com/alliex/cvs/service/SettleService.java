@@ -2,7 +2,7 @@ package com.alliex.cvs.service;
 
 import com.alliex.cvs.domain.settle.Settle;
 import com.alliex.cvs.domain.settle.SettleRepository;
-import com.alliex.cvs.domain.settle.SettleSupport;
+import com.alliex.cvs.domain.settle.SettleRepositorySupport;
 import com.alliex.cvs.domain.transaction.TransactionRepository;
 import com.alliex.cvs.domain.user.User;
 import com.alliex.cvs.exception.SettleNotFoundException;
@@ -25,11 +25,11 @@ public class SettleService {
 
     private final SettleRepository settleRepository;
 
-    private final SettleSupport settleSupport;
+    private final SettleRepositorySupport settleRepositorySupport;
 
     @Transactional(readOnly = true)
     public Page<SettleResponse> getSettleList(Pageable pageable, SettleRequest settleRequest) {
-        return settleSupport.getSettles(pageable, settleRequest).map(SettleResponse::new);
+        return settleRepositorySupport.getSettles(pageable, settleRequest).map(SettleResponse::new);
     }
 
     @Transactional

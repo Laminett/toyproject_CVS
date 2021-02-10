@@ -16,11 +16,11 @@ import java.time.LocalDate;
 import static com.alliex.cvs.domain.settle.QSettle.settle;
 
 @Repository
-public class SettleSupport extends QuerydslRepositorySupport {
+public class SettleRepositorySupport extends QuerydslRepositorySupport {
 
     private final JPAQueryFactory queryFactory;
 
-    public SettleSupport(JPAQueryFactory queryFactory) {
+    public SettleRepositorySupport(JPAQueryFactory queryFactory) {
         super(Settle.class);
         this.queryFactory = queryFactory;
     }

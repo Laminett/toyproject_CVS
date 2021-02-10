@@ -2,7 +2,7 @@ package com.alliex.cvs.service;
 
 import com.alliex.cvs.domain.point.PointHistory;
 import com.alliex.cvs.domain.point.PointHistoryRepository;
-import com.alliex.cvs.domain.point.PointHistorySupport;
+import com.alliex.cvs.domain.point.PointHistoryRepositorySupport;
 import com.alliex.cvs.exception.PointHistoryProgressAlreadyExistsException;
 import com.alliex.cvs.exception.PointHistoryNotFoundException;
 import com.alliex.cvs.exception.PointLimitExcessException;
@@ -22,7 +22,7 @@ public class PointHistoryService {
 
     private final PointHistoryRepository pointHistoryRepository;
 
-    private final PointHistorySupport pointHistorySupport;
+    private final PointHistoryRepositorySupport pointHistoryRepositorySupport;
 
     private final PointService pointService;
 
@@ -30,7 +30,7 @@ public class PointHistoryService {
 
     @Transactional(readOnly = true)
     public Page<PointHistoryResponse> getPointHistories(Pageable pageable, PointHistoryRequest pointHistoryRequest) {
-        return pointHistorySupport.getPointHistories(pageable, pointHistoryRequest).map(PointHistoryResponse::new);
+        return pointHistoryRepositorySupport.getPointHistories(pageable, pointHistoryRequest).map(PointHistoryResponse::new);
     }
 
     @Transactional
