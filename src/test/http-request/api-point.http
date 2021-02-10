@@ -15,11 +15,16 @@ content-type: application/json
 Authorization: Bearer {{auth_token}}
 
 ### 충전 요청
-POST http://{{host}}:{{port}}/api/v1/point/history/save
+POST http://{{host}}:{{port}}/api/v1/point/history
 content-type: application/json
 Authorization: Bearer {{auth_token}}
 
 {
   "point": 100,
-  "userId": 3
+  "userId": 2
 }
+
+### 충전 요청 조회
+GET http://{{host}}:{{port}}/api/v1/point/history/progress/users/3
+content-type: application/json
+Authorization: Bearer {{auth_token}}
