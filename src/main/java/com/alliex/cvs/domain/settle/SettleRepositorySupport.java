@@ -30,7 +30,7 @@ public class SettleRepositorySupport extends QuerydslRepositorySupport {
                 .selectFrom(settle)
                 .where(
                         eqAggregatedAt(settleRequest.getAggregatedAt()),
-                        likeFullName(settleRequest.getFullName())
+                        containsFullName(settleRequest.getFullName())
                 )
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
@@ -43,14 +43,16 @@ public class SettleRepositorySupport extends QuerydslRepositorySupport {
         if (aggregatedAt == null) {
             return null;
         }
+
         return settle.aggregatedAt.eq(aggregatedAt);
     }
 
-    private BooleanExpression likeFullName(String fullName) {
+    private BooleanExpression containsFullName(String fullName) {
         if (StringUtils.isBlank(fullName)) {
             return null;
         }
-        return settle.user.fullName.like(fullName + "%");
+
+        return settle.user.fullName.contains(fullName);
     }
 
 }

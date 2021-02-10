@@ -30,7 +30,7 @@ public class PointHistoryRepositorySupport extends QuerydslRepositorySupport {
                 .selectFrom(pointHistory)
                 .where(
                         betweenCreatedDate(pointHistoryRequest.getStartDate(), pointHistoryRequest.getEndDate()),
-                        likeFullName(pointHistoryRequest.getFullName()),
+                        containsFullName(pointHistoryRequest.getFullName()),
                         eqStatus(pointHistoryRequest.getStatus())
                 )
                 .offset(pageable.getOffset())
@@ -44,20 +44,23 @@ public class PointHistoryRepositorySupport extends QuerydslRepositorySupport {
         if (startDate == null || endDate == null) {
             return null;
         }
+
         return pointHistory.createdDate.between(startDate.atStartOfDay(), endDate.atTime(23, 59, 59));
     }
 
-    private BooleanExpression likeFullName(String fullname) {
-        if (StringUtils.isBlank(fullname)) {
+    private BooleanExpression containsFullName(String fullName) {
+        if (StringUtils.isBlank(fullName)) {
             return null;
         }
-        return pointHistory.user.fullName.like(fullname + "%");
+
+        return pointHistory.user.fullName.contains(fullName);
     }
 
     private BooleanExpression eqStatus(String status) {
         if (StringUtils.isBlank(status)) {
             return null;
         }
+
         return pointHistory.status.eq(status);
     }
 
