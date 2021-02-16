@@ -19,6 +19,8 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 @Transactional()
@@ -37,9 +39,7 @@ public class SettleBatchServiceTest {
         LocalDateTime toDate = LocalDateTime.of(LocalDate.parse("20200924", DateTimeFormatter.ofPattern("yyyyMMdd")), LocalTime.of(23, 59, 59));
 
         List<SettleTransMonthlySumRequest> batchList = transactionRepositorySupport.getMonthlySum(fromDate, toDate);
-        System.out.println("batchList.size(): " + batchList.size());
-        System.out.println("batchList.toString(): ");
-        System.out.println(batchList.toString());
+        assertThat(batchList.size()).isEqualTo(2);
     }
 
     @Test
