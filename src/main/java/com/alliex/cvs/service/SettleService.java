@@ -3,9 +3,9 @@ package com.alliex.cvs.service;
 import com.alliex.cvs.entity.Settle;
 import com.alliex.cvs.repository.SettleRepository;
 import com.alliex.cvs.repository.SettleRepositorySupport;
-import com.alliex.cvs.repository.TransactionRepository;
 import com.alliex.cvs.entity.User;
 import com.alliex.cvs.exception.SettleNotFoundException;
+import com.alliex.cvs.repository.TransactionRepositorySupport;
 import com.alliex.cvs.web.dto.SettleRequest;
 import com.alliex.cvs.web.dto.SettleResponse;
 import com.alliex.cvs.web.dto.SettleTransMonthlySumRequest;
@@ -24,7 +24,7 @@ import java.util.List;
 @Service
 public class SettleService {
 
-    private final TransactionRepository transactionRepository;
+    private final TransactionRepositorySupport transactionRepositorySupport;
 
     private final SettleRepository settleRepository;
 
@@ -47,7 +47,7 @@ public class SettleService {
 
     @Transactional
     public Integer transactionMonthlySum(LocalDateTime fromDate, LocalDateTime toDate) {
-        List<SettleTransMonthlySumRequest> transMonthlySumList = transactionRepository.findByCreatedDate(fromDate, toDate);
+        List<SettleTransMonthlySumRequest> transMonthlySumList = transactionRepositorySupport.getMonthlySum(fromDate, toDate);
         for (SettleTransMonthlySumRequest obj : transMonthlySumList) {
             settleRepository.save(toEntity(obj, fromDate.toLocalDate()));
         }

@@ -11,15 +11,15 @@ public class SettleTransMonthlySumRequest {
 
     private Long userId;
 
-    private Long approvalCount;
+    private Integer approvalCount;
 
     private Long approvalAmount;
 
-    private Long cancelCount;
+    private Integer cancelCount;
 
     private Long cancelAmount;
 
-    public Long getTotalCount() {
+    public Integer getTotalCount() {
         return approvalCount + cancelCount;
     }
 
