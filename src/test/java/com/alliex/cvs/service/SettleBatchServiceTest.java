@@ -1,6 +1,6 @@
 package com.alliex.cvs.service;
 
-import com.alliex.cvs.repository.TransactionRepository;
+import com.alliex.cvs.repository.TransactionRepositorySupport;
 import com.alliex.cvs.util.DateTimeUtils;
 import com.alliex.cvs.web.dto.SettleTransMonthlySumRequest;
 import org.junit.jupiter.api.Test;
@@ -19,6 +19,8 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 @Transactional()
@@ -29,17 +31,15 @@ import java.util.List;
 public class SettleBatchServiceTest {
 
     @Autowired
-    TransactionRepository transactionRepository;
+    TransactionRepositorySupport transactionRepositorySupport;
 
     @Test
     public void queryTest() {
         LocalDateTime fromDate = LocalDateTime.of(LocalDate.parse("20200922", DateTimeFormatter.ofPattern("yyyyMMdd")), LocalTime.of(0, 0, 0));
         LocalDateTime toDate = LocalDateTime.of(LocalDate.parse("20200924", DateTimeFormatter.ofPattern("yyyyMMdd")), LocalTime.of(23, 59, 59));
 
-        List<SettleTransMonthlySumRequest> batchList = transactionRepository.findByCreatedDate(fromDate, toDate);
-        System.out.println("batchList.size(): " + batchList.size());
-        System.out.println("batchList.toString(): ");
-        System.out.println(batchList.toString());
+        List<SettleTransMonthlySumRequest> batchList = transactionRepositorySupport.getMonthlySum(fromDate, toDate);
+        assertThat(batchList.size()).isEqualTo(2);
     }
 
     @Test

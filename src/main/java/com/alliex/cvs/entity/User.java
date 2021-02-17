@@ -54,7 +54,7 @@ public class User extends BaseTimeEntity {
     @JsonIgnore
     private Collection<PointHistory> pointHistoryId;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.DETACH)
     @JsonIgnore
     private Collection<Settle> settleId;
 

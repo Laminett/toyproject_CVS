@@ -22,19 +22,6 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long>,
 
     Optional<Transaction> findByOriginRequestId(String requestId);
 
-    @Query(value = "select " +
-            "new com.alliex.cvs.web.dto.SettleTransMonthlySumRequest(" +
-            "t.user.id" +
-            ", sum(case when (t.type = 'PAYMENT') then 1 else 0 end)" +
-            ", sum(case when (t.type = 'PAYMENT') then t.point else 0 end)" +
-            ", sum(case when (t.type = 'REFUND') then 1 else 0 end)" +
-            ", sum(case when (t.type = 'REFUND') then t.point else 0 end))" +
-            "from Transaction t " +
-            "where t.createdDate >= :fromDate " +
-            "and t.createdDate < :toDate " +
-            "group by t.user.id")
-    List<SettleTransMonthlySumRequest> findByCreatedDate(@Param("fromDate") LocalDateTime fromDate, @Param("toDate") LocalDateTime toDate);
-
     @Query(value = "select t from Transaction t join fetch t.user u join fetch u.point p", countQuery = "select count(t) from Transaction t")
     Page<Transaction> findAllWithUser(Specification<Transaction> searchWith, Pageable pageable);
 
