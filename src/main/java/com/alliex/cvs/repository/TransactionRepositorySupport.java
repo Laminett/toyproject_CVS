@@ -38,15 +38,15 @@ public class TransactionRepositorySupport extends QuerydslRepositorySupport {
     }
 
     public Page<Transaction> findBySearchValueWithDate(Pageable pageable, TransactionRequest transactionRequest) {
-        JPQLQuery<Transaction> results = queryFactory
+        JPQLQuery<Transaction> query = queryFactory
                 .selectFrom(transaction)
                 .where(usernameEq(transactionRequest.getUserId()), paymentTypeEq(transactionRequest.getPaymentType()),
                         pointEq(transactionRequest.getPoint()), stateEq(transactionRequest.getState()),
                         typeEq(transactionRequest.getType())
                         , betweenCreateDate(transactionRequest.getFromDate(), transactionRequest.getToDate()));
-        JPQLQuery<Transaction> rere = getQuerydsl().applyPagination(pageable,results);
-        Long totalCount = results.fetchCount();
-        return new PageImpl<>(rere.fetchResults().getResults(), pageable, totalCount);
+        JPQLQuery<Transaction> results = getQuerydsl().applyPagination(pageable,query);
+        Long totalCount = query.fetchCount();
+        return new PageImpl<>(results.fetchResults().getResults(), pageable, totalCount);
     }
 
     private BooleanExpression usernameEq(String username) {
