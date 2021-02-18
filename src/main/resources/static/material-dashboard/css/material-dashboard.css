@@ -17128,6 +17128,15 @@ label {
   background-color: #9c27b0;
 }
 
+.bootstrap-datetimepicker-widget {
+  text-align: center;
+}
+
+.bootstrap-datetimepicker-widget td.day:hover {
+  background: #eeeeee;
+  cursor: pointer;
+}
+
 .bootstrap-datetimepicker-widget .timepicker .table-condesed .btn .ripple-container {
   width: 40px;
   height: 40px;

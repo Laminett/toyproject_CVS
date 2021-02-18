@@ -3,6 +3,9 @@ package com.alliex.cvs.web.dto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -18,5 +21,11 @@ public class TransactionRequest {
     private String state;
 
     private String type;
+
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
+    private LocalDate fromDate;
+
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
+    private LocalDate toDate;
 
 }

@@ -4,10 +4,7 @@ import com.alliex.cvs.domain.type.PaymentType;
 import com.alliex.cvs.domain.type.TransactionState;
 import com.alliex.cvs.domain.type.TransactionType;
 import com.alliex.cvs.testsupport.WithMockCustomUser;
-import com.alliex.cvs.web.dto.TransactionDetailSaveRequest;
-import com.alliex.cvs.web.dto.TransactionRefundResponse;
-import com.alliex.cvs.web.dto.TransactionSaveRequest;
-import com.alliex.cvs.web.dto.TransactionStateResponse;
+import com.alliex.cvs.web.dto.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.Test;
@@ -25,6 +22,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,6 +54,17 @@ public class TransactionApiControllerTest {
         mvc.perform(get("/web-api/v1/transactions"))
                 .andDo(print())
                 .andExpect(status().isOk());
+    }
+
+    @WithMockUser(roles = "ADMIN")
+    @Test
+    public void getTransactionsWithSearchDate() throws Exception {
+        mvc.perform(get("/web-api/v1/transactions")
+                .param("fromDate", "08-01-2021")
+                .param("toDate", "08-01-2021"))
+                .andDo(print())
+                .andExpect(status().isOk())
+        .andExpect(jsonPath("$.totalElements").value(2));
     }
 
     @WithMockUser(roles = "ADMIN")

@@ -4,6 +4,28 @@ var main = {
     init: function () {
         var _this = this;
 
+        $('.datepicker').datetimepicker({
+            format: 'DD-MM-YYYY',
+            useCurrent: true,
+            collapse: true,
+            icons:{
+                date: "fa fa-calendar",
+                previous: 'fa fa-chevron-left',
+                next: 'fa fa-chevron-right'
+            },
+            defaultDate: new Date()
+        }).on("dp.change", function (e) {
+            let datepickerId = this.id;
+
+            if(datepickerId == "fromDate" && $('#fromDate').val()>$('#toDate').val()) {
+                $('#toDate').val($('#fromDate').val());
+            }
+
+            if(datepickerId == "toDate" && $('#fromDate').val()>$('#toDate').val()) {
+                $('#fromDate').val($('#toDate').val());
+            }
+        });
+
         _this.getTransactions();
 
         $("#transaction-search-field a").click(function () {
@@ -87,6 +109,8 @@ var main = {
 
         let param = {
             page: page || 1,
+            fromDate: $('#fromDate').val(),
+            toDate: $('#toDate').val()
         };
 
         let k, v;
@@ -116,7 +140,7 @@ var main = {
                 $("#transactionsTemplate").tmpl(data.content).appendTo("#transactions");
 
                 let pages = [];
-                for (let i = 1; i < data.totalPages; i++) {
+                for (let i = 0; i < data.totalPages; i++) {
                     pages.push({"page": i + 1});
                 }
                 $("#transactionsPagingTemplate").tmpl(pages).appendTo(".pagination");
