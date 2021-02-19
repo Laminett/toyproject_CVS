@@ -74,12 +74,12 @@ var main = {
             dataType: 'JSON',
             contentType: 'application/json; charset=utf-8'
         }).done(function (data) {
-            var requestId = 'PAY'+data.requestId;
+            var requestId = data.requestId;
             new QRious({
                 element: document.getElementById('qr-code'),
                 foreground: 'black',
                 size: 200,
-                value: requestId
+                value: 'PAY'+requestId
             });
             $("#paymentQR").modal("show");
 
