@@ -69,7 +69,7 @@ var main = {
         var param = makeTransactionData();
         $.ajax({
             type: 'POST',
-            url: '/web-api/v1/transactions/payment/pos/step1',
+            url: '/web-api/v1/transactions/payment/qr/step1',
             data: JSON.stringify(param),
             dataType: 'JSON',
             contentType: 'application/json; charset=utf-8'
