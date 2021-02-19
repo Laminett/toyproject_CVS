@@ -74,7 +74,7 @@ var main = {
             dataType: 'JSON',
             contentType: 'application/json; charset=utf-8'
         }).done(function (data) {
-            var requestId = data.requestId;
+            var requestId = 'PAY'+data.requestId;
             new QRious({
                 element: document.getElementById('qr-code'),
                 foreground: 'black',
