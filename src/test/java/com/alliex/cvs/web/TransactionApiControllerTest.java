@@ -64,7 +64,7 @@ public class TransactionApiControllerTest {
                 .param("toDate", "08-01-2021"))
                 .andDo(print())
                 .andExpect(status().isOk())
-        .andExpect(jsonPath("$.totalElements").value(2));
+                .andExpect(jsonPath("$.totalElements").value(2));
     }
 
     @WithMockUser(roles = "ADMIN")

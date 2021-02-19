@@ -11,7 +11,6 @@ import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.core.types.dsl.NumberExpression;
-import com.querydsl.jpa.JPQLQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
@@ -38,15 +37,18 @@ public class TransactionRepositorySupport extends QuerydslRepositorySupport {
     }
 
     public Page<Transaction> findBySearchValueWithDate(Pageable pageable, TransactionRequest transactionRequest) {
-        JPQLQuery<Transaction> query = queryFactory
+        QueryResults<Transaction> results = getQuerydsl().applyPagination(pageable, queryFactory
                 .selectFrom(transaction)
-                .where(usernameEq(transactionRequest.getUserId()), paymentTypeEq(transactionRequest.getPaymentType()),
-                        pointEq(transactionRequest.getPoint()), stateEq(transactionRequest.getState()),
-                        typeEq(transactionRequest.getType())
-                        , betweenCreateDate(transactionRequest.getFromDate(), transactionRequest.getToDate()));
-        JPQLQuery<Transaction> results = getQuerydsl().applyPagination(pageable,query);
-        Long totalCount = query.fetchCount();
-        return new PageImpl<>(results.fetchResults().getResults(), pageable, totalCount);
+                .where(
+                        usernameEq(transactionRequest.getUserId()),
+                        paymentTypeEq(transactionRequest.getPaymentType()),
+                        pointEq(transactionRequest.getPoint()),
+                        stateEq(transactionRequest.getState()),
+                        typeEq(transactionRequest.getType()),
+                        betweenCreateDate(transactionRequest.getFromDate(), transactionRequest.getToDate())
+                )).fetchResults();
+
+        return new PageImpl<>(results.getResults(), pageable, results.getTotal());
     }
 
     private BooleanExpression usernameEq(String username) {
