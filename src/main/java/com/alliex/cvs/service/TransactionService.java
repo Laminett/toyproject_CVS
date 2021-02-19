@@ -2,7 +2,6 @@ package com.alliex.cvs.service;
 
 import com.alliex.cvs.entity.Transaction;
 import com.alliex.cvs.repository.TransactionRepository;
-import com.alliex.cvs.domain.type.TransactionSearchType;
 import com.alliex.cvs.domain.type.TransactionState;
 import com.alliex.cvs.domain.type.TransactionType;
 import com.alliex.cvs.domain.LoginUser;
@@ -11,22 +10,16 @@ import com.alliex.cvs.exception.NotEnoughPointException;
 import com.alliex.cvs.exception.TransactionAlreadyRefundedException;
 import com.alliex.cvs.exception.TransactionNotFoundException;
 import com.alliex.cvs.exception.TransactionStateException;
+import com.alliex.cvs.repository.TransactionRepositorySupport;
 import com.alliex.cvs.web.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.criteria.Join;
-import javax.persistence.criteria.Predicate;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RequiredArgsConstructor
 @Service
@@ -36,6 +29,8 @@ public class TransactionService {
 
     private final TransactionDetailService transactionDetailService;
 
+    private final TransactionRepositorySupport transactionRepositorySupport;
+
     private final PointService pointService;
 
     private final ProductService productService;
@@ -44,7 +39,7 @@ public class TransactionService {
 
     @Transactional(readOnly = true)
     public Page<TransactionResponse> getTransactions(Pageable pageable, TransactionRequest transactionRequest) {
-        Page<Transaction> transactions = transactionRepository.findAllWithUser(searchWith(getPredicateData(transactionRequest)), pageable);
+        Page<Transaction> transactions = transactionRepositorySupport.findBySearchValueWithDate(pageable, transactionRequest);
 
         return transactions.map(TransactionResponse::new);
     }
@@ -239,53 +234,4 @@ public class TransactionService {
         return new TransactionRefundResponse(refundTransaction);
     }
 
-    private Specification<Transaction> searchWith(Map<TransactionSearchType, Object> predicateData) {
-        return (Specification<Transaction>) ((root, query, builder) -> {
-            List<Predicate> predicate = new ArrayList<>();
-            for (Map.Entry<TransactionSearchType, Object> entry : predicateData.entrySet()) {
-                switch (entry.getKey()) {
-                    case USERID:
-                        Join<Transaction, User> userJoin = root.join(entry.getKey().getValue());
-                        predicate.add(builder.equal(userJoin.get("username"), entry.getValue()));
-                        break;
-                    case TYPE:
-                    case POINT:
-                    case STATE:
-                    case PAYMENTTYPE:
-                        predicate.add(builder.like(root.get(entry.getKey().getValue()).as(String.class), "%" + entry.getValue() + "%"));
-                        break;
-                    default:
-                        break;
-                }
-            }
-
-            return builder.and(predicate.toArray(new Predicate[0]));
-        });
-    }
-
-    private Map<TransactionSearchType, Object> getPredicateData(TransactionRequest transactionRequest) {
-        Map<TransactionSearchType, Object> predicateData = new HashMap<>();
-
-        if (StringUtils.isNotBlank(transactionRequest.getUserId())) {
-            predicateData.put(TransactionSearchType.USERID, transactionRequest.getUserId());
-        }
-
-        if (StringUtils.isNotBlank(transactionRequest.getPaymentType())) {
-            predicateData.put(TransactionSearchType.PAYMENTTYPE, transactionRequest.getPaymentType());
-        }
-
-        if (transactionRequest.getPoint() != null) {
-            predicateData.put(TransactionSearchType.POINT, transactionRequest.getPoint());
-        }
-
-        if (StringUtils.isNotBlank(transactionRequest.getState())) {
-            predicateData.put(TransactionSearchType.STATE, transactionRequest.getState());
-        }
-
-        if (StringUtils.isNotBlank(transactionRequest.getType())) {
-            predicateData.put(TransactionSearchType.TYPE, transactionRequest.getType());
-        }
-
-        return predicateData;
-    }
 }

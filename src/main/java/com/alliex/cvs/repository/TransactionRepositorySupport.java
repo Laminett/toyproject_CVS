@@ -1,17 +1,27 @@
 package com.alliex.cvs.repository;
 
+import com.alliex.cvs.domain.type.PaymentType;
+import com.alliex.cvs.domain.type.TransactionState;
 import com.alliex.cvs.domain.type.TransactionType;
 import com.alliex.cvs.entity.Transaction;
 import com.alliex.cvs.web.dto.SettleTransMonthlySumRequest;
+import com.alliex.cvs.web.dto.TransactionRequest;
+import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.core.types.dsl.NumberExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 import static com.alliex.cvs.entity.QTransaction.transaction;
@@ -24,6 +34,52 @@ public class TransactionRepositorySupport extends QuerydslRepositorySupport {
     public TransactionRepositorySupport(JPAQueryFactory queryFactory) {
         super(Transaction.class);
         this.queryFactory = queryFactory;
+    }
+
+    public Page<Transaction> findBySearchValueWithDate(Pageable pageable, TransactionRequest transactionRequest) {
+        QueryResults<Transaction> results = getQuerydsl().applyPagination(pageable, queryFactory
+                .selectFrom(transaction)
+                .where(
+                        usernameEq(transactionRequest.getUserId()),
+                        paymentTypeEq(transactionRequest.getPaymentType()),
+                        pointEq(transactionRequest.getPoint()),
+                        stateEq(transactionRequest.getState()),
+                        typeEq(transactionRequest.getType()),
+                        betweenCreateDate(transactionRequest.getFromDate(), transactionRequest.getToDate())
+                )).fetchResults();
+
+        return new PageImpl<>(results.getResults(), pageable, results.getTotal());
+    }
+
+    private BooleanExpression usernameEq(String username) {
+        return StringUtils.isNotBlank(username) ? transaction.user.username.eq(username) : null;
+    }
+
+    private BooleanExpression paymentTypeEq(String paymentType) {
+        return StringUtils.isNotBlank(paymentType) ? transaction.paymentType.eq(PaymentType.valueOf(paymentType.toUpperCase())) : null;
+    }
+
+    private BooleanExpression pointEq(Long point) {
+        return point != null ? transaction.point.like(String.valueOf(point)) : null;
+    }
+
+    private BooleanExpression stateEq(String state) {
+        return StringUtils.isNotBlank(state) ? transaction.state.eq(TransactionState.valueOf(state.toUpperCase())) : null;
+    }
+
+    private BooleanExpression typeEq(String type) {
+        return StringUtils.isNotBlank(type) ? transaction.type.eq(TransactionType.valueOf(type.toUpperCase())) : null;
+    }
+
+    private BooleanExpression betweenCreateDate(LocalDate fromDate, LocalDate toDate) {
+        if (fromDate == null || toDate == null) {
+            return null;
+        }
+
+        LocalDateTime fromDateTime = LocalDateTime.of(fromDate, LocalTime.of(0, 0, 0));
+        LocalDateTime toDateTime = LocalDateTime.of(toDate, LocalTime.of(23, 59, 59));
+
+        return transaction.createdDate.between(fromDateTime, toDateTime);
     }
 
     public List<SettleTransMonthlySumRequest> getMonthlySum(LocalDateTime fromDate, LocalDateTime toDate) {
