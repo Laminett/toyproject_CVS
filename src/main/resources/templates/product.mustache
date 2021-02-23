@@ -7,14 +7,14 @@
                     <div class="card-header card-header-primary">
                         <div style="float: left">
                             <h4 class="card-title ">{{#messages}}menu.product{{/messages}}</h4>
-                            <p class="card-category"> Product management</p>
+                            <p class="card-category">Product management</p>
                         </div>
                         <div style="float: right">
                             <form class="form-inline ml-auto" id="productSearchForm" action="" onsubmit="return false;">
                                 <input type="hidden" name="searchKey" value=""/>
                                 <div class="dropdown" style="margin-right: 10px;">
                                     <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton-product-search" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        name
+                                        {{#messages}}product.name{{/messages}}
                                     </button>
                                     <div id="product-search-field" class="dropdown-menu" aria-labelledby="dropdownMenuButton-product-search">
                                         <a class="dropdown-item" href="#none" searchKey="name">{{#messages}}product.name{{/messages}}</a>
