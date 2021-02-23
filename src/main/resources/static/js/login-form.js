@@ -3,9 +3,9 @@ var main = {
         var _this = this;
         if (!_this.storageAvailable('localStorage')) {
             alert('This browser is not supported. \nThe site is optimized for Chrome browser.');
-            $("#signInBtn, #pcPaymentBtn").attr('disabled', true);
+            $("#signInBtn, #posPaymentBtn").attr('disabled', true);
         } else {
-            $("#pcPaymentBtn").click(function () {
+            $("#posPaymentBtn").click(function () {
                 location.href = '/payment';
             });
         }

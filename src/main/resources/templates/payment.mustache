@@ -56,7 +56,7 @@
                 </div>
                 <div class="text-center">
                     <button id="btnQR" class="btn btn-primary" data-toggle="modal">{{#messages}}btn.qr.payment{{/messages}}</button>
-                    <button id="btnCreditCard" class="btn btn-primary">{{#messages}}btn.credit.payment{{/messages}}</button>
+                    <button id="btnCreditCard" class="btn btn-primary" disabled>{{#messages}}btn.credit.payment{{/messages}}</button>
                     <button id="btnReset" class="btn btn-primary" style="display: none;">{{#messages}}btn.back.payment{{/messages}}</button>
                 </div>
                 <div id="barcodeInputArea" class="text-left" style="display: none;">
@@ -70,9 +70,9 @@
 <!-- QR pop-up -->
 <div class="modal fade" id="paymentQR" tabindex="-1" role="">
     <div class="modal-dialog modal-login" role="document" style="margin-top: 160px;">
-        <div class="modal-content">
-            <div class="card card-signup card-plain" style="margin-top: 0;margin-bottom: 0">
-                <div class="modal-body text-center">
+        <div class="modal-content" style="width: 400px">
+            <div class="card card-signup card-plain" style="margin: 0px;">
+                <div class="modal-body text-center" style="padding-top: 30px;">
                     <canvas id="qr-code"></canvas>
                     <div class="justify-content-center">
                         <button type="button" class="btn btn-primary" data-dismiss="modal" aria-hidden="true">{{#messages}}btn.cancel{{/messages}}</button>
