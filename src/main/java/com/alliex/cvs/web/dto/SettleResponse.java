@@ -42,10 +42,8 @@ public class SettleResponse {
 
     private String adminId;
 
-    @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDateTime createdDate;
 
-    @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDateTime modifiedDate;
 
     @Override

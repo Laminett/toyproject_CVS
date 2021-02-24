@@ -1,7 +1,6 @@
 package com.alliex.cvs.web.dto;
 
 import com.alliex.cvs.entity.PointHistory;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -26,10 +25,8 @@ public class PointHistoryResponse {
 
     private String adminId;
 
-    @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDateTime createdDate;
 
-    @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDateTime modifiedDate;
 
     @Builder
