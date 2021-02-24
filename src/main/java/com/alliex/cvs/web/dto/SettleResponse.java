@@ -42,10 +42,8 @@ public class SettleResponse {
 
     private String adminId;
 
-    @JsonFormat
     private LocalDateTime createdDate;
 
-    @JsonFormat
     private LocalDateTime modifiedDate;
 
     @Override
