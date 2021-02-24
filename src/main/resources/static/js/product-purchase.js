@@ -8,7 +8,14 @@ var main = {
         _this.purchaseDateParentVisible(this.SEARCH_KEY);
 
         $('.datepicker_local').datetimepicker({
-            format: 'YYYY-MM-DD',
+            format: 'DD-MM-YYYY',
+            useCurrent: true,
+            collapse: true,
+            icons:{
+                date: "fa fa-calendar",
+                previous: 'fa fa-chevron-left',
+                next: 'fa fa-chevron-right'
+            },
             defaultDate: new Date()
         });
 
@@ -51,9 +58,11 @@ var main = {
             } else {
                 if (location.hostname != _this.PROD_DOMAIN) {
                     $("#barcode").attr('readOnly', false);
+                    $("#barcodeSearch").css('display', 'block');
                     _this.addFormVisible(true);
                 } else {
                     _this.addFormVisible(false);
+                    $("#barcodeSearch").css('display', 'none');
                 }
 
                 $('.description').text('Input Purchase Data');
@@ -92,10 +101,10 @@ var main = {
                     _this.barcodeScan(barcode, qty);
                     _this.addFormVisible(true);
 
-                    $('#categoryName').val(data.categoryId.name);
+                    $('#categoryName').val(data.categoryName);
                     $('#productName').val(data.name);
                     $('#quantity').val(data.quantity);
-                    $('#categoryId').val(data.categoryId.id);
+                    $('#categoryId').val(data.categoryId);
                     $('#productId').val(data.id);
 
                     if (data.isEnabled) {
@@ -118,6 +127,42 @@ var main = {
                     }
                 });
             }
+        });
+
+        $('#barcodeSearch').click(function() {
+            let barcode = $('#barcode').val();
+            $.ajax({
+                type: 'GET',
+                url: '/web-api/v1/barcodescan/' + barcode,
+                dataType: 'JSON',
+                contentType: 'application/json; charset=utf-8',
+            }).done(function (data) {
+                $('#categoryName').val(data.categoryName);
+                $('#productName').val(data.name);
+                $('#quantity').val(data.quantity);
+                $('#categoryId').val(data.categoryId);
+                $('#productId').val(data.id);
+
+                if (data.isEnabled) {
+                    $('#isEnabled').prop('checked', true);
+                } else {
+                    $('#isEnabled').prop('checked', false);
+                }
+
+            }).fail(function (error) {
+                debugger;
+                if (error.responseJSON.code == 'PRODUCT_NOT_FOUND') {
+                    alert('해당 물품이 등록되어 있지 않습니다.');
+                } else {
+                    console.log(error);
+                    var responseJSON = '';
+                    if (error.responseJSON) {
+                        responseJSON = '\n' + error.responseJSON.message;
+                    }
+
+                    alert('오류가 발생했습니다. 관리자에게 문의해 주세요.' + responseJSON);
+                }
+            });
         });
     },
     getPurchase: function (id) {

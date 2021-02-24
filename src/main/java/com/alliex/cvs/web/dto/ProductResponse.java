@@ -15,6 +15,8 @@ public class ProductResponse {
 
     private String categoryName;
 
+    private Long categoryId;
+
     private String barcode;
 
     private String name;
@@ -35,6 +37,7 @@ public class ProductResponse {
 
     public ProductResponse(Product entity) {
         this.id = entity.getId();
+        this.categoryId = entity.getProductCategory().getId();
         this.categoryName = entity.getProductCategory().getName();
         this.barcode = entity.getBarcode();
         this.name = entity.getName();
