@@ -129,9 +129,9 @@ var main = {
             if (data.content.length == 0) {
                 $("#transactionsNoDataTemplate").tmpl().appendTo("#transactions");
             } else {
-                let number = data.totalElements - (data.number * 10);
+                let number = 1;
                 data.content.forEach(function (element) {
-                    element.number = number--;
+                    element.number = number++;
                     if (element.user == null) {
                         element.user = "";
                     }
