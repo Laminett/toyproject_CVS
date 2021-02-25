@@ -18,8 +18,6 @@ import org.springframework.test.context.jdbc.SqlGroup;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(SpringExtension.class)
@@ -92,41 +90,64 @@ public class UserServiceTest {
 
     @Test
     public void getUsers() {
-        List<UserResponse> users = userService.getUsers(PageRequest.of(0, 10));
-        assertThat(users.size()).isGreaterThanOrEqualTo(1);
-
+        Page<UserResponse> users = userService.getUsers(PageRequest.of(0, 10), new UserRequest());
+        assertThat(users.getTotalElements()).isGreaterThanOrEqualTo(1);
 
         users.forEach(item -> System.out.println(item.getPoint()));
-    }
-
-    @Test
-    public void getUsersByFullName() {
-        UserRequest userRequest = new UserRequest();
-        userRequest.setFullName(testFullName);
-
-        Page<UserResponse> users = userService.getUsers(PageRequest.of(0, 10), userRequest);
-        users.getContent().forEach(userResponse -> {
-            assertThat(userResponse.getFullName()).isEqualTo(testFullName);
-        });
-    }
-
-    @Test
-    public void getUsersByEmail() {
-        UserRequest userRequest = new UserRequest();
-        userRequest.setEmail(testEmail);
-
-        Page<UserResponse> users = userService.getUsers(PageRequest.of(0, 10), userRequest);
-
-        assertThat(users.getContent().size()).isGreaterThanOrEqualTo(1);
-        users.getContent().forEach(userResponse -> {
-            assertThat(userResponse.getEmail()).contains(testEmail);
-        });
     }
 
     @Test
     public void getUserByUsername() {
         UserResponse user = userService.getUserByUsername(testUsername);
         assertThat(user.getUsername()).isEqualTo(testUsername);
+    }
+
+    @Test
+    public void getUsersByUsername() {
+        UserRequest userRequest = new UserRequest();
+        userRequest.setUsername("aaa");
+
+        Page<UserResponse> users = userService.getUsers(PageRequest.of(0, 10), userRequest);
+        users.getContent().forEach(userResponse -> {
+            assertThat(userResponse.getFullName()).isEqualTo("aaa");
+        });
+    }
+
+    @Test
+    public void getUsersByFullName() {
+        UserRequest userRequest = new UserRequest();
+        userRequest.setFullName("fullName");
+
+        Page<UserResponse> users = userService.getUsers(PageRequest.of(0, 10), userRequest);
+        users.getContent().forEach(userResponse -> {
+            assertThat(userResponse.getFullName()).contains("fullName");
+        });
+    }
+
+    @Test
+    public void getUsersByEmail() {
+        UserRequest userRequest = new UserRequest();
+        userRequest.setEmail("aaa");
+
+        Page<UserResponse> users = userService.getUsers(PageRequest.of(0, 10), userRequest);
+
+        assertThat(users.getContent().size()).isGreaterThanOrEqualTo(1);
+        users.getContent().forEach(userResponse -> {
+            assertThat(userResponse.getEmail()).contains("aaa");
+        });
+    }
+
+    @Test
+    public void getUsersByDepartment() {
+        UserRequest userRequest = new UserRequest();
+        userRequest.setDepartment("Mobile Div");
+
+        Page<UserResponse> users = userService.getUsers(PageRequest.of(0, 10), userRequest);
+
+        assertThat(users.getContent().size()).isGreaterThanOrEqualTo(1);
+        users.getContent().forEach(userResponse -> {
+            assertThat(userResponse.getDepartment()).isEqualTo("Mobile Div");
+        });
     }
 
 }

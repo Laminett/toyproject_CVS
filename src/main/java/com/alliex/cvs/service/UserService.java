@@ -2,9 +2,9 @@ package com.alliex.cvs.service;
 
 import com.alliex.cvs.domain.type.UserSearchType;
 import com.alliex.cvs.entity.User;
-import com.alliex.cvs.repository.UserRepository;
 import com.alliex.cvs.exception.UserAlreadyExistsException;
 import com.alliex.cvs.exception.UserNotFoundException;
+import com.alliex.cvs.repository.UserRepository;
 import com.alliex.cvs.repository.UserRepositorySupport;
 import com.alliex.cvs.web.dto.UserRequest;
 import com.alliex.cvs.web.dto.UserResponse;
@@ -59,12 +59,6 @@ public class UserService implements UserDetailsService {
 
     public List<UserResponse> getUsers_delete_me(Pageable pageable) {
         return userRepository.findAllWithFetchJoin(pageable).stream()
-                .map(UserResponse::new)
-                .collect(Collectors.toList());
-    }
-
-    public List<UserResponse> getUsers(Pageable pageable) {
-        return userRepositorySupport.findAllWithPoint(pageable).stream()
                 .map(UserResponse::new)
                 .collect(Collectors.toList());
     }
@@ -136,10 +130,9 @@ public class UserService implements UserDetailsService {
     }
 
     public Page<UserResponse> getUsers(Pageable pageable, UserRequest userRequest) {
-        Page<UserResponse> entities = userRepository.findAll(searchWith(getPredicateData(userRequest)), pageable)
-                .map(UserResponse::new);
+        Page<User> users = userRepositorySupport.findAll(pageable, userRequest);
 
-        return entities;
+        return users.map(UserResponse::new);
     }
 
     private Specification<User> searchWith(Map<UserSearchType, String> predicateData) {
@@ -156,27 +149,6 @@ public class UserService implements UserDetailsService {
         });
     }
 
-    private Map<UserSearchType, String> getPredicateData(UserRequest userRequest) {
-        Map<UserSearchType, String> predicateData = new HashMap<>();
-
-        if (StringUtils.isNotBlank(userRequest.getUsername())) {
-            predicateData.put(UserSearchType.USERNAME, userRequest.getUsername());
-        }
-
-        if (StringUtils.isNotBlank(userRequest.getFullName())) {
-            predicateData.put(UserSearchType.FULL_NAME, userRequest.getFullName());
-        }
-
-        if (StringUtils.isNotBlank(userRequest.getEmail())) {
-            predicateData.put(UserSearchType.EMAIL, userRequest.getEmail());
-        }
-
-        if (StringUtils.isNotBlank(userRequest.getDepartment())) {
-            predicateData.put(UserSearchType.DEPARTMENT, userRequest.getDepartment());
-        }
-
-        return predicateData;
-    }
 
     public boolean isValidPassword(String password) {
         if (StringUtils.isBlank(password)) {

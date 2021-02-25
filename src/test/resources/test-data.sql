@@ -2,7 +2,9 @@ INSERT INTO user (id, username, password, department, full_name, email, phone_nu
 VALUES
 (400, 'testtest100', '9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08', 'Mobile Div', '400_fullName', '400@test.com', null, 'ADMIN', null, null),
 (401, 'testtest200', '9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08', 'Mobile Div', '401_fullName', '401@test.com', null, 'ADMIN', null, null),
-(999, 'forUnitTest', '9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08', 'Mobile Div', '999_fullName', '999@test.com', null, 'ADMIN', null, null)
+(800, 'forUnitTest1', '9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08', 'Mobile Div1', 'aaa', 'aaa@test.com', null, 'ADMIN', null, null),
+(801, 'forUnitTest2', '9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08', 'Mobile Div2', 'aaa1', 'aaa1@test.com', null, 'ADMIN', null, null),
+(999, 'forUnitTest', '9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08', 'Mobile Div', 'baaab', 'baaab@test.com', null, 'ADMIN', null, null)
 ;
 
 INSERT INTO point (id, created_date, modified_date, point, user_id)
