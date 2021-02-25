@@ -1,6 +1,7 @@
 package com.alliex.cvs.web.dto;
 
 import com.alliex.cvs.entity.ProductPurchase;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -18,6 +19,7 @@ public class ProductPurchaseUpdateRequest {
 
     private String adminId;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private LocalDate purchaseDate;
 
     public ProductPurchase toEntity() {
