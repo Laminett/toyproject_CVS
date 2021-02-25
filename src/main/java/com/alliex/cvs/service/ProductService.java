@@ -75,7 +75,10 @@ public class ProductService {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new ProductNotFoundException(id));
 
-        productRepository.delete(product);
+        ProductUpdateRequest productUpdateRequest = new ProductUpdateRequest(product.getProductCategory().getId(),
+                product.getName(), product.getPoint(), product.getQuantity(), false, product.getAdminId());
+
+        product.update(productUpdateRequest);
     }
 
     @Transactional

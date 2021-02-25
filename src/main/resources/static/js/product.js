@@ -45,8 +45,8 @@ let main = {
             if ($(this).text() == "edit") {
                 let productId = $(this).closest('tr').find('td').eq(0).text();
                 _this.addFormVisible(true);
-                $('#name').attr('readOnly',true);
-                $('#quantity').attr('readOnly',true);
+                $('#name').attr('readOnly', true);
+                $('#quantity').attr('readOnly', true);
                 _this.getProduct(productId);
             } else {
                 if (location.hostname != _this.PROD_DOMAIN) {
@@ -64,8 +64,8 @@ let main = {
             $(this).find('form')[0].reset()
             $("#productId").val("");
             _this.addFormVisible(false);
-            $('#name').attr('readOnly',false);
-            $('#quantity').attr('readOnly',false);
+            $('#name').attr('readOnly', false);
+            $('#quantity').attr('readOnly', false);
         });
 
         // 바코드 스캔 탐지 이벤트
@@ -111,7 +111,7 @@ let main = {
             name: $('#name').val(),
             point: $('#point').val(),
             quantity: $('#quantity').val(),
-            isEnabled: $('#isEnabled').val()
+            isEnabled: true
         };
 
         let apiEndPoint;
@@ -257,12 +257,6 @@ let main = {
             $("#quantity").val(data.quantity);
             $('.description').text('Modify Purchase Data');
 
-            if (data.isEnabled) {
-                $('#isEnabled').prop('checked', true);
-            } else {
-                $('#isEnabled').prop('checked', false);
-            }
-
             $("#createProductModal").modal("show");
         }).fail(function (error) {
             if (error.responseJSON.code == 'PRODUCT_NOT_FOUND') {
@@ -310,14 +304,19 @@ let main = {
             if (data.content.length == 0) {
                 $("#productsNoDataTemplate").tmpl().appendTo("#products");
             } else {
-                $("#productsTemplate").tmpl(data.content).appendTo("#products");
-            }
+                let number = 1;
+                data.content.forEach(function (element) {
+                    element.number = number++;
+                });
 
-            let pages = [];
-            for (let i = 0; i < data.totalPages; i++) {
-                pages.push({"page": i + 1});
+                $("#productsTemplate").tmpl(data.content).appendTo("#products");
+
+                let pages = [];
+                for (let i = 0; i < data.totalPages; i++) {
+                    pages.push({"page": i + 1});
+                }
+                $("#productsPagingTemplate").tmpl(pages).appendTo(".pagination");
             }
-            $("#productsPagingTemplate").tmpl(pages).appendTo(".pagination");
         }).fail(function (error) {
             alert(JSON.stringify(error.responseJSON.message));
         });
