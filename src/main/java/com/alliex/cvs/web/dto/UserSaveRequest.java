@@ -26,12 +26,15 @@ public class UserSaveRequest {
     private String department;
 
     @NotBlank(message = "fullName may not be blank.")
+    @Size(max = 20, message = "fullName must be 1-20 characters.")
     private String fullName;
 
     @NotBlank(message = "email may not be blank.")
+    @Size(max = 20, message = "email must be 1-20 characters.")
     private String email;
 
     @NotBlank(message = "phoneNumber may not be blank.")
+    @Size(max = 20, message = "phoneNumber must be 1-20 characters.")
     private String phoneNumber;
 
     private Role role = Role.USER;
