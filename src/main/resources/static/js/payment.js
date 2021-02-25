@@ -84,8 +84,8 @@ var main = {
             $("#paymentQR").modal("show");
 
             // 2초마다 결제 결과 확인
-            var isFail = false;
-            playCheckState = setInterval(function () {
+            var isTimeout = false;
+            var playCheckState = setInterval(function () {
                 $.ajax({
                     type: 'GET',
                     url: '/web-api/v1/transactions/' + requestId,
@@ -93,18 +93,25 @@ var main = {
                     contentType: 'application/json; charset=utf-8'
                 }).done(function (data) {
                     clearInterval(playCheckState);
+                    clearTimeout(timeoutAlert);
                     $("#paymentSuccess").text(data.point);
                     showResultArea(data.state);
                     $("#paymentQR").modal("hide");
+                    setTimeout(function () {
+                        $("#btnReset").trigger("click");
+                    }, 5000);
                 }).fail(function (error) {
-                    if(error.responseJSON.code != 'TRANSACTION_NOT_FOUND') {
+                    if(error.responseJSON.code == 'TRANSACTION_NOT_FOUND') {
+                        isTimeout = true;
+                    } else {
                         clearInterval(playCheckState);
-                        
+                        clearTimeout(timeoutAlert);
                         $("#paymentFail").text(error.responseJSON.code);
                         showResultArea("fail");
                         $("#paymentQR").modal("hide");
-                    } else {
-                        isFail = true;
+                        setTimeout(function () {
+                            $("#btnReset").trigger("click");
+                        }, 5000);
                     }
                 });
             }, 2000);
@@ -112,13 +119,13 @@ var main = {
             $(document).click(function(event) {
                 if($(event.target).attr("class") == "modal fade" || $(event.target).attr("class") == "btn btn-primary") {
                     clearInterval(playCheckState);
-                    isFail = false;
+                    isTimeout = false;
                 }
             });
 
             // 1분 후 QR팝업 닫힘
-            setTimeout(function () {
-                if (isFail) {
+            var timeoutAlert = setTimeout(function () {
+                if (isTimeout) {
                     clearInterval(playCheckState);
                     alert(getMessage("alert.payment.timeover"));
                     $("#paymentQR").modal("hide");
