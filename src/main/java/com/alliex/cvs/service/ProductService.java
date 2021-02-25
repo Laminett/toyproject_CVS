@@ -65,13 +65,6 @@ public class ProductService {
         Product _product = productRepository.findById(id)
                 .orElseThrow(() -> new ProductNotFoundException(id));
 
-        ProductCategory productCategory = new ProductCategory();
-        productCategory.setId(productUpdateRequest.getCategoryId());
-
-        productRepository.findByNameAndProductCategory(productUpdateRequest.getName(), productCategory).ifPresent(product -> {
-            throw new ProductAlreadyExistsException(product.getName());
-        });
-
         _product.update(productUpdateRequest);
 
         return id;

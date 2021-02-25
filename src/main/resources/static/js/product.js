@@ -45,6 +45,8 @@ let main = {
             if ($(this).text() == "edit") {
                 let productId = $(this).closest('tr').find('td').eq(0).text();
                 _this.addFormVisible(true);
+                $('#name').attr('readOnly',true);
+                $('#quantity').attr('readOnly',true);
                 _this.getProduct(productId);
             } else {
                 if (location.hostname != _this.PROD_DOMAIN) {
@@ -60,7 +62,10 @@ let main = {
 
         $('.modal').on('hidden.bs.modal', function (e) {
             $(this).find('form')[0].reset()
+            $("#productId").val("");
             _this.addFormVisible(false);
+            $('#name').attr('readOnly',false);
+            $('#quantity').attr('readOnly',false);
         });
 
         // 바코드 스캔 탐지 이벤트
