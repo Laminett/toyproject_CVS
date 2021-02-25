@@ -22,6 +22,8 @@ public class TransactionRequest {
 
     private String type;
 
+    private String requestId;
+
     @DateTimeFormat(pattern = "dd-MM-yyyy")
     private LocalDate fromDate;
 

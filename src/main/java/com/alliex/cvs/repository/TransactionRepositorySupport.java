@@ -45,6 +45,7 @@ public class TransactionRepositorySupport extends QuerydslRepositorySupport {
                         pointEq(transactionRequest.getPoint()),
                         stateEq(transactionRequest.getState()),
                         typeEq(transactionRequest.getType()),
+                        requestIdEq(transactionRequest.getRequestId()),
                         betweenCreateDate(transactionRequest.getFromDate(), transactionRequest.getToDate())
                 )).fetchResults();
 
@@ -69,6 +70,10 @@ public class TransactionRepositorySupport extends QuerydslRepositorySupport {
 
     private BooleanExpression typeEq(String type) {
         return StringUtils.isNotBlank(type) ? transaction.type.eq(TransactionType.valueOf(type.toUpperCase())) : null;
+    }
+
+    private BooleanExpression requestIdEq(String requestId) {
+        return StringUtils.isNotBlank(requestId) ? transaction.requestId.eq(requestId) : null;
     }
 
     private BooleanExpression betweenCreateDate(LocalDate fromDate, LocalDate toDate) {
