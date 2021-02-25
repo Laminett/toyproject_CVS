@@ -1,6 +1,5 @@
 package com.alliex.cvs.service;
 
-import com.alliex.cvs.domain.type.UserSearchType;
 import com.alliex.cvs.entity.User;
 import com.alliex.cvs.exception.UserAlreadyExistsException;
 import com.alliex.cvs.exception.UserNotFoundException;
@@ -14,7 +13,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -24,9 +22,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.criteria.Predicate;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -55,12 +52,6 @@ public class UserService implements UserDetailsService {
         List<GrantedAuthority> USER_ROLES = AuthorityUtils.createAuthorityList(user.getRole().getKey());
 
         return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), USER_ROLES);
-    }
-
-    public List<UserResponse> getUsers_delete_me(Pageable pageable) {
-        return userRepository.findAllWithFetchJoin(pageable).stream()
-                .map(UserResponse::new)
-                .collect(Collectors.toList());
     }
 
     public UserResponse getUserByUsername(String username) {
@@ -134,21 +125,6 @@ public class UserService implements UserDetailsService {
 
         return users.map(UserResponse::new);
     }
-
-    private Specification<User> searchWith(Map<UserSearchType, String> predicateData) {
-        return (Specification<User>) ((root, query, builder) -> {
-            List<Predicate> predicate = new ArrayList<>();
-
-            for (Map.Entry<UserSearchType, String> entry : predicateData.entrySet()) {
-                predicate.add(builder.like(
-                        root.get(entry.getKey().getField()), "%" + entry.getValue() + "%"
-                ));
-            }
-
-            return builder.and(predicate.toArray(new Predicate[0]));
-        });
-    }
-
 
     public boolean isValidPassword(String password) {
         if (StringUtils.isBlank(password)) {
