@@ -38,7 +38,7 @@ public class ProductService {
     @Transactional
     public ProductResponse scanProducts(String barcode) {
         // 상품정보조회 name, point
-        Product product = productRepository.findByBarcode(barcode)
+        Product product = productRepository.findByBarcodeAndIsEnabled(barcode, true)
                 .orElseThrow(() -> new ProductNotFoundException(barcode));
 
         return new ProductResponse(product);
