@@ -7,6 +7,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -16,8 +19,12 @@ public class ProductSaveRequest {
 
     private String barcode;
 
+    @NotBlank(message = "productName may not be blank.")
+    @Size(max = 50, message = "productName must be 1-50 characters.")
     private String name;
 
+    @NotBlank(message = "productPoint may not be blank.")
+    @Size(max = 17, message = "productPoint must be 1-17 digit.")
     private Long point;
 
     private Integer quantity;

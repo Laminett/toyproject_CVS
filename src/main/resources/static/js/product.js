@@ -110,7 +110,7 @@ let main = {
             id: $('#id').val(),
             name: $('#name').val(),
             point: $('#point').val(),
-            quantity: $('#quantity').val(),
+            quantity: 0,
             isEnabled: true
         };
 
@@ -199,13 +199,6 @@ let main = {
         if (!$('#point').val()) {
             alert("Please input point");
             $('#point').focus();
-
-            return false;
-        }
-
-        if (!$('#quantity').val()) {
-            alert("Please input amount");
-            $('#quantity').focus();
 
             return false;
         }
