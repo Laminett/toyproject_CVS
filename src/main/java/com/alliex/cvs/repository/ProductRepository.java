@@ -11,7 +11,7 @@ public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpec
 
     Optional<Product> findById(Long id);
 
-    Optional<Product> findByBarcode(String barcode);
+    Optional<Product> findByBarcodeAndIsEnabled(String barcode, Boolean isEnabled);
 
     Optional<Product> findByNameAndProductCategory(String name, ProductCategory category);
 

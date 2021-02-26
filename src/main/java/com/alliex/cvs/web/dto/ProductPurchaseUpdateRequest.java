@@ -26,8 +26,8 @@ public class ProductPurchaseUpdateRequest {
         return ProductPurchase.builder()
                 .purchaseQuantity(purchaseQuantity)
                 .purchaseAmount(purchaseAmount)
-                .purchaseDate(purchaseDate)
                 .adminId(adminId)
+                .purchaseDate(purchaseDate)
                 .build();
     }
 

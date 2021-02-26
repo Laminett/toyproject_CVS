@@ -12,11 +12,10 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class TransactionStateResponse {
 
-    private TransactionState transactionState;
-
     private String requestId;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private TransactionState transactionState;
+
     private LocalDateTime createdDate;
 
     public TransactionStateResponse(TransactionState transactionState, String requestId) {

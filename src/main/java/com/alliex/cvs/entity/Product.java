@@ -23,7 +23,7 @@ public class Product extends BaseTimeEntity {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "category_id", referencedColumnName = "id")
+    @JoinColumn(name = "category_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "fk_product_product_category_id"))
     private ProductCategory productCategory;
 
     @Column(nullable = false)

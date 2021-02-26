@@ -142,15 +142,7 @@ var main = {
                 $('#quantity').val(data.quantity);
                 $('#categoryId').val(data.categoryId);
                 $('#productId').val(data.id);
-
-                if (data.isEnabled) {
-                    $('#isEnabled').prop('checked', true);
-                } else {
-                    $('#isEnabled').prop('checked', false);
-                }
-
             }).fail(function (error) {
-                debugger;
                 if (error.responseJSON.code == 'PRODUCT_NOT_FOUND') {
                     alert('해당 물품이 등록되어 있지 않습니다.');
                 } else {
@@ -183,12 +175,6 @@ var main = {
             $('#productId').val(data.product.id);
             $('#categoryId').val(data.product.productCategory.id);
             $('.description').text('Modify Purchase Data');
-
-            if (data.product.enabled) {
-                $('#isEnabled').prop('checked', true);
-            } else {
-                $('#isEnabled').prop('checked', false);
-            }
 
             $("#createPurchaseModal").modal("show");
         }).fail(function (error) {
@@ -242,15 +228,20 @@ var main = {
             if (data.content.length == 0) {
                 $("#purchasesNoDataTemplate").tmpl().appendTo("#purchasesArea");
             } else {
-                $("#purchasesTemplate").tmpl(data.content).appendTo("#purchasesArea");
-            }
+                let number = 1;
+                data.content.forEach(function (element) {
+                    element.number = number++;
+                });
 
-            // set paging.
-            var pages = [];
-            for (var i = 0; i < data.totalPages; i++) {
-                pages.push({"page": i + 1});
+                $("#purchasesTemplate").tmpl(data.content).appendTo("#purchasesArea");
+
+                // set paging.
+                var pages = [];
+                for (var i = 0; i < data.totalPages; i++) {
+                    pages.push({"page": i + 1});
+                }
+                $("#purchasesPagingArea").tmpl(pages).appendTo("#purchasesPagingArea");
             }
-            $("#purchasesPagingArea").tmpl(pages).appendTo("#purchasesPagingArea");
         }).fail(function (error) {
             alert(JSON.stringify(error));
         });

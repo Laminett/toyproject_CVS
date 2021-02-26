@@ -2,22 +2,16 @@ package com.alliex.cvs.service;
 
 import com.alliex.cvs.entity.ProductCategory;
 import com.alliex.cvs.repository.ProductCategoryRepository;
-import com.alliex.cvs.domain.type.ProductCategorySearchType;
 import com.alliex.cvs.exception.*;
+import com.alliex.cvs.repository.ProductCategoryRepositorySupport;
 import com.alliex.cvs.web.dto.*;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.criteria.Predicate;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -25,6 +19,8 @@ import java.util.stream.Collectors;
 public class ProductCategoryService {
 
     private final ProductCategoryRepository productCategoryRepository;
+
+    private final ProductCategoryRepositorySupport productCategoryRepositorySupport;
 
     public Long save(ProductCategorySaveRequest productCategorySaveRequest) {
         // Check existence of a category.
@@ -41,7 +37,7 @@ public class ProductCategoryService {
         ProductCategory productCategory = productCategoryRepository.findById(id)
                 .orElseThrow(() -> new ProductCategoryNotFoundException(id));
 
-        productCategory.update(id, productCategoryUpdateRequest);
+        productCategory.update(productCategoryUpdateRequest);
 
         return productCategory.getId();
     }
@@ -51,7 +47,9 @@ public class ProductCategoryService {
         ProductCategory productCategory = productCategoryRepository.findById(id)
                 .orElseThrow(() -> new ProductCategoryNotFoundException(id));
 
-        productCategoryRepository.delete(productCategory);
+        ProductCategoryUpdateRequest productCategoryUpdateRequest =
+                new ProductCategoryUpdateRequest(productCategory.getName(), productCategory.getAdminId(), false);
+        productCategory.update(productCategoryUpdateRequest);
     }
 
     public List<ProductCategoryResponse> getCategories(Pageable pageable) {
@@ -61,7 +59,7 @@ public class ProductCategoryService {
     }
 
     public Page<ProductCategoryResponse> getCategories(Pageable pageable, ProductCategoryRequest productCategoryRequest) {
-        return productCategoryRepository.findAll(searchWith(getPredicateData(productCategoryRequest)), pageable)
+        return productCategoryRepositorySupport.findBySearchValue(pageable, productCategoryRequest)
                 .map(ProductCategoryResponse::new);
     }
 
@@ -72,40 +70,4 @@ public class ProductCategoryService {
         return new ProductCategoryResponse(productCategory);
     }
 
-
-    private Specification<ProductCategory> searchWith(Map<ProductCategorySearchType, Object> predicateData) {
-        return (Specification<ProductCategory>) ((root, query, builder) -> {
-            List<Predicate> predicate = new ArrayList<>();
-            for (Map.Entry<ProductCategorySearchType, Object> entry : predicateData.entrySet()) {
-                switch (entry.getKey()) {
-                    case NAME:
-                        predicate.add(builder.like(
-                                root.get(entry.getKey().getField()), "%" + entry.getValue() + "%"));
-                        break;
-                    case IS_ENABLED:
-                        predicate.add(builder.equal(
-                                root.get(entry.getKey().getField()), entry.getValue()));
-                        break;
-                    default:
-                        break;
-                }
-            }
-
-            return builder.and(predicate.toArray(new Predicate[0]));
-        });
-    }
-
-    private Map<ProductCategorySearchType, Object> getPredicateData(ProductCategoryRequest productCategoryRequest) {
-        Map<ProductCategorySearchType, Object> predicateData = new HashMap<>();
-
-        if (StringUtils.isNotBlank(productCategoryRequest.getCategoryName())) {
-            predicateData.put(ProductCategorySearchType.NAME, productCategoryRequest.getCategoryName());
-        }
-
-        if (productCategoryRequest.getIsEnabled() != null) {
-            predicateData.put(ProductCategorySearchType.IS_ENABLED, productCategoryRequest.getIsEnabled());
-        }
-
-        return predicateData;
-    }
 }

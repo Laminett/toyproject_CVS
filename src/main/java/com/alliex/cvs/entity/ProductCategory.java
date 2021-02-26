@@ -24,6 +24,11 @@ public class ProductCategory extends BaseTimeEntity {
     @Column(nullable = false)
     private String name;
 
+    @Getter(AccessLevel.NONE)
+    @Setter(AccessLevel.NONE)
+    @Column(nullable = false)
+    private Boolean isEnabled;
+
     private String adminId;
 
     @OneToMany(mappedBy = "productCategory", cascade = CascadeType.ALL)
@@ -35,16 +40,24 @@ public class ProductCategory extends BaseTimeEntity {
     private Collection<ProductPurchase> productPurchaseId;
 
     @Builder
-    public ProductCategory(Long id, String name, String adminId) {
+    public ProductCategory(Long id, String name, Boolean isEnabled, String adminId) {
         this.id = id;
         this.name = name;
+        this.isEnabled = isEnabled;
         this.adminId = adminId;
     }
 
-    public void update(Long id, ProductCategoryUpdateRequest productCategoryUpdateRequest) {
-        this.id = id;
+    public void update(ProductCategoryUpdateRequest productCategoryUpdateRequest) {
         this.name = productCategoryUpdateRequest.getCategoryName();
+        this.isEnabled = productCategoryUpdateRequest.getIsEnabled();
         this.adminId = productCategoryUpdateRequest.getAdminId();
     }
 
+    public Boolean getIsEnabled() {
+        return isEnabled;
+    }
+
+    public void setIsEnabled(Boolean isEnabled) {
+        isEnabled = isEnabled;
+    }
 }

@@ -31,8 +31,8 @@ public class TransactionDetailSaveRequest {
 
         return TransactionDetail.builder()
                 .productQuantity(quantity)
-                .requestId(requestId)
                 .product(setProductId)
+                .requestId(requestId)
                 .build();
     }
 

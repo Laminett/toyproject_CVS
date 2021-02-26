@@ -11,6 +11,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -25,8 +27,12 @@ public class ProductPurchaseSaveRequest {
 
     private String adminId;
 
+    @NotBlank(message = "purchaseQuantity may not be blank.")
+    @Size(max = 5, message = "purchaseQuantity must be 1-5 digit.")
     private Integer purchaseQuantity;
 
+    @NotBlank(message = "purchaseAmount may not be blank.")
+    @Size(max = 17, message = "purchaseAmount must be 1-17 digit.")
     private Long purchaseAmount;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
@@ -39,10 +45,10 @@ public class ProductPurchaseSaveRequest {
     public ProductPurchaseSaveRequest(Long categoryId, Long productId, Integer purchaseQuantity, Long purchaseAmount, LocalDate purchaseDate, String adminId, LocalDateTime createdDate) {
         this.categoryId = categoryId;
         this.productId = productId;
+        this.adminId = adminId;
         this.purchaseQuantity = purchaseQuantity;
         this.purchaseAmount = purchaseAmount;
         this.purchaseDate = purchaseDate;
-        this.adminId = adminId;
         this.createdDate = createdDate;
     }
 
@@ -56,10 +62,10 @@ public class ProductPurchaseSaveRequest {
         return ProductPurchase.builder()
                 .categoryId(productCategory)
                 .productId(product)
+                .adminId(adminId)
                 .purchaseQuantity(purchaseQuantity)
                 .purchaseAmount(purchaseAmount)
                 .purchaseDate(purchaseDate)
-                .adminId(adminId)
                 .build();
     }
 

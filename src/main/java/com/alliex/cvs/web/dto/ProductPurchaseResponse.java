@@ -23,10 +23,8 @@ public class ProductPurchaseResponse {
 
     private Integer purchaseQuantity;
 
-    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate purchaseDate;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdDate;
 
     public ProductPurchaseResponse(ProductPurchase entity) {

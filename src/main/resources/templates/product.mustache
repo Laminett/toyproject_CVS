@@ -19,7 +19,6 @@
                                     <div id="product-search-field" class="dropdown-menu" aria-labelledby="dropdownMenuButton-product-search">
                                         <a class="dropdown-item" href="#none" searchKey="name">{{#messages}}product.name{{/messages}}</a>
                                         <a class="dropdown-item" href="#none" searchKey="categoryName">{{#messages}}category{{/messages}}</a>
-                                        <a class="dropdown-item" href="#none" searchKey="isEnabled">{{#messages}}use.yn{{/messages}}</a>
                                     </div>
                                 </div>
                                 <div class="form-group has-white">
@@ -42,7 +41,6 @@
                                 <th>{{#messages}}product.name{{/messages}}</th>
                                 <th>{{#messages}}point{{/messages}}</th>
                                 <th>{{#messages}}quantity{{/messages}}</th>
-                                <th>{{#messages}}use.yn{{/messages}}</th>
                                 <th>{{#messages}}admin.id{{/messages}}</th>
                                 <th>{{#messages}}created.date{{/messages}}</th>
                                 <th>{{#messages}}modified.date{{/messages}}</th>
@@ -118,7 +116,7 @@
                                             <label for="name" style="margin-right: 1.2em">{{#messages}}product.name{{/messages}}</label>
                                         </div>
                                     </div>
-                                    <input type="text" class="form-control" id="name" name="name" maxlength="100">
+                                    <input type="text" class="form-control" id="name" name="name" maxlength="50">
                                 </div>
                             </div>
 
@@ -140,18 +138,7 @@
                                             <label for="quantity">{{#messages}}quantity{{/messages}}</label>
                                         </div>
                                     </div>
-                                    <input type="text" class="form-control selectpicker" id="quantity" name="quantity" maxlength="5">
-                                </div>
-                            </div>
-
-                            <div class="form-group bmd-form-group" id="div_checkbox">
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <div class="input-group-text">
-                                            <label for="quantity">{{#messages}}use.yn{{/messages}}</label>
-                                        </div>
-                                    </div>
-                                    <input class="form-check-input" type="checkbox" value="" name="isEnabled" id="isEnabled" style="position: inherit;margin-left: 0px;margin-top: 6px;width: 20px; height: 18px;" checked="checked">
+                                    <input type="text" class="form-control selectpicker" id="quantity" name="quantity" maxlength="5" readonly>
                                 </div>
                             </div>
 
@@ -167,17 +154,13 @@
 </div>
 <script id="productsTemplate" type="text/x-jquery-tmpl">
 <tr>
-    <td><a product-id="${id}">${id}</a></td>
+    <td style='display:none;position:absolute'><a product-id="${id}">${id}</a></td>
+    <td>${number}</td>
     <td>${categoryName}</td>
     <td>${name}</td>
     <td class='text-right'>${point}</td>
     <td class='text-right'>${quantity}</td>
     <td style='display:none;position:absolute'>${barcode}</td>
-  {%if isEnabled == true%}
-    <td>Y</td>
-  {%else%}
-    <td>N</td>
-  {%/if%}
     <td>${adminId}</td>
     <td>${createdDate}</td>
     <td>${modifiedDate}</td>

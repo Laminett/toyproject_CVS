@@ -4,12 +4,14 @@ package com.alliex.cvs.web;
 import com.alliex.cvs.testsupport.WithMockCustomUser;
 import com.alliex.cvs.web.dto.ProductPurchaseSaveRequest;
 import com.alliex.cvs.web.dto.ProductPurchaseUpdateRequest;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.Rollback;
@@ -21,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -70,6 +73,8 @@ public class ProductPurchaseApiControllerTest {
         final String adminId = "adminId Updated";
         final LocalDate purchaseDate = LocalDate.now();
 
+        final String purchaseDateString = purchaseDate.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+
         productPurchaseUpdateRequest.setPurchaseAmount(purchaseAmount);
         productPurchaseUpdateRequest.setPurchaseQuantity(purchaseQuantity);
         productPurchaseUpdateRequest.setPurchaseDate(purchaseDate);
@@ -86,7 +91,7 @@ public class ProductPurchaseApiControllerTest {
                 .andExpect(jsonPath("$.purchaseAmount").value(purchaseAmount))
                 .andExpect(jsonPath("$.purchaseQuantity").value(purchaseQuantity))
                 .andExpect(jsonPath("$.adminId").value(adminId))
-                .andExpect(jsonPath("$.purchaseDate").value(purchaseDate.toString()));
+                .andExpect(jsonPath("$.purchaseDate").value(purchaseDateString));
     }
 
     @WithMockCustomUser
@@ -179,7 +184,7 @@ public class ProductPurchaseApiControllerTest {
     @WithMockUser(roles = "ADMIN")
     @Test
     public void getProductPurchaseByPurchaseDate() throws Exception {
-        String testPurchaseDate = "2020-12-03";
+        String testPurchaseDate = "03-12-2020";
 
         mvc.perform(get("/web-api/v1/products-purchases").param("purchaseDate", testPurchaseDate))
                 .andDo(print())

@@ -33,13 +33,11 @@ public class TransactionResponse {
 
     private PaymentType paymentType;
 
-    private List<TransactionDetailResponse> transactionItems;
-
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdDate;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime modifiedDate;
+
+    private List<TransactionDetailResponse> transactionItems;
 
     public TransactionResponse(Transaction entity) {
         this.id = entity.getId();
