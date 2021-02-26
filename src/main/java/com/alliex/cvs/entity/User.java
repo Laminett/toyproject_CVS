@@ -2,6 +2,7 @@ package com.alliex.cvs.entity;
 
 import com.alliex.cvs.domain.BaseTimeEntity;
 import com.alliex.cvs.domain.type.Role;
+import com.alliex.cvs.domain.type.UserStatus;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Builder;
 import lombok.Getter;
@@ -44,6 +45,10 @@ public class User extends BaseTimeEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
+    private UserStatus status;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private Role role;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
@@ -62,13 +67,14 @@ public class User extends BaseTimeEntity {
     private Point point;
 
     @Builder
-    public User(String username, String password, String department, String fullName, String email, String phoneNumber, Role role) {
+    public User(String username, String password, String department, String fullName, String email, String phoneNumber, UserStatus status, Role role) {
         this.username = username;
         this.password = password;
         this.department = department;
         this.fullName = fullName;
         this.email = email;
         this.phoneNumber = phoneNumber;
+        this.status = status;
         this.role = role;
     }
 

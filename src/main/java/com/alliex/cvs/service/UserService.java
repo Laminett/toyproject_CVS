@@ -1,5 +1,6 @@
 package com.alliex.cvs.service;
 
+import com.alliex.cvs.domain.type.UserStatus;
 import com.alliex.cvs.entity.User;
 import com.alliex.cvs.exception.UserAlreadyExistsException;
 import com.alliex.cvs.exception.UserNotFoundException;
@@ -67,9 +68,9 @@ public class UserService implements UserDetailsService {
             throw new UserAlreadyExistsException(user.getUsername());
         });
 
-        // Password encode.
         User user = userSaveRequest.toEntity();
         user.setPassword(encoder.encode(user.getPassword()));
+        user.setStatus(UserStatus.ACTIVE);
 
         // Create a user.
         Long id = userRepository.save(user).getId();
@@ -99,6 +100,10 @@ public class UserService implements UserDetailsService {
 
         if (userUpdateRequest.getPhoneNumber() != null) {
             user.setPhoneNumber(userUpdateRequest.getPhoneNumber());
+        }
+
+        if (userUpdateRequest.getStatus() != null) {
+            user.setStatus(userUpdateRequest.getStatus());
         }
 
         if (StringUtils.isNotBlank(userUpdateRequest.getPassword())) {

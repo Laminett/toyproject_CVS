@@ -1,5 +1,6 @@
 package com.alliex.cvs.web.dto;
 
+import com.alliex.cvs.domain.type.UserStatus;
 import com.alliex.cvs.entity.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,6 +21,8 @@ public class UserUpdateRequest {
 
     protected String phoneNumber;
 
+    protected UserStatus status;
+
     public User toEntity() {
         return User.builder()
                 .password(password)
@@ -27,6 +30,7 @@ public class UserUpdateRequest {
                 .fullName(fullName)
                 .email(email)
                 .phoneNumber(phoneNumber)
+                .status(status)
                 .build();
     }
 
