@@ -3,7 +3,6 @@ package com.alliex.cvs.web.dto;
 import com.alliex.cvs.domain.type.Role;
 import com.alliex.cvs.domain.type.UserStatus;
 import com.alliex.cvs.entity.User;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.ToString;
 
@@ -31,7 +30,6 @@ public class UserResponse {
 
     private Long point;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdDate;
 
     public UserResponse(String username) {
