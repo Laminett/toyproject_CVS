@@ -20,11 +20,11 @@ public class ProductPurchase extends BaseTimeEntity {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "category_id", referencedColumnName = "id")
+    @JoinColumn(name = "category_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "fk_product_purchase_product_category_id"))
     private ProductCategory productCategory;
 
     @ManyToOne
-    @JoinColumn(name = "product_id", referencedColumnName = "id")
+    @JoinColumn(name = "product_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "fk_product_purchase_product_id"))
     private Product product;
 
     @Column(nullable = false)

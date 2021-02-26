@@ -24,7 +24,7 @@ public class TransactionDetail extends BaseTimeEntity {
     private Integer productQuantity;
 
     @ManyToOne
-    @JoinColumn(name = "product_id", referencedColumnName = "id")
+    @JoinColumn(name = "product_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "fk_transaction_detail_product_id"))
     private Product product;
 
     @Builder
