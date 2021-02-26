@@ -3,8 +3,6 @@ package com.alliex.cvs.example;
 
 import com.alliex.cvs.entity.Product;
 import com.alliex.cvs.entity.ProductCategory;
-import com.alliex.cvs.entity.QProduct;
-import com.alliex.cvs.entity.QProductCategory;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -32,9 +30,9 @@ public class QuerydslJoinTest {
     public void before() {
         queryFactory = new JPAQueryFactory(em);
 
-        ProductCategory icecream = ProductCategory.builder().name("icecream").adminId("test").build();
-        ProductCategory drink = ProductCategory.builder().name("drink").adminId("test").build();
-        ProductCategory biscuit = ProductCategory.builder().name("biscuit").adminId("test").build();
+        ProductCategory icecream = ProductCategory.builder().name("icecream").adminId("test").isEnabled(true).build();
+        ProductCategory drink = ProductCategory.builder().name("drink").adminId("test").isEnabled(true).build();
+        ProductCategory biscuit = ProductCategory.builder().name("biscuit").adminId("test").isEnabled(true).build();
 
         // add category
         em.persist(icecream);
