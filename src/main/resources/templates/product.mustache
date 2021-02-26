@@ -19,7 +19,6 @@
                                     <div id="product-search-field" class="dropdown-menu" aria-labelledby="dropdownMenuButton-product-search">
                                         <a class="dropdown-item" href="#none" searchKey="name">{{#messages}}product.name{{/messages}}</a>
                                         <a class="dropdown-item" href="#none" searchKey="categoryName">{{#messages}}category{{/messages}}</a>
-                                        <a class="dropdown-item" href="#none" searchKey="isEnabled">{{#messages}}use.yn{{/messages}}</a>
                                     </div>
                                 </div>
                                 <div class="form-group has-white">
@@ -139,7 +138,7 @@
                                             <label for="quantity">{{#messages}}quantity{{/messages}}</label>
                                         </div>
                                     </div>
-                                    <input type="text" class="form-control selectpicker" id="quantity" name="quantity" maxlength="5">
+                                    <input type="text" class="form-control selectpicker" id="quantity" name="quantity" maxlength="5" readonly>
                                 </div>
                             </div>
 
@@ -154,7 +153,6 @@
     </div>
 </div>
 <script id="productsTemplate" type="text/x-jquery-tmpl">
-{%if isEnabled == true%}
 <tr>
     <td style='display:none;position:absolute'><a product-id="${id}">${id}</a></td>
     <td>${number}</td>
@@ -175,7 +173,6 @@
          </button>
     </td>
 </tr>
-{%/if%}
 </script>
 <script id="productsNoDataTemplate" type="text/x-jquery-tmpl">
 <tr>

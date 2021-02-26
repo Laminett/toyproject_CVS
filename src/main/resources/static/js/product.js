@@ -46,7 +46,7 @@ let main = {
                 let productId = $(this).closest('tr').find('td').eq(0).text();
                 _this.addFormVisible(true);
                 $('#name').attr('readOnly', true);
-                $('#quantity').attr('readOnly', true);
+                $('#div_quantity').css('display', 'block');
                 _this.getProduct(productId);
             } else {
                 if (location.hostname != _this.PROD_DOMAIN) {
@@ -55,6 +55,7 @@ let main = {
                 } else {
                     _this.addFormVisible(false);
                 }
+                $('#div_quantity').css('display', 'none');
 
                 $('.description').text('First scan the Product barcode please');
             }
@@ -65,7 +66,6 @@ let main = {
             $("#productId").val("");
             _this.addFormVisible(false);
             $('#name').attr('readOnly', false);
-            $('#quantity').attr('readOnly', false);
         });
 
         // 바코드 스캔 탐지 이벤트
@@ -278,6 +278,7 @@ let main = {
 
         let param = {
             page: page || 1,
+            isEnabled: true
         };
 
         let k, v;

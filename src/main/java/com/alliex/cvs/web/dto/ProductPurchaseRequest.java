@@ -16,7 +16,7 @@ public class ProductPurchaseRequest {
 
     private String categoryName;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
     private LocalDate purchaseDate;
 
 }
