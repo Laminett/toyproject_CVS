@@ -152,24 +152,15 @@ public class ProductCategoryApiControllerTest {
                 .andExpect(jsonPath("$.code", is("PRODUCT_CATEGORY_NOT_FOUND")));
     }
 
-    @WithMockUser(roles = "ADMIN")
-    @Test
-    public void getProductCategoryByAdminId() throws Exception {
-        final String testAdminId = "testid";
-
-        mvc.perform(get("/web-api/v1/products-categories").param("adminId", testAdminId))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.content[0].adminId").value(testAdminId));
-    }
-
     private ProductCategorySaveRequest getProductCategoryRequest() {
         String categoryName = "categoryTest_test";
         String adminId = "testtest";
+        Boolean isEnabled = true;
 
         // Create ProductCategory
         return ProductCategorySaveRequest.builder()
                 .categoryName(categoryName)
+                .isEnabled(isEnabled)
                 .adminId(adminId)
                 .build();
     }

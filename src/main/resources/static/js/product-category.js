@@ -85,6 +85,7 @@ var main = {
 
         var param = {
             page: page || 1,
+            isEnabled: true
         };
 
         var k, v;
@@ -108,15 +109,20 @@ var main = {
             if (data.content.length == 0) {
                 $("#categoriesNoDataTemplate").tmpl().appendTo("#categoriesArea");
             } else {
-                $("#categoriesTemplate").tmpl(data.content).appendTo("#categoriesArea");
-            }
+                let number = 1;
+                data.content.forEach(function (element) {
+                    element.number = number++;
+                });
 
-            // set paging.
-            var pages = [];
-            for (var i = 0; i < data.totalPages; i++) {
-                pages.push({"page": i + 1});
+                $("#categoriesTemplate").tmpl(data.content).appendTo("#categoriesArea");
+
+                // set paging.
+                var pages = [];
+                for (var i = 0; i < data.totalPages; i++) {
+                    pages.push({"page": i + 1});
+                }
+                $("#categoriesPagingArea").tmpl(pages).appendTo("#categoriesPagingArea");
             }
-            $("#categoriesPagingArea").tmpl(pages).appendTo("#categoriesPagingArea");
         }).fail(function (error) {
             alert(JSON.stringify(error));
         });
@@ -138,7 +144,7 @@ var main = {
 
         var data = {
             categoryName: $("#categoryName").val(),
-            isEnabled: $("#isEnabled").val(),
+            isEnabled: true,
             adminId: $("#adminId").val()
         };
 

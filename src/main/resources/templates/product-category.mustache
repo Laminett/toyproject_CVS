@@ -98,7 +98,8 @@
 </div>
 <script id="categoriesTemplate" type="text/x-jquery-tmpl">
 <tr>
-    <td><a category-id="${id}">${id}</a></td>
+    <td style='display:none;position:absolute'><a category-id="${id}">${id}</a></td>
+    <td>${number}</td>
     <td>${name}</td>
     <td>${adminId}</td>
     <td>${modifiedDate}</td>
@@ -114,7 +115,7 @@
 </script>
 <script id="categoriesNoDataTemplate" type="text/x-jquery-tmpl">
 <tr>
-    <td colspan="6">{{#messages}}info.scan.product{{/messages}}</td>
+    <td colspan="6">{{#messages}}info.search.no.data{{/messages}}</td>
 </tr>
 </script>
 <script id="categoriesPagingTemplate" type="text/x-jquery-tmpl">

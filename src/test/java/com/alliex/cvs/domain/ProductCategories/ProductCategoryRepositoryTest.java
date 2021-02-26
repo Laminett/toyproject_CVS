@@ -24,9 +24,11 @@ public class ProductCategoryRepositoryTest {
     public void getProductCategories() {
         String name = "test category";
         String createdId = "ykk";
+        Boolean isEnabled = true;
 
         productCategoryRepository.save(ProductCategory.builder()
                 .name(name)
+                .isEnabled(isEnabled)
                 .adminId(createdId)
                 .build());
 

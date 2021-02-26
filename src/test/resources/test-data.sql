@@ -15,10 +15,10 @@ VALUES (90, '2020-10-05 13:21:51', 500, 'Y', 400);
 INSERT INTO settle (id, created_date, aggregated_at, approval_amount, approval_count, cancel_amount, cancel_count, total_amount, total_count, user_id)
 VALUES (90, '2020-10-05 13:21:51', '2020-10-01',  8500, 12, 1200, 2, 7300, 14, 400);
 
-INSERT INTO product_category(id, name, admin_id, created_date, modified_date)
+INSERT INTO product_category(id, name, is_enabled, admin_id, created_date, modified_date)
 VALUES
-(500, 'categorytest', 'testid', '2020-10-15 16:00:00', '2020-10-16 16:00:00'),
-(501, 'categorytest1', 'testid', '2020-10-15 16:00:00', '2020-10-16 16:00:00');
+(500, 'categorytest', true, 'testid', '2020-10-15 16:00:00', '2020-10-16 16:00:00'),
+(501, 'categorytest1', true, 'testid', '2020-10-15 16:00:00', '2020-10-16 16:00:00');
 
 INSERT INTO product(id, name, barcode, is_enabled, point, quantity, category_id, admin_id, created_date, modified_date)
 VALUES (500, 'testProduct', '123123123123', true, 100, 200, 500, 'testAdmin', '2020-12-20 12:12:12', '2020-12-20 12:12:12'),

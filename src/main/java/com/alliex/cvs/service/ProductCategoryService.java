@@ -41,7 +41,7 @@ public class ProductCategoryService {
         ProductCategory productCategory = productCategoryRepository.findById(id)
                 .orElseThrow(() -> new ProductCategoryNotFoundException(id));
 
-        productCategory.update(id, productCategoryUpdateRequest);
+        productCategory.update(productCategoryUpdateRequest);
 
         return productCategory.getId();
     }
@@ -51,7 +51,9 @@ public class ProductCategoryService {
         ProductCategory productCategory = productCategoryRepository.findById(id)
                 .orElseThrow(() -> new ProductCategoryNotFoundException(id));
 
-        productCategoryRepository.delete(productCategory);
+        ProductCategoryUpdateRequest productCategoryUpdateRequest =
+                new ProductCategoryUpdateRequest(productCategory.getName(), productCategory.getAdminId(), false);
+        productCategory.update(productCategoryUpdateRequest);
     }
 
     public List<ProductCategoryResponse> getCategories(Pageable pageable) {
