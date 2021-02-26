@@ -1,5 +1,6 @@
 package com.alliex.cvs.service;
 
+import com.alliex.cvs.domain.type.UserStatus;
 import com.alliex.cvs.entity.User;
 import com.alliex.cvs.exception.UserAlreadyExistsException;
 import com.alliex.cvs.exception.UserNotFoundException;
@@ -9,6 +10,7 @@ import com.alliex.cvs.web.dto.UserRequest;
 import com.alliex.cvs.web.dto.UserResponse;
 import com.alliex.cvs.web.dto.UserSaveRequest;
 import com.alliex.cvs.web.dto.UserUpdateRequest;
+import lombok.extern.java.Log;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -25,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 
+@Log
 @Service
 public class UserService implements UserDetailsService {
 
@@ -49,6 +52,13 @@ public class UserService implements UserDetailsService {
         User user = findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User " + username + " not found."));
 
+        // INACTIVE User.
+        if (user.getStatus() != UserStatus.ACTIVE) {
+            log.info("User " + username + " status is not ACTIVE.");
+
+            throw new UsernameNotFoundException(user.getUsername());
+        }
+
         List<GrantedAuthority> USER_ROLES = AuthorityUtils.createAuthorityList(user.getRole().getKey());
 
         return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), USER_ROLES);
@@ -67,9 +77,9 @@ public class UserService implements UserDetailsService {
             throw new UserAlreadyExistsException(user.getUsername());
         });
 
-        // Password encode.
         User user = userSaveRequest.toEntity();
         user.setPassword(encoder.encode(user.getPassword()));
+        user.setStatus(UserStatus.ACTIVE);
 
         // Create a user.
         Long id = userRepository.save(user).getId();
@@ -99,6 +109,10 @@ public class UserService implements UserDetailsService {
 
         if (userUpdateRequest.getPhoneNumber() != null) {
             user.setPhoneNumber(userUpdateRequest.getPhoneNumber());
+        }
+
+        if (userUpdateRequest.getStatus() != null) {
+            user.setStatus(userUpdateRequest.getStatus());
         }
 
         if (StringUtils.isNotBlank(userUpdateRequest.getPassword())) {

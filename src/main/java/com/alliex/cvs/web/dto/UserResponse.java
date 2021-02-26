@@ -1,6 +1,7 @@
 package com.alliex.cvs.web.dto;
 
 import com.alliex.cvs.domain.type.Role;
+import com.alliex.cvs.domain.type.UserStatus;
 import com.alliex.cvs.entity.User;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
@@ -23,6 +24,8 @@ public class UserResponse {
     private String email;
 
     private String phoneNumber;
+
+    private UserStatus status;
 
     private Role role;
 
@@ -47,6 +50,7 @@ public class UserResponse {
         this.fullName = entity.getFullName();
         this.email = entity.getEmail();
         this.phoneNumber = entity.getPhoneNumber();
+        this.status = entity.getStatus();
         this.role = entity.getRole();
         this.createdDate = entity.getCreatedDate();
 

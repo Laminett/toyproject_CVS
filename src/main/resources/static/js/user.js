@@ -42,10 +42,12 @@ var main = {
             _this.getUser(userId);
         });
 
+        $("#activationArea").hide();
         $('.modal').on('hidden.bs.modal', function (e) {
             $(this).find('form')[0].reset()
             $("#userId").val("");
             $("#username").removeAttr("readonly");
+            $("#activationArea").hide();
         });
     },
     getUser: function (id) {
@@ -64,6 +66,13 @@ var main = {
             $("#phoneNumber").val(data.phoneNumber);
             $("#role").val(data.role);
 
+            if (data.status == 'ACTIVE') {
+                $('#status').prop('checked', true);
+            } else if (data.status == 'INACTIVE') {
+                $('#status').prop('checked', false);
+            }
+
+            $("#activationArea").show();
             $("#createUserModal").modal("show");
             $("#username").attr("readonly", "readonly");
         }).fail(function (error) {
@@ -129,6 +138,10 @@ var main = {
             role: $("#role").val()
         };
 
+        if (isUpdate) {
+            data.status = $('#status').is(':checked') ? 'ACTIVE' : 'INACTIVE';
+        }
+
         if (!isUpdate && !data.username) {
             alert('사번은 필수입니다.');
             return;
@@ -151,7 +164,7 @@ var main = {
         }
 
         var apiEndpoint;
-        if (userId) {
+        if (isUpdate) {
             apiEndpoint = "/web-api/v1/users/" + userId;
         } else {
             apiEndpoint = "/web-api/v1/users";

@@ -1,6 +1,7 @@
 package com.alliex.cvs.service;
 
 import com.alliex.cvs.domain.type.Role;
+import com.alliex.cvs.domain.type.UserStatus;
 import com.alliex.cvs.web.dto.UserRequest;
 import com.alliex.cvs.web.dto.UserResponse;
 import com.alliex.cvs.web.dto.UserSaveRequest;
@@ -67,6 +68,7 @@ public class UserServiceTest {
         assertThat(userResponse.getFullName()).isEqualTo(fullName);
         assertThat(userResponse.getEmail()).isEqualTo(email);
         assertThat(userResponse.getPhoneNumber()).isEqualTo(phoneNumber);
+        assertThat(userResponse.getStatus()).isEqualTo(UserStatus.ACTIVE);
         assertThat(userResponse.getRole()).isEqualTo(role);
     }
 
@@ -78,6 +80,7 @@ public class UserServiceTest {
         userUpdateRequest.setFullName("fullName updated");
         userUpdateRequest.setEmail("email updated");
         userUpdateRequest.setPhoneNumber("phoneNumber updated");
+        userUpdateRequest.setStatus(UserStatus.INACTIVE);
         Long updatedId = userService.update(400L, userUpdateRequest);
 
         // Get user.
@@ -86,6 +89,7 @@ public class UserServiceTest {
         assertThat(userResponse.getFullName()).isEqualTo("fullName updated");
         assertThat(userResponse.getEmail()).isEqualTo("email updated");
         assertThat(userResponse.getPhoneNumber()).isEqualTo("phoneNumber updated");
+        assertThat(userResponse.getStatus()).isEqualTo(UserStatus.INACTIVE);
     }
 
     @Test
