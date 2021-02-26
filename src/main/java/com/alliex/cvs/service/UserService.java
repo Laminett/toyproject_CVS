@@ -111,6 +111,10 @@ public class UserService implements UserDetailsService {
             user.setPhoneNumber(userUpdateRequest.getPhoneNumber());
         }
 
+        if (userUpdateRequest.getRole() != null) {
+            user.setRole(userUpdateRequest.getRole());
+        }
+
         if (userUpdateRequest.getStatus() != null) {
             user.setStatus(userUpdateRequest.getStatus());
         }
