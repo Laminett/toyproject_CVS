@@ -156,7 +156,8 @@
 </div>
 <script id="purchasesTemplate" type="text/x-jquery-tmpl">
 <tr>
-    <td><a purchase-id="${id}">${id}</a></td>
+    <td style='display:none;position:absolute'><a purchase-id="${id}">${id}</a></td>
+    <td>${number}</td>
     <td>${product.productCategory.name}</td>
     <td>${product.name}</td>
     <td>${purchaseQuantity}</td>

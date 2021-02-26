@@ -228,15 +228,20 @@ var main = {
             if (data.content.length == 0) {
                 $("#purchasesNoDataTemplate").tmpl().appendTo("#purchasesArea");
             } else {
-                $("#purchasesTemplate").tmpl(data.content).appendTo("#purchasesArea");
-            }
+                let number = 1;
+                data.content.forEach(function (element) {
+                    element.number = number++;
+                });
 
-            // set paging.
-            var pages = [];
-            for (var i = 0; i < data.totalPages; i++) {
-                pages.push({"page": i + 1});
+                $("#purchasesTemplate").tmpl(data.content).appendTo("#purchasesArea");
+
+                // set paging.
+                var pages = [];
+                for (var i = 0; i < data.totalPages; i++) {
+                    pages.push({"page": i + 1});
+                }
+                $("#purchasesPagingArea").tmpl(pages).appendTo("#purchasesPagingArea");
             }
-            $("#purchasesPagingArea").tmpl(pages).appendTo("#purchasesPagingArea");
         }).fail(function (error) {
             alert(JSON.stringify(error));
         });
