@@ -21,9 +21,9 @@ public class TransactionDetailResponse {
         this.id = id;
         this.productId = productId;
         this.productName = productName;
+        this.requestId = requestId;
         this.productPoint = productPoint;
         this.productQuantity = productQuantity;
-        this.requestId = requestId;
     }
 
 }

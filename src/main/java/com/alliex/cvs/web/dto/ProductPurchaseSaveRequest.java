@@ -45,10 +45,10 @@ public class ProductPurchaseSaveRequest {
     public ProductPurchaseSaveRequest(Long categoryId, Long productId, Integer purchaseQuantity, Long purchaseAmount, LocalDate purchaseDate, String adminId, LocalDateTime createdDate) {
         this.categoryId = categoryId;
         this.productId = productId;
+        this.adminId = adminId;
         this.purchaseQuantity = purchaseQuantity;
         this.purchaseAmount = purchaseAmount;
         this.purchaseDate = purchaseDate;
-        this.adminId = adminId;
         this.createdDate = createdDate;
     }
 
@@ -62,10 +62,10 @@ public class ProductPurchaseSaveRequest {
         return ProductPurchase.builder()
                 .categoryId(productCategory)
                 .productId(product)
+                .adminId(adminId)
                 .purchaseQuantity(purchaseQuantity)
                 .purchaseAmount(purchaseAmount)
                 .purchaseDate(purchaseDate)
-                .adminId(adminId)
                 .build();
     }
 

@@ -31,8 +31,8 @@ public class ProductCategorySaveRequest {
     public ProductCategory toEntity() {
         return ProductCategory.builder()
                 .name(categoryName.toUpperCase())
-                .isEnabled(isEnabled)
                 .adminId(adminId)
+                .isEnabled(isEnabled)
                 .build();
     }
 

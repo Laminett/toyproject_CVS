@@ -12,9 +12,9 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class TransactionStateResponse {
 
-    private TransactionState transactionState;
-
     private String requestId;
+
+    private TransactionState transactionState;
 
     private LocalDateTime createdDate;
 

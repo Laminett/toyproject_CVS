@@ -37,11 +37,11 @@ public class ProductRepositorySupport extends QuerydslRepositorySupport {
     }
 
     private BooleanExpression nameLike(String name) {
-        return StringUtils.isNotBlank(name) ? product.name.like("%" + name + "%") : null;
+        return StringUtils.isNotBlank(name) ? product.name.contains(name) : null;
     }
 
     private BooleanExpression categoryNameLike(String categoryName) {
-        return StringUtils.isNotBlank(categoryName) ? product.productCategory.name.like("%" + categoryName + "%") : null;
+        return StringUtils.isNotBlank(categoryName) ? product.productCategory.name.contains(categoryName) : null;
     }
 
     private BooleanExpression isEnabledEq(Boolean isEnabled) {

@@ -33,11 +33,11 @@ public class TransactionResponse {
 
     private PaymentType paymentType;
 
-    private List<TransactionDetailResponse> transactionItems;
-
     private LocalDateTime createdDate;
 
     private LocalDateTime modifiedDate;
+
+    private List<TransactionDetailResponse> transactionItems;
 
     public TransactionResponse(Transaction entity) {
         this.id = entity.getId();

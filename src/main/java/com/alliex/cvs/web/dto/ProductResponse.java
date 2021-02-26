@@ -13,9 +13,9 @@ public class ProductResponse {
 
     private Long id;
 
-    private String categoryName;
-
     private Long categoryId;
+
+    private String categoryName;
 
     private String barcode;
 

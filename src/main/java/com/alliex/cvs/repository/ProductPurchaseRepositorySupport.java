@@ -39,11 +39,11 @@ public class ProductPurchaseRepositorySupport extends QuerydslRepositorySupport 
     }
 
     private BooleanExpression productNameLike(String productName) {
-        return StringUtils.isNotBlank(productName) ? productPurchase.product.name.like("%" + productName + "%") : null;
+        return StringUtils.isNotBlank(productName) ? productPurchase.product.name.contains(productName) : null;
     }
 
     private BooleanExpression categoryNameLike(String categoryName) {
-        return StringUtils.isNotBlank(categoryName) ? productPurchase.productCategory.name.like("%" + categoryName + "%") : null;
+        return StringUtils.isNotBlank(categoryName) ? productPurchase.productCategory.name.contains(categoryName) : null;
     }
 
     private BooleanExpression purchaseDateEq(LocalDate purchaseDate) {

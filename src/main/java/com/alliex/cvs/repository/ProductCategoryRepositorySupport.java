@@ -37,10 +37,11 @@ public class ProductCategoryRepositorySupport extends QuerydslRepositorySupport 
 
 
     private BooleanExpression categoryNameLike(String categoryName) {
-        return StringUtils.isNotBlank(categoryName) ? productCategory.name.like("%" + categoryName + "%") : null;
+        return StringUtils.isNotBlank(categoryName) ? productCategory.name.contains(categoryName) : null;
     }
 
     private BooleanExpression isEnabledEq(Boolean isEnabled) {
         return isEnabled != null ? productCategory.isEnabled.eq(isEnabled) : null;
     }
+
 }
