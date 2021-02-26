@@ -35,10 +35,8 @@ public class TransactionResponse {
 
     private List<TransactionDetailResponse> transactionItems;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdDate;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime modifiedDate;
 
     public TransactionResponse(Transaction entity) {

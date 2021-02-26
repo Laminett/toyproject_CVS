@@ -23,7 +23,6 @@ public class TransactionRefundResponse {
 
     private String requestId;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdDate;
 
     public TransactionRefundResponse(Transaction entity) {

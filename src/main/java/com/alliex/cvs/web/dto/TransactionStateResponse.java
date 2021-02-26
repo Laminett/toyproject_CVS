@@ -16,7 +16,6 @@ public class TransactionStateResponse {
 
     private String requestId;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdDate;
 
     public TransactionStateResponse(TransactionState transactionState, String requestId) {
