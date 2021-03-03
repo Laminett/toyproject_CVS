@@ -45,6 +45,11 @@ var main = {
                     + "<td colspan='11'>" + getMessage("info.search.no.data") + "</td>  "
                     + "</tr>");
             } else {
+                let number = 1;
+                data.content.forEach(function (element) {
+                    element.number = number++;
+                });
+
                 $("#settleTemplate").tmpl(data.content).appendTo("#settleArea");
             }
 

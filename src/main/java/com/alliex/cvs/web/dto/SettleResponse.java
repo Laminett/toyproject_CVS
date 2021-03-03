@@ -76,7 +76,7 @@ public class SettleResponse {
         this.approvalCount = settle.getApprovalCount();
         this.approvalAmount = settle.getApprovalAmount();
         this.cancelCount = settle.getCancelCount();
-        this.cancelAmount = settle.getApprovalAmount();
+        this.cancelAmount = settle.getCancelAmount();
         this.totalCount = settle.getTotalCount();
         this.totalAmount = settle.getTotalAmount();
         this.status = settle.getStatus();
