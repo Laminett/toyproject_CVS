@@ -4,28 +4,6 @@ var main = {
     init: function () {
         var _this = this;
 
-        $('.datepicker').datetimepicker({
-            format: 'DD-MM-YYYY',
-            useCurrent: true,
-            collapse: true,
-            icons:{
-                date: "fa fa-calendar",
-                previous: 'fa fa-chevron-left',
-                next: 'fa fa-chevron-right'
-            },
-            defaultDate: new Date()
-        }).on("dp.change", function (e) {
-            let datepickerId = this.id;
-
-            if(datepickerId == "fromDate" && $('#fromDate').val()>$('#toDate').val()) {
-                $('#toDate').val($('#fromDate').val());
-            }
-
-            if(datepickerId == "toDate" && $('#fromDate').val()>$('#toDate').val()) {
-                $('#fromDate').val($('#toDate').val());
-            }
-        });
-
         _this.getTransactions();
 
         $("#transaction-search-field a").click(function () {
