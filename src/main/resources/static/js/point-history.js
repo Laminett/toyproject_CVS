@@ -4,6 +4,12 @@ var main = {
 
         _this.getPointHistories(1);
 
+        // status search form handling
+        $("#point-history-status-field a").click(function(){
+            $("#dropdownMenuButton-point-history-status").text($(this).text());
+            $("#point-history-status").val($(this).attr("search-value"));
+        });
+
         // 페이징
         $(document).on('click', '.page-link', function () {
             _this.getPointHistories(this.text);
@@ -28,7 +34,7 @@ var main = {
             page: page,
             startDate: $("#search_startDate").val() == ""? moment(new Date().getTime()).format():$("#search_startDate").val(),
             endDate: $("#search_endDate").val() == ""? moment(new Date().getTime()).format():$("#search_endDate").val(),
-            status: $('#search_status').val(),
+            status: $("#point-history-status").val() == "ALL" ? null:$("#point-history-status").val(),
             fullName: $('#search_fullName').val()
         };
 
@@ -45,6 +51,11 @@ var main = {
                     + "<td colspan='7'>" + getMessage("info.search.no.data") + "</td>  "
                     + "</tr>");
             } else {
+                let number = 1;
+                data.content.forEach(function (element) {
+                    element.number = number++;
+                });
+
                 $("#pointHistoriesTemplate").tmpl(data.content).appendTo("#pointHistoriesArea");
             }
 

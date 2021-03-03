@@ -1,5 +1,6 @@
 package com.alliex.cvs.web.dto;
 
+import com.alliex.cvs.domain.type.PointHistoryStatus;
 import com.alliex.cvs.entity.PointHistory;
 import lombok.Builder;
 import lombok.Getter;
@@ -21,7 +22,7 @@ public class PointHistoryResponse {
 
     private Long point;
 
-    private String status;
+    private PointHistoryStatus status;
 
     private String adminId;
 

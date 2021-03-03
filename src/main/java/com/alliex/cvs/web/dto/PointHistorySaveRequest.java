@@ -1,5 +1,6 @@
 package com.alliex.cvs.web.dto;
 
+import com.alliex.cvs.domain.type.PointHistoryStatus;
 import com.alliex.cvs.entity.PointHistory;
 import com.alliex.cvs.entity.User;
 import lombok.Builder;
@@ -27,6 +28,7 @@ public class PointHistorySaveRequest {
         return PointHistory.builder()
                 .user(setUser)
                 .point(point)
+                .status(PointHistoryStatus.PROCESSING)
                 .build();
     }
 
