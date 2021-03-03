@@ -4,11 +4,6 @@ var main = {
 
         _this.getPointHistories(1);
 
-        $('.datepicker').datetimepicker({
-            format: 'DD-MM-YYYY',
-            defaultDate: new Date()
-        });
-
         // 페이징
         $(document).on('click', '.page-link', function () {
             _this.getPointHistories(this.text);
