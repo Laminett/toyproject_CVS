@@ -61,7 +61,7 @@
 </div>
 <script id="settleTemplate" type="text/x-jquery-tmpl">
 <tr id='${id}'>
-    <td class='text-center'>${id}</td>
+    <td class='text-center'>${number}</td>
     <td class='text-left'>${username}</td>
     <td class="text-left">${fullName}</td>
     <td class='text-center'>${aggregatedAt}</td>
@@ -74,9 +74,9 @@
     <td class='text-center'>${modifiedDate}</td>
 {%if status%}
     {%if status == 'Y'%}
-        <td class="text-left">Approved by ${adminId}</td>
+        <td class="text-center">APPROVE</td>
     {%else%}
-        <td class="text-left">Denied by ${adminId}</td>
+        <td class="text-center">REJECT</td>
     {%/if%}
 {%else%}
     <td class='td-actions text-center'>
