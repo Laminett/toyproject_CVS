@@ -50,7 +50,7 @@ public class PointHistoryService {
 
     @Transactional
     public PointHistoryProgressResponse progress(Long userId) {
-        PointHistory pointHistory = pointHistoryRepository.findByUserIdAndStatus(userId, null)
+        PointHistory pointHistory = pointHistoryRepository.findByUserIdAndStatus(userId, PointHistoryStatus.PROCESSING)
                 .orElseGet(PointHistory::new);
 
         return new PointHistoryProgressResponse(userId, pointHistory.getPoint());
