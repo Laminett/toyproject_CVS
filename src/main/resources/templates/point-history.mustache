@@ -20,6 +20,18 @@
                                     <input type="text" class="form-control datepicker" id="search_endDate"
                                            maxlength="10">
                                 </div>
+                                <div class="dropdown" style="margin-right: 10px;">
+                                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton-point-history-status" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        {{#messages}}status{{/messages}}
+                                    </button>
+                                    <div id="point-history-status-field" class="dropdown-menu" aria-labelledby="dropdownMenuButton-point-history-status">
+                                        <a class="dropdown-item" search-value="ALL">{{#messages}}ALL{{/messages}}</a>
+                                        <a class="dropdown-item" search-value="APPROVE">{{#messages}}APPROVE{{/messages}}</a>
+                                        <a class="dropdown-item" search-value="REJECT">{{#messages}}REJECT{{/messages}}</a>
+                                        <a class="dropdown-item" search-value="PROCESSING">{{#messages}}PROCESSING{{/messages}}</a>
+                                    </div>
+                                    <input type="hidden" id="point-history-status" value=""/>
+                                </div>
                                 <span>{{#messages}}user.full.name{{/messages}}</span>
                                 <div class="form-group has-white">
                                     <input type="text" class="form-control" id="search_fullName" maxlength="25" style="color: white;">
@@ -59,23 +71,19 @@
 </div>
 <script id="pointHistoriesTemplate" type="text/x-jquery-tmpl">
 <tr id='${id}'>
-    <td class="text-center">${id}</td>
+    <td class="text-center">${number}</td>
     <td class="text-left">${username}</td>
     <td class="text-left">${fullName}</td>
     <td class="text-right">${point}</td>
     <td class="text-center">${createdDate}</td>
     <td class="text-center">${modifiedDate}</td>
-{%if status%}
-    {%if status == 'Y'%}
-        <td class="text-left">Approved by ${adminId}</td>
-    {%else%}
-        <td class="text-left">Denied by ${adminId}</td>
-    {%/if%}
-{%else%}
+{%if status == 'PROCESSING'%}
     <td class="td-actions text-center">
-        <button type="button" class="btn btn-info" name="btn_approve" value="Y"><i class="material-icons">done</i></button>&nbsp;
-        <button type="button" class="btn btn-danger" name="btn_deny" value="N"><i class="material-icons">clear</i></button>
+        <button type="button" class="btn btn-info" name="btn_approve" value="APPROVE"><i class="material-icons">done</i></button>&nbsp;
+        <button type="button" class="btn btn-danger" name="btn_deny" value="REJECT"><i class="material-icons">clear</i></button>
     </td>
+{%else%}
+    <td class="text-center">${status}</td>
 {%/if%}
 <tr>
 </script>

@@ -1,5 +1,6 @@
 package com.alliex.cvs.web;
 
+import com.alliex.cvs.domain.type.PointHistoryStatus;
 import com.alliex.cvs.web.dto.PointHistoryUpdateRequest;
 import com.alliex.cvs.web.dto.PointHistorySaveRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -162,7 +163,7 @@ public class PointHistoryApiControllerTest {
 
     private PointHistoryUpdateRequest getPointHistoryUpdateRequest() {
         return PointHistoryUpdateRequest.builder()
-                .status("Y")
+                .status(PointHistoryStatus.APPROVE)
                 .adminId("testAdmin")
                 .build();
     }

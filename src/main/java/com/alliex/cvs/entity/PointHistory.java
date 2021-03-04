@@ -1,7 +1,7 @@
 package com.alliex.cvs.entity;
 
 import com.alliex.cvs.domain.BaseTimeEntity;
-import com.alliex.cvs.entity.User;
+import com.alliex.cvs.domain.type.PointHistoryStatus;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,14 +24,15 @@ public class PointHistory extends BaseTimeEntity {
     @Column(nullable = false)
     private Long point;
 
-    @Column
-    private String status;
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private PointHistoryStatus status;
 
     @Column
     private String adminId;
 
     @Builder
-    public PointHistory(Long id, User user, Long point, String status, String adminId) {
+    public PointHistory(Long id, User user, Long point, PointHistoryStatus status, String adminId) {
         this.id = id;
         this.user = user;
         this.point = point;
@@ -39,7 +40,7 @@ public class PointHistory extends BaseTimeEntity {
         this.adminId = adminId;
     }
 
-    public void update(Long id, String status, String adminId) {
+    public void update(Long id, PointHistoryStatus status, String adminId) {
         this.id = id;
         this.status = status;
         this.adminId = adminId;

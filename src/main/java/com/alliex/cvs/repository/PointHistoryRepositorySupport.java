@@ -1,5 +1,6 @@
 package com.alliex.cvs.repository;
 
+import com.alliex.cvs.domain.type.PointHistoryStatus;
 import com.alliex.cvs.entity.PointHistory;
 import com.alliex.cvs.web.dto.PointHistoryRequest;
 import com.querydsl.core.QueryResults;
@@ -15,7 +16,6 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDate;
 
 import static com.alliex.cvs.entity.QPointHistory.pointHistory;
-
 
 @Repository
 public class PointHistoryRepositorySupport extends QuerydslRepositorySupport {
@@ -63,7 +63,7 @@ public class PointHistoryRepositorySupport extends QuerydslRepositorySupport {
             return null;
         }
 
-        return pointHistory.status.eq(status);
+        return pointHistory.status.eq(PointHistoryStatus.valueOf(status));
     }
 
 }
