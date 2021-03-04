@@ -35,6 +35,18 @@ var main = {
             let requestId = $(this).closest('tr').find('td').eq(0).text();
             _this.getTransaction(requestId);
         });
+
+        $('.datepicker').on('change', function () {
+            let datepickerId = this.id;
+
+            if (datepickerId == "fromDate" && $('#fromDate').val() > $('#toDate').val()) {
+                $('#toDate').val($('#fromDate').val());
+            }
+
+            if (datepickerId == "toDate" && $('#fromDate').val() > $('#toDate').val()) {
+                $('#fromDate').val($('#toDate').val());
+            }
+        });
     },
     getTransaction: function (id) {
         $.ajax({

@@ -7,18 +7,6 @@ var main = {
         _this.getPurchases();
         _this.purchaseDateParentVisible(this.SEARCH_KEY);
 
-        $('.datepicker_local').datetimepicker({
-            format: 'DD-MM-YYYY',
-            useCurrent: true,
-            collapse: true,
-            icons:{
-                date: "fa fa-calendar",
-                previous: 'fa fa-chevron-left',
-                next: 'fa fa-chevron-right'
-            },
-            defaultDate: new Date()
-        });
-
         // purchase search form handling
         $("#purchase-search-field a").click(function () {
             var searchKey = $(this).attr("searchKey");
@@ -129,7 +117,7 @@ var main = {
             }
         });
 
-        $('#barcodeSearch').click(function() {
+        $('#barcodeSearch').click(function () {
             let barcode = $('#barcode').val();
             $.ajax({
                 type: 'GET',
