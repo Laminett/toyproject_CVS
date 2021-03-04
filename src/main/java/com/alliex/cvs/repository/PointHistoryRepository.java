@@ -1,5 +1,6 @@
 package com.alliex.cvs.repository;
 
+import com.alliex.cvs.domain.type.PointHistoryStatus;
 import com.alliex.cvs.entity.PointHistory;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -10,6 +11,6 @@ public interface PointHistoryRepository extends JpaRepository<PointHistory, Long
 
     Optional<PointHistory> findById(Long id);
 
-    Optional<PointHistory> findByUserIdAndStatus(Long userId, String status);
+    Optional<PointHistory> findByUserIdAndStatus(Long userId, PointHistoryStatus status);
 
 }

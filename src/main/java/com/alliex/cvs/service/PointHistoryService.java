@@ -1,5 +1,6 @@
 package com.alliex.cvs.service;
 
+import com.alliex.cvs.domain.type.PointHistoryStatus;
 import com.alliex.cvs.entity.PointHistory;
 import com.alliex.cvs.repository.PointHistoryRepository;
 import com.alliex.cvs.repository.PointHistoryRepositorySupport;
@@ -61,7 +62,7 @@ public class PointHistoryService {
             throw new PointLimitExcessException(pointHistorySaveRequest.getPoint());
         }
 
-        List<PointHistory> pointHistory = pointHistoryRepository.findByUserIdAndStatus(pointHistorySaveRequest.getUserId(), null).stream().collect(Collectors.toList());
+        List<PointHistory> pointHistory = pointHistoryRepository.findByUserIdAndStatus(pointHistorySaveRequest.getUserId(), PointHistoryStatus.PROCESSING).stream().collect(Collectors.toList());
         if (pointHistory.size() > 0) {
             throw new PointHistoryProgressAlreadyExistsException();
         }
