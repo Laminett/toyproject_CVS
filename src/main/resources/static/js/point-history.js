@@ -4,6 +4,19 @@ var main = {
 
         _this.getPointHistories(1);
 
+        // datepicker handling
+        $('.datepicker').on('change', function () {
+            let datepickerId = this.id;
+
+            if (datepickerId == "search_startDate" && $('#search_startDate').val() > $('#search_endDate').val()) {
+                $('#search_endDate').val($('#search_startDate').val());
+            }
+
+            if (datepickerId == "search_endDate" && $('#search_startDate').val() > $('#search_endDate').val()) {
+                $('#search_startDate').val($('#search_endDate').val());
+            }
+        });
+
         // status search form handling
         $("#point-history-status-field a").click(function () {
             $("#dropdownMenuButton-point-history-status").text($(this).text());
