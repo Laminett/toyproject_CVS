@@ -110,9 +110,14 @@ let main = {
             id: $('#id').val(),
             name: $('#name').val(),
             point: $('#point').val(),
-            quantity: 0,
             isEnabled: true
         };
+
+        if(isUpdate) {
+            data.quantity = $('#quantity').val();
+        } else {
+            data.quantity = 0;
+        }
 
         let apiEndPoint;
         if (productId) {
