@@ -103,7 +103,7 @@ var main = {
 
                 }).fail(function (error) {
                     if (error.responseJSON.code == 'PRODUCT_NOT_FOUND') {
-                        alert('해당 물품이 등록되어 있지 않습니다.');
+                        alert(getMessage('alert.product.not.exist'));
                     } else {
                         console.log(error);
                         var responseJSON = '';
@@ -111,7 +111,7 @@ var main = {
                             responseJSON = '\n' + error.responseJSON.message;
                         }
 
-                        alert('오류가 발생했습니다. 관리자에게 문의해 주세요.' + responseJSON);
+                        alert(getMessage('alert.error.occur') + ' ' + getMessage('alert.call.admin') + '\n ' + responseJSON);
                     }
                 });
             }
@@ -132,7 +132,7 @@ var main = {
                 $('#productId').val(data.id);
             }).fail(function (error) {
                 if (error.responseJSON.code == 'PRODUCT_NOT_FOUND') {
-                    alert('해당 물품이 등록되어 있지 않습니다.');
+                    alert(getMessage('alert.product.not.exist'));
                 } else {
                     console.log(error);
                     var responseJSON = '';
@@ -140,7 +140,7 @@ var main = {
                         responseJSON = '\n' + error.responseJSON.message;
                     }
 
-                    alert('오류가 발생했습니다. 관리자에게 문의해 주세요.' + responseJSON);
+                    alert(getMessage('alert.error.occur') + ' ' + getMessage('alert.call.admin') + '\n ' + responseJSON);
                 }
             });
         });
@@ -167,7 +167,7 @@ var main = {
             $("#createPurchaseModal").modal("show");
         }).fail(function (error) {
             if (error.responseJSON.code == 'PRODUCT_PURCHASE_NOT_FOUND') {
-                alert('해당 구매내역이 존재하지 않습니다.');
+                alert(getMessage('alert.no.purchase.data'));
             } else {
                 console.log(error);
                 var responseJSON = '';
@@ -175,7 +175,7 @@ var main = {
                     responseJSON = '\n' + error.responseJSON;
                 }
 
-                alert('오류가 발생했습니다. 관리자에게 문의해 주세요.' + responseJSON);
+                alert(getMessage('alert.error.occur') + ' ' + getMessage('alert.call.admin') + '\n ' + responseJSON);
             }
         });
     },
@@ -253,12 +253,12 @@ var main = {
         };
 
         if (!isUpdate && !data.purchaseAmount) {
-            alert('구매금액은 필수 입니다.');
+            alert(getMessage('purchase.point') + getMessage('alert.mandatory'));
             return;
         }
 
         if (!isUpdate && !data.purchaseQuantity) {
-            alert('구매수량은 필수 입니다.');
+            alert(getMessage('purchase.quantity') + getMessage('alert.mandatory'));
             return;
         }
 
@@ -286,7 +286,7 @@ var main = {
             _this.getPurchases();
         }).fail(function (error) {
             if (error.responseJSON.code == 'PRODUCT_PURCHASE_NOT_FOUND') {
-                alert('해당 구매내역이 존재하지 않습니다.');
+                alert(getMessage('alert.no.purchase.data'));
             } else {
                 console.log(error);
                 var responseJSON = '';
@@ -294,7 +294,7 @@ var main = {
                     responseJSON = '\n' + error.responseJSON.message;
                 }
 
-                alert('오류가 발생했습니다. 관리자에게 문의해 주세요.' + responseJSON);
+                alert(getMessage('alert.error.occur') + ' ' + getMessage('alert.call.admin') + '\n ' + responseJSON);
             }
         });
     },
@@ -311,7 +311,7 @@ var main = {
             _this.getPurchases();
         }).fail(function (error) {
             if (error.responseJSON.code == 'PRODUCT_PURCHASE_NOT_FOUND') {
-                alert('해당 구매내역이 존재하지 않습니다.');
+                alert(getMessage('alert.no.purchase.data'));
             } else {
                 console.log(error);
                 var responseJSON = '';
@@ -320,7 +320,7 @@ var main = {
                 }
             }
 
-            alert('오류가 발생했습니다. 관리자에게 문의해 주세요.' + responseJSON);
+            alert(getMessage('alert.error.occur') + ' ' + getMessage('alert.call.admin') + '\n ' + responseJSON);
         });
     },
     barcodeScan: function (barcode, qty) {

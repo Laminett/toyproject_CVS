@@ -20,7 +20,7 @@ var main = {
 
         // refund
         $(document).on('click', 'button[name=refund]', function () {
-            if (confirm('Really want to REFUND?')) {
+            if (confirm(getMessage('confirm.refund'))) {
                 var requestId = $(this).closest('tr').find('td').eq(0).text();
                 _this.refund(requestId);
             }
@@ -145,7 +145,7 @@ var main = {
             url: '/web-api/v1/transactions/refund/' + id,
             contentType: 'application/json; charset=utf-8',
         }).done(function () {
-            alert('취소 처리 되었습니다.');
+            alert(getMessage('alert.refund.complete'));
             window.location.href = '/transactions';
         }).fail(function (error) {
             alert(JSON.stringify(error.responseJSON.message));

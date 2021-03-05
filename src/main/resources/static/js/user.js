@@ -143,23 +143,23 @@ var main = {
         }
 
         if (!isUpdate && !data.username) {
-            alert('사번은 필수입니다.');
+            alert(getMessage('username') + getMessage('alert.mandatory'));
             return;
         }
         if (!isUpdate && !data.password) {
-            alert('암호는 필수입니다.');
+            alert(getMessage('password') + getMessage('alert.mandatory2'));
             return;
         }
         if (!data.department) {
-            alert('부서는 필수입니다.');
+            alert(getMessage('department') + getMessage('alert.mandatory2'));
             return;
         }
         if (!data.fullName) {
-            alert('이름은 필수입니다.');
+            alert(getMessage('full.name') + getMessage('alert.mandatory'));
             return;
         }
         if (!data.email) {
-            alert('이메일은 필수입니다.');
+            alert(getMessage('email') + getMessage('alert.mandatory'));
             return;
         }
 
@@ -181,7 +181,7 @@ var main = {
             _this.getUsers();
         }).fail(function (error) {
             if (error.responseJSON.code == 'USER_ALREADY_EXISTS') {
-                alert('동일한 사번이 존재합니다.');
+                alert(getMessage('alert.user.already.exist'));
             } else {
                 console.log(error);
                 var responseJSON = '';
@@ -189,7 +189,7 @@ var main = {
                     responseJSON = '\n' + error.responseJSON;
                 }
 
-                alert('오류가 발생했습니다. 관리자에게 문의해 주세요.' + responseJSON);
+                alert(getMessage('alert.error.occur') + ' ' + getMessage('alert.call.admin') + '\n ' + responseJSON);
             }
         });
     },

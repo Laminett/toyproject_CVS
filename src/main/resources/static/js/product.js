@@ -20,7 +20,7 @@ let main = {
 
         // delete
         $(document).on('click', 'button[name=delete]', function () {
-            if (confirm('Really want to DELETE?')) {
+            if (confirm(getMessage("confirm.delete"))) {
                 let productId = $(this).closest('tr').find('td').eq(0).text();
                 _this.delete(productId);
             }
@@ -57,7 +57,7 @@ let main = {
                 }
                 $('#div_quantity').css('display', 'none');
 
-                $('.description').text('First scan the Product barcode please');
+                $('.description').text(getMessage("alert.scan.product"));
             }
         });
 
@@ -137,12 +137,12 @@ let main = {
             _this.getProducts();
         }).fail(function (error) {
             if (error.responseJSON.code == 'PRODUCT_NOT_FOUND') {
-                alert('해당 상품이 존재하지 않습니다.');
+                alert(getMessage('alert.product.not.exist'));
                 return;
             }
 
             if (error.responseJSON.code == 'PRODUCT_ALREADY_EXISTS') {
-                alert('해당 상품명이 이미 존재합니다.');
+                alert(getMessage('alert.product.already.exist'));
                 return;
             }
 
@@ -152,7 +152,7 @@ let main = {
                 responseJSON = '\n' + error.responseJSON.message;
             }
 
-            alert('오류가 발생했습니다. 관리자에게 문의해 주세요.' + responseJSON);
+            alert(getMessage('alert.error.occur') + ' ' + getMessage('alert.call.admin') + '\n ' + responseJSON);
         });
     },
     delete: function (productId) {
@@ -166,7 +166,7 @@ let main = {
             window.location.href = '/products';
         }).fail(function (error) {
             if (error.responseJSON.code == 'PRODUCT_NOT_FOUND') {
-                alert('해당 상품이 존재하지 않습니다.');
+                alert(getMessage('alert.product.not.exist'));
             } else {
                 console.log(error);
                 let responseJSON = '';
@@ -175,7 +175,7 @@ let main = {
                 }
             }
 
-            alert('오류가 발생했습니다. 관리자에게 문의해 주세요.' + responseJSON);
+            alert(getMessage('alert.error.occur') + ' ' + getMessage('alert.call.admin') + '\n ' + responseJSON);
         });
     },
     barcodeScan: function (barcode, qty) {
@@ -183,7 +183,7 @@ let main = {
     },
     inputDataCheck: function () {
         if ($('#categoryName').val() == 0) {
-            alert("Please select category");
+            alert(getMessage('category') + getMessage('alert.mandatory2'));
             $('#categoryName').focus();
 
             return false;
@@ -197,7 +197,7 @@ let main = {
         }
 
         if (!$('#point').val()) {
-            alert("Please input point");
+            alert(getMessage('point') + getMessage('alert.mandatory'));
             $('#point').focus();
 
             return false;
@@ -253,7 +253,7 @@ let main = {
             $("#createProductModal").modal("show");
         }).fail(function (error) {
             if (error.responseJSON.code == 'PRODUCT_NOT_FOUND') {
-                alert('해당 상품이 존재하지 않습니다.');
+                alert(getMessage('alert.product.not.exist'));
             } else {
                 console.log(error);
                 let responseJSON = '';
@@ -261,7 +261,7 @@ let main = {
                     responseJSON = '\n' + error.responseJSON.message;
                 }
 
-                alert('오류가 발생했습니다. 관리자에게 문의해 주세요.' + responseJSON);
+                alert(getMessage('alert.error.occur') + ' ' + getMessage('alert.call.admin') + '\n ' + responseJSON);
             }
         });
 

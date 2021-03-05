@@ -45,7 +45,7 @@ var main = {
 
         // delete category
         $(document).on('click', 'button[name=delete]', function () {
-            if (confirm('Really want to DELETE?')) {
+            if (confirm(getMessage('confirm.delete'))) {
                 var categoryId = $(this).closest('tr').find('td').eq(0).text();
                 _this.deleteCategory(categoryId);
             }
@@ -68,7 +68,7 @@ var main = {
             $("#createCategoryModal").modal("show");
         }).fail(function (error) {
             if (error.responseJSON.code == 'PRODUCT_CATEGORY_NOT_FOUND') {
-                alert('해당 카테고리가 존재하지 않습니다.');
+                alert(getMessage('alert.category.not.exist'));
             } else {
                 console.log(error);
                 var responseJSON = '';
@@ -76,7 +76,7 @@ var main = {
                     responseJSON = '\n' + error.responseJSON;
                 }
 
-                alert('오류가 발생했습니다. 관리자에게 문의해 주세요.' + responseJSON);
+                alert(getMessage('alert.error.occur') + ' ' + getMessage('alert.call.admin') + '\n ' + responseJSON);
             }
         });
     },
@@ -149,7 +149,7 @@ var main = {
         };
 
         if (!isUpdate && !data.categoryName) {
-            alert('카테고리명은 필수입니다.');
+            alert(getMessage('category.name') + getMessage('alert.mandatory2'));
             return;
         }
 
@@ -177,9 +177,9 @@ var main = {
             _this.getCategories();
         }).fail(function (error) {
             if (error.responseJSON.code == 'PRODUCT_CATEGORY_ALREADY_EXISTS') {
-                alert('동일한 카테고리명이 존재합니다.');
+                alert(getMessage('alert.category.already.exist'));
             } else if (error.responseJSON.code == 'PRODUCT_CATEGORY_NOT_FOUND') {
-                alert('해당 카테고리가 존재하지 않습니다.');
+                alert(getMessage('alert.category.not.exist'));
             } else {
                 console.log(error);
                 var responseJSON = '';
@@ -187,7 +187,7 @@ var main = {
                     responseJSON = '\n' + error.responseJSON;
                 }
 
-                alert('오류가 발생했습니다. 관리자에게 문의해 주세요.' + responseJSON);
+                alert(getMessage('alert.error.occur') + ' ' + getMessage('alert.call.admin') + '\n ' + responseJSON);
             }
         });
     },
@@ -204,7 +204,7 @@ var main = {
             _this.getCategories();
         }).fail(function (error) {
             if (error.responseJSON.code == 'PRODUCT_CATEGORY_NOT_FOUND') {
-                alert('해당 카테고리가 존재하지 않습니다.');
+                alert(getMessage('alert.category.not.exist'));
             } else {
                 console.log(error);
                 var responseJSON = '';
@@ -213,7 +213,7 @@ var main = {
                 }
             }
 
-            alert('오류가 발생했습니다. 관리자에게 문의해 주세요.' + responseJSON);
+            alert(getMessage('alert.error.occur') + ' ' + getMessage('alert.call.admin') + '\n ' + responseJSON);
         });
     }
 };
