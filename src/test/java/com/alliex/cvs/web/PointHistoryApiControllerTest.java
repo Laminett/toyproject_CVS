@@ -19,6 +19,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -39,7 +40,7 @@ public class PointHistoryApiControllerTest {
     @Autowired
     protected ObjectMapper objectMapper;
 
-    private final Long testId = 90L;
+    private final Long testId = 91L;
     private final Long testNotExistId = 9999L;
     private final Long testUserId = 400L;
 
@@ -145,6 +146,11 @@ public class PointHistoryApiControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().string(Long.toString(testId)));
+
+        mvc.perform(get("/web-api/v1/users/{id}", 800))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.point", is(620)));
     }
 
     @WithMockUser(roles = "ADMIN")

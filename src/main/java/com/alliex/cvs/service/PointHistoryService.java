@@ -41,7 +41,7 @@ public class PointHistoryService {
 
         pointHistory.update(id, request.getStatus(), request.getAdminId());
 
-        if ("Y".equals(pointHistory.getStatus())) {
+        if (pointHistory.getStatus() == PointHistoryStatus.APPROVE) {
             pointService.updatePointPlus(pointHistory.getUser().getId(), pointHistory.getPoint());
         }
 
