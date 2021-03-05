@@ -78,7 +78,7 @@
                                 <th>NO</th>
                                 <th>{{#messages}}user.id{{/messages}}</th>
                                 <th>{{#messages}}payment.type{{/messages}}</th>
-                                <th>{{#messages}}point{{/messages}}</th>
+                                <th>{{#messages}}amount{{/messages}}</th>
                                 <th>{{#messages}}status{{/messages}}</th>
                                 <th>{{#messages}}type{{/messages}}</th>
                                 <th>{{#messages}}created.date{{/messages}}</th>
@@ -117,24 +117,24 @@
                         <div class="card-body">
                             <div class="form-row text-center">
                                 <div class="form-group col-md-3">
-                                    <label for="inputTransactionId">NO</label>
-                                    <input type="text" class="form-control text-center" id="TransactionId"
-                                           name="TransactionId" disabled>
-                                </div>
-                                <div class="form-group col-md-3">
                                     <label for="inputUserId">{{#messages}}user.id{{/messages}}</label>
                                     <input type="text" class="form-control text-center" id="BuyerId" name="BuyerId"
                                            disabled>
                                 </div>
                                 <div class="form-group col-md-3">
-                                    <label for="inputPoint">TransactionPoint</label>
+                                    <label for="inputPoint">{{#messages}}transaction.amount{{/messages}}</label>
                                     <input type="text" class="form-control text-right" id="TransactionPoint"
                                            name="TransactionPoint" disabled>
                                 </div>
                                 <div class="form-group col-md-3">
-                                    <label for="inputPaymentType">{{#messages}}payment.type{{/messages}}</label>
-                                    <input type="text" class="form-control text-center" id="PaymentType"
-                                           name="PaymentType" disabled>
+                                    <label for="inputState">{{#messages}}transaction.state{{/messages}}</label>
+                                    <input type="text" class="form-control text-center" id="TransactionState"
+                                           name="TransactionState" disabled>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label for="inputType">{{#messages}}transaction.type{{/messages}}</label>
+                                    <input type="text" class="form-control text-center" id="TransactionType"
+                                           name="TransactionType" disabled>
                                 </div>
                             </div>
 
@@ -150,14 +150,9 @@
                                            name="paymentBarcode" disabled>
                                 </div>
                                 <div class="form-group col-md-3">
-                                    <label for="inputState">{{#messages}}transaction.state{{/messages}}</label>
-                                    <input type="text" class="form-control text-center" id="TransactionState"
-                                           name="TransactionState" disabled>
-                                </div>
-                                <div class="form-group col-md-3">
-                                    <label for="inputType">{{#messages}}transaction.type{{/messages}}</label>
-                                    <input type="text" class="form-control text-center" id="TransactionType"
-                                           name="TransactionType" disabled>
+                                    <label for="inputPaymentType">{{#messages}}payment.type{{/messages}}</label>
+                                    <input type="text" class="form-control text-center" id="PaymentType"
+                                           name="PaymentType" disabled>
                                 </div>
                             </div>
 
@@ -165,8 +160,8 @@
                             <table class="table" id="templ1">
                                 <thead class=" text-primary text-center popthead">
                                 <th>{{#messages}}product.name{{/messages}}</th>
+                                <th>{{#messages}}quantity{{/messages}}</th>
                                 <th>{{#messages}}amount{{/messages}}</th>
-                                <th>{{#messages}}point{{/messages}}</th>
                                 </thead>
                                 <tbody id="transactionItems" class="text-center"></tbody>
                                 <table id="totalPoint" class="table text-center"></table>
@@ -225,7 +220,7 @@
 </script>
 <script id="transactionsItemsTotalPointTemplate" type="text/x-jquery-tmpl">
 <tr class='popthead' style='border: #9e9e9e 1px solid'>
-    <td style='width:300px'> SUMMERIZE :</td>
+    <td style='width:300px'> {{#messages}}total.amount{{/messages}} :</td>
     <td colspan=2 class='text-right'>${totalPoint}</td>
 </tr>
 </script>
