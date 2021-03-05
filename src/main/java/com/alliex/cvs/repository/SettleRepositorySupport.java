@@ -33,6 +33,7 @@ public class SettleRepositorySupport extends QuerydslRepositorySupport {
                         eqAggregatedAt(settleRequest.getAggregatedAt()),
                         containsFullName(settleRequest.getFullName())
                 )
+                .orderBy(settle.id.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetchResults();

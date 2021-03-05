@@ -35,6 +35,7 @@ public class PointHistoryRepositorySupport extends QuerydslRepositorySupport {
                         containsFullName(pointHistoryRequest.getFullName()),
                         eqStatus(pointHistoryRequest.getStatus())
                 )
+                .orderBy(pointHistory.id.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetchResults();
