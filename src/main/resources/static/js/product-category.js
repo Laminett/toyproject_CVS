@@ -40,6 +40,7 @@ var main = {
             _this.isCategoryUpdate = true;
             // var categoryId = $(this).attr("category-id");
             var categoryId = $(this).closest('tr').find('td').eq(0).text();
+            $('#isEnabled').prop('checked', true);
             _this.getCategory(categoryId);
         });
 
@@ -66,6 +67,12 @@ var main = {
             $("#categoryId").val(data.id);
             $("#categoryName").val(data.name);
             $("#createCategoryModal").modal("show");
+
+            if (data.isEnabled == true) {
+                $('#isEnabled').prop('checked', true);
+            } else if (data.isEnabled == false) {
+                $('#isEnabled').prop('checked', false);
+            }
         }).fail(function (error) {
             if (error.responseJSON.code == 'PRODUCT_CATEGORY_NOT_FOUND') {
                 alert(getMessage('alert.category.not.exist'));
@@ -85,12 +92,15 @@ var main = {
 
         var param = {
             page: page || 1,
-            isEnabled: true
         };
 
         var k, v;
         k = _this.SEARCH_KEY;
         v = $("#searchValue").val();
+
+        if (_this.SEARCH_KEY == 'isEnabled') {
+            (v.toUpperCase() == 'Y') ? v = true : ((v.toUpperCase() == 'N') ? v = false : v = null);
+        }
 
         param[k] = v;
 
@@ -136,16 +146,10 @@ var main = {
             isUpdate = true;
         }
 
-        if ($('#isEnabled').is(':checked')) {
-            $('#isEnabled').val(true);
-        } else {
-            $('#isEnabled').val(false);
-        }
-
         var data = {
             categoryName: $("#categoryName").val(),
-            isEnabled: true,
-            adminId: $("#adminId").val()
+            adminId: $("#adminId").val(),
+            isEnabled: $('#isEnabled').is(':checked') ? true : false
         };
 
         if (!isUpdate && !data.categoryName) {
