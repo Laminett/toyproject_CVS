@@ -109,7 +109,7 @@ var main = {
             if (data.content.length == 0) {
                 $("#categoriesNoDataTemplate").tmpl().appendTo("#categoriesArea");
             } else {
-                let number = 1;
+                let number = (data.number * 10) + 1;
                 data.content.forEach(function (element) {
                     element.number = number++;
                 });

@@ -216,7 +216,7 @@ var main = {
             if (data.content.length == 0) {
                 $("#purchasesNoDataTemplate").tmpl().appendTo("#purchasesArea");
             } else {
-                let number = 1;
+                let number = (data.number * 10) + 1;
                 data.content.forEach(function (element) {
                     element.number = number++;
                 });

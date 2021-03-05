@@ -119,7 +119,7 @@ var main = {
             if (data.content.length == 0) {
                 $("#transactionsNoDataTemplate").tmpl().appendTo("#transactions");
             } else {
-                let number = 1;
+                let number = (data.number * 10) + 1;
                 data.content.forEach(function (element) {
                     element.number = number++;
                     if (element.user == null) {

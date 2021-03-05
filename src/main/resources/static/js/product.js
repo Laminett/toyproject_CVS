@@ -298,7 +298,7 @@ let main = {
             if (data.content.length == 0) {
                 $("#productsNoDataTemplate").tmpl().appendTo("#products");
             } else {
-                let number = 1;
+                let number = (data.number * 10) + 1;
                 data.content.forEach(function (element) {
                     element.number = number++;
                 });
