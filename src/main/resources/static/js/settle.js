@@ -18,7 +18,7 @@ var main = {
 
         // Update status.
         $(document).on('click', "[name='btn_approve'],[name='btn_deny']", function () {
-            if (confirm(getMessage("alert.settle.confirm"))) {
+            if (confirm(getMessage("confirm.settle"))) {
                 var id = $(this).parent().parent().attr('id');
                 var status = $(this).val();
                 _this.update(id, status);

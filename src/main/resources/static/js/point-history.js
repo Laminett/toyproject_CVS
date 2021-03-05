@@ -22,7 +22,7 @@ var main = {
 
         // 상태 업데이트
         $(document).on('click', "[name='btn_approve'],[name='btn_deny']", function () {
-            if (confirm(getMessage("alert.point.history.confirm"))) {
+            if (confirm(getMessage("confirm.point.history"))) {
                 var id = $(this).parent().parent().attr('id');
                 var status = $(this).val();
                 _this.update(id, status);
