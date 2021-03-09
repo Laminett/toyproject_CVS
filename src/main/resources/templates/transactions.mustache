@@ -169,6 +169,7 @@
 
                         </div>
                     </form>
+                        <button type="submit" class="btn btn-danger" id="refund" style="float:right">{{#messages}}btn.refund{{/messages}}</button>
                 </div>
             </div>
         </div>
@@ -193,11 +194,6 @@
         <button type='button' rel='tooltip' class='btn btn-success' name='details'>
             <i class='material-icons' data-toggle='modal' data-target='#addUpdateModal'>find_in_page</i>
         </button>
-   {%if state == "SUCCESS"%}
-        <button type='button' rel='tooltip' class='btn btn-danger' name='refund'>
-            <i class='material-icons'>close</i>
-        </button>
-   {%/if%}
    </td>
 </tr>
 </script>

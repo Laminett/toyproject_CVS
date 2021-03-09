@@ -59,6 +59,10 @@ public class TransactionService {
             transactionItems = transactionDetailService.getDetailByRequestId(transaction.getRequestId());
         }
 
+        transactionRepository.findByOriginRequestId(requestId).ifPresent(originTransaction -> {
+            transactionResponse.setIsRefunded(true);
+        });
+
         transactionResponse.setTransactionItems(transactionItems);
 
         return transactionResponse;

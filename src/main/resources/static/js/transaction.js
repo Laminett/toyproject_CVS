@@ -19,9 +19,9 @@ var main = {
         });
 
         // refund
-        $(document).on('click', 'button[name=refund]', function () {
+        $('#refund').on('click', function () {
             if (confirm(getMessage('confirm.refund'))) {
-                var requestId = $(this).closest('tr').find('td').eq(0).text();
+                let requestId = $('#barcode').val();
                 _this.refund(requestId);
             }
         });
@@ -55,6 +55,24 @@ var main = {
             dataType: 'json',
             contentType: 'application/json; charset=utf-8'
         }).done(function (data) {
+            if (data.isRefunded || data.type == 'REFUND') {
+                $('#refund').css('display', 'none');
+            } else {
+                $('#refund').css('display', 'block');
+            }
+
+            if (data.type == 'REFUND') {
+                data.point = "- " + data.point;
+                data.transactionItems.forEach(function (transItems) {
+                    transItems.productPoint = "- " + transItems.productPoint;
+                });
+                $('#paymentBarcode').val(data.originRequestId);
+                $('#div_paymentBarcode').css('display', 'block');
+            } else {
+                $('#paymentBarcode').val('');
+                $('#div_paymentBarcode').css('display', 'none');
+            }
+
             $('#TransactionId').val(data.id);
             $('#BuyerId').val(data.username);
             $('#PaymentType').val(data.paymentType);
@@ -64,14 +82,6 @@ var main = {
             $('#barcode').val(data.requestId);
 
             $("#transactionDetailModal").modal("show");
-
-            if (data.type == 'REFUND') {
-                $('#paymentBarcode').val(data.originRequestId);
-                $('#div_paymentBarcode').css('display', 'block');
-            } else {
-                $('#paymentBarcode').val('');
-                $('#div_paymentBarcode').css('display', 'none');
-            }
 
             $('#transactionItems').empty();
             $('#totalPoint').empty();
@@ -124,6 +134,10 @@ var main = {
                     element.number = number++;
                     if (element.user == null) {
                         element.user = "";
+                    }
+
+                    if (element.type == 'REFUND') {
+                        element.point = "- " + element.point;
                     }
                 });
 
