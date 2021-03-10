@@ -39,6 +39,8 @@ public class TransactionResponse {
 
     private List<TransactionDetailResponse> transactionItems;
 
+    private Boolean isRefunded;
+
     public TransactionResponse(Transaction entity) {
         this.id = entity.getId();
         this.state = entity.getState();

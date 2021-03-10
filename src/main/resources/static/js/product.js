@@ -56,7 +56,7 @@ let main = {
                     _this.addFormVisible(false);
                 }
                 $('#div_quantity').css('display', 'none');
-
+                $('#isEnabled').prop('checked', true);
                 $('.description').text(getMessage("alert.scan.product"));
             }
         });
@@ -110,10 +110,10 @@ let main = {
             id: $('#id').val(),
             name: $('#name').val(),
             point: $('#point').val(),
-            isEnabled: true
+            isEnabled: $('#isEnabled').is(':checked') ? true : false
         };
 
-        if(isUpdate) {
+        if (isUpdate) {
             data.quantity = $('#quantity').val();
         } else {
             data.quantity = 0;
@@ -255,6 +255,12 @@ let main = {
             $("#quantity").val(data.quantity);
             $('.description').text('Modify Purchase Data');
 
+            if (data.isEnabled == true) {
+                $('#isEnabled').prop('checked', true);
+            } else if (data.isEnabled == false) {
+                $('#isEnabled').prop('checked', false);
+            }
+
             $("#createProductModal").modal("show");
         }).fail(function (error) {
             if (error.responseJSON.code == 'PRODUCT_NOT_FOUND') {
@@ -275,8 +281,7 @@ let main = {
         let _this = this;
 
         let param = {
-            page: page || 1,
-            isEnabled: true
+            page: page || 1
         };
 
         let k, v;
@@ -284,8 +289,7 @@ let main = {
         v = $("#searchValue").val();
 
         if (_this.SEARCH_KEY == 'isEnabled') {
-            v = v.toUpperCase();
-            (v == 'Y') ? v = true : v = false;
+            (v.toUpperCase() == 'Y') ? v = true : ((v.toUpperCase() == 'N') ? v = false : v = null);
         }
 
         param[k] = v;
@@ -320,9 +324,14 @@ let main = {
             alert(JSON.stringify(error.responseJSON.message));
         });
 
+        let categoryParam = {
+            isEnabled: true
+        };
+
         $.ajax({
             type: 'GET',
             url: '/web-api/v1/products-categories',
+            data: categoryParam,
             dataType: 'json',
             contentType: 'application/json; charset=utf-8'
         }).done(function (data) {

@@ -18,6 +18,8 @@ public class ProductCategoryResponse {
 
     private String adminId;
 
+    private Boolean isEnabled;
+
     private LocalDateTime createdDate;
 
     private LocalDateTime modifiedDate;
@@ -26,6 +28,7 @@ public class ProductCategoryResponse {
         this.id = entity.getId();
         this.name = entity.getName();
         this.adminId = entity.getAdminId();
+        this.isEnabled = entity.getIsEnabled();
         this.createdDate = entity.getCreatedDate();
         this.modifiedDate = entity.getModifiedDate();
     }

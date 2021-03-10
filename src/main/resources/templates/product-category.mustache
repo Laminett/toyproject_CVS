@@ -19,6 +19,7 @@
                                     </button>
                                     <div id="category-search-field" class="dropdown-menu" aria-labelledby="dropdownMenuButton-category-search">
                                         <a class="dropdown-item" href="#none" searchKey="categoryName">{{#messages}}category{{/messages}}</a>
+                                        <a class="dropdown-item" href="#none" searchKey="isEnabled">{{#messages}}use.yn{{/messages}}</a>
                                     </div>
                                 </div>
                                 <div class="form-group has-white">
@@ -38,6 +39,7 @@
                                 <th>NO</th>
                                 <th>{{#messages}}category{{/messages}}</th>
                                 <th>{{#messages}}modified.by{{/messages}}</th>
+                                <th>{{#messages}}use.yn{{/messages}}</th>
                                 <th>{{#messages}}modified.date{{/messages}}</th>
                                 <th>{{#messages}}action{{/messages}}</th>
                                 </thead>
@@ -86,6 +88,22 @@
                                     <input type="text" id="categoryName" name="categoryName" class="form-control" maxlength="30">
                                 </div>
                             </div>
+
+                            <div id="activationArea" class="form-group bmd-form-group">
+                                <div class="input-group">
+                                    <div class="input-group-prepend" style="width:100px;">
+                                        <div class="input-group-text">{{#messages}}use.yn{{/messages}}</div>
+                                    </div>
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input class="form-check-input" type="checkbox" id="isEnabled" name="isEnabled" value="">&nbsp;
+                                            <span class="form-check-sign">
+                                              <span class="check"></span>
+                                          </span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -102,14 +120,21 @@
     <td>${number}</td>
     <td>${name}</td>
     <td>${adminId}</td>
+  {%if isEnabled == true%}
+    <td>Y</td>
+  {%else%}
+    <td>N</td>
+  {%/if%}
     <td>${modifiedDate}</td>
     <td class='td-actions text-center'>
         <button type='button' rel='tooltip' class='btn btn-success' name='details'>
             <i class='material-icons' data-toggle='modal'>edit</i>
         </button>
+  {%if isEnabled == true%}
         <button type='button' rel='tooltip' class='btn btn-danger' name='delete'>
              <i class='material-icons'>close</i>
          </button>
+  {%/if%}
     </td>
 </tr>
 </script>
