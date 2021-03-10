@@ -3,6 +3,7 @@ package com.alliex.cvs.util;
 import java.security.MessageDigest;
 
 public class CryptoUtils {
+
     public static String sha256(final String string) {
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
@@ -22,4 +23,5 @@ public class CryptoUtils {
             throw new RuntimeException(e);
         }
     }
+
 }

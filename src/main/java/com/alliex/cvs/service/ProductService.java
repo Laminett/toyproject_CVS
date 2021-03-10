@@ -58,10 +58,10 @@ public class ProductService {
 
     @Transactional
     public Long update(Long id, ProductUpdateRequest productUpdateRequest) {
-        Product _product = productRepository.findById(id)
+        Product product = productRepository.findById(id)
                 .orElseThrow(() -> new ProductNotFoundException(id));
 
-        _product.update(productUpdateRequest);
+        product.update(productUpdateRequest);
 
         return id;
     }

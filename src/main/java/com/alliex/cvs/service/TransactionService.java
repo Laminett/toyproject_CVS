@@ -1,15 +1,15 @@
 package com.alliex.cvs.service;
 
-import com.alliex.cvs.entity.Transaction;
-import com.alliex.cvs.repository.TransactionRepository;
+import com.alliex.cvs.domain.LoginUser;
 import com.alliex.cvs.domain.type.TransactionState;
 import com.alliex.cvs.domain.type.TransactionType;
-import com.alliex.cvs.domain.LoginUser;
+import com.alliex.cvs.entity.Transaction;
 import com.alliex.cvs.entity.User;
 import com.alliex.cvs.exception.NotEnoughPointException;
 import com.alliex.cvs.exception.TransactionAlreadyRefundedException;
 import com.alliex.cvs.exception.TransactionNotFoundException;
 import com.alliex.cvs.exception.TransactionStateException;
+import com.alliex.cvs.repository.TransactionRepository;
 import com.alliex.cvs.repository.TransactionRepositorySupport;
 import com.alliex.cvs.web.dto.*;
 import lombok.RequiredArgsConstructor;
@@ -70,11 +70,11 @@ public class TransactionService {
 
     @Transactional
     public Long save(TransactionSave transactionSave) {
-        User setUserId = new User();
-        setUserId.setId(transactionSave.getUserId());
+        User user = new User();
+        user.setId(transactionSave.getUserId());
 
         Transaction transaction = Transaction.builder()
-                .user(setUserId)
+                .user(user)
                 .originRequestId(transactionSave.getOriginRequestId())
                 .point(transactionSave.getPoint())
                 .transactionState(transactionSave.getState())
@@ -90,6 +90,7 @@ public class TransactionService {
     public TransactionStateResponse getTransStateByRequestId(String requestId) {
         Transaction transaction = transactionRepository.findByRequestId(requestId)
                 .orElseThrow(() -> new TransactionNotFoundException(requestId));
+
         return new TransactionStateResponse(transaction);
     }
 
@@ -98,8 +99,7 @@ public class TransactionService {
         String requestId = RandomStringUtils.randomAlphanumeric(20);
 
         for (TransactionDetailSaveRequest item : transactionDetailSaveRequests) {
-            TransactionDetailSaveRequest saveRequest = new TransactionDetailSaveRequest(item.getQuantity(),
-                    item.getProductId(), requestId);
+            TransactionDetailSaveRequest saveRequest = new TransactionDetailSaveRequest(item.getQuantity(), item.getProductId(), requestId);
             transactionDetailService.save(saveRequest.toEntity());
         }
 

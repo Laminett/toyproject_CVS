@@ -1,7 +1,9 @@
 package com.alliex.cvs.example;
 
 
-import com.alliex.cvs.entity.Posts;
+import com.alliex.cvs.domain.type.Role;
+import com.alliex.cvs.domain.type.UserStatus;
+import com.alliex.cvs.entity.User;
 import com.querydsl.core.QueryResults;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import java.util.List;
 
-import static com.alliex.cvs.entity.QPosts.posts;
+import static com.alliex.cvs.entity.QUser.user;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
@@ -29,70 +31,85 @@ public class QuerydslConditionTest {
     public void before() {
         queryFactory = new JPAQueryFactory(em);
 
-        Posts posts1 = new Posts("posts1", "content1");
-        Posts posts2 = new Posts("posts2", "content2");
-        em.persist(posts1);
-        em.persist(posts2);
+        em.persist(User.builder()
+                .username("testUsername1")
+                .password("testPassword1")
+                .department("department1")
+                .fullName("fullName1")
+                .email("email@email.com1")
+                .phoneNumber("phoneNumber1")
+                .status(UserStatus.ACTIVE)
+                .role(Role.USER)
+                .build());
+
+        em.persist(User.builder()
+                .username("testUsername2")
+                .password("testPassword2")
+                .department("department2")
+                .fullName("fullName2")
+                .email("email@email.com2")
+                .phoneNumber("phoneNumber2")
+                .status(UserStatus.ACTIVE)
+                .role(Role.USER)
+                .build());
     }
 
     @Test
     public void jpql() {
-        Posts findPosts = em.createQuery("select p from Posts p where p.title = :title", Posts.class)
-                .setParameter("title", "posts1")
+        User user = em.createQuery("select u from User u where u.username = :username", User.class)
+                .setParameter("username", "testUsername1")
                 .getSingleResult();
 
-        assertThat(findPosts.getTitle()).isEqualTo("posts1");
+        assertThat(user.getUsername()).isEqualTo("testUsername1");
     }
 
     @Test
     public void querydsl_fetchOne() {
-        Posts findPosts;
+        User findUser;
 
         // single condition
-        findPosts = queryFactory
-                .selectFrom(posts)
-                .where(posts.title.eq("posts1"))
+        findUser = queryFactory
+                .selectFrom(user)
+                .where(user.username.eq("testUsername1"))
                 .fetchOne();
 
-        assertThat(findPosts.getTitle()).isEqualTo("posts1");
+        assertThat(findUser.getUsername()).isEqualTo("testUsername1");
 
         // multiple condition
-        findPosts = queryFactory
-                .selectFrom(posts)
+        findUser = queryFactory
+                .selectFrom(user)
                 .where(
-                        posts.title.eq("posts2"),
-                        posts.content.eq("content2")
+                        user.username.eq("testUsername2"),
+                        user.department.eq("department2")
                 )
                 .fetchOne();
 
-        assertThat(findPosts.getTitle()).isEqualTo("posts2");
-        assertThat(findPosts.getContent()).isEqualTo("content2");
+        assertThat(findUser.getUsername()).isEqualTo("testUsername2");
+        assertThat(findUser.getDepartment()).isEqualTo("department2");
     }
 
     @Test
     public void querydsl_fetch() {
-        List<Posts> postsList = queryFactory
-                .selectFrom(posts)
+        List<User> users = queryFactory
+                .selectFrom(user)
                 .fetch();
 
-        for (Posts item : postsList) {
-            System.out.println("item = " + item);
-        }
+        users.forEach(item -> System.out.println(item));
     }
 
     @Test
     public void querydsl_fetchFirst() {
-        Posts findPosts = queryFactory
-                .selectFrom(posts)
+        User findUser = queryFactory
+                .selectFrom(user)
                 .fetchFirst();
 
-        System.out.println("findPosts = " + findPosts);
+        System.out.println("findPosts = " + findUser);
     }
 
     @Test
     public void querydsl_fetchResults() {
-        QueryResults<Posts> fetchResults = queryFactory
-                .selectFrom(posts)
+        QueryResults<User> fetchResults = queryFactory
+                .selectFrom(user)
                 .fetchResults();
 
         System.out.println("fetchResults.getTotal(): " + fetchResults.getTotal());
@@ -104,7 +121,7 @@ public class QuerydslConditionTest {
     @Test
     public void querydsl_fetchCount() {
         long count = queryFactory
-                .selectFrom(posts)
+                .selectFrom(user)
                 .fetchCount();
 
         System.out.println("count = " + count);
@@ -112,23 +129,17 @@ public class QuerydslConditionTest {
 
     @Test
     public void sort() {
-        em.persist(new Posts("posts100", "content100"));
-        em.persist(new Posts("posts101", "content101"));
-        em.persist(new Posts("posts102", "content102"));
-
-        List<Posts> result = queryFactory
-                .selectFrom(posts)
-                .where(posts.title.startsWith("posts10"))
-                .orderBy(posts.title.desc(), posts.content.asc().nullsLast())
+        List<User> result = queryFactory
+                .selectFrom(user)
+                .where(user.username.startsWith("testUsername"))
+                .orderBy(user.username.desc(), user.department.asc().nullsLast())
                 .fetch();
 
-        Posts posts102 = result.get(0);
-        Posts posts101 = result.get(1);
-        Posts posts100 = result.get(2);
+        User user1 = result.get(0);
+        User user2 = result.get(1);
 
-        assertThat(posts102.getTitle()).isEqualTo("posts102");
-        assertThat(posts101.getTitle()).isEqualTo("posts101");
-        assertThat(posts100.getTitle()).isEqualTo("posts100");
+        assertThat(user1.getUsername()).isEqualTo("testUsername2");
+        assertThat(user2.getUsername()).isEqualTo("testUsername1");
     }
 
 }

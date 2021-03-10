@@ -56,11 +56,11 @@ public class SettleService {
     }
 
     private Settle toEntity(SettleTransMonthlySumRequest obj, LocalDate aggregatedAt) {
-        User setUser = new User();
-        setUser.setId(obj.getUserId());
+        User user = new User();
+        user.setId(obj.getUserId());
 
         return Settle.builder()
-                .user(setUser)
+                .user(user)
                 .aggregatedAt(aggregatedAt)
                 .approvalCount(obj.getApprovalCount().intValue())
                 .approvalAmount(obj.getApprovalAmount())
