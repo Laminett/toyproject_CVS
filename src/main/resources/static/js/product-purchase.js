@@ -42,6 +42,7 @@ var main = {
         $(document).on('click', '[data-toggle=modal]', function () {
             if ($(this).text() == "edit") {
                 var purchaseId = $(this).closest('tr').find('td').eq(0).text();
+                _this.addFormVisible(true);
                 _this.getPurchase(purchaseId);
             } else {
                 if (location.hostname != _this.PROD_DOMAIN) {

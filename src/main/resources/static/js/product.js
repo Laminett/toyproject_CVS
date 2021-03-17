@@ -230,12 +230,14 @@ let main = {
             $('#div_point').css('display', 'block');
             $('#div_quantity').css('display', 'block');
             $('#div_checkbox').css('display', 'block');
+            $('#activationArea').css('display', 'block');
         } else {
             $('#div_categoryName').css('display', 'none');
             $('#div_name').css('display', 'none');
             $('#div_point').css('display', 'none');
             $('#div_quantity').css('display', 'none');
             $('#div_checkbox').css('display', 'none');
+            $('#activationArea').css('display', 'none');
         }
     },
     getProduct: function (id) {
