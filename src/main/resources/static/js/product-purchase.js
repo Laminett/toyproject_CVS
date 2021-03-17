@@ -54,7 +54,7 @@ var main = {
                     $("#barcodeSearch").css('display', 'none');
                 }
 
-                $('.description').text('Input Purchase Data');
+                $('.description').text(getMessage('insert.purchase.detail'));
             }
         });
 
@@ -163,7 +163,7 @@ var main = {
             $('#purchaseDate').val(data.purchaseDate);
             $('#productId').val(data.product.id);
             $('#categoryId').val(data.product.productCategory.id);
-            $('.description').text('Modify Purchase Data');
+            $('.description').text(getMessage('modify.purchase.detail'));
 
             $("#createPurchaseModal").modal("show");
         }).fail(function (error) {

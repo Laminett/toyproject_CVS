@@ -84,12 +84,12 @@ let main = {
                     dataType: 'JSON',
                     contentType: 'application/json; charset=utf-8',
                 }).done(function (data) {
-                    alert("this barcode already added \nname:" + data.name + ", point:" + data.point);
+                    alert("this barcode already added \nname:" + data.name + ", amount:" + data.point);
                 }).fail(function (error) {
                     if (error.responseJSON.code == 'PRODUCT_NOT_FOUND') {
                         _this.barcodeScan(barcode, qty);
                         _this.addFormVisible(true);
-                        $('.description').text('Input Product Content');
+                        $('.description').text(getMessage('insert.product.detail'));
                     }
                 });
             }
@@ -255,7 +255,7 @@ let main = {
             $("#point").val(data.point);
             $("#barcode").val(data.barcode);
             $("#quantity").val(data.quantity);
-            $('.description').text('Modify Purchase Data');
+            $('.description').text(getMessage('modify.product.detail'));
 
             if (data.isEnabled == true) {
                 $('#isEnabled').prop('checked', true);
