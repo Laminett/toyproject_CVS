@@ -84,7 +84,7 @@ public class TransactionRepositorySupport extends QuerydslRepositorySupport {
         LocalDateTime fromDateTime = LocalDateTime.of(fromDate, LocalTime.of(0, 0, 0));
         LocalDateTime toDateTime = LocalDateTime.of(toDate, LocalTime.of(23, 59, 59));
 
-        return transaction.createdDate.between(fromDateTime, toDateTime);
+        return transaction.createdAt.between(fromDateTime, toDateTime);
     }
 
     public List<SettleTransMonthlySumRequest> getMonthlySum(LocalDateTime fromDate, LocalDateTime toDate) {
@@ -124,7 +124,7 @@ public class TransactionRepositorySupport extends QuerydslRepositorySupport {
             return null;
         }
 
-        return transaction.createdDate.between(fromDate, toDate);
+        return transaction.createdAt.between(fromDate, toDate);
     }
 
 }

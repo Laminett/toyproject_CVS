@@ -1,7 +1,6 @@
 package com.alliex.cvs.web.dto;
 
 import com.alliex.cvs.entity.Product;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -29,9 +28,9 @@ public class ProductResponse {
 
     private String adminId;
 
-    private LocalDateTime createdDate;
+    private LocalDateTime createdAt;
 
-    private LocalDateTime modifiedDate;
+    private LocalDateTime updatedAt;
 
     public ProductResponse(Product entity) {
         this.id = entity.getId();
@@ -43,8 +42,8 @@ public class ProductResponse {
         this.quantity = entity.getQuantity();
         this.isEnabled = entity.getEnabled();
         this.adminId = entity.getAdminId();
-        this.createdDate = entity.getCreatedDate();
-        this.modifiedDate = entity.getModifiedDate();
+        this.createdAt = entity.getCreatedAt();
+        this.updatedAt = entity.getUpdatedAt();
     }
 
 }

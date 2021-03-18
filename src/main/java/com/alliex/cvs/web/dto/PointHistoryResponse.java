@@ -26,9 +26,9 @@ public class PointHistoryResponse {
 
     private String adminId;
 
-    private LocalDateTime createdDate;
+    private LocalDateTime createdAt;
 
-    private LocalDateTime modifiedDate;
+    private LocalDateTime updatedAt;
 
     @Builder
     public PointHistoryResponse(PointHistory entity) {
@@ -38,8 +38,8 @@ public class PointHistoryResponse {
         this.point = entity.getPoint();
         this.status = entity.getStatus();
         this.adminId = entity.getAdminId();
-        this.createdDate = entity.getCreatedDate();
-        this.modifiedDate = entity.getModifiedDate();
+        this.createdAt = entity.getCreatedAt();
+        this.updatedAt = entity.getUpdatedAt();
     }
 
 }

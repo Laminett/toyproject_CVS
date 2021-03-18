@@ -30,7 +30,7 @@ public class UserResponse {
 
     private Long point;
 
-    private LocalDateTime createdDate;
+    private LocalDateTime createdAt;
 
     public UserResponse(String username) {
         this.username = username;
@@ -50,7 +50,7 @@ public class UserResponse {
         this.phoneNumber = entity.getPhoneNumber();
         this.status = entity.getStatus();
         this.role = entity.getRole();
-        this.createdDate = entity.getCreatedDate();
+        this.createdAt = entity.getCreatedAt();
 
         if (entity.getPoint() != null) {
             this.point = entity.getPoint().getPoint();

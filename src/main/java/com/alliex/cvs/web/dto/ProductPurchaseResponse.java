@@ -2,7 +2,6 @@ package com.alliex.cvs.web.dto;
 
 import com.alliex.cvs.entity.Product;
 import com.alliex.cvs.entity.ProductPurchase;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.ToString;
 
@@ -25,7 +24,7 @@ public class ProductPurchaseResponse {
 
     private LocalDate purchaseDate;
 
-    private LocalDateTime createdDate;
+    private LocalDateTime createdAt;
 
     public ProductPurchaseResponse(ProductPurchase entity) {
         this.id = entity.getId();
@@ -33,7 +32,7 @@ public class ProductPurchaseResponse {
         this.adminId = entity.getAdminId();
         this.purchaseAmount = entity.getPurchaseAmount();
         this.purchaseQuantity = entity.getPurchaseQuantity();
-        this.createdDate = entity.getCreatedDate();
+        this.createdAt = entity.getCreatedAt();
         this.purchaseDate = entity.getPurchaseDate();
     }
 

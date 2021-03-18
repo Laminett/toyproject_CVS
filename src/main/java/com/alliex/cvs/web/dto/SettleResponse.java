@@ -42,30 +42,9 @@ public class SettleResponse {
 
     private String adminId;
 
-    private LocalDateTime createdDate;
+    private LocalDateTime createdAt;
 
-    private LocalDateTime modifiedDate;
-
-    @Override
-    public String toString() {
-        return "SettleResponse{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
-                ", fullName='" + fullName + '\'' +
-                ", aggregatedAt='" + aggregatedAt + '\'' +
-                ", approvalCount=" + approvalCount +
-                ", approvalAmount=" + approvalAmount +
-                ", cancelCount=" + cancelCount +
-                ", cancelAmount=" + cancelAmount +
-                ", totalCount=" + totalCount +
-                ", totalAmount=" + totalAmount +
-                ", status='" + status + '\'' +
-                ", isApproved=" + isApproved +
-                ", adminId='" + adminId + '\'' +
-                ", createdDate=" + createdDate +
-                ", modifiedDate=" + modifiedDate +
-                '}';
-    }
+    private LocalDateTime updatedAt;
 
     @Builder
     public SettleResponse(Settle settle) {
@@ -81,8 +60,8 @@ public class SettleResponse {
         this.totalAmount = settle.getTotalAmount();
         this.status = settle.getStatus();
         this.adminId = settle.getAdminId();
-        this.createdDate = settle.getCreatedDate();
-        this.modifiedDate = settle.getModifiedDate();
+        this.createdAt = settle.getCreatedAt();
+        this.updatedAt = settle.getUpdatedAt();
     }
 
 }

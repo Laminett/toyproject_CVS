@@ -1,7 +1,6 @@
 package com.alliex.cvs.web.dto;
 
 import com.alliex.cvs.entity.ProductCategory;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.ToString;
 
@@ -20,17 +19,17 @@ public class ProductCategoryResponse {
 
     private Boolean isEnabled;
 
-    private LocalDateTime createdDate;
+    private LocalDateTime createdAt;
 
-    private LocalDateTime modifiedDate;
+    private LocalDateTime updatedAt;
 
     public ProductCategoryResponse(ProductCategory entity) {
         this.id = entity.getId();
         this.name = entity.getName();
         this.adminId = entity.getAdminId();
         this.isEnabled = entity.getIsEnabled();
-        this.createdDate = entity.getCreatedDate();
-        this.modifiedDate = entity.getModifiedDate();
+        this.createdAt = entity.getCreatedAt();
+        this.updatedAt = entity.getUpdatedAt();
     }
 
 }

@@ -9,7 +9,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -38,9 +37,6 @@ public class ProductPurchaseSaveRequest {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private LocalDate purchaseDate;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
-    private LocalDateTime createdDate;
-
     @Builder
     public ProductPurchaseSaveRequest(Long categoryId, Long productId, Integer purchaseQuantity, Long purchaseAmount, LocalDate purchaseDate, String adminId, LocalDateTime createdDate) {
         this.categoryId = categoryId;
@@ -49,7 +45,6 @@ public class ProductPurchaseSaveRequest {
         this.purchaseQuantity = purchaseQuantity;
         this.purchaseAmount = purchaseAmount;
         this.purchaseDate = purchaseDate;
-        this.createdDate = createdDate;
     }
 
     public ProductPurchase toEntity() {

@@ -1,10 +1,9 @@
 package com.alliex.cvs.web.dto;
 
-import com.alliex.cvs.entity.Transaction;
 import com.alliex.cvs.domain.type.PaymentType;
 import com.alliex.cvs.domain.type.TransactionState;
 import com.alliex.cvs.domain.type.TransactionType;
-import com.fasterxml.jackson.annotation.JsonFormat;
+import com.alliex.cvs.entity.Transaction;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -33,13 +32,13 @@ public class TransactionResponse {
 
     private PaymentType paymentType;
 
-    private LocalDateTime createdDate;
-
-    private LocalDateTime modifiedDate;
-
     private List<TransactionDetailResponse> transactionItems;
 
     private Boolean isRefunded;
+
+    private LocalDateTime createdAt;
+
+    private LocalDateTime updatedAt;
 
     public TransactionResponse(Transaction entity) {
         this.id = entity.getId();
@@ -50,8 +49,8 @@ public class TransactionResponse {
         this.type = entity.getType();
         this.requestId = entity.getRequestId();
         this.paymentType = entity.getPaymentType();
-        this.createdDate = entity.getCreatedDate();
-        this.modifiedDate = entity.getModifiedDate();
+        this.createdAt = entity.getCreatedAt();
+        this.updatedAt = entity.getUpdatedAt();
     }
 
 }

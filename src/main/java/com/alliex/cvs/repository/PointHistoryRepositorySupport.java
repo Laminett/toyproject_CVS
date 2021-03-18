@@ -48,7 +48,7 @@ public class PointHistoryRepositorySupport extends QuerydslRepositorySupport {
             return null;
         }
 
-        return pointHistory.createdDate.between(startDate.atStartOfDay(), endDate.atTime(23, 59, 59));
+        return pointHistory.createdAt.between(startDate.atStartOfDay(), endDate.atTime(23, 59, 59));
     }
 
     private BooleanExpression containsFullName(String fullName) {

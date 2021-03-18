@@ -1,9 +1,8 @@
 package com.alliex.cvs.web.dto;
 
-import com.alliex.cvs.entity.Transaction;
 import com.alliex.cvs.domain.type.TransactionState;
 import com.alliex.cvs.domain.type.TransactionType;
-import com.fasterxml.jackson.annotation.JsonFormat;
+import com.alliex.cvs.entity.Transaction;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -23,13 +22,14 @@ public class TransactionRefundResponse {
 
     private String requestId;
 
-    private LocalDateTime createdDate;
+    private LocalDateTime createdAt;
 
     public TransactionRefundResponse(Transaction entity) {
         this.state = entity.getState();
         this.originRequestId = entity.getOriginRequestId();
         this.type = entity.getType();
         this.requestId = entity.getRequestId();
-        this.createdDate = entity.getCreatedDate();
+        this.createdAt = entity.getCreatedAt();
     }
+
 }
