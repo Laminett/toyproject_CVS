@@ -4,8 +4,10 @@ import com.alliex.cvs.domain.BaseTimeEntity;
 import com.alliex.cvs.domain.type.PaymentType;
 import com.alliex.cvs.domain.type.TransactionState;
 import com.alliex.cvs.domain.type.TransactionType;
-import com.alliex.cvs.entity.User;
-import lombok.*;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 
@@ -15,7 +17,8 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Entity
 @Table(indexes = {
-        @Index(name = "uix_request_id", columnList = "requestId", unique = true)
+        @Index(name = "uix_request_id", columnList = "requestId", unique = true),
+        @Index(name = "ix_origin_request_id", columnList = "originRequestId")
 })
 public class Transaction extends BaseTimeEntity {
 

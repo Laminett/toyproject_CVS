@@ -1,7 +1,6 @@
 package com.alliex.cvs.entity;
 
 import com.alliex.cvs.domain.BaseTimeEntity;
-import com.alliex.cvs.entity.User;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,20 +10,23 @@ import javax.persistence.*;
 import java.time.LocalDate;
 
 @Getter
-@Entity
 @NoArgsConstructor
+@Entity
+@Table(indexes = {
+        @Index(name = "uix_aggregated_at_user_id", columnList = "aggregatedAt, user_id", unique = true)
+})
 public class Settle extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private User user;
-
     @Column(nullable = false)
     private LocalDate aggregatedAt;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "fk_settle_user_id"))
+    private User user;
 
     @Column(nullable = false)
     @ColumnDefault("0")

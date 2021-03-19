@@ -1,7 +1,6 @@
 package com.alliex.cvs.entity;
 
 import com.alliex.cvs.domain.BaseTimeEntity;
-import com.alliex.cvs.entity.Product;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,6 +10,9 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor
 @Entity
+@Table(indexes = {
+        @Index(name = "ix_request_id", columnList = "requestId")
+})
 public class TransactionDetail extends BaseTimeEntity {
 
     @Id

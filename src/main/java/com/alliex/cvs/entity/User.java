@@ -17,8 +17,7 @@ import java.util.Collection;
 @NoArgsConstructor
 @Entity
 @Table(indexes = {
-        @Index(name = "uix_username", columnList = "username", unique = true),
-        @Index(name = "ix_full_name", columnList = "fullName")
+        @Index(name = "uix_username", columnList = "username", unique = true)
 })
 public class User extends BaseTimeEntity {
 

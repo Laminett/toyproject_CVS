@@ -1,10 +1,11 @@
 package com.alliex.cvs.entity;
 
 import com.alliex.cvs.domain.BaseTimeEntity;
-import com.alliex.cvs.entity.Product;
-import com.alliex.cvs.entity.ProductCategory;
 import com.alliex.cvs.web.dto.ProductPurchaseUpdateRequest;
-import lombok.*;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDate;
