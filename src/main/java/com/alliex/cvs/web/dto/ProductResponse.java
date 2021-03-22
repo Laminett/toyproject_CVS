@@ -28,10 +28,6 @@ public class ProductResponse {
 
     private String adminId;
 
-    private LocalDateTime createdAt;
-
-    private LocalDateTime updatedAt;
-
     public ProductResponse(Product entity) {
         this.id = entity.getId();
         this.categoryId = entity.getProductCategory().getId();
@@ -42,8 +38,6 @@ public class ProductResponse {
         this.quantity = entity.getQuantity();
         this.isEnabled = entity.getEnabled();
         this.adminId = entity.getAdminId();
-        this.createdAt = entity.getCreatedAt();
-        this.updatedAt = entity.getUpdatedAt();
     }
 
 }

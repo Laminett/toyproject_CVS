@@ -38,8 +38,6 @@ public class TransactionResponse {
 
     private LocalDateTime createdAt;
 
-    private LocalDateTime updatedAt;
-
     public TransactionResponse(Transaction entity) {
         this.id = entity.getId();
         this.state = entity.getState();
@@ -50,7 +48,6 @@ public class TransactionResponse {
         this.requestId = entity.getRequestId();
         this.paymentType = entity.getPaymentType();
         this.createdAt = entity.getCreatedAt();
-        this.updatedAt = entity.getUpdatedAt();
     }
 
 }

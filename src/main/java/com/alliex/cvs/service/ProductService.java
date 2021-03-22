@@ -24,7 +24,7 @@ public class ProductService {
 
     @Transactional(readOnly = true)
     public Page<ProductResponse> getProducts(Pageable pageable, ProductRequest productRequest) {
-        return productRepositorySupport.findBySearchValue(pageable, productRequest).map(ProductResponse::new);
+        return productRepositorySupport.findBySearchValue(pageable, productRequest).map(ProductListResponse::new);
     }
 
     @Transactional(readOnly = true)
